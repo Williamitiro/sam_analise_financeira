@@ -12,12 +12,13 @@ O que foi feito:
 4. Criado sistema para ferramentas SaaS categorizadas.
 5. Adicionado módulo para serviços profissionais (contabilidade, advogado).
 6. Implementado sistema completo de depreciação de ativos (CAPEX).
-7. Incluído sistema para despesas anuais rateadas (domínios, etc.).
+7. Incluído sistema para despesas anuais rateadas (domínios, etc).
 8. Adicionado cálculo automático de KPIs cruciais (LTV, LTV/CAC, CAC Payback).
 9. Criado funções para gerar cenários (padrão, com contratações, pessimista, otimista).
 10. Adicionado método para gerar um resumo legível da configuração.
 """
 
+import copy
 from dataclasses import dataclass, field
 from typing import Dict, List, Any, Optional
 from datetime import datetime
@@ -35,10 +36,16 @@ class Funcionario:
     mes_inicio: int
     tipo: str = "CLT"  # "CLT" ou "PJ"
     encargos_percentual: float = 0.68  # 68% para CLT (INSS, FGTS, férias, 13º)
+    ativo: bool = True
+    mes_fim: Optional[int] = None
     
     def calcular_custo_mensal(self, mes_atual: int) -> float:
         """Calcula o custo mensal total incluindo encargos."""
+        if not self.ativo:
+            return 0.0
         if mes_atual < self.mes_inicio:
+            return 0.0
+        if self.mes_fim is not None and mes_atual > self.mes_fim:
             return 0.0
         
         if self.tipo == "CLT":
@@ -54,12 +61,18 @@ class FerramentaSaaS:
     custo_mensal: float
     mes_inicio: int = 1
     essencial: bool = True  # Se é essencial desde o início
+    ativa: bool = True
+    mes_fim: Optional[int] = None
     
     def calcular_custo(self, mes_atual: int) -> float:
         """Retorna o custo se o mês atual >= mês de início."""
-        if mes_atual >= self.mes_inicio:
-            return self.custo_mensal
-        return 0.0
+        if not self.ativa:
+            return 0.0
+        if mes_atual < self.mes_inicio:
+            return 0.0
+        if self.mes_fim is not None and mes_atual > self.mes_fim:
+            return 0.0
+        return self.custo_mensal
 
 @dataclass
 class AtivoDepreciavel:
@@ -68,13 +81,20 @@ class AtivoDepreciavel:
     valor_aquisicao: float
     meses_depreciacao: int  # Vida útil em meses
     mes_aquisicao: int = 0  # Mês 0 = antes do início
+    ativo: bool = True
+    mes_fim: Optional[int] = None
     
     def calcular_depreciacao_mensal(self, mes_atual: int) -> float:
         """Calcula a depreciação mensal."""
-        # Só deprecia se já foi adquirido e ainda está no período
-        if mes_atual > self.mes_aquisicao and mes_atual <= (self.mes_aquisicao + self.meses_depreciacao):
-            return self.valor_aquisicao / self.meses_depreciacao
-        return 0.0
+        if not self.ativo:
+            return 0.0
+        if mes_atual <= self.mes_aquisicao:
+            return 0.0
+        if self.mes_fim is not None and mes_atual > self.mes_fim:
+            return 0.0
+        if mes_atual > (self.mes_aquisicao + self.meses_depreciacao):
+            return 0.0
+        return self.valor_aquisicao / self.meses_depreciacao
 
 @dataclass
 class DespesaAnual:
@@ -82,10 +102,15 @@ class DespesaAnual:
     nome: str
     valor_anual: float
     mes_pagamento: int = 1  # Mês do ano em que é paga
+    ativo: bool = True  # ← LINHA QUE PRECISA EXISTIR
+    mes_inicio: int = 1
+    mes_fim: Optional[int] = None
     
     @property
     def valor_mensal_rateado(self) -> float:
         """Retorna o valor mensal para controle."""
+        if not self.ativo:  # ← VERIFICAÇÃO QUE PRECISA EXISTIR
+            return 0.0
         return self.valor_anual / 12
 
 @dataclass
@@ -108,16 +133,44 @@ class ConfigFinanceira:
     até custos operacionais detalhados, permitindo simulações precisas.
     """
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
+    # FLAGS DE ATIVAÇÃO GERAIS
+    # ═════════════════════════════════════════════════════════
+    ativar_receita_por_usuario: bool = True
+    ativar_custo_ia: bool = True
+    ativar_impostos: bool = True
+    ativar_taxas_pgto: bool = True
+    
+    # Pessoal
+    ativar_fundador: bool = True
+    ativar_equipe_clt: bool = True
+    ativar_equipe_pj: bool = True
+    
+    # Operação
+    ativar_escritorio: bool = False
+    ativar_ferramentas: bool = True
+    ativar_servicos_profs: bool = True
+    ativar_marketing: bool = True
+    ativar_depreciacao: bool = True
+    ativar_despesas_anuais: bool = True
+    ativar_comissoes_afiliado: bool = False
+    
+    # Infraestrutura (flags adicionais para testes)
+    ativar_infra_tier1: bool = True
+    ativar_infra_tier2: bool = True
+    ativar_infra_tier3: bool = True
+    
+    # ═════════════════════════════════════════════════════════
     # 1. CAPITAL E FINANCIAMENTO
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     capital_inicial_caixa: float = -8000.00  # Capex inicial (negativo = saída)
     aporte_mensal_fixo: float = 1800.00
     meses_aporte_fixo: int = 12
+    historico_alteracoes: List[Dict[str, Any]] = field(default_factory=list)
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 2. FUNIL DE AQUISIÇÃO (DETALHADO)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     visitantes_mes_1: int = 1000
     taxa_crescimento_trafego_mensal: float = 0.20  # 20%
     
@@ -128,9 +181,9 @@ class ConfigFinanceira:
     # Retenção
     churn_mensal: float = 0.04  # 4% cancelamento/mês
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 3. MODELO DE RECEITA
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # Preços por plano
     preco_plano_lite: float = 69.90
     preco_plano_trader: float = 99.00
@@ -156,9 +209,9 @@ class ConfigFinanceira:
             self.preco_plano_pro * self.mix_plano_pro
         )
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 4. CUSTOS VARIÁVEIS (COGS)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # Custos por usuário
     custo_ia_por_usuario: float = 5.00  # LLM API
     
@@ -172,9 +225,9 @@ class ConfigFinanceira:
     # Comissões de afiliados (sistema completo)
     comissao_afiliados: Optional[ComissaoAfiliado] = None
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 5. INFRAESTRUTURA ESCALÁVEL (3 TIERS)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # TIER 1: Validação (0-100 usuários)
     infra_tier1_custo_fixo: float = 209.00
     infra_tier1_limite: int = 100
@@ -201,9 +254,9 @@ class ConfigFinanceira:
     cloud_gb_inclusos_tier: int = 1000  # GB inclusos no tier
     cloud_gb_estimado_por_usuario: float = 0.5  # GB/usuário/mês
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 6. MARKETING (2 FASES)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # FASE 1: Validação
     marketing_fase1_custo_fixo: float = 500.00
     marketing_fase1_duracao_meses: int = 3
@@ -214,16 +267,16 @@ class ConfigFinanceira:
     # CAC Meta (para análise)
     cac_pago_meta: float = 500.00
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 7. SALÁRIO DO FUNDADOR (CONDICIONAL)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     salario_fundador_valor: float = 5000.00
     salario_fundador_mes_inicio_ideal: int = 6
     salario_fundador_caixa_minimo_seguranca: float = 10000.00
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 8. EQUIPE E PESSOAL (SISTEMA COMPLETO)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     equipe: List[Funcionario] = field(default_factory=list)
     
     def adicionar_funcionario(
@@ -232,7 +285,10 @@ class ConfigFinanceira:
         cargo: str,
         salario_bruto: float,
         mes_inicio: int,
-        tipo: str = "CLT"
+        tipo: str = "CLT",
+        ativo: bool = True,
+        mes_fim: Optional[int] = None,
+        encargos_percentual: float = 0.68
     ):
         """Adiciona um funcionário à equipe."""
         funcionario = Funcionario(
@@ -240,13 +296,16 @@ class ConfigFinanceira:
             cargo=cargo,
             salario_bruto=salario_bruto,
             mes_inicio=mes_inicio,
-            tipo=tipo
+            tipo=tipo,
+            ativo=ativo,
+            mes_fim=mes_fim,
+            encargos_percentual=encargos_percentual
         )
         self.equipe.append(funcionario)
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 9. ESCRITÓRIO E OPERAÇÃO
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # Despesas de escritório/operação
     escritorio_aluguel_mensal: float = 0.0
     escritorio_condominio_mensal: float = 0.0
@@ -266,9 +325,9 @@ class ConfigFinanceira:
             self.escritorio_outros_mensal
         )
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 10. FERRAMENTAS SAAS (CATEGORIZADAS)
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     ferramentas_saas: List[FerramentaSaaS] = field(default_factory=list)
     
     def adicionar_ferramenta(
@@ -277,7 +336,9 @@ class ConfigFinanceira:
         categoria: str,
         custo_mensal: float,
         mes_inicio: int = 1,
-        essencial: bool = True
+        essencial: bool = True,
+        ativa: bool = True,
+        mes_fim: Optional[int] = None
     ):
         """Adiciona uma ferramenta SaaS."""
         ferramenta = FerramentaSaaS(
@@ -285,13 +346,15 @@ class ConfigFinanceira:
             categoria=categoria,
             custo_mensal=custo_mensal,
             mes_inicio=mes_inicio,
-            essencial=essencial
+            essencial=essencial,
+            ativa=ativa,
+            mes_fim=mes_fim
         )
         self.ferramentas_saas.append(ferramenta)
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 11. SERVIÇOS PROFISSIONAIS
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     contabilidade_mensal: float = 0.0
     contabilidade_mes_inicio: int = 1
     
@@ -300,9 +363,9 @@ class ConfigFinanceira:
     
     consultorias_outras_mensal: float = 0.0
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 12. DEPRECIAÇÃO DE ATIVOS
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     ativos_depreciaveis: List[AtivoDepreciavel] = field(default_factory=list)
     
     def adicionar_ativo_depreciavel(
@@ -310,39 +373,145 @@ class ConfigFinanceira:
         nome: str,
         valor_aquisicao: float,
         meses_depreciacao: int,
-        mes_aquisicao: int = 0
+        mes_aquisicao: int = 0,
+        ativo: bool = True,
+        mes_fim: Optional[int] = None
     ):
         """Adiciona um ativo para depreciação."""
-        ativo = AtivoDepreciavel(
+        ativo_obj = AtivoDepreciavel(
             nome=nome,
             valor_aquisicao=valor_aquisicao,
             meses_depreciacao=meses_depreciacao,
-            mes_aquisicao=mes_aquisicao
+            mes_aquisicao=mes_aquisicao,
+            ativo=ativo,
+            mes_fim=mes_fim
         )
-        self.ativos_depreciaveis.append(ativo)
+        self.ativos_depreciaveis.append(ativo_obj)
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # 13. DESPESAS ANUAIS RATEADAS
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     despesas_anuais: List[DespesaAnual] = field(default_factory=list)
     
     def adicionar_despesa_anual(
         self,
         nome: str,
         valor_anual: float,
-        mes_pagamento: int = 1
+        mes_pagamento: int = 1,
+        ativo: bool = True,
+        mes_inicio: int = 1,
+        mes_fim: Optional[int] = None
     ):
         """Adiciona uma despesa anual (ex: domínio, certificados)."""
         despesa = DespesaAnual(
             nome=nome,
             valor_anual=valor_anual,
-            mes_pagamento=mes_pagamento
+            mes_pagamento=mes_pagamento,
+            ativo=ativo,
+            mes_inicio=mes_inicio,
+            mes_fim=mes_fim
         )
         self.despesas_anuais.append(despesa)
     
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
     # MÉTODOS DE CÁLCULO
-    # ═══════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════
+    
+    def registrar_alteracao(
+        self,
+        descricao: str,
+        autor: str = "sistema",
+        detalhes: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """Registra uma alteração na configuração para histórico/auditoria."""
+        self.historico_alteracoes.append({
+            "timestamp": datetime.utcnow().isoformat(),
+            "autor": autor,
+            "descricao": descricao,
+            "detalhes": detalhes or {}
+        })
+    
+    def aplicar_cenario_e_se(self, **kwargs) -> "ConfigFinanceira":
+        """
+        Cria um novo cenário a partir do atual, modificando apenas os parâmetros passados.
+        
+        Exemplos:
+            novo_config = config.aplicar_cenario_e_se(ativar_marketing=False)
+        """
+        novo_config = copy.deepcopy(self)
+        
+        for chave, valor in kwargs.items():
+            if hasattr(novo_config, chave):
+                setattr(novo_config, chave, valor)
+            else:
+                raise AttributeError(f"ConfigFinanceira não tem o atributo '{chave}'")
+        
+        if kwargs:
+            novo_config.registrar_alteracao(
+                "Aplicação de cenário 'E se...'",
+                detalhes={"alteracoes": kwargs}
+            )
+        
+        return novo_config
+    
+    def alternar_componente(self, tipo: str, nome: str, ativo: bool) -> str:
+        """
+        Liga ou desliga qualquer componente (funcionário, ferramenta, etc).
+        
+        Args:
+            tipo: 'funcionario', 'ferramenta', 'ativo', 'despesa_anual'
+            nome: Nome do componente
+            ativo: True para ligar, False para desligar
+        """
+        tipo_normalizado = tipo.lower()
+        estado_texto = "ativado" if ativo else "desativado"
+        
+        if tipo_normalizado == "funcionario":
+            for funcionario in self.equipe:
+                if funcionario.nome == nome:
+                    funcionario.ativo = ativo
+                    self.registrar_alteracao(
+                        f"Funcionário {estado_texto}",
+                        detalhes={"tipo": tipo_normalizado, "nome": nome, "ativo": ativo}
+                    )
+                    return f"{nome} {estado_texto} com sucesso!"
+            raise ValueError(f"Funcionário '{nome}' não encontrado")
+        
+        if tipo_normalizado == "ferramenta":
+            for ferramenta in self.ferramentas_saas:
+                if ferramenta.nome == nome:
+                    ferramenta.ativa = ativo
+                    estado_texto_ferramenta = "ativada" if ativo else "desativada"
+                    self.registrar_alteracao(
+                        f"Ferramenta {estado_texto_ferramenta}",
+                        detalhes={"tipo": tipo_normalizado, "nome": nome, "ativo": ativo}
+                    )
+                    return f"{nome} {estado_texto_ferramenta} com sucesso!"
+            raise ValueError(f"Ferramenta '{nome}' não encontrada")
+        
+        if tipo_normalizado in {"ativo", "ativo_depreciavel"}:
+            for ativo_depreciavel in self.ativos_depreciaveis:
+                if ativo_depreciavel.nome == nome:
+                    ativo_depreciavel.ativo = ativo
+                    self.registrar_alteracao(
+                        f"Ativo depreciável {estado_texto}",
+                        detalhes={"tipo": tipo_normalizado, "nome": nome, "ativo": ativo}
+                    )
+                    return f"{nome} {estado_texto} com sucesso!"
+            raise ValueError(f"Ativo depreciável '{nome}' não encontrado")
+        
+        if tipo_normalizado in {"despesa_anual", "despesa"}:
+            for despesa in self.despesas_anuais:
+                if despesa.nome == nome:
+                    despesa.ativo = ativo
+                    self.registrar_alteracao(
+                        f"Despesa anual {estado_texto}",
+                        detalhes={"tipo": tipo_normalizado, "nome": nome, "ativo": ativo}
+                    )
+                    return f"{nome} {estado_texto} com sucesso!"
+            raise ValueError(f"Despesa anual '{nome}' não encontrada")
+        
+        raise ValueError(f"Tipo de componente '{tipo}' não suportado")
     
     def calcular_ltv(self) -> float:
         """
@@ -382,7 +551,7 @@ class ConfigFinanceira:
     def to_dict(self) -> Dict[str, Any]:
         """Converte configuração para dicionário (útil para salvar em JSON)."""
         base_dict = {
-            k: v for k, v in self.__dict__.items() 
+            k: v for k, v in self.__dict__.items()
             if not k.startswith('_') and not isinstance(v, list)
         }
         
@@ -393,7 +562,10 @@ class ConfigFinanceira:
                 'cargo': f.cargo,
                 'salario': f.salario_bruto,
                 'tipo': f.tipo,
-                'mes_inicio': f.mes_inicio
+                'mes_inicio': f.mes_inicio,
+                'mes_fim': f.mes_fim,
+                'ativo': f.ativo,
+                'encargos_percentual': f.encargos_percentual
             }
             for f in self.equipe
         ]
@@ -403,10 +575,39 @@ class ConfigFinanceira:
                 'nome': f.nome,
                 'categoria': f.categoria,
                 'custo': f.custo_mensal,
-                'mes_inicio': f.mes_inicio
+                'mes_inicio': f.mes_inicio,
+                'mes_fim': f.mes_fim,
+                'ativa': f.ativa,
+                'essencial': f.essencial
             }
             for f in self.ferramentas_saas
         ]
+        
+        base_dict['ativos_depreciaveis'] = [
+            {
+                'nome': a.nome,
+                'valor_aquisicao': a.valor_aquisicao,
+                'meses_depreciacao': a.meses_depreciacao,
+                'mes_aquisicao': a.mes_aquisicao,
+                'mes_fim': a.mes_fim,
+                'ativo': a.ativo
+            }
+            for a in self.ativos_depreciaveis
+        ]
+        
+        base_dict['despesas_anuais'] = [
+            {
+                'nome': d.nome,
+                'valor_anual': d.valor_anual,
+                'mes_pagamento': d.mes_pagamento,
+                'mes_inicio': d.mes_inicio,
+                'mes_fim': d.mes_fim,
+                'ativo': d.ativo
+            }
+            for d in self.despesas_anuais
+        ]
+        
+        base_dict['historico_alteracoes'] = list(self.historico_alteracoes)
         
         return base_dict
     
@@ -415,7 +616,7 @@ class ConfigFinanceira:
         resumo = f"""
 ╔════════════════════════════════════════════════════════════════╗
 ║          RESUMO DA CONFIGURAÇÃO FINANCEIRA - SAM               ║
-╚════════════════════════════════════════════════════════════════╝
+╚══════════════════════════════════════════════════════════════╝
 
 ═══════════════════════════════════════════════════════════════
 💰 CAPITAL E FINANCIAMENTO
@@ -453,7 +654,14 @@ CAC Payback: {self.calcular_cac_payback_meses():.1f} meses
 """
         if self.equipe:
             for func in self.equipe:
-                resumo += f"  • {func.cargo}: R$ {func.salario_bruto:,.2f} ({func.tipo}) - A partir do mês {func.mes_inicio}\n"
+                status = "ativo" if func.ativo else "inativo"
+                if func.mes_fim is not None:
+                    periodo = f"do mês {func.mes_inicio} ao {func.mes_fim}"
+                else:
+                    periodo = f"a partir do mês {func.mes_inicio}"
+                resumo += (
+                    f"  • {func.cargo}: R$ {func.salario_bruto:,.2f} ({func.tipo}, {status}) - {periodo}\n"
+                )
         else:
             resumo += "  • Nenhum funcionário configurado ainda\n"
         
@@ -576,7 +784,3 @@ if __name__ == "__main__":
     
     # Imprimir o resumo da configuração
     print(config.gerar_resumo_config())
-
-    # ══════════════════════════════════════════════════════════
-    # RESPOSTAS ÀS SUAS PERGUNTAS:
-    # ══════════════════════════════════════════════════════════
