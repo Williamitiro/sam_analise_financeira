@@ -1,0 +1,22 @@
+{
+  "nome": "SAM - Cenário Base - Pessimista",
+  "descricao": "Variação Pessimista de SAM - Cenário Base",
+  "metadata": {
+    "criado_em": "2025-11-14T17:28:59.051267",
+    "versao": "4.0",
+    "variacao_de": "SAM - Cenário Base",
+    "modificacoes": {
+      "taxa_crescimento_trafego_mensal": 0.1,
+      "churn_mensal": 0.06,
+      "taxa_conversao_trial_pagante": 0.17600000000000002,
+      "cac_pago_meta": 650.0
+    }
+  },
+  "builders_aplicados": [
+    "channels",
+    "infra",
+    "team",
+    "tools"
+  ],
+  "config": {}
+}

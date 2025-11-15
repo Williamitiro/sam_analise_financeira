@@ -1,0 +1,15 @@
+{
+  "nome": "SAM - Cenário Base",
+  "descricao": "Projeção realista baseada em premissas conservadoras",
+  "metadata": {
+    "criado_em": "2025-11-14T17:28:59.051267",
+    "versao": "4.0"
+  },
+  "builders_aplicados": [
+    "channels",
+    "infra",
+    "team",
+    "tools"
+  ],
+  "config": {}
+}

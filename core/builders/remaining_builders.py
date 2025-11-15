@@ -745,4 +745,4 @@ class ScenarioBuilder:
     def build(self):
         """Retorna config consolidado"""
         self.config.nome_cenario = self.nome
-        self.
+        self

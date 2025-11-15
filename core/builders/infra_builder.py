@@ -31,7 +31,7 @@ class ComponenteInfra:
     
     Exemplo:
         VPS Principal: R$55/mês (Hostinger KVM 4)
-        VPS MT5: R$150/mês (AWS t2.small Windows)
+        VPS MT5: R50/mês (AWS t2.small Windows)
     """
     nome: str
     tipo: TipoComponente
@@ -109,25 +109,6 @@ class TierInfra:
 class InfraBuilder:
     """
     Builder para configurar infraestrutura escalável em tiers.
-    
-    Uso:
-        builder = InfraBuilder(config)
-        
-        # Tier 1: Validação
-        builder.criar_tier(1, "Validação", 0, 100)
-        builder.add_componente("VPS Principal", TipoComponente.VPS, 55, provider="Hostinger")
-        builder.add_componente("VPS MT5", TipoComponente.VPS, 150, provider="AWS")
-        builder.add_componente("Domínio", TipoComponente.DOMINIO, 4)
-        
-        # Tier 2: Escala
-        builder.criar_tier(2, "Escala", 101, 500)
-        builder.add_componente("API Cedro", TipoComponente.API_EXTERNA, 5000)
-        builder.add_componente("VPS Robusta", TipoComponente.VPS, 500)
-        
-        # Tier 3: Hiperescala
-        builder.criar_tier(3, "Hiperescala", 501, 999999, custo_por_usuario=1.50)
-        
-        builder.build()
     """
     
     def __init__(self, config):
@@ -138,7 +119,26 @@ class InfraBuilder:
         self.config = config
         self.tiers: List[TierInfra] = []
         self.tier_atual: Optional[TierInfra] = None
-    
+
+    def calcular_custo_para_mes(self, usuarios: int) -> float:
+        """
+        Calcula o custo de infraestrutura para um mês.
+        Para retrocompatibilidade, replica a lógica de 3 tiers do motor antigo.
+        """
+        cfg = self.config
+
+        # Futuramente, esta lógica usará self.tiers se estiverem definidos.
+        # Por enquanto, fallback para a lógica antiga.
+        if usuarios <= cfg.infra_tier1_limite:
+            return cfg.infra_tier1_custo_fixo if cfg.ativar_infra_tier1 else 0.0
+        elif usuarios <= cfg.infra_tier2_limite:
+            return cfg.infra_tier2_custo_fixo if cfg.ativar_infra_tier2 else 0.0
+        else:
+            if not cfg.ativar_infra_tier3:
+                return 0.0
+            adicionais = max(0, usuarios - cfg.infra_tier2_limite)
+            return cfg.infra_tier2_custo_fixo + adicionais * cfg.infra_tier3_custo_por_usuario
+
     def criar_tier(
         self,
         numero: int,
@@ -151,15 +151,6 @@ class InfraBuilder:
     ) -> 'InfraBuilder':
         """
         Cria um novo tier de infraestrutura (fluent interface).
-        
-        Args:
-            numero: Número do tier (1, 2, 3, ...)
-            nome: Nome descritivo
-            usuarios_min: Limite inferior de usuários
-            usuarios_max: Limite superior de usuários
-            custo_fixo: Custo fixo mensal (se não usar componentes)
-            custo_por_usuario: Custo adicional por usuário além do limite
-            descricao: Descrição do tier
         """
         tier = TierInfra(
             numero=numero,
@@ -186,17 +177,6 @@ class InfraBuilder:
     ) -> 'InfraBuilder':
         """
         Adiciona componente ao tier atual (fluent interface).
-        
-        Exemplo:
-            builder.add_componente(
-                "VPS Principal",
-                TipoComponente.VPS,
-                55.00,
-                descricao="Backend SAM (Docker)",
-                provider="Hostinger",
-                specs={"cpu": "4 vCPU", "ram": "16 GB", "disk": "200 GB NVMe"},
-                essencial=True
-            )
         """
         if not self.tier_atual:
             raise ValueError("Crie um tier antes de adicionar componentes (use criar_tier)")
@@ -356,16 +336,16 @@ def criar_infra_sam(config):
     
     Tier 1 (0-100): R$209/mês
         - VPS Principal (Hostinger KVM 4): R$55
-        - VPS MT5 (AWS Windows): R$150
+        - VPS MT5 (AWS Windows): R50
         - Domínio: R$4
     
     Tier 2 (101-500): R$5.650/mês
         - API Cedro: R$5.000
         - VPS Robusta: R$500
         - Backup S3: R$50
-        - CDN Cloudflare: R$100
+        - CDN Cloudflare: R00
     
-    Tier 3 (501+): Tier 2 + R$1,50/usuário
+    Tier 3 (501+): Tier 2 + R,50/usuário
     """
     builder = InfraBuilder(config)
     
@@ -481,6 +461,11 @@ def criar_infra_sam(config):
 
 
 if __name__ == "__main__":
+    # Adiciona o diretório raiz do projeto ao sys.path para permitir importações diretas
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
     # Teste do builder
     from core.config import ConfigFinanceira
     

@@ -216,7 +216,7 @@ class ChannelsBuilder:
         """
         # Registra comissão no COGS
         if hasattr(self.config, 'comissao_afiliados'):
-            from .cogs_builder import ComissaoAfiliado
+            from core.builders.cogs_builder import ComissaoAfiliado
             self.config.comissao_afiliados = ComissaoAfiliado(
                 percentual_sobre_venda=comissao_percentual,
                 mes_inicio_programa=1,
@@ -474,6 +474,11 @@ def criar_estrategia_sam_canais(config):
 
 
 if __name__ == "__main__":
+    # Adiciona o diretório raiz do projeto ao sys.path para permitir importações diretas
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
     # Teste do builder
     from core.config import ConfigFinanceira
     

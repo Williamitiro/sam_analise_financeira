@@ -13,7 +13,7 @@ Funcionalidades:
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional, Union, Tuple
 from enum import Enum
 
 class TipoGatilho(Enum):
@@ -33,8 +33,7 @@ class TipoPessoa(Enum):
     ESTAGIARIO = "estagiario"
 
 @dataclass
-class Gatilho Human:
-Contratacao:
+class GatilhoContratacao:
     """
     Gatilho que dispara contratação automática.
     
@@ -42,7 +41,7 @@ Contratacao:
         - Contratar quando MRR > R$50.000
         - Contratar quando usuários > 500
         - Contratar no mês 12
-        - Contratar quando lucro > R$10.000
+        - Contratar quando lucro > R0.000
     """
     tipo: TipoGatilho
     valor: float
@@ -299,34 +298,77 @@ class Cargo:
 class TeamBuilder:
     """
     Builder para planejamento de equipe com gatilhos.
-    
-    Uso:
-        builder = TeamBuilder(config)
-        
-        # Fundador com fases salariais
-        builder.add_fundador("João Silva", "CEO")
-            .fase_sem_salario(1, 6)
-            .fase_salario_minimo(7, 12, 3000)
-            .fase_salario_pleno(13, None, 8000, gatilho_mrr=30000)
-            .com_pro_labore(0.10, gatilho_lucro=10000)
-        
-        # Dev Backend com gatilho
-        builder.add_clt("Maria Santos", "Dev Backend", 8000)
-            .quando_mrr_atingir(50000)
-            .com_beneficios(vr=500, vt=300, plano=400)
-        
-        # Community Manager
-        builder.add_clt("Pedro Costa", "Community Manager", 5000)
-            .quando_usuarios_atingir(1000)
-        
-        builder.build()
     """
     
     def __init__(self, config):
         self.config = config
         self.cargos: List[Cargo] = []
         self.cargo_atual: Optional[Cargo] = None
-    
+        
+        # Inicializa os cargos a partir do config para o cálculo
+        if hasattr(config, 'cargos_planejados'):
+            self.cargos = config.cargos_planejados
+        elif hasattr(config, 'equipe'):
+            # Lógica de compatibilidade com a estrutura antiga pode ser adicionada aqui se necessário
+            pass
+
+    def calcular_custo_para_mes(self, mes: int, mrr: float, usuarios: float, saldo_caixa: float) -> Tuple[float, float, float]:
+        """
+        Calcula o custo total de pessoal para um mês, gerenciando contratações.
+        Retorna (custo_clt, custo_pj, salario_fundador).
+        """
+        cfg = self.config
+        
+        # Fallback para a lógica antiga se a nova estrutura não for usada
+        if not hasattr(cfg, 'cargos_planejados') or not cfg.cargos_planejados:
+            salario_fundador = 0.0
+            if cfg.ativar_fundador:
+                inicio_ok = mes >= cfg.salario_fundador_mes_inicio_ideal
+                caixa_ok = saldo_caixa > cfg.salario_fundador_caixa_minimo_seguranca
+                if inicio_ok and caixa_ok:
+                    salario_fundador = cfg.salario_fundador_valor
+
+            custo_clt = 0.0
+            custo_pj = 0.0
+            if hasattr(cfg, 'equipe') and (cfg.ativar_equipe_clt or cfg.ativar_equipe_pj):
+                for f in cfg.equipe:
+                    custo = f.calcular_custo_mensal(mes) # Assume que o método antigo existe
+                    if f.tipo.upper() == "CLT":
+                        custo_clt += custo
+                    else:
+                        custo_pj += custo
+            return custo_clt, custo_pj, salario_fundador
+
+        # Nova lógica usando a estrutura de Cargos
+        custo_clt_total = 0.0
+        custo_pj_total = 0.0
+        salario_fundador_total = 0.0
+        
+        metricas_atuais = {
+            'mrr': mrr,
+            'usuarios': usuarios,
+            'mes': mes,
+            'caixa': saldo_caixa,
+            # 'lucro' precisaria ser passado se usado em gatilhos
+        }
+
+        for cargo in self.cargos:
+            # Avalia se o cargo deve ser contratado neste mês
+            if not cargo.ativo and cargo.avaliar_gatilhos(mes, metricas_atuais):
+                cargo.contratar(mes)
+            
+            # Se o cargo estiver ativo no mês, calcula seu custo
+            if cargo.ativo:
+                custo_cargo = cargo.calcular_custo_mensal(mes, metricas_atuais)
+                if cargo.tipo == TipoPessoa.CLT:
+                    custo_clt_total += custo_cargo
+                elif cargo.tipo == TipoPessoa.PJ:
+                    custo_pj_total += custo_cargo
+                elif cargo.tipo == TipoPessoa.FUNDADOR:
+                    salario_fundador_total += custo_cargo
+        
+        return custo_clt_total, custo_pj_total, salario_fundador_total
+
     def add_fundador(
         self,
         nome: str,
@@ -690,6 +732,11 @@ def criar_equipe_sam(config):
 
 
 if __name__ == "__main__":
+    # Adiciona o diretório raiz do projeto ao sys.path para permitir importações diretas
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
     from core.config import ConfigFinanceira
     
     config = ConfigFinanceira()
