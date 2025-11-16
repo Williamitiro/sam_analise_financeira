@@ -116,6 +116,11 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  
+  .font-jetbrains-mono-numbers {
+    font-family: 'JetBrains Mono', monospace;
+    font-feature-settings: "tnum" on, "zero" on; /* tabular numbers, slashed zero */
+  }
 }
 
 /* Toaster personalizado (Sonner) */

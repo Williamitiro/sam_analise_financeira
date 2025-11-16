@@ -68,4 +68,9 @@ export default {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
   ],
+  safelist: [
+    'bg-blue-500', 'bg-amber-500', 'bg-green-500', 'bg-indigo-500', 'bg-purple-500', 'bg-pink-500',
+    'border-l-red-500', 'border-l-amber-500',
+    'text-red-500', 'text-amber-500', 'text-green-700', 'text-red-700', 'text-slate-700', 'text-amber-700',
+  ],
 }

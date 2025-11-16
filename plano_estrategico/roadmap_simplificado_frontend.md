@@ -36,7 +36,7 @@
 - **Alertas e Insights:**
   - [x] Componente `AlertCard` para exibir alertas críticos, de aviso e informativos.
   - [x] Seção no topo do dashboard para listar os alertas mais importantes retornados pelo backend.
-  - [ ] Componente `InsightCard` para mostrar oportunidades e recomendações.
+  - [x] Componente `InsightCard` para mostrar oportunidades e recomendações.
 - **Grid de KPIs:**
   - [x] Componente `MetricCard` para exibir uma métrica individual com seu valor, delta de crescimento/queda e formatação.
   - [x] Grid com 6 a 8 dos KPIs mais importantes (MRR, Usuários, Saldo de Caixa, LTV/CAC, Churn, Runway, etc.).
@@ -45,7 +45,7 @@
   - [x] **Gráfico de Linha/Área:** Evolução do Saldo de Caixa, com zonas de cor para indicar segurança, atenção e perigo (Vale da Morte).
   - [x] **Gráfico Combo (Barras + Linhas):** Comparativo de Receita vs. Custos Totais vs. Lucro.
 - **Timeline:**
-  - [ ] Componente `Timeline` para exibir os marcos importantes do projeto (ex: Break-even, contratações, etc.).
+  - [x] Componente `Timeline` para exibir os marcos importantes do projeto (ex: Break-even, contratações, etc.).
 
 **Entregável:** Dashboard de "Visão Geral" 100% funcional e visualmente polido, consumindo os dados do `mockData`.
 
@@ -54,10 +54,11 @@
 - **Refatoração dos KPI Cards:** Os cards foram simplificados para melhor escaneabilidade, removendo os sparklines e se tornando gatilhos para um painel de drill-down.
 - **Implementação de Drill-Down:** Adicionado um painel `Sheet` que abre ao clicar nos cards, mostrando um gráfico detalhado da métrica (Progressive Disclosure).
 - **Layout e Animações:** O layout da página foi aprimorado e microinterações foram adicionadas para uma experiência mais premium.
+- Inclui todas as correções de bugs e polimentos visuais e de interação.
 
 ---
 
-## 🚀 FASE 3: DASHBOARD DE RECEITA (PRÓXIMO) 🎯
+## 🚀 FASE 3: DASHBOARD DE RECEITA (EM ANDAMENTO) 🚧
 **Objetivo:** Oferecer uma visão detalhada sobre a principal alavanca do negócio: a receita.
 
 ### **Checklist de Features:**

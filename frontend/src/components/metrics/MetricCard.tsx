@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { cn } from '@/lib/utils/cn';
 import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp, Users, PiggyBank, BarChart3, ChevronRight, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -7,7 +7,6 @@ import { LineChart } from '../charts/LineChart';
 import { useState } from 'react';
 import { Slider } from '../ui/Slider';
 import { Button } from '../ui/Button';
-import { Input } from '../ui/Input'; // Assuming an Input component exists or will be created
 
 type MetricTrend = 'up' | 'down' | 'neutral' | 'warning';
 type MetricId = 'mrr' | 'runway' | 'users' | 'ltv_cac' | 'break_even' | 'ltv' | 'cac';
@@ -22,8 +21,6 @@ interface MetricCardProps {
   sparkline?: number[];
 }
 
-// ... (rest of the constants: ICONS, TREND_STYLES, COLOR_CLASSES)
-
 const ICONS: Record<MetricId, React.ReactNode> = {
     mrr: <BarChart3 size={20} />,
     runway: <PiggyBank size={20} />,
@@ -35,25 +32,25 @@ const ICONS: Record<MetricId, React.ReactNode> = {
 };
 
 const TREND_STYLES: Record<MetricTrend, { text: string; icon: React.ReactNode }> = {
-    up: { text: 'text-success-700', icon: <TrendingUp size={12} /> },
-    down: { text: 'text-danger-700', icon: <ArrowDownRight size={12} /> },
+    up: { text: 'text-green-700', icon: <TrendingUp size={12} /> },
+    down: { text: 'text-red-700', icon: <ArrowDownRight size={12} /> },
     neutral: { text: 'text-slate-700', icon: <Minus size={12} /> },
-    warning: { text: 'text-warning-700', icon: <AlertTriangle size={12} /> },
+    warning: { text: 'text-amber-700', icon: <AlertTriangle size={12} /> },
 };
 
-const COLOR_CLASSES: Record<string, { bg: string; text: string; border: string }> = {
-    blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'hover:border-blue-200' },
-    amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'hover:border-amber-200' },
-    green: { bg: 'bg-green-50', text: 'text-green-600', border: 'hover:border-green-200' },
-    indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'hover:border-indigo-200' },
-    purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'hover:border-purple-200' },
-    pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'hover:border-pink-200' },
+const COLOR_CLASSES: Record<MetricId, { bg: string; text: string; border: string }> = {
+    mrr: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'hover:border-blue-200' },
+    runway: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'hover:border-amber-200' },
+    users: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'hover:border-purple-200' },
+    ltv_cac: { bg: 'bg-green-50', text: 'text-green-600', border: 'hover:border-green-200' },
+    break_even: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'hover:border-indigo-200' },
+    ltv: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'hover:border-pink-200' },
+    cac: { bg: 'bg-red-50', text: 'text-red-600', border: 'hover:border-red-200' },
 };
-
 
 export function MetricCard({ id, label, value, change, trend, color, sparkline }: MetricCardProps) {
   const trendStyle = TREND_STYLES[trend];
-  const colorStyle = COLOR_CLASSES[color];
+  const colorStyle = COLOR_CLASSES[id];
   const [simulatedValue, setSimulatedValue] = useState<number | null>(null);
 
   const chartData = sparkline?.map((val, index) => ({ mes: index + 1, [label]: val })) || [];
@@ -64,33 +61,60 @@ export function MetricCard({ id, label, value, change, trend, color, sparkline }
     // Here we would call a function from a store to update the global state
   };
 
+  // Classe dinâmica para a barra superior - solução com safelist
+  const topBarClass = {
+    blue: 'bg-blue-500',
+    amber: 'bg-amber-500',
+    green: 'bg-green-500',
+    indigo: 'bg-indigo-500',
+    purple: 'bg-purple-500',
+    pink: 'bg-pink-500',
+  }[color];
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <motion.div
-          whileHover={{ y: -3, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+          whileHover={{ 
+            y: -4, 
+            boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+            transition: { type: "spring", stiffness: 300 }
+          }}
           className="h-full"
         >
-          <Card className={cn("relative group p-5 h-full cursor-pointer transition-all", colorStyle.border)}>
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-${color}-500`} />
+          <Card className={cn(
+            "relative group h-28 cursor-pointer transition-all shadow-sm hover:shadow-md",
+            colorStyle.border
+          )}>
+            <div className={`absolute top-0 left-0 right-0 h-1 ${topBarClass}`} />
             
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-500">{label}</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
+            <div className="p-4 h-full flex flex-col justify-between">
+              <div className="flex items-start justify-between">
+                {/* Metric Icon and Label */}
+                <div className="flex items-center gap-2 flex-1">
+                  <div className={cn('p-2 rounded-lg', colorStyle.bg, colorStyle.text)}>
+                    {ICONS[id]}
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
+                    <p className="text-xl font-bold text-slate-900 mt-1 font-mono tabular-nums">{value}</p>
+                  </div>
+                </div>
+                {/* Trend Icon in top right */}
+                <div className={cn('p-1 rounded-full', colorStyle.bg, trendStyle.text)}>
+                  {trendStyle.icon}
+                </div>
               </div>
-              <div className={cn('p-2 rounded-lg', colorStyle.bg, colorStyle.text)}>
-                {ICONS[id]}
+
+              <div className="flex items-center justify-between">
+                <div className={cn('inline-flex items-center gap-1 text-xs font-medium', trendStyle.text)}>
+                  {change}
+                </div>
+                
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <ChevronRight className="w-4 h-4 text-slate-400" />
+                </div>
               </div>
-            </div>
-
-            <div className={cn('mt-3 inline-flex items-center gap-1 text-xs font-medium', trendStyle.text)}>
-              {trendStyle.icon}
-              {change}
-            </div>
-
-            <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <ChevronRight className="w-4 h-4 text-slate-400" />
             </div>
           </Card>
         </motion.div>
@@ -104,6 +128,18 @@ export function MetricCard({ id, label, value, change, trend, color, sparkline }
         </SheetHeader>
         
         <div className="py-6 space-y-6">
+          {/* Mostrar valor simulado */}
+          {simulatedValue !== null && (
+            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <span className="text-sm font-medium">Valor Simulado: </span>
+              <span className="text-sm font-bold text-blue-700">
+                {id === 'mrr' || id === 'runway' 
+                  ? `R$ ${simulatedValue.toLocaleString('pt-BR')}`
+                  : simulatedValue.toLocaleString()}
+              </span>
+            </div>
+          )}
+
           {/* Gráfico expandido */}
           {sparkline && sparkline.length > 0 ? (
             <LineChart 
@@ -113,7 +149,7 @@ export function MetricCard({ id, label, value, change, trend, color, sparkline }
               format={id === 'mrr' || id === 'runway' ? 'currency' : 'number'}
             />
           ) : (
-            <p>Não há dados históricos para esta métrica.</p>
+            <p className="text-sm text-slate-500">Não há dados históricos para esta métrica.</p>
           )}
 
           {/* Seção de Simulação */}
