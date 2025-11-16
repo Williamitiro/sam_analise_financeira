@@ -2,13 +2,13 @@
   "nome": "SAM - Cenário Base - Otimista",
   "descricao": "Variação Otimista de SAM - Cenário Base",
   "metadata": {
-    "criado_em": "2025-11-14T17:28:59.051267",
+    "criado_em": "2025-11-15T17:51:19.649741",
     "versao": "4.0",
     "variacao_de": "SAM - Cenário Base",
     "modificacoes": {
       "taxa_crescimento_trafego_mensal": 0.30000000000000004,
       "churn_mensal": 0.027999999999999997,
-      "taxa_conversao_trial_pagante": 0.28600000000000003,
+      "taxa_conversao_trial_pagante": 0.195,
       "cac_pago_meta": 400.0
     }
   },

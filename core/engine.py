@@ -52,6 +52,35 @@ class MotorProjecaoFinanceira:
         # Log de eventos (para auditoria/insights)
         self.eventos: List[Dict] = []
 
+        # 🔥 NOVO: Importe os builders (só carrega se existirem)
+        try:
+            from .builders.revenue_builder import RevenueBuilder
+            self._revenue_builder = RevenueBuilder(config)
+            self._has_revenue_builder = True
+        except ImportError:
+            self._has_revenue_builder = False
+        
+        try:
+            from .builders.channels_builder import ChannelsBuilder
+            self._channels_builder = ChannelsBuilder(config)
+            self._has_channels_builder = True
+        except ImportError:
+            self._has_channels_builder = False
+        
+        try:
+            from .builders.capital_builder import CapitalBuilder
+            self._capital_builder = CapitalBuilder(config)
+            self._has_capital_builder = True
+        except ImportError:
+            self._has_capital_builder = False
+        
+        try:
+            from .builders.marketing_builder import MarketingBuilder
+            self._marketing_builder = MarketingBuilder(config)
+            self._has_marketing_builder = True
+        except ImportError:
+            self._has_marketing_builder = False
+
     def _registrar_evento(self, mes: int, tipo: str, descricao: str, valor: float = 0):
         """Registra evento para auditoria"""
         self.eventos.append({
@@ -161,17 +190,16 @@ class MotorProjecaoFinanceira:
         
         return (custo_clt, custo_pj, custo_fundador)
 
-    def _calcular_custos_ferramentas(self, mes: int) -> float:
-        """Calcula custo total de ferramentas SaaS"""
-        if not hasattr(self.config, 'ferramentas_saas'):
+    def _calcular_custos_ferramentas(self, mes: int, num_usuarios: int = 0) -> float:
+        """Calcula custo total de ferramentas SaaS usando o método de cada objeto."""
+        if not hasattr(self.config, 'ferramentas_saas') or not self.config.ativar_ferramentas:
             return 0.0
         
         custo_total = 0.0
         for ferramenta in self.config.ferramentas_saas:
-            if ferramenta.ativo and mes >= ferramenta.mes_inicio:
-                if ferramenta.mes_fim is None or mes <= ferramenta.mes_fim:
-                    custo_total += ferramenta.custo_mensal
-        
+            # A lógica de cálculo agora está encapsulada no próprio objeto FerramentaSaaS
+            custo_total += ferramenta.calcular_custo(mes, num_usuarios)
+
         return custo_total
 
     def executar_projecao(self, meses: int = 36) -> pd.DataFrame:
@@ -322,7 +350,7 @@ class MotorProjecaoFinanceira:
             custo_clt, custo_pj, salario_fundador = self._calcular_custos_equipe(mes, metricas)
             
             # Ferramentas
-            custo_ferramentas = self._calcular_custos_ferramentas(mes)
+            custo_ferramentas = self._calcular_custos_ferramentas(mes, int(usuarios))
             
             # Escritório
             custo_escritorio = 0.0
@@ -441,6 +469,58 @@ class MotorProjecaoFinanceira:
         
         df = pd.DataFrame.from_records(registros, columns=colunas)
         df.fillna(value=np.nan, inplace=True)
+
+        # ===== PASSO 2: RevenueBuilder (SEMPRE PRIMEIRO) =====
+        # Gera MRR_Lite, MRR_Trader, MRR_Pro, Waterfall
+        if self._has_revenue_builder and hasattr(self.config, 'receita'):
+            if self.config.receita.get('planos'):
+                print("🔧 Aplicando RevenueBuilder...")
+                df = self._revenue_builder.gerar_series_temporais(df)
+                print(f"   ✅ {len(self.config.receita['planos'])} planos processados")
+            else:
+                print("⚠️ RevenueBuilder configurado mas sem planos")
+        
+        # ===== PASSO 3: MarketingBuilder (SE EXISTIR) =====
+        # Gera orçamento de marketing para CAC real
+        if self._has_marketing_builder:
+            print("🔧 Aplicando MarketingBuilder...")
+            orcamento_mensal = []
+            for mes_iter in range(1, meses + 1):
+                # Usa seu método existente
+                custo = self._marketing_builder.calcular_custo_para_mes(
+                    mes=mes_iter,
+                    lucro_bruto=df.loc[mes_iter-1, 'Lucro_Bruto']
+                )
+                orcamento_mensal.append(custo)
+            
+            # Salva no DataFrame
+            df['Custo_Marketing_Total'] = orcamento_mensal
+            print(f"   ✅ Orçamento de marketing calculado")
+        
+        # ===== PASSO 4: ChannelsBuilder (APÓS MARKETING) =====
+        # Gera funil de conversão usando orçamento real
+        if self._has_channels_builder and hasattr(self.config, 'canais_aquisicao'):
+            if self.config.canais_aquisicao:
+                print("🔧 Aplicando ChannelsBuilder...")
+                
+                # Pegar orçamento do marketing se disponível
+                orcamento_series = None
+                if 'Custo_Marketing_Total' in df.columns:
+                    orcamento_series = df['Custo_Marketing_Total']
+                
+                df = self._channels_builder.gerar_series_temporais(
+                    df,
+                    orcamento_mensal=orcamento_series
+                )
+                print(f"   ✅ {len(self.config.canais_aquisicao)} canais processados")
+        
+        # ===== PASSO 5: CapitalBuilder (SEMPRE POR ÚLTIMO) =====
+        # Gera runway e milestones com todos os dados disponíveis
+        if self._has_capital_builder:
+            print("🔧 Aplicando CapitalBuilder...")
+            df = self._capital_builder.gerar_series_temporais(df)
+            print("   ✅ Runway e milestones calculados")
+            
         self.projecao_df = df
         
         return df
@@ -507,6 +587,17 @@ class MotorProjecaoFinanceira:
     def obter_eventos_mes(self, mes: int) -> List[Dict]:
         """Retorna eventos que ocorreram em um mês específico"""
         return [e for e in self.eventos if e['mes'] == mes]
+
+    def verificar_builders_ativos(self) -> dict:
+        """
+        Retorna status dos builders para o dashboard
+        """
+        return {
+            'RevenueBuilder': self._has_revenue_builder and hasattr(self.config, 'receita') and self.config.receita.get('planos'),
+            'ChannelsBuilder': self._has_channels_builder and hasattr(self.config, 'canais_aquisicao'),
+            'CapitalBuilder': self._has_capital_builder,
+            'MarketingBuilder': self._has_marketing_builder,
+        }
 
 
 # Função procedural para retrocompatibilidade

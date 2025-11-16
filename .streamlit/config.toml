@@ -1,0 +1,17 @@
+# .streamlit/config.toml
+
+[theme]
+# Cor principal para botões, sliders, e elementos interativos.
+primaryColor="#3A86FF"
+
+# Cor de fundo principal da aplicação.
+backgroundColor="#0E1117"
+
+# Cor de fundo para a barra lateral e elementos como expanders e caixas de texto.
+secondaryBackgroundColor="#262730"
+
+# Cor do texto principal.
+textColor="#FAFAFA"
+
+# Fonte padrão.
+font="sans serif"

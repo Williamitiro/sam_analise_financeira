@@ -693,7 +693,7 @@ class TeamBuilder:
 # EXEMPLO DE USO - Equipe SAM
 # ============================================================================
 
-def criar_equipe_sam(config):
+def criar_equipe_sam(config) -> 'TeamBuilder':
     """
     Cria planejamento de equipe conforme especificação SAM.
     """
@@ -728,7 +728,7 @@ def criar_equipe_sam(config):
         .com_beneficios(vr=800, plano=800) \
         .com_reajuste_anual(0.10)
     
-    return builder.build()
+    return builder
 
 
 if __name__ == "__main__":

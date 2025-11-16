@@ -195,21 +195,36 @@ class InfraBuilder:
     
     def calcular_custo_para_usuarios(self, usuarios: int) -> tuple:
         """
-        Calcula custo de infra para N usuários.
+        Calcula custo de infra para N usuários, acumulando custos de tiers.
         
         Returns:
             (tier_ativo, custo_mensal)
         """
-        for tier in sorted(self.tiers, key=lambda t: t.numero):
-            if tier.limite_usuarios_min <= usuarios <= tier.limite_usuarios_max:
-                return (tier.numero, tier.calcular_custo(usuarios))
-            elif usuarios > tier.limite_usuarios_max:
-                # Continua no último tier com custo variável
-                if tier == self.tiers[-1]:
-                    return (tier.numero, tier.calcular_custo(usuarios))
+        if not self.tiers:
+            return (0, 0.0)
+            
+        sorted_tiers = sorted(self.tiers, key=lambda t: t.numero)
         
-        # Fallback: tier 1
-        return (1, self.tiers[0].calcular_custo(usuarios) if self.tiers else 0.0)
+        tier_ativo = sorted_tiers[0]
+        for tier in sorted_tiers:
+            if usuarios >= tier.limite_usuarios_min:
+                tier_ativo = tier
+            else:
+                break
+        
+        custo_total = 0.0
+        # Acumula o custo fixo de todos os tiers *anteriores* ao ativo
+        for tier in sorted_tiers:
+            if tier.numero < tier_ativo.numero:
+                custo_total += tier.custo_total_componentes or tier.custo_fixo_total
+        
+        # Adiciona o custo do tier ativo (fixo + variável)
+        custo_total += tier_ativo.custo_total_componentes or tier_ativo.custo_fixo_total
+        if tier_ativo.custo_variavel_por_usuario > 0:
+            excedente = usuarios - tier_ativo.limite_usuarios_min
+            custo_total += max(0, excedente) * tier_ativo.custo_variavel_por_usuario
+            
+        return (tier_ativo.numero, custo_total)
     
     def validar(self) -> List[str]:
         """Valida configuração de tiers"""
