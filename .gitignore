@@ -2,3 +2,16 @@ venv/
 __pycache__/
 *.pyc
 .env
+
+# Frontend
+frontend/node_modules/
+
+# Python
+.pytest_cache/
+
+# Logs
+*.log
+
+# Data outputs
+data/exports/
+notebooks/data/outputs/
