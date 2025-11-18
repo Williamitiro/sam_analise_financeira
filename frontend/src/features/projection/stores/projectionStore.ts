@@ -48,7 +48,7 @@ const initialState = {
     periodEnd: 36,
     granularity: 'monthly' as const,
   },
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 

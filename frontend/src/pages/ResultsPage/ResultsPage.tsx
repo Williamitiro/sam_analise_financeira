@@ -1,54 +1,56 @@
-import { useMockProjection } from '@/features/projection/hooks/useMockProjection';
+import { useFilteredData } from '@/hooks/useFilteredData';
 import { DashboardSkeleton } from '@/components/loading/DashboardSkeleton';
 import { ErrorState } from '@/components/loading/ErrorState';
-import { KPIGrid } from '@/components/metrics/KPIGrid';
-import { FinancialProjectionChart } from '@/components/charts/FinancialProjectionChart';
-import { useMemo } from 'react'; // Import new chart
-import { TornadoChart } from '@/components/charts/TornadoChart';
+import { useState } from 'react';
+import { HeroSection } from './components/HeroSection';
+import { MainMetricsGrid } from './components/MainMetricsGrid';
+import { InteractiveChartSection } from './components/InteractiveChartSection';
+import { EventsTimeline } from './components/EventsTimeline';
+import { InsightsSection } from './components/InsightsSection';
+import { GlossaryModal } from '@/components/glossary/GlossaryModal';
+import { MainControls } from './components/MainControls';
+
+type MetricId = 'mrr' | 'runway' | 'users' | 'ltv_cac' | 'break_even' | 'ltv' | 'cac' | 'arr' | 'ebitda' | 'churn' | 'gross_margin' | 'avg_cac';
 
 export function ResultsPage() {
-  const { isLoading, error, data } = useMockProjection();
+  const { isLoading, error, data, kpis, insights } = useFilteredData();
+  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
+  const [selectedTerm, setSelectedTerm] = useState<MetricId | null>(null);
 
-  const transformedChartData = useMemo(() => {
-    if (!data) return [];
+  const handleOpenGlossary = (term: MetricId) => {
+    setSelectedTerm(term);
+    setIsGlossaryOpen(true);
+  };
 
-    const { mes, MRR, Saldo_Caixa } = data;
-    const chartData = mes.map((m, index) => ({
-      mes: m,
-      mrr: MRR[index],
-      cash: Saldo_Caixa[index],
-    }));
-    return chartData;
-  }, [data]);
+  const handleCloseGlossary = () => {
+    setIsGlossaryOpen(false);
+    setSelectedTerm(null);
+  };
 
   if (isLoading) {
     return <DashboardSkeleton />;
   }
 
-  if (error || !data) {
+  if (error || !data || !kpis || !insights) {
     return (
       <ErrorState
         title="Erro ao Carregar Projeção"
-        description={error || 'Não foi possível encontrar os dados da projeção.'}
+        description={error || "Não foi possível encontrar os dados da projeção."}
       />
     );
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold mb-4 text-slate-800">Métricas Principais</h2>
-        <KPIGrid />
+    <>
+      <MainControls />
+      <div className="space-y-8">
+        <HeroSection kpis={kpis} />
+        <MainMetricsGrid onInfoClick={handleOpenGlossary} kpis={kpis} data={data} />
+        <InteractiveChartSection data={data} kpis={kpis} />
+        <InsightsSection insights={insights} />
+        <EventsTimeline data={data} kpis={kpis} />
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div className="lg:col-span-2">
-          <FinancialProjectionChart title="Projeção Financeira Detalhada" data={transformedChartData} />
-        </div>
-        <div className="lg:col-span-1">
-          <TornadoChart />
-        </div>
-      </div>
-    </div>
+      <GlossaryModal term={selectedTerm} isOpen={isGlossaryOpen} onClose={handleCloseGlossary} kpis={kpis} />
+    </>
   );
 }

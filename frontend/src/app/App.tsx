@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ResultsPage } from '@/pages/ResultsPage/ResultsPage';
 import { ConfigurationPage } from '@/pages/ConfigurationPage/ConfigurationPage';
 import { AppLayout } from '@/components/layout/AppLayout';
+import { RevenuePage } from '@/pages/RevenuePage/RevenuePage';
+import { CostsPage } from '@/pages/CostsPage/CostsPage';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<ResultsPage />} />
+            <Route path="/receita" element={<RevenuePage />} />
+            <Route path="/custos" element={<CostsPage />} />
             <Route path="/configuracao" element={<ConfigurationPage />} />
             {/* Outras rotas de dashboards podem ser aninhadas aqui no futuro */}
           </Route>

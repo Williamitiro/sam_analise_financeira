@@ -22,10 +22,10 @@ export function useMockProjection() {
 
   useEffect(() => {
     // Se já tem dados, não recarrega
-    if (data) return;
-
-    // Simula loading
-    setLoading(true);
+    if (data) {
+        setLoading(false);
+        return;
+    };
 
     // Simula delay de rede (1 segundo)
     const timer = setTimeout(() => {

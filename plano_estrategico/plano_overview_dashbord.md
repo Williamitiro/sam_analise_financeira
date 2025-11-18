@@ -4,8 +4,8 @@
 ❌ NÃO - Tudo em uma única página seria caótico
 ✅ SIM - Estrutura Organizada em Abas/Dashboards
 ┌─────────────────────────────────────────────────────────────┐
-│                    PÁGINA DE RESULTADOS                      │
-│                   (Container Principal)                       │
+│                    PÁGINA DE RESULTADOS                     │
+│                   (Container Principal)                     │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ├─ Sidebar Esquerda (Navegação)
