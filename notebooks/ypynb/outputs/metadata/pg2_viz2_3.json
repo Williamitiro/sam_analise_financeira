@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz2_3",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-07T17:22:37.128305",
+  "title_simple": "Statistical Process Control (SPC): Volatilidade Semanal do CAC",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Nenhum ponto fora dos limites de controle nas primeiras 24 semanas.",
+    "causa": "Execução disciplinada dos testes de canais iniciais.",
+    "implicacao": "Previsibilidade financeira alta (risco de surpresa baixo).",
+    "acao": "Manter monitoramento semanal e tentar reduzir a média."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz2_3.png",
+    "json": "outputs/metadata/pg2_viz2_3.json",
+    "table": "outputs/tables/pg2_viz2_3_tabela.html"
+  },
+  "validation_status": "ok"
+}

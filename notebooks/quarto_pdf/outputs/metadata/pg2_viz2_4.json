@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz2_4",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-07T17:54:27.350381",
+  "title_simple": "Curva de Escala e Elasticidade de Canal",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Curva próxima da linearidade (pouca saturação).",
+    "causa": "Canais atuais ainda têm 'oceanos azuis' de inventário.",
+    "implicacao": "Podemos acelerar investimento mantendo o CAC atual.",
+    "acao": "Aumentar budget agressivamente (Escala liberada)."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz2_4.png",
+    "json": "outputs/metadata/pg2_viz2_4.json",
+    "table": "outputs/tables/pg2_viz2_4_tabela.html"
+  },
+  "validation_status": "ok"
+}

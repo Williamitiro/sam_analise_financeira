@@ -1,0 +1,8 @@
+---
+title: "Teste MRE"
+format: pdf
+---
+
+# Olá Mundo
+
+Este é um teste mínimo.

@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz2_1",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-07T17:22:34.446726",
+  "title_simple": "Funil de Aquisição: Conservador vs Benchmark (Log Scale)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "No M36, a conversão global de 0.67% supera a meta.",
+    "causa": "Otimização contínua do funil e qualificação do tráfego pago.",
+    "implicacao": "Maior eficiência de capital: CAC menor que o planejado.",
+    "acao": "Acelerar investimento em Topo de Funil para escalar."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz2_1.png",
+    "json": "outputs/metadata/pg2_viz2_1.json",
+    "table": "outputs/tables/pg2_viz2_1_tabela.html"
+  },
+  "validation_status": "ok"
+}
