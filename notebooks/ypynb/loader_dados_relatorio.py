@@ -22,7 +22,7 @@ try:
     from celula_5A_bootstrap_real import executar_analise_real
     from celula_5B_cenario_ideal import executar_analise_ideal
     from celula_5D_monte_carlo import executar_monte_carlo
-    from PAGINA_1_COCKPIT import executar_pagina_1
+    from PAGINA_1_COCKPIT_V4 import executar_pagina_1
     from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
 except ImportError as e:
     print(f"❌ ERRO CRÍTICO DE IMPORTAÇÃO: {e}")

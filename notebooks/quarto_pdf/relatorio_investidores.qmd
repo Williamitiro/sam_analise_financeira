@@ -24,7 +24,7 @@ try:
     from celula_2_premissas import PREMISSAS
     from celula_5A_bootstrap_real import executar_analise_real
     from celula_5B_cenario_ideal import executar_analise_ideal
-    from PAGINA_1_COCKPIT import executar_pagina_1
+    from PAGINA_1_COCKPIT_V4 import executar_pagina_1
     from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
 except ImportError as e:
     print(f"Erro: {e}")
@@ -39,14 +39,22 @@ with contextlib.redirect_stdout(io.StringIO()):
     df_ideal_m, _, df_ideal_s, _, met_ideal, _ = executar_analise_ideal(PREMISSAS)
 ```
 
-# Pagina 1
+# PÁGINA 1: EXECUTIVE COCKPIT
+
+**Objetivo:** Validar a viabilidade macro do negócio, confrontando a Simulação Conservadora (Real) contra os Benchmarks de Mercado (Ideal).
+
+Nesta seção, apresentamos o resumo executivo da operação, destacando a tração de receita (MRR), a eficiência de capital (Burn Rate) e os principais marcos atingidos.
 
 ```{python}
 #| label: pagina1
 executar_pagina_1(df_real_m, df_ideal_m, met_real, met_ideal)
 ```
 
-# Pagina 2
+# PÁGINA 2: GROWTH MACHINE
+
+**Objetivo:** Demonstrar a eficiência da máquina de vendas e a escalabilidade do modelo de aquisição.
+
+Analisamos aqui o Funil de Vendas, a relação LTV/CAC e a curva de saturação dos canais de marketing.
 
 ```{python}
 #| label: pagina2

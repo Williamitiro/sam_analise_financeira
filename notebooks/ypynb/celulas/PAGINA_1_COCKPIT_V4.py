@@ -269,65 +269,57 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     caixa = m36.get('caixa', 0)
     runway_real = caixa / despesas_mensais if despesas_mensais > 0 else 999
     
-    # Card 1: MRR (Receita Recorrente Mensal)
+    # Card 1: MRR
     mrr_real = m36['mrr']
     mrr_ideal = met_ideal.get('mrr_final', mrr_real * 2)
     gap_mrr = ((mrr_real - mrr_ideal) / mrr_ideal * 100) if mrr_ideal > 0 else 0
     emoji_mrr, cor_mrr, status_mrr = calcular_status(mrr_real, mrr_ideal * 0.7)
     
     axes[0].set_facecolor('#fafafa')
-    axes[0].text(0.5, 0.88, '💰 MRR', ha='center', va='center', fontsize=14, fontweight='bold', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.72, 'Receita Recorrente Mensal', ha='center', va='center', fontsize=9, color='gray', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.48, formatar_moeda(mrr_real), ha='center', va='center', fontsize=26, fontweight='bold', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.28, f'Meta: {formatar_moeda(mrr_ideal)}', ha='center', va='center', fontsize=11, color='gray', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.12, f'{emoji_mrr} Gap: {gap_mrr:+.0f}%', ha='center', va='center', fontsize=12, 
-                 color=CORES.get(cor_mrr, 'black'), fontweight='bold', transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.82, '💰 MRR', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[0].transAxes)
+    val_str_0 = formatar_moeda(mrr_real)
+    font_val_0 = 28 if len(val_str_0) < 10 else 22
+    axes[0].text(0.5, 0.55, val_str_0, ha='center', va='center', fontsize=font_val_0, fontweight='heavy', transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.32, f'Meta: {formatar_moeda(mrr_ideal)}', ha='center', va='center', fontsize=11, color='gray', transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.18, f'{emoji_mrr} Gap: {gap_mrr:+.0f}%', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_mrr, 'black'), transform=axes[0].transAxes)
     axes[0].axis('off')
     
-    # Card 2: LTV/CAC (Retorno por Real Investido)
+    # Card 2: LTV/CAC
     ltv_cac = m36.get('ltv_cac', 0)
     emoji_ltv, cor_ltv, status_ltv = calcular_status(ltv_cac, 3.0)
     
     axes[1].set_facecolor('#fafafa')
-    axes[1].text(0.5, 0.88, '📈 LTV/CAC', ha='center', va='center', fontsize=14, fontweight='bold', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.72, 'Retorno por R$ em Aquisição', ha='center', va='center', fontsize=9, color='gray', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.48, f'{ltv_cac:.1f}x', ha='center', va='center', fontsize=26, fontweight='bold', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.28, 'Meta: ≥3.0x (saudável)', ha='center', va='center', fontsize=11, color='gray', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.12, f'{emoji_ltv} {status_ltv}', ha='center', va='center', fontsize=12,
-                 color=CORES.get(cor_ltv, 'black'), fontweight='bold', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.82, '📈 LTV/CAC', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.55, f'{ltv_cac:.1f}x', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.32, 'Meta: ≥3.0x', ha='center', va='center', fontsize=11, color='gray', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.18, f'{emoji_ltv} {status_ltv}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_ltv, 'black'), transform=axes[1].transAxes)
     axes[1].axis('off')
     
-    # Card 3: Churn (Taxa de Cancelamento)
+    # Card 3: Churn
     churn = m36.get('churn_rate', 0) * 100
     emoji_churn, cor_churn, status_churn = calcular_status(churn, 5.0, inversao=True)
     
     axes[2].set_facecolor('#fafafa')
-    axes[2].text(0.5, 0.88, '🚪 Churn', ha='center', va='center', fontsize=14, fontweight='bold', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.72, 'Taxa de Cancelamento Mensal', ha='center', va='center', fontsize=9, color='gray', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.48, f'{churn:.1f}%', ha='center', va='center', fontsize=26, fontweight='bold', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.28, 'Meta: <5.0% (bom)', ha='center', va='center', fontsize=11, color='gray', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.12, f'{emoji_churn} {status_churn}', ha='center', va='center', fontsize=12,
-                 color=CORES.get(cor_churn, 'black'), fontweight='bold', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.82, '🚪 Churn', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.55, f'{churn:.1f}%', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.32, 'Meta: <5.0%', ha='center', va='center', fontsize=11, color='gray', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.18, f'{emoji_churn} {status_churn}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_churn, 'black'), transform=axes[2].transAxes)
     axes[2].axis('off')
     
-    # Card 4: Runway (CORRIGIDO - caixa/despesas, não infinito!)
-    # Runway = "Quantos meses sobrevivo SEM FATURAR NADA"
-    axes[3].set_facecolor('#fafafa')
-    axes[3].text(0.5, 0.88, '⏱️ Runway', ha='center', va='center', fontsize=14, fontweight='bold', transform=axes[3].transAxes)
-    axes[3].text(0.5, 0.72, 'Meses sem faturar até quebrar', ha='center', va='center', fontsize=9, color='gray', transform=axes[3].transAxes)
-    
-    # Runway REAL = caixa / despesas (NUNCA infinito, a menos que despesas = 0)
+    # Card 4: Runway
     emoji_run, cor_run, status_run = calcular_status(runway_real, 12.0)
     
-    if runway_real >= 999:
-        axes[3].text(0.5, 0.48, '∞', ha='center', va='center', fontsize=26, fontweight='bold', color=CORES['sucesso'], transform=axes[3].transAxes)
-        axes[3].text(0.5, 0.28, 'Sem despesas!', ha='center', va='center', fontsize=11, color=CORES['sucesso'], transform=axes[3].transAxes)
-    else:
-        axes[3].text(0.5, 0.48, f'{runway_real:.1f}m', ha='center', va='center', fontsize=26, fontweight='bold', transform=axes[3].transAxes)
-        axes[3].text(0.5, 0.28, f'Caixa: {formatar_moeda(caixa)}', ha='center', va='center', fontsize=10, color='gray', transform=axes[3].transAxes)
+    axes[3].set_facecolor('#fafafa')
+    axes[3].text(0.5, 0.82, '⏱️ Runway', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[3].transAxes)
     
-    axes[3].text(0.5, 0.12, f'{emoji_run} {status_run}', ha='center', va='center', fontsize=12,
-                 color=CORES.get(cor_run, 'black'), fontweight='bold', transform=axes[3].transAxes)
+    if runway_real >= 999:
+        axes[3].text(0.5, 0.55, '∞', ha='center', va='center', fontsize=34, fontweight='heavy', color=CORES['sucesso'], transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.32, 'Sem despesas!', ha='center', va='center', fontsize=11, color=CORES['sucesso'], transform=axes[3].transAxes)
+    else:
+        axes[3].text(0.5, 0.55, f'{runway_real:.1f}m', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.32, f'Caixa: {formatar_moeda(caixa)}', ha='center', va='center', fontsize=10, color='gray', transform=axes[3].transAxes)
+    
+    axes[3].text(0.5, 0.18, f'{emoji_run} {status_run}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_run, 'black'), transform=axes[3].transAxes)
     axes[3].axis('off')
     
     # Bordas visíveis
@@ -355,113 +347,100 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
 def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report_mode=False):
     """
     Gráfico com 2 eixos Y: MRR (R$) + Usuários Ativos.
-    CORRIGIDO:
-    - Grid visível para facilitar leitura
-    - Âncoras verticais a cada trimestre (3, 6, 9, 12...)
-    - Tabela de valores por período abaixo do gráfico
-    - Eixo Y direito (roxo) = Usuários Ativos (explicado no título)
-    - Eixo Y esquerdo (preto) = MRR em R$
+    CORRIGIDO: Grid visível, Tabela Referência.
     """
-    # Criar figura (Somente gráfico, sem tabela embutida)
-    # Adjust size for PDF
+    print("DEBUG: Executing gerar_grafico_temporal_correlacao V2.1 (FIX NAMEERROR)")
+    
+    # === DEFINIÇÃO ANTECIPADA DE DADOS_TABELA (PARA EVITAR NAMEERROR) ===
+    # Isso garante que a variável exista mesmo que algo falhe depois
+    dados_tabela = []
+    
+    # Popula dados_tabela
+    mrr_real_arr = df_real['mrr'].values
+    usuarios_arr = df_real['usuarios_ativos'].values
+    periodos_tab = [1, 3, 6, 12, 24, 36]
+    
+    for p in periodos_tab:
+        if p <= len(df_real):
+            idx = p - 1
+            r_mrr = mrr_real_arr[idx]
+            
+            # Ideal
+            if len(df_ideal) > idx:
+                 i_mrr = df_ideal['mrr'].iloc[idx]
+            else:
+                 i_mrr = r_mrr
+            
+            r_users = usuarios_arr[idx]
+            gap_val = i_mrr - r_mrr
+            gap_p = (gap_val / i_mrr * 100) if i_mrr > 0 else 0
+            
+            dados_tabela.append([
+                f"M{p}",
+                formatar_moeda(r_mrr),
+                formatar_moeda(i_mrr),
+                f"{int(r_users)}",
+                f"{gap_p:.1f}%"
+            ])
+            
+    # Criar figura
     figsize = (10, 5) if report_mode else (14, 8)
     fig = plt.figure(figsize=figsize, dpi=150)
     
-    # Subplot 1: Gráfico principal (Ocupa tudo)
-    ax1 = fig.add_axes([0.1, 0.1, 0.85, 0.8])  # [left, bottom, width, height]
+    ax1 = fig.add_axes([0.1, 0.1, 0.85, 0.8])
     
     meses = df_real['mes'].values
-    mrr_real = df_real['mrr'].values
-    mrr_ideal = df_ideal['mrr'].values if len(df_ideal) > 0 else mrr_real * 1.5
-    usuarios = df_real['usuarios_ativos'].values
+    mrr_ideal = df_ideal['mrr'].values if len(df_ideal) > 0 else mrr_real_arr * 1.5
     
-    # Adiciona ruído natural (1.5% de variação para parecer mais real)
+    # Adiciona ruído visual
     np.random.seed(42)
-    mrr_visual = mrr_real + np.random.normal(0, mrr_real * 0.015, len(mrr_real))
-    usuarios_visual = usuarios + np.random.normal(0, usuarios * 0.01, len(usuarios))
+    mrr_visual = mrr_real_arr + np.random.normal(0, mrr_real_arr * 0.015, len(mrr_real_arr))
+    usuarios_visual = usuarios_arr + np.random.normal(0, usuarios_arr * 0.01, len(usuarios_arr))
     usuarios_visual = np.maximum(usuarios_visual, 0)
     
-    # Eixo 1: MRR em R$ (PRETO - eixo esquerdo)
+    # Plot MRR
     ax1.set_xlabel('Mês', fontsize=12, fontweight='bold')
-    ax1.set_ylabel('MRR em R$ (linhas preta e verde)', fontsize=11, color='black')
+    ax1.set_ylabel('MRR em R$', fontsize=11, color='black')
+    line1, = ax1.plot(meses, mrr_visual, color=CORES['real'], linewidth=2.5, label='MRR Real')
+    line2, = ax1.plot(meses, mrr_ideal, color=CORES['ideal'], linewidth=2, linestyle='--', label='MRR Ideal')
+    ax1.fill_between(meses, mrr_visual, mrr_ideal, alpha=0.1, color=CORES['critico'])
     
-    # Linha Real
-    line1, = ax1.plot(meses, mrr_visual, color=CORES['real'], linewidth=2.5, label='MRR Real', marker='o', markersize=3)
-    
-    # Linha Ideal (benchmark)
-    line2, = ax1.plot(meses, mrr_ideal, color=CORES['ideal'], linewidth=2, linestyle='--', label='MRR Ideal (Benchmark)')
-    
-    # Área do gap
-    ax1.fill_between(meses, mrr_visual, mrr_ideal, alpha=0.1, color=CORES['critico'], label='Gap vs Ideal')
-    
-    ax1.tick_params(axis='y', labelcolor='black', labelsize=10)
     ax1.yaxis.set_major_formatter(FuncFormatter(lambda x, p: formatar_moeda(x)))
     
-    # Eixo 2: Usuários (ROXO - eixo direito)
+    # Plot Users
     ax2 = ax1.twinx()
-    ax2.set_ylabel('Usuários Ativos (linha roxa ···)', fontsize=11, color=CORES['usuarios'])
-    line3, = ax2.plot(meses, usuarios_visual, color=CORES['usuarios'], linewidth=2.5, linestyle=':', label='Usuários Ativos')
-    ax2.tick_params(axis='y', labelcolor=CORES['usuarios'], labelsize=10)
-    ax2.set_ylim(0, max(usuarios) * 1.3)
+    ax2.set_ylabel('Usuários Ativos', fontsize=11, color=CORES['usuarios'])
+    line3, = ax2.plot(meses, usuarios_visual, color=CORES['usuarios'], linewidth=2.5, linestyle=':', label='Usuários')
+    ax2.set_ylim(0, max(usuarios_arr) * 1.3)
     
-    # GRID VISÍVEL - linhas horizontais
-    ax1.grid(True, alpha=0.4, linestyle='-', linewidth=0.8, color='#cccccc', axis='y')
-    ax1.grid(True, alpha=0.2, linestyle=':', linewidth=0.5, color='#999999', axis='x')
+    # Grid e Ancoras
+    ax1.grid(True, alpha=0.4, axis='y')
     
-    # ÂNCORAS VERTICAIS - linhas a cada trimestre/semestre
     trimestres = [3, 6, 9, 12, 18, 24, 30, 36]
-    cores_ancora = {'3': '#e0e0e0', '6': '#bbbbbb', '9': '#e0e0e0', 
-                    '12': '#999999', '18': '#bbbbbb', '24': '#999999', 
-                    '30': '#bbbbbb', '36': '#666666'}
-    
     for t in trimestres:
         if t <= len(meses):
-            cor = cores_ancora.get(str(t), '#cccccc')
-            ax1.axvline(x=t, color=cor, linestyle='--', linewidth=1.2, alpha=0.7)
-            # Labels no topo
-            label = f'M{t}'
-            if t == 6: label = 'S1'
-            if t == 12: label = 'ANO 1'
-            if t == 24: label = 'ANO 2'
-            if t == 36: label = 'ANO 3'
-            ax1.text(t, ax1.get_ylim()[1] * 0.98, label, ha='center', fontsize=8, 
-                     fontweight='bold' if t in [12, 24, 36] else 'normal', color='gray')
-    
-    # Título explicativo
-    ax1.set_title('📈 EVOLUÇÃO MRR vs USUÁRIOS (36 Meses)\n'
-                  'Eixo Esquerdo (R$): Linhas Preta e Verde | Eixo Direito: Linha Roxa (Usuários)',
-                  fontsize=13, fontweight='bold', pad=15)
-    
-    # Legenda
-    lines = [line1, line2, line3]
-    labels = ['MRR Real (R$)', 'MRR Ideal/Benchmark (R$)', 'Usuários Ativos (qtd)']
-    ax1.legend(lines, labels, loc='upper left', fontsize=10, framealpha=0.9)
-    
+            ax1.axvline(x=t, color='#cccccc', linestyle='--', alpha=0.7)
+            ax1.text(t, ax1.get_ylim()[1] * 0.98, f'M{t}', ha='center', fontsize=8, color='gray')
+
+    ax1.set_title('📈 EVOLUÇÃO MRR vs USUÁRIOS', fontsize=13, fontweight='bold', pad=15)
+    ax1.legend([line1, line2, line3], ['MRR Real', 'MRR Ideal', 'Usuários'], loc='upper left')
     ax1.set_xlim(1, 36)
     
-    # Configurações finais de Layout (Sem tabela embutida)
-    # Tabela será gerada separadamente
-    
     plt.tight_layout()
-    plt.savefig('outputs/figs/pg1_temporal_correlacao.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.savefig('outputs/figs/pg1_temporal_correlacao.png', bbox_inches='tight')
     
     if report_mode:
         plt.close(fig)
-        
-        # Renderiza Atomic Block Manualmente
         display(Markdown("### 📈 EVOLUÇÃO MRR vs USUÁRIOS"))
         display(Markdown("![Evolução Temporal](outputs/figs/pg1_temporal_correlacao.png)"))
         display(Markdown("***"))
         display(Markdown("#### 📋 TABELA DE REFERÊNCIA"))
         
-        # Gera Tabela Markdown
         cols = ['Período', 'MRR Real', 'MRR Ideal', 'Usuários', 'Gap %']
         df_tab = pd.DataFrame(dados_tabela, columns=cols)
         display(Markdown(df_tab.to_markdown(index=False)))
         display(Markdown("\\newpage"))
-        
     else:
-        # Modo Notebook Interativo (Legacy + Tabela Markdown)
         plt.show()
         cols = ['Período', 'MRR Real', 'MRR Ideal', 'Usuários', 'Gap %']
         df_tab = pd.DataFrame(dados_tabela, columns=cols)
