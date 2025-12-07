@@ -8,8 +8,12 @@ interface InsightsSectionProps {
 }
 
 export const InsightsSection = ({ insights }: InsightsSectionProps) => {
+    if (!insights) {
+        return null;
+    }
+
     const positiveInsights = insights.filter(
-        (i) => i.level === 'SUCCESS' || i.level === 'OPPORTUNITY'
+        (i) => i.category === 'opportunity'
     );
 
     if (positiveInsights.length === 0) {
@@ -17,11 +21,14 @@ export const InsightsSection = ({ insights }: InsightsSectionProps) => {
     }
 
     return (
-        <div className="p-4 rounded-lg">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4">💡 Oportunidades e Pontos Fortes</h2>
+        <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+            <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <span className="text-2xl">💡</span>
+                Oportunidades e Pontos Fortes
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {positiveInsights.map((insight, index) => (
-                    <InsightCard 
+                    <InsightCard
                         key={index}
                         level={insight.level}
                         title={insight.title}
@@ -29,6 +36,6 @@ export const InsightsSection = ({ insights }: InsightsSectionProps) => {
                     />
                 ))}
             </div>
-        </div>
+        </section>
     );
 };

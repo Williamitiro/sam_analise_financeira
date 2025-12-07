@@ -1,0 +1,18 @@
+{
+  "chart_id": "pg3_viz3_2",
+  "timestamp": "2025-12-07T08:33:28.068117",
+  "title_simple": "Análise Vertical de Custos (% da Receita)",
+  "data_source": "Simulação V1",
+  "insight_generated": {
+    "fato": "Custos estabilizados em 91% da receita.",
+    "causa": "Ganhos de eficiência e alavancagem operacional.",
+    "implicacao": "Margem Operacional positiva de 9%.",
+    "acao": "Reinvestir margem em Marketing para acelerar (Growth)."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz3_2.png",
+    "json": "outputs/metadata/pg3_viz3_2.json",
+    "table": "outputs/tables/pg3_viz3_2_tabela.html"
+  },
+  "validation_status": "ok"
+}

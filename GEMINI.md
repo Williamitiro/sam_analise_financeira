@@ -1,35 +1,35 @@
 ---
 
+---
+
 ## Gemini Added Memories (Updated)
 
-### Project Status: End of Sprint 5 (Layout & Simulation Refactor)
+### Project Status: Notebook Refactoring & "Gold Standard" PDF (Current)
 
-This document summarizes the current state of the project after the completion of all major functional sprints and a significant UI/UX refactoring of the main dashboard.
+This document summarizes the pivot towards a "Gold Standard" Investor Deck, generated programmatically via Jupyter Notebooks with high-fidelity PDF export output (Quarto).
 
-### Completed Sprints & Major Features:
+### Major Achievements (Page 2 - Growth Machine):
 
-1.  **Dashboard Implementation (Sprints 2, 3, 4):**
-    *   **Visão Geral (Overview):** All core components are implemented (`HeroSection`, `MainMetricsGrid`, `InteractiveChartSection`, etc.).
-    *   **Receita (Revenue):** The revenue-focused dashboard is complete, with `WaterfallChart`, `FunnelChart`, `StackedAreaChart`, and `CohortHeatmap`.
-    *   **Custos (Costs):** The costs-focused dashboard is complete, with `SankeyChart`, `PieChartWithDrilldown`, and cost breakdown tables.
+1.  **Architecture "Atomic Analysis Cell" (V20.0):**
+    *   Transitioned from monolithic code to modular "Atomic Blocks" (`render_atomic_block`).
+    *   Each visualization now encapsulates: Header, Chart (Matplotlib), Legend (Markdown), Proof Table (HTML/MD), Insight (Strategic Text), and Audit Trail (Formulas).
 
-2.  **Global Filtering System (Sprint 5, Part 1):**
-    *   A global state for filters (`useFiltersStore`) was implemented using Zustand.
-    *   A centralized data hook (`useFilteredData`) was created to apply filters (currently period/range) to the raw projection data.
-    *   All dashboard pages were refactored to use this hook, making them all reactive to global filter changes.
+2.  **Hybrid "Report Mode" Engine:**
+    *   **Concept:** A single codebase (`modelo2_v7.py`) supports two distinct outputs:
+        *   **Notebook Mode (`report_mode=False`):** Interactive, rich HTML tables, colorful badges.
+        *   **PDF Mode (`report_mode=True`):** Clean Markdown tables, Quarto Callouts for text blocks, silent execution (no logs), and print-optimized figure sizes.
 
-3.  **Final UI/UX Refactoring (Sprint 5, Part 2):**
-    *   Following several iterations, the control area of the "Visão Geral" page has been completely redesigned for a more interactive and minimalist experience.
-    *   **Old control bars were removed.**
-    *   The main header (`DashboardHeader`) now includes "Configuração Rápida" presets and a primary "Projetar" button.
-    *   A new control section below the header features placeholder "Insight" buttons and a trigger for the **"Simulador Rápido"**.
-    *   A new **`QuickSimulatorModal`** has been built, providing a sophisticated interface for real-time scenario simulation with sliders for key business levers (MRR Growth, Churn, etc.). The UI for this modal is complete, but the internal simulation logic is currently placeholder.
+3.  **Auditability Layer:**
+    *   Implemented a dedicated "Audit & Formulas" section in every visual block.
+    *   Added metadata export (`exportar_relatorio_total_json`) for external validation.
 
-### Next Steps
+### Current Challenges (PDF Layout):
 
-The application is now in a state of functional completeness with a newly defined, simulation-focused UI. The next logical steps would be:
+*   **Overflow:** Graphs and tables tend to exceed A4 margins. Fixes applied:
+    *   Reduced figure size to 6.0" x 3.2".
+    *   Compacted table headers in Report Mode.
+*   **Page Breaks:** LaTeX `minipage` caused compilation errors. Current strategy relies on `\newpage` before each block.
+*   **Next Steps:** Validate visual output of PDF and refactor Page 1 (Executive Summary) using the same V7.0 pattern.
 
-1.  **Implement the "Simulador Rápido" Logic:** Wire up the sliders in the modal to perform real-time calculations and update the main projection data.
-2.  **Implement Granularity:** Make the "Visão" dropdown functional by adding the data aggregation logic (Quarterly, Yearly) to the `useFilteredData` hook.
-3.  **Final Polish:** Proceed with the remaining polish tasks, such as animations, toasts, and accessibility improvements.
 ---
+

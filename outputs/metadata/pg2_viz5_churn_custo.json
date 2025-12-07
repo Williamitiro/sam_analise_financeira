@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz5_churn_custo",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-06T21:23:06.198477",
+  "title_simple": "Custo Financeiro do Churn",
+  "data_source": "df_real_m",
+  "insight_generated": {
+    "fato": "O churn acima do benchmark custou R$ 0 no último ano.",
+    "causa": "Taxa de churn média de 6.0% vs meta de 5.0%.",
+    "implicacao": "Dinheiro deixado na mesa; reduz valuation e eficiência (LTV).",
+    "acao": "Implementar squad de retenção para recuperar R$ 0/ano."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz5_churn_custo.png",
+    "json": "outputs/metadata/pg2_viz5_churn_custo.json",
+    "table": "outputs/tables/pg2_viz5_churn_custo_tabela.html"
+  },
+  "validation_status": "ok"
+}

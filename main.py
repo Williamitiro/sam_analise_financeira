@@ -105,7 +105,7 @@ class ProjecaoRequest(BaseModel):
     ativar_infra_tier3: bool = True
 
     # 1. CAPITAL E FINANCIAMENTO
-    capital_inicial_caixa: float = -8000.00
+    capital_inicial_caixa: float = 10000.00  # Capital inicial (Bootstrapping/Pré-Seed)
     aporte_mensal_fixo: float = 1800.00
     meses_aporte_fixo: int = 12
     

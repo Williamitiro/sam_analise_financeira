@@ -1,0 +1,132 @@
+---
+title: "Relatório Financeiro: Análise Completa (V7.0)"
+subtitle: "Resumo Executivo • Growth Machine • Financeiro Detalhado"
+author: "SAM - Sistema de Análise de Modelo"
+date: last-modified
+geometry: "top=20mm, left=20mm, right=20mm, bottom=20mm"
+format:
+  pdf:
+    documentclass: scrartcl
+    papersize: letter
+    toc: true
+    number-sections: true
+    colorlinks: true
+    fig-pos: 'H'
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+#| output: false
+
+# 1. IMPORTAR MÓDULOS E DADOS DE TESTE
+import pandas as pd
+import numpy as np
+import sys
+import os
+
+# Adicionar raiz ao path para importar módulos
+sys.path.append(os.getcwd())
+
+from notebooks import modelo1_v7, modelo2_v7, modelo3_v7
+from notebooks.celulas import motor_granularidade
+
+# 2. GERAR DADOS MOCK (SIMULAÇÃO)
+# Estamos criando dados falsos aqui apenas para testar o LAYOUT do PDF
+meses = np.arange(1, 37)
+receita = np.linspace(10000, 150000, 36)
+custos = receita * 0.7
+caixa = 50000 + np.cumsum(receita - custos)
+
+df_mock = pd.DataFrame({
+    'mes': meses,
+    'caixa': caixa,
+    'burn_rate': np.zeros(36),
+    'receita_liquida': receita,
+    'ebitda': receita - custos,
+    'ebitda_margin': (receita - custos)/receita * 100,
+    'margem_bruta_pct': np.full(36, 80),
+    'margem_liquida': np.full(36, 15),
+    'receita_lite': receita * 0.3, 
+    'receita_trader': receita * 0.5, 
+    'receita_pro': receita * 0.2,
+    'total_opex': custos,
+    'total_cogs': custos * 0.3,
+    'gasto_marketing': custos * 0.4,
+    'custo_pessoal': custos * 0.2,
+    'impostos': receita * 0.06,
+    'headcount_total': np.linspace(5, 20, 36),
+    'arr': receita * 12,
+    'trafego_total': np.linspace(1000, 50000, 36),
+    'trials_total': np.linspace(100, 5000, 36),
+    'novos_pagantes_total': np.linspace(10, 500, 36),
+    'usuarios_ativos': np.cumsum(np.linspace(10, 500, 36)),
+    'ltv_cac': np.full(36, 4.5),
+    'cac_blended': np.full(36, 200), # Adicionado para corrigir erro na Viz 2.4
+    'churn_rate': np.full(36, 0.05),
+    'churn_mrr': receita * 0.05,
+    'mrr': receita
+})
+
+# Dados Semanais Mock
+semanas = np.arange(1, 25)
+df_semanal = pd.DataFrame({
+    'semana': semanas,
+    'cac_blended': np.random.normal(200, 50, 24)
+})
+
+# Premissas Mock
+premissas = {}
+```
+
+\newpage
+
+# Parte 1: Resumo Executivo
+
+```{python}
+#| echo: false
+#| output: asis
+
+# EXECUÇÃO DA PÁGINA 1 (Modo Relatório)
+modelo1_v7.executar_pagina_1_resumo_executivo(
+    df_real_m=df_mock,
+    df_ideal=df_mock, # Mock igual para teste
+    premissas=premissas,
+    report_mode=True
+)
+```
+
+\newpage
+
+# Parte 2: Growth Machine
+
+```{python}
+#| echo: false
+#| output: asis
+
+# EXECUÇÃO DA PÁGINA 2 (Modo Relatório)
+modelo2_v7.executar_pagina_2_growth_machine(
+    df_real_m=df_mock,
+    df_real_s=df_semanal,
+    df_ideal=df_mock,
+    df_ideal_s=df_semanal,
+    premissas=premissas,
+    report_mode=True
+)
+```
+
+\newpage
+
+# Parte 3: Financeiro Detalhado
+
+```{python}
+#| echo: false
+#| output: asis
+
+# EXECUÇÃO DA PÁGINA 3 (Modo Relatório)
+modelo3_v7.executar_pagina_3_financeiro(
+    df_real_m=df_mock,
+    premissas=premissas,
+    report_mode=True
+)
+```

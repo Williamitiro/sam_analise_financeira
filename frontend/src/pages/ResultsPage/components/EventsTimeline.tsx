@@ -22,20 +22,20 @@ export const EventsTimeline = ({ data, kpis }: EventsTimelineProps) => {
         const allEvents: TimelineEvent[] = [];
 
         // Critical Events from KPIs
-        if (kpis.Vale_da_Morte_Month) {
+        if (kpis?.Vale_da_Morte_Month) {
             allEvents.push({
                 month: kpis.Vale_da_Morte_Month,
                 description: 'Vale da Morte',
-                value: formatCurrency(kpis.Vale_da_Morte_Valor),
+                value: formatCurrency(kpis.Vale_da_Morte_Valor ?? 0),
                 type: 'critical',
                 icon: <Skull className="w-5 h-5 text-red-500" />
             });
         }
-        if (kpis.Breakeven_Month) {
+        if (kpis?.Breakeven_Month) {
             allEvents.push({
                 month: kpis.Breakeven_Month,
                 description: 'Break-Even Point',
-                value: `MRR: ${formatCurrency(kpis.Breakeven_MRR)}`,
+                value: `MRR: ${formatCurrency(kpis.Breakeven_MRR ?? 0)}`,
                 type: 'milestone',
                 icon: <PartyPopper className="w-5 h-5 text-green-500" />
             });
@@ -48,7 +48,7 @@ export const EventsTimeline = ({ data, kpis }: EventsTimelineProps) => {
             type: 'info',
             icon: <MapPin className="w-5 h-5 text-blue-500" />
         });
-        
+
         // Placeholder for hiring events - this needs real data logic
         allEvents.push({ month: 6, description: 'Contratação: Designer PJ', value: 'R$3k', type: 'hiring', icon: <UserPlus className="w-5 h-5 text-slate-500" /> });
         allEvents.push({ month: 13, description: 'Contratação: Dev Backend', value: 'R$13.4k', type: 'hiring', icon: <UserPlus className="w-5 h-5 text-slate-500" /> });
@@ -70,8 +70,11 @@ export const EventsTimeline = ({ data, kpis }: EventsTimelineProps) => {
     }
 
     return (
-        <div className="p-4 rounded-lg">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4">🎯 Timeline de Eventos Críticos</h2>
+        <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+            <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <span className="text-2xl">🎯</span>
+                Timeline de Eventos Críticos
+            </h2>
             <div className="relative pl-6">
                 {/* Vertical line */}
                 <div className="absolute left-9 top-0 bottom-0 w-0.5 bg-slate-200" />
@@ -96,6 +99,6 @@ export const EventsTimeline = ({ data, kpis }: EventsTimelineProps) => {
                     ))}
                 </div>
             </div>
-        </div>
+        </section>
     );
 };

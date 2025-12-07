@@ -1,0 +1,18 @@
+{
+  "chart_id": "pg4_viz4_1",
+  "timestamp": "2025-12-07T08:32:04.426291",
+  "title_simple": "Fan Chart: Projeção Estocástica de Caixa (Monte Carlo)",
+  "data_source": "Simulação V1",
+  "insight_generated": {
+    "fato": "Risco de quebra controlado (0.0%).",
+    "causa": "Estrutura de custos flexível e margem de segurança adequada.",
+    "implicacao": "Modelo resiliente. Podemos assumir mais riscos em Growth.",
+    "acao": "Monitorar gatilhos de escala."
+  },
+  "files": {
+    "png": "outputs/figs/pg4_viz4_1.png",
+    "json": "outputs/metadata/pg4_viz4_1.json",
+    "table": "outputs/tables/pg4_viz4_1_tabela.html"
+  },
+  "validation_status": "ok"
+}

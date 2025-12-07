@@ -1,0 +1,18 @@
+{
+  "chart_id": "pg1_viz1_1",
+  "timestamp": "2025-12-07T08:33:10.859936",
+  "title_simple": "Projeção de Fluxo de Caixa Acumulado (Runway)",
+  "data_source": "Simulação V1",
+  "insight_generated": {
+    "fato": "O caixa mínimo projetado é R$ 53.000,00 no mês 1.",
+    "causa": "Receita cresce mais rápido que despesas (Breakeven atingido sem novos aportes).",
+    "implicacao": "Não há necessidade de rodada de investimento de emergência.",
+    "acao": "Reinvestir excedente de caixa em Growth (Canal Pago)."
+  },
+  "files": {
+    "png": "outputs/figs/pg1_viz1_1.png",
+    "json": "outputs/metadata/pg1_viz1_1.json",
+    "table": "outputs/tables/pg1_viz1_1_tabela.html"
+  },
+  "validation_status": "ok"
+}

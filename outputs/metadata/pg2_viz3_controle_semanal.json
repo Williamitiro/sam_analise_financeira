@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz3_controle_semanal",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-06T21:23:03.622872",
+  "title_simple": "Controle Tático Semanal (CAC)",
+  "data_source": "df_real_s",
+  "insight_generated": {
+    "fato": "Identificados 2 semanas com volatilidade anormal (acima de R$ 301).",
+    "causa": "Provável teste de canal novo ou sazonalidade agressiva.",
+    "implicacao": "Impacto no fluxo de caixa de curto prazo.",
+    "acao": "Investigar semanas críticas e criar travas de orçamento."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz3_controle_semanal.png",
+    "json": "outputs/metadata/pg2_viz3_controle_semanal.json",
+    "table": "outputs/tables/pg2_viz3_controle_semanal_tabela.html"
+  },
+  "validation_status": "ok"
+}

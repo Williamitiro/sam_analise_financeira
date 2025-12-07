@@ -1,0 +1,245 @@
+{
+  "notebook_metadata": {
+    "nome": "real_vs_ideal.ipynb",
+    "versao": "5.0",
+    "data_analise": "2025-12-05",
+    "status_notebook": "Em desenvolvimento - células foram apagadas/reorganizadas",
+    "objetivo": "Análise financeira de simulação de cenários (Real vs Ideal) com Monte Carlo",
+    "tempo_execucao_estimado": "Depende de quais células executadas",
+    "dependencias_principais": [
+      "pandas",
+      "numpy",
+      "plotly",
+      "scipy",
+      "matplotlib"
+    ],
+    "nota_importante": "Este arquivo foi atualizado em 2025-12-05. Algumas células foram deletadas. Use GERAR_METADADOS.py para extrair estrutura atual do notebook."
+  },
+  "estrutura_esperada_celulas": [
+    {
+      "numero": 1,
+      "nome": "Setup & Imports",
+      "tipo": "Infraestrutura",
+      "status": "✅ Deve existir",
+      "funcionalidades": [
+        "Importa pandas, numpy, plotly, scipy",
+        "Define funções helper (formatar_moeda, formatar_pct)",
+        "Configura Pandas para exibição"
+      ],
+      "saidas": ["Funções utilitárias"],
+      "variaveis_criadas": []
+    },
+    {
+      "numero": 2,
+      "nome": "Premissas V9.0 - Painel de Controle Master",
+      "tipo": "Configuração",
+      "status": "✅ Deve existir",
+      "funcionalidades": [
+        "Define PREMISSAS dict com 150+ chaves",
+        "Sazonalidade (12 meses)",
+        "Funil de vendas",
+        "Custos variáveis e fixos",
+        "Configuração Monte Carlo"
+      ],
+      "saidas": ["PREMISSAS (dict global)"],
+      "variaveis_criadas": ["PREMISSAS"]
+    },
+    {
+      "numero": 3,
+      "nome": "Diagnóstico de Viabilidade V4.0",
+      "tipo": "Validação",
+      "status": "⚠️ Pode ter sido apagada",
+      "funcionalidades": [
+        "Valida coerência matemática das premissas",
+        "Calcula CAC, LTV, Payback",
+        "Relatório de diagnóstico"
+      ],
+      "saidas": ["Relatório diagnóstico"],
+      "variaveis_criadas": ["diagnosticar_viabilidade_refatorado()"]
+    },
+    {
+      "numero": 4,
+      "nome": "Motor Financeiro V13",
+      "tipo": "Core Engine",
+      "status": "✅ Deve existir",
+      "funcionalidades": [
+        "Simulação financeira mensal (36 meses)",
+        "Bloco 0: Validação",
+        "Bloco 1: Inicialização de vetores (100+ métricas)",
+        "Bloco 2: Estado inicial (mix Hamilton)",
+        "Bloco 3: Loop mensal",
+        "Bloco 4: Output e KPIs",
+        "Bloco 5: Alertas"
+      ],
+      "saidas": ["Função executar_motor_fintech_v10_production_ready()"],
+      "variaveis_criadas": ["executar_motor_fintech_v10_production_ready"]
+    },
+    {
+      "numero": 5,
+      "nome": "Execução Cenário Real",
+      "tipo": "Simulação",
+      "status": "⚠️ Pode ter sido apagada ou modificada",
+      "funcionalidades": [
+        "Executa motor com premissas reais",
+        "Extrai snapshots M6, M12, M36",
+        "Gera tabelas comparativas"
+      ],
+      "saidas_esperadas": [
+        "df_real_m (DataFrame mensal, 36 linhas, 100+ colunas)",
+        "df_real_a (DataFrame anual, 3 linhas)",
+        "met_real (Dict com KPIs)",
+        "alertas_real (Lista)"
+      ],
+      "colunas_esperadas": [
+        "mes", "trafego_total", "novos_pagantes_total", "usuarios_ativos",
+        "mrr", "arr", "arpu", "receita_bruta", "receita_liquida",
+        "cogs_total", "margem_bruta", "margem_bruta_pct",
+        "opex_total", "ebitda", "lucro_liquido",
+        "caixa", "burn_rate", "runway_meses",
+        "cac_blended", "ltv", "ltv_cac", "churn_rate"
+      ]
+    },
+    {
+      "numero": 6,
+      "nome": "Cenário Ideal",
+      "tipo": "Simulação",
+      "status": "⚠️ Pode ter sido apagada ou modificada",
+      "funcionalidades": [
+        "Executa motor com parâmetros ideais",
+        "Compara Real vs Ideal",
+        "Análise de gaps"
+      ],
+      "saidas_esperadas": [
+        "df_ideal (DataFrame mensal)",
+        "df_ideal_anual (DataFrame anual)",
+        "met_ideal (Dict com KPIs)",
+        "alertas_ideal (Lista)"
+      ],
+      "colunas_esperadas": "[MESMO QUE CENÁRIO REAL]"
+    },
+    {
+      "numero": 7,
+      "nome": "Monte Carlo Enterprise V4.1",
+      "tipo": "Análise Probabilística",
+      "status": "⚠️ Pode ter sido apagada ou modificada",
+      "funcionalidades": [
+        "Executa 500 simulações × 3 cenários",
+        "Injeta correlações e choques",
+        "Calcula P10/P50/P90",
+        "Gera tabelas de sensibilidade"
+      ],
+      "saidas_esperadas": [
+        "mc_results (DataFrame 1500 linhas, 20+ colunas)",
+        "mc_errors (DataFrame com erros)",
+        "mc_data (Dict com resumo)"
+      ],
+      "colunas_esperadas": [
+        "simulacao_id", "cenario", "seed",
+        "mrr_final_p10", "mrr_final_p50", "mrr_final_p90",
+        "usuarios_final_p10", "usuarios_final_p50", "usuarios_final_p90",
+        "caixa_final_p10", "caixa_final_p50", "caixa_final_p90",
+        "runway_p10", "runway_p50", "runway_p90",
+        "ltv_cac_p10", "ltv_cac_p50", "ltv_cac_p90",
+        "prob_quebra_pct", "roi_total_pct"
+      ]
+    },
+    {
+      "numero": 8,
+      "nome": "Análise Comparativa Real vs Ideal",
+      "tipo": "Análise",
+      "status": "⚠️ Pode ter sido apagada",
+      "funcionalidades": [
+        "Compara Real vs Ideal",
+        "Identifica gaps",
+        "Ranking de ações"
+      ],
+      "saidas_esperadas": [
+        "df_gaps (DataFrame comparativo)",
+        "rank_acoes (DataFrame ranking)"
+      ]
+    },
+    {
+      "numero": 9,
+      "nome": "Auditoria Forense",
+      "tipo": "Validação",
+      "status": "⚠️ Pode ter sido apagada",
+      "funcionalidades": [
+        "Auditoria de coerência matemática",
+        "Validação de contabilidade",
+        "Relatório forense"
+      ],
+      "saidas_esperadas": [
+        "df_audit (DataFrame com auditoria)",
+        "Relatório em texto"
+      ]
+    },
+    {
+      "numero": 10,
+      "nome": "NOVO: Extrator de Metadados",
+      "tipo": "Utilitário",
+      "status": "✅ Acabou de ser criada",
+      "funcionalidades": [
+        "Extrai todas as colunas e valores das variáveis",
+        "Gera METADADOS_NOTEBOOK_COMPLETO.json",
+        "Gera COLUNAS_DETALHADAS.json"
+      ],
+      "saidas_esperadas": [
+        "METADADOS_NOTEBOOK_COMPLETO.json (valores reais + estatísticas)",
+        "COLUNAS_DETALHADAS.json (apenas colunas por célula)"
+      ]
+    }
+  ],
+  "como_usar_gerar_metadados": {
+    "passo1": "Execute todas as células que geram dados (Células 1-9 existentes)",
+    "passo2": "Copie o arquivo GERAR_METADADOS.py",
+    "passo3": "Cole o código como uma NOVA célula no fim do notebook",
+    "passo4": "Execute a célula",
+    "passo5": "Dois arquivos JSON serão gerados no diretório do notebook",
+    "passo6": "Use esses JSONs para análise/documentação"
+  },
+  "arquivos_json_gerados": {
+    "METADADOS_NOTEBOOK_COMPLETO.json": {
+      "descricao": "Arquivo completo com todas as informações",
+      "conteudo": [
+        "data_extracao (ISO timestamp)",
+        "variaveis_encontradas (dict com status de cada variável)",
+        "dataframes_detalhados (estrutura, colunas, valores, stats)",
+        "dicionarios_detalhados (chaves, exemplos)",
+        "resumo_executivo (MRR, usuários, caixa, churn, etc M1 e M36)"
+      ],
+      "tamanho_estimado": "50-100 KB"
+    },
+    "COLUNAS_DETALHADAS.json": {
+      "descricao": "Arquivo simplificado com apenas colunas por célula",
+      "conteudo": [
+        "celulas (dict com celula_numero, celula_nome, variavel_saida, colunas)"
+      ],
+      "tamanho_estimado": "10-20 KB"
+    }
+  },
+  "checklist_atualizacao": {
+    "passo1_executar_notebook": {
+      "status": "⏳ Pendente",
+      "descricao": "Execute as células 1-9 do notebook"
+    },
+    "passo2_coletar_metadados": {
+      "status": "⏳ Pendente",
+      "descricao": "Use GERAR_METADADOS.py para extrair estrutura atual"
+    },
+    "passo3_atualizar_analise": {
+      "status": "⏳ Pendente",
+      "descricao": "Use os JSONs gerados para atualizar ANALISE_NOTEBOOK_ESTRUTURA.json"
+    },
+    "passo4_sincronizar_builders": {
+      "status": "⏳ Pendente",
+      "descricao": "Comparar colunas com estrutura dos builders (core/builders/)"
+    }
+  },
+  "notas_importantes": [
+    "As células foram apagadas/reorganizadas - use GERAR_METADADOS.py para descobrir a estrutura atual",
+    "O arquivo GERAR_METADADOS.py contém um script Python completo e documentado",
+    "Execute o script DEPOIS que o notebook tiver gerado todas as variáveis",
+    "Os JSONs gerados podem ser importados em Python para análise programática",
+    "Use os JSONs para sincronizar com os builders (core/builders/)"
+  ]
+}

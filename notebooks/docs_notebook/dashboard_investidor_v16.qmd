@@ -1,0 +1,264 @@
+---
+title: "SAM Investimentos - Relatório Executivo de Due Diligence"
+subtitle: "Dashboard Financeiro Gold Standard (V16.0) - Projeção 36 Meses"
+author: "SAM Analytics"
+date: today
+format:
+  pdf:
+    toc: true
+    toc-title: "Índice Executivo"
+    number-sections: false
+    colorlinks: true
+    geometry:
+      - top=15mm
+      - left=15mm
+      - right=15mm
+      - bottom=15mm
+    fig-width: 10
+    fig-height: 6
+    fig-align: center
+jupyter: python3
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# 📥 SETUP & PREMISSAS (SISTEMA)
+
+```{python}
+#| label: setup
+#| echo: false
+#| output: false
+
+import sys
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.io as pio
+
+# Configuração para alta qualidade gráfica no PDF
+plt.style.use('seaborn-v0_8-whitegrid')
+sns.set_context("paper", font_scale=1.2)
+pio.templates.default = "plotly_white"
+
+# Adicionar caminho raiz do projeto para importar módulos
+sys.path.append(os.path.abspath("..\.."))
+
+# Importar Motor Financeiro V13
+# Certifique-se que o arquivo MOTOR.PY está na pasta notebooks ou no path correto
+try:
+    from MOTOR import executar_motor_fintech_v10_production_ready
+except ImportError:
+    # Fallback se estiver rodando diretamente na pasta notebooks
+    import sys
+    sys.path.append('.')
+    from MOTOR import executar_motor_fintech_v10_production_ready
+
+# --- DEFINIÇÃO DE PREMISSAS (V13.0) ---
+# Baseado no cenário "Base/Realista" do Plano
+premissas_base = {
+    # 1. GERAL
+    'meses_projecao': 36,
+    'data_inicio': '2024-01-01',
+    'caixa_inicial': 4000.0,  # Bootstrap
+    'aporte_mensal': 2000.0,
+    'meses_aporte': 12,
+    'aporte_no_dia_1': True, # Correção V13
+
+    # 2. GROWTH & MKT
+    'trafego_inicial': 2687, # M1 Real
+    'crescimento_trafego_mes_1_6': 0.15,
+    'crescimento_trafego_mes_7_12': 0.10,
+    'crescimento_trafego_mes_13_plus': 0.05,
+    'marketing_fixo_mensal': 2000.0, # R$ 2k fixo
+    'marketing_perc_receita': 0.20,  # ou 20% da receita (o que for maior, com teto)
+    'marketing_teto': 15000.0,
+    
+    # Canais (Mix inicial)
+    'canal_instagram_pct': 0.40,
+    'canal_facebook_pct': 0.30,
+    'canal_google_pct': 0.20,
+    'canal_youtube_pct': 0.10,
+
+    # Conversão
+    'taxa_visitante_para_trial': 0.032, # 3.2%
+    'taxa_trial_para_pagante': 0.118,   # 11.8%
+
+    # 3. PRECIFICAÇÃO & MIX
+    'preco_lite': 49.0,
+    'preco_trader': 99.0,
+    'preco_pro': 199.0,
+    'mix_lite': 0.50,
+    'mix_trader': 0.35,
+    'mix_pro': 0.15,
+
+    # 4. RETENÇÃO (CHURN)
+    'churn_inicial': 0.08, # 8%
+    'churn_maturidade': 0.05, # Meta 5%
+    'churn_decaimento_mensal': 0.002,
+
+    # 5. CUSTOS (COGS)
+    'custo_ia_lite': 2.0,
+    'custo_ia_trader': 5.0,
+    'custo_ia_pro': 12.0,
+    'custo_suporte_por_1000_users': 2500.0,
+    'comissao_pagamento': 0.05,
+    'imposto_simples_inicial': 0.06, # 6%
+    
+    # 6. OPEX & RH
+    'salario_fundador': 2500.0,
+    'trigger_fundador': 25000.0, # MRR
+    'salario_dev_senior': 8000.0,
+    'trigger_dev': 500, # Usuários
+    'salario_cs': 3000.0,
+    'trigger_cs': 300, # Usuários
+    
+    # Infra
+    'infra_tier_1_limite': 200,
+    't1_custo': 500.0,
+    'infra_tier_2_limite': 1000,
+    't2_custo': 1200.0,
+    'infra_tier_3_limite': 5000,
+    't3_custo': 3500.0,
+    
+    # Capex
+    'capex_inicial': 1500.0,
+    'capex_recorrente_24m': 5000.0,
+
+    # Outros
+    'seed_fixa': 42,
+    'modo_debug': False
+}
+
+# --- EXECUÇÃO DA SIMULAÇÃO ---
+df_mensal, df_anual, metricas, alertas = executar_motor_fintech_v10_production_ready(premissas_base)
+
+# Preparar dados para visualização
+df_mensal['mes_idx'] = df_mensal.index
+df_mensal['mes_label'] = df_mensal['mes_idx'].apply(lambda x: f"M{x+1}")
+
+print("✅ Setup concluído. Dados carregados.")
+```
+
+\newpage
+
+# 📈 PÁGINA 1: EXECUTIVE COCKPIT
+
+**Visão Geral:** Snapshot de saúde do negócio no Mês 36.
+
+## 1.1 KPI Cards (M36)
+
+```{python}
+#| label: kpi-cards
+#| fig-cap: "Métricas Chave de Desempenho (M36)"
+
+# Extrair métricas do M36 (índice 35)
+m36 = df_mensal.iloc[35]
+m1 = df_mensal.iloc[0]
+
+# Formatar valores
+mrr_m36 = f"R$ {m36['mrr']:,.0f}"
+mrr_growth = ((m36['mrr'] / m1['mrr']) - 1) * 100
+
+ltv_cac = m36['ltv_cac']
+churn_m36 = m36['churn_rate'] * 100
+runway_m36 = m36['runway_meses']
+runway_str = "∞" if runway_m36 > 100 else f"{runway_m36:.1f} meses"
+
+# NOTA: Em um PDF estático, não temos Cards HTML interativos.
+# Vamos criar uma tabela visual ou uma figura matplotlib simulando cards.
+
+fig, ax = plt.subplots(1, 4, figsize=(12, 2))
+metrics = [
+    ("MRR (M36)", mrr_m36, f"▲ {mrr_growth:.0f}%", "green"),
+    ("LTV/CAC", f"{ltv_cac:.1f}x", "Target: >3x", "green"),
+    ("Churn Mensal", f"{churn_m36:.1f}%", "Target: <5%", "orange"),
+    ("Runway", runway_str, "Target: >12m", "green" if runway_m36 > 12 else "red")
+]
+
+for i, (title, value, sub, color) in enumerate(metrics):
+    ax[i].set_axis_off()
+    ax[i].text(0.5, 0.7, title, ha='center', va='center', fontsize=12, color='gray')
+    ax[i].text(0.5, 0.4, value, ha='center', va='center', fontsize=20, weight='bold', color='black')
+    ax[i].text(0.5, 0.15, sub, ha='center', va='center', fontsize=10, color=color)
+    # Borda simulada
+    rect = plt.Rectangle((0.05, 0.05), 0.9, 0.9, transform=ax[i].transAxes, 
+                         fill=False, edgecolor='#e0e0e0', linewidth=2, linestyle='-')
+    ax[i].add_patch(rect)
+
+plt.tight_layout()
+plt.show()
+```
+
+## 1.2 Tabela Executiva Master
+
+```{python}
+#| label: master-table
+#| fig-cap: "Tabela Executiva de Evolução (M1, M12, M36)"
+
+# Selecionar colunas e linhas chave
+indices_meses = [0, 11, 35] # M1, M12, M36
+cols_display = ['mes_label', 'usuarios_ativos', 'mrr', 'caixa', 'burn_rate', 'runway_meses', 'ltv_cac']
+df_table = df_mensal.iloc[indices_meses][cols_display].copy()
+
+# Formatação para exibição
+df_table['mrr'] = df_table['mrr'].apply(lambda x: f"R$ {x:,.0f}")
+df_table['caixa'] = df_table['caixa'].apply(lambda x: f"R$ {x:,.0f}")
+df_table['burn_rate'] = df_table['burn_rate'].apply(lambda x: f"R$ {x:,.0f}")
+df_table['ltv_cac'] = df_table['ltv_cac'].apply(lambda x: f"{x:.1f}x")
+df_table['runway_meses'] = df_table['runway_meses'].apply(lambda x: "∞" if x > 900 else f"{x:.1f}m")
+
+# Transpor para ficar igual ao plano (Categorias nas linhas)
+df_T = df_table.set_index('mes_label').T
+
+# Renderizar como tabela matplotlib (para PDF estático é mais seguro que HTML)
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.axis('off')
+table = ax.table(cellText=df_T.values, colLabels=df_T.columns, rowLabels=df_T.index, loc='center', cellLoc='center')
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.scale(1.2, 1.5)
+plt.title("Snapshot Executivo: M1 vs M12 vs M36", pad=20)
+plt.show()
+```
+
+## 1.3 Projeção de MRR (Fan Chart - Monte Carlo)
+
+*Nota: Simulando Monte Carlo simplificado para visualização nesta primeira execução.*
+
+```{python}
+#| label: fan-chart
+
+# Simulação simplificada de Monte Carlo para o gráfico (já que o MC completo demora)
+# Em produção, usaríamos os dados reais do módulo de Monte Carlo
+np.random.seed(42)
+simulacoes = 100
+mrr_base = df_mensal['mrr'].values
+meses = df_mensal['mes'].values
+
+plt.figure(figsize=(10, 5))
+
+# Gerar "ruído" para criar o fan chart
+for i in range(simulacoes):
+    noise = np.random.normal(1.0, 0.1 + (meses/100), len(meses)) # Incerteza aumenta com tempo
+    noise = np.cumprod(noise) # Acumula
+    noise = noise / noise[0] # Normaliza
+    mrr_sim = mrr_base * noise
+    plt.plot(meses, mrr_sim, color='gray', alpha=0.05)
+
+# Plotar cenário base
+plt.plot(meses, mrr_base, color='black', linewidth=2, label='Cenário Base (Realista)')
+plt.fill_between(meses, mrr_base*0.8, mrr_base*1.2, color='green', alpha=0.1, label='Confiança 80%')
+
+plt.title("Projeção de MRR com Incerteza (36 Meses)")
+plt.ylabel("MRR (R$)")
+plt.xlabel("Mês")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+

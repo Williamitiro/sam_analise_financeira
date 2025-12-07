@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { DashboardHeader } from './DashboardHeader';
+import { Toaster } from '@/components/ui/toaster';
 
 export function AppLayout() {
   return (
@@ -15,6 +16,7 @@ export function AppLayout() {
           </div>
         </main>
       </div>
+      <Toaster />
     </div>
   );
 }

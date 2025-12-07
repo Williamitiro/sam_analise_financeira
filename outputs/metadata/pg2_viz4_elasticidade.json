@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz4_elasticidade",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-06T21:23:04.757238",
+  "title_simple": "Curva de Escala (Marketing)",
+  "data_source": "df_real_m",
+  "insight_generated": {
+    "fato": "Curva próxima da linearidade (pouca saturação observada).",
+    "causa": "Canais atuais ainda têm muito inventário disponível.",
+    "implicacao": "Podemos acelerar investimento sem grande perda de eficiência.",
+    "acao": "Aumentar budget agressivamente (Escala liberada)."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz4_elasticidade.png",
+    "json": "outputs/metadata/pg2_viz4_elasticidade.json",
+    "table": "outputs/tables/pg2_viz4_elasticidade_tabela.html"
+  },
+  "validation_status": "ok"
+}

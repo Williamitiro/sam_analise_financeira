@@ -1,26 +1,20 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X } from 'lucide-react';
-import { useMockProjection } from '@/features/projection/hooks/useMockProjection';
+import { useProjectionStore } from '@/stores/projectionStore';
 import { cn } from '@/lib/utils/cn';
-
-interface Insight {
-  title: string;
-  description: string;
-  level: 'CRITICAL' | 'WARNING';
-  action?: string;
-}
+import { Insight } from '@/types/api.types';
 
 export function AlertHub() {
   const [isOpen, setIsOpen] = useState(false);
-  const { insights } = useMockProjection() as { insights: Insight[] };
+  const { insights } = useProjectionStore();
 
   if (!insights || insights.length === 0) {
     return null;
   }
 
   const count = insights.length;
-  const hasHighPriority = insights.some(a => a.level === 'CRITICAL');
+  const hasHighPriority = insights.some(a => a.priority === 'high');
 
   const handleAlertAction = (insight: Insight) => {
     console.log('Triggering action for:', insight.title);
@@ -86,19 +80,19 @@ export function AlertHub() {
                   transition={{ delay: i * 0.05 }}
                   className={cn(
                     'p-3 border-b border-slate-50 hover:bg-slate-50 cursor-pointer',
-                    alert.level === 'CRITICAL' ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-amber-500'
+                    alert.priority === 'high' ? 'border-l-4 border-l-red-500' : 'border-l-4 border-l-amber-500'
                   )}
                   onClick={() => handleAlertAction(alert)}
                 >
                   <div className="flex items-start gap-2">
                     <AlertTriangle className={cn(
                       'w-4 h-4 flex-shrink-0 mt-0.5',
-                      alert.level === 'CRITICAL' ? 'text-red-500' : 'text-amber-500'
+                      alert.priority === 'high' ? 'text-red-500' : 'text-amber-500'
                     )} />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-slate-900">{alert.title}</p>
                       <p className="text-xs text-slate-600 mt-0.5">{alert.description}</p>
-                      {alert.action && <p className="text-xs text-blue-600 mt-1 font-medium">{alert.action} →</p>}
+                      {alert.action_item && <p className="text-xs text-blue-600 mt-1 font-medium">{alert.action_item} →</p>}
                     </div>
                   </div>
                 </motion.div>

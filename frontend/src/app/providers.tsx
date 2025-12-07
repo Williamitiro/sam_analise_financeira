@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from 'sonner';
 
 // Cria uma instância do QueryClient
 const queryClient = new QueryClient({
@@ -20,9 +19,6 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Toaster para notificações */}
-      <Toaster position="top-right" richColors />
-      
       {/* Conteúdo da aplicação */}
       {children}
       

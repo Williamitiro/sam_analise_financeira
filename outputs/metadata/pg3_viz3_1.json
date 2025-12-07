@@ -1,0 +1,18 @@
+{
+  "chart_id": "pg3_viz3_1",
+  "timestamp": "2025-12-07T08:33:26.852171",
+  "title_simple": "Waterfall de Resultados (DRE Gerencial Acumulado)",
+  "data_source": "Simulação V1",
+  "insight_generated": {
+    "fato": "'Marketing (Growth)' é o maior ofensor, consumindo 28% da receita.",
+    "causa": "Investimento agressivo ou ineficiência nesta linha de despesa.",
+    "implicacao": "Margem operacional comprimida.",
+    "acao": "Revisar contratos e ROI de Marketing (Growth)."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz3_1.png",
+    "json": "outputs/metadata/pg3_viz3_1.json",
+    "table": "outputs/tables/pg3_viz3_1_tabela.html"
+  },
+  "validation_status": "ok"
+}

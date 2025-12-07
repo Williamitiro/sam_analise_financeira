@@ -1,156 +1,160 @@
-/**
- * Tipos da API - Alinhados com o backend FastAPI
- */
+// frontend/src/types/api.types.ts
 
-// Dados da projeção mês a mês
-export interface ProjectionData {
-  mes: number[];
-  
-  // Funil de Aquisição
-  Usuarios_Iniciais: number[];
-  Visitantes: number[];
-  Novos_Trials: number[];
-  Novos_Pagantes: number[];
-  Usuarios_Perdidos: number[];
-  Usuarios_Finais: number[];
-  
-  // Taxas de Conversão
-  Taxa_Conv_Trial: number[];
-  Taxa_Conv_Pagante: number[];
-  Taxa_Conv_Geral: number[];
-  
-  // Receita
-  MRR: number[];
-  ARR: number[];
-  ARPU: number[];
-  Receita_Total: number[];
-  
-  // COGS Detalhado
-  Custo_IA: number[];
-  Impostos: number[];
-  Taxas_Pagamento: number[];
-  Comissoes_Afiliados: number[];
-  COGS_Total: number[];
-  
-  // Margens
-  Lucro_Bruto: number[];
-  Margem_Bruta_Pct: number[];
-  
-  // OPEX Detalhado
-  Custo_Infra: number[];
-  Tier_Infra: number[];
-  Custo_Marketing: number[];
-  Fase_Marketing: number[];
-  Salario_Fundador: number[];
-  Custo_Pessoal_CLT: number[];
-  Custo_Pessoal_PJ: number[];
-  Custo_Escritorio: number[];
-  Custo_Ferramentas: number[];
-  Custo_Servicos_Profissionais: number[];
-  Custo_Depreciacao: number[];
-  Custo_Despesas_Anuais: number[];
-  OPEX_Total: number[];
-  
-  // Resultado
-  EBITDA: number[];
-  Resultado_Operacional: number[];
-  
-  // Fluxo de Caixa
-  Aportes: number[];
-  Fluxo_Caixa: number[];
-  Saldo_Caixa: number[];
-  
-  // Métricas de Análise
-  CAC_Mensal: number[];
-  LTV: number[];
-  LTV_CAC_Ratio: number[];
-  Payback_Meses: number[];
-  Churn_Absoluto: number[];
+// Based on Pydantic models from main.py
+
+export type CategoriaFerramenta =
+  | "Marketing"
+  | "Vendas"
+  | "Produtividade"
+  | "Finanças"
+  | "Dados & BI"
+  | "Outra";
+
+export interface FerramentaSaaSModel {
+  nome: string;
+  categoria: CategoriaFerramenta;
+  custo_mensal: number;
+  provider?: string;
+  descricao?: string;
+  essencial?: boolean;
+  custo_por_usuario?: number;
+  mes_inicio?: number;
+  mes_fim?: number | null;
+  ativa?: boolean;
 }
 
-// KPIs principais
+export interface FuncionarioModel {
+  nome: string;
+  cargo: string;
+  salario_bruto: number;
+  mes_inicio: number;
+  tipo?: string;
+  encargos_percentual?: number;
+  ativo?: boolean;
+  mes_fim?: number | null;
+}
+
+export interface AtivoDepreciavelModel {
+  nome: string;
+  valor_aquisicao: number;
+  meses_depreciacao: number;
+  mes_aquisicao?: number;
+  ativo?: boolean;
+  mes_fim?: number | null;
+}
+
+export interface DespesaAnualModel {
+  nome: string;
+  valor_anual: number;
+  mes_pagamento?: number;
+  ativo?: boolean;
+  mes_inicio?: number;
+  mes_fim?: number | null;
+}
+
+export interface ComissaoAfiliadoModel {
+  percentual_sobre_venda: number;
+  mes_inicio_programa?: number;
+  percentual_vendas_via_afiliados?: number;
+}
+
+export interface ProjecaoRequest {
+  ativar_receita_por_usuario?: boolean;
+  ativar_custo_ia?: boolean;
+  ativar_impostos?: boolean;
+  ativar_taxas_pgto?: boolean;
+  ativar_fundador?: boolean;
+  ativar_equipe_clt?: boolean;
+  ativar_equipe_pj?: boolean;
+  ativar_escritorio?: boolean;
+  ativar_ferramentas?: boolean;
+  ativar_servicos_profs?: boolean;
+  ativar_marketing?: boolean;
+  ativar_depreciacao?: boolean;
+  ativar_despesas_anuais?: boolean;
+  ativar_comissoes_afiliado?: boolean;
+  ativar_infra_tier1?: boolean;
+  ativar_infra_tier2?: boolean;
+  ativar_infra_tier3?: boolean;
+  capital_inicial_caixa?: number;
+  aporte_mensal_fixo?: number;
+  meses_aporte_fixo?: number;
+  visitantes_mes_1?: number;
+  taxa_crescimento_trafego_mensal?: number;
+  taxa_conversao_visitante_trial?: number;
+  taxa_conversao_trial_pagante?: number;
+  churn_mensal?: number;
+  preco_plano_lite?: number;
+  preco_plano_trader?: number;
+  preco_plano_pro?: number;
+  mix_plano_lite?: number;
+  mix_plano_trader?: number;
+  mix_plano_pro?: number;
+  arpu_medio_override?: number | null;
+  custo_ia_por_usuario?: number;
+  aliquota_impostos?: number;
+  taxa_pagamento_percentual?: number;
+  taxa_pagamento_fixa_por_transacao?: number;
+  comissao_afiliados?: ComissaoAfiliadoModel | null;
+  infra_tier1_custo_fixo?: number;
+  infra_tier1_limite?: number;
+  infra_tier1_detalhes?: Record<string, number>;
+  infra_tier2_custo_fixo?: number;
+  infra_tier2_limite?: number;
+  infra_tier2_detalhes?: Record<string, number>;
+  infra_tier3_custo_por_usuario?: number;
+  cloud_custo_excedente_por_gb?: number;
+  cloud_gb_inclusos_tier?: number;
+  cloud_gb_estimado_por_usuario?: number;
+  marketing_fase1_custo_fixo?: number;
+  marketing_fase1_duracao_meses?: number;
+  marketing_fase2_perc_lucro_bruto?: number;
+  cac_pago_meta?: number;
+  salario_fundador_valor?: number;
+  salario_fundador_mes_inicio_ideal?: number;
+  salario_fundador_caixa_minimo_seguranca?: number;
+  equipe?: FuncionarioModel[];
+  escritorio_aluguel_mensal?: number;
+  escritorio_condominio_mensal?: number;
+  escritorio_agua_luz_mensal?: number;
+  escritorio_internet_mensal?: number;
+  escritorio_outros_mensal?: number;
+  escritorio_mes_inicio?: number;
+  ferramentas_saas?: FerramentaSaaSModel[];
+  contabilidade_mensal?: number;
+  contabilidade_mes_inicio?: number;
+  advogado_retainer_mensal?: number;
+  advogado_mes_inicio?: number;
+  consultorias_outras_mensal?: number;
+  ativos_depreciaveis?: AtivoDepreciavelModel[];
+  despesas_anuais?: DespesaAnualModel[];
+}
+
 export interface KPIs {
-  Break_Even_Mes: number | null;
-  Payback_Investimento_Mes: number | null;
-  Vale_da_Morte_Minimo_Caixa: number;
-  Vale_da_Morte_Mes: number;
-  Runway_Meses: number | string;
-  LTV_Final: number;
-  CAC_Medio_Periodo: number;
-  LTV_CAC_Ratio_Final: number;
-  CAC_Payback_Meses_Config: number;
-  MRR_Ano1: number;
-  MRR_Ano2: number;
-  MRR_Ano3: number;
-  Usuarios_Ano1: number;
-  Usuarios_Ano2: number;
-  Usuarios_Ano3: number;
-  Saldo_Caixa_Final: number;
-  MRR_Final: number;
-  Usuarios_Final: number;
-  eventos: Event[];
+  [key: string]: any;
 }
 
-// Insight automático
 export interface Insight {
-  level: 'CRITICAL' | 'WARNING' | 'INFO' | 'SUCCESS';
-  category: 'caixa' | 'crescimento' | 'custos' | 'unit_economics';
-  title: string;
-  description: string;
-  value?: number;
-  action?: string;
-  impact?: string;
+    id: string;
+    priority: 'high' | 'medium' | 'low';
+    title: string;
+    description: string;
+    details: string;
+    category: 'performance' | 'risk' | 'opportunity' | 'efficiency';
+    related_metrics: string[];
+    action_item?: string;
+    confidence_level: number;
 }
 
-// Evento no timeline
-export interface Event {
-  mes: number;
-  tipo: string;
-  descricao: string;
-  valor: number;
+
+export interface ProjectionData {
+  [key: string]: any[];
 }
 
-// Response completa da API
+
 export interface ProjectionResponse {
-  projecao_df: ProjectionData;
   kpis: KPIs;
-  insights?: Insight[];
-  eventos?: Event[];
-}
-
-// Tipos auxiliares para charts
-export interface ChartDataPoint {
-  mes: number;
-  [key: string]: number | string;
-}
-
-// Tipo para waterfall
-export interface WaterfallItem {
-  label: string;
-  value: number;
-  type: 'increase' | 'decrease' | 'total';
-}
-
-// Tipo para Sankey
-export interface SankeyNode {
-  label: string;
-  color?: string;
-}
-
-export interface SankeyLink {
-  source: number;
-  target: number;
-  value: number;
-  color?: string;
-}
-
-export interface SankeyData {
-  nodes: SankeyNode[];
-  links: SankeyLink[];
-}
-
-// Tipo para cohorts
-export interface CohortData {
-  cohort: string;
-  retention: Record<string, number>;
+  insights: Insight[];
+  projecao_mensal: ProjectionData[];
+  analise_cohorts: any; // Define this more accurately if needed
 }

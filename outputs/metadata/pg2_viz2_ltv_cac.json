@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg2_viz2_ltv_cac",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-06T21:23:02.503298",
+  "title_simple": "Eficiência Unitária: LTV/CAC",
+  "data_source": "df_real_m",
+  "insight_generated": {
+    "fato": "Atingimos LTV/CAC de 4.5x no M36, superando o benchmark.",
+    "causa": "Diluição do CAC blended pelo tráfego orgânico.",
+    "implicacao": "Modelo altamente escalável com margem para agressividade.",
+    "acao": "Aumentar budget de Paid Ads (CAC aceitável até R$ 250)."
+  },
+  "files": {
+    "png": "outputs/figs/pg2_viz2_ltv_cac.png",
+    "json": "outputs/metadata/pg2_viz2_ltv_cac.json",
+    "table": "outputs/tables/pg2_viz2_ltv_cac_tabela.html"
+  },
+  "validation_status": "ok"
+}

@@ -1,6 +1,6 @@
 // frontend/src/hooks/useFilteredData.ts
 import { useMemo } from 'react';
-import { useMockProjection } from '@/features/projection/hooks/useMockProjection';
+import { useProjectionStore } from '@/stores/projectionStore'; // Changed import
 import { useFiltersStore } from '@/stores/filtersStore';
 import { ProjectionData } from '@/types/api.types';
 
@@ -15,34 +15,44 @@ const applyGranularity = (data: ProjectionData, granularity: 'monthly' | 'quarte
 }
 
 export const useFilteredData = () => {
-    const { data: rawData, kpis, insights, isLoading, error } = useMockProjection();
+    // Changed to use the projection store
+    const { data: projectionData, kpis, insights, isLoading, error } = useProjectionStore();
     const { periodStart, periodEnd, granularity } = useFiltersStore();
 
+    console.log('useFilteredData called. isLoading:', isLoading, 'error:', error, 'projectionData:', projectionData);
+
     const filteredData = useMemo(() => {
-        if (!rawData || !rawData.mes) {
+        if (!projectionData || projectionData.length === 0) {
             return null;
         }
 
-        const startIndex = rawData.mes.findIndex(m => m === periodStart);
-        const endIndex = rawData.mes.findIndex(m => m === periodEnd);
+        // 1. Filter by date range
+        const startIndex = projectionData.findIndex(row => row.mes === periodStart);
+        const endIndex = projectionData.findIndex(row => row.mes === periodEnd);
 
-        if (startIndex === -1 || endIndex === -1) {
-            return rawData; // Return full data if period is invalid
+        const slicedData = (startIndex === -1 || endIndex === -1)
+            ? projectionData // Return full data if period is invalid
+            : projectionData.slice(startIndex, endIndex + 1);
+        
+        if (slicedData.length === 0) {
+            return null;
         }
 
-        const slicedData: Partial<ProjectionData> = {};
-        for (const key in rawData) {
-            if (Array.isArray((rawData as any)[key])) {
-                (slicedData as any)[key] = (rawData as any)[key].slice(startIndex, endIndex + 1);
-            }
+        // 2. Transform from Array-of-Objects to Object-of-Arrays
+        const transformedData: ProjectionData = {};
+        const keys = Object.keys(slicedData[0]); // Get keys from the first row (e.g., 'mes', 'mrr', 'usuarios')
+        
+        for (const key of keys) {
+            // For each key, create an array by mapping over the sliced data
+            (transformedData as any)[key] = slicedData.map(row => row[key]);
         }
 
-        // TODO: Apply granularity after slicing
-        const granularData = applyGranularity(slicedData as ProjectionData, granularity);
+        // 3. TODO: Apply granularity - this part is still a placeholder but the structure is now correct
+        const granularData = applyGranularity(transformedData, granularity);
 
         return granularData;
 
-    }, [rawData, periodStart, periodEnd, granularity]);
+    }, [projectionData, periodStart, periodEnd, granularity]);
 
     return {
         data: filteredData,

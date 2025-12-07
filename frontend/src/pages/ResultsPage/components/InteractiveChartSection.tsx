@@ -39,27 +39,27 @@ const columns: ColumnDef<MonthlyData>[] = [
   {
     accessorKey: 'MRR',
     header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          MRR
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        MRR
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => <div className="text-right">{formatCurrency(row.getValue('MRR'))}</div>,
   },
   {
     accessorKey: 'Caixa',
     header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Caixa
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Caixa
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => <div className="text-right">{formatCurrency(row.getValue('Caixa'))}</div>,
   },
   {
@@ -76,19 +76,19 @@ const columns: ColumnDef<MonthlyData>[] = [
     accessorKey: 'Lucro_Prejuizo',
     header: 'Lucro/Prejuízo',
     cell: ({ row }) => {
-        const value = row.getValue('Lucro_Prejuizo') as number;
-        return (
-            <div className={`text-right font-semibold ${value < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                {formatCurrency(value)}
-            </div>
-        )
+      const value = row.getValue('Lucro_Prejuizo') as number;
+      return (
+        <div className={`text-right font-semibold ${value < 0 ? 'text-red-600' : 'text-green-600'}`}>
+          {formatCurrency(value)}
+        </div>
+      )
     }
   },
 ];
 
 interface InteractiveChartSectionProps {
-    data: ProjectionData;
-    kpis: KPIs;
+  data: ProjectionData;
+  kpis: KPIs;
 }
 
 export const InteractiveChartSection = ({ data, kpis }: InteractiveChartSectionProps) => {
@@ -123,36 +123,48 @@ export const InteractiveChartSection = ({ data, kpis }: InteractiveChartSectionP
   }, [data]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-      <div className="lg:col-span-2 flex flex-col gap-4">
-        <ChartControls
-          visibleSeries={visibleSeries}
-          onSeriesVisibilityChange={handleSeriesVisibilityChange}
-          chartType={chartType}
-          onChartTypeChange={setChartType}
-        />
-        {chartData.length > 0 ? (
+    <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+      <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <span className="text-2xl">📈</span>
+        Análise Temporal
+      </h2>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <ChartControls
+            visibleSeries={visibleSeries}
+            onSeriesVisibilityChange={handleSeriesVisibilityChange}
+            chartType={chartType}
+            onChartTypeChange={setChartType}
+          />
+          {chartData.length > 0 ? (
             <>
-                <InteractiveChart
-                    data={chartData}
-                    visibleSeries={visibleSeries}
-                    chartType={chartType}
-                    breakEvenMonth={kpis.Breakeven_Month}
-                    valeDaMorteMonth={kpis.Vale_da_Morte_Month}
-                />
+              <InteractiveChart
+                data={chartData}
+                visibleSeries={visibleSeries}
+                chartType={chartType}
+                breakEvenMonth={kpis?.Breakeven_Month}
+                valeDaMorteMonth={kpis?.Vale_da_Morte_Month}
+              />
+              <div className="mt-4">
                 <DataTable columns={columns} data={chartData} exportable />
+              </div>
             </>
-        ) : (
+          ) : (
             <EmptyState
-                title="Nenhum dado encontrado"
-                description="Os filtros selecionados não retornaram nenhum resultado. Tente ajustar o período ou a granularidade."
+              title="Nenhum dado encontrado"
+              description="Os filtros selecionados não retornaram nenhum resultado. Tente ajustar o período ou a granularidade."
             />
-        )}
+          )}
+        </div>
+        <div className="lg:col-span-1 bg-slate-50/50 p-5 rounded-lg border border-slate-200">
+          <h3 className="text-base font-semibold text-slate-800 mb-4 flex items-center gap-2">
+            <span>🚨</span>
+            Alertas Inteligentes
+          </h3>
+          <AlertHub />
+        </div>
       </div>
-      <div className="lg:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-200">
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">🚨 Alertas Inteligentes</h2>
-        <AlertHub />
-      </div>
-    </div>
+    </section>
   );
 };

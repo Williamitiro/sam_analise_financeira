@@ -240,7 +240,7 @@ class MotorProjecaoFinanceira:
             'OPEX_Total',
             
             # Resultado
-            'EBITDA', 'Resultado_Operacional',
+            'EBITDA', 'Resultado_Operacional', 'Lucro_Liquido',
             
             # Fluxo de Caixa
             'Aportes', 'Fluxo_Caixa', 'Saldo_Caixa',
@@ -394,10 +394,13 @@ class MotorProjecaoFinanceira:
             ebitda = lucro_bruto - opex_total
             resultado_operacional = ebitda - custo_depreciacao
             
+            # Lucro Líquido (sem impostos sobre lucro por enquanto, pois startups no Simples não pagam IR/CSLL até certo limite)
+            lucro_liquido = resultado_operacional
+            
             # Aportes
             aporte = cfg.aporte_mensal_fixo if mes <= cfg.meses_aporte_fixo else 0.0
             
-            fluxo_caixa = resultado_operacional + aporte
+            fluxo_caixa = lucro_liquido + aporte
             saldo_caixa += fluxo_caixa
             
             # ============================================================
@@ -452,6 +455,7 @@ class MotorProjecaoFinanceira:
                 'OPEX_Total': round(opex_total, 2),
                 'EBITDA': round(ebitda, 2),
                 'Resultado_Operacional': round(resultado_operacional, 2),
+                'Lucro_Liquido': round(lucro_liquido, 2),
                 'Aportes': round(aporte, 2),
                 'Fluxo_Caixa': round(fluxo_caixa, 2),
                 'Saldo_Caixa': round(saldo_caixa, 2),
