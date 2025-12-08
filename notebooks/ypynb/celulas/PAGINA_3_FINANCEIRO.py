@@ -508,6 +508,19 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
 :::
 """
         display(Markdown(insight_md))
+        # Auditoria VIZ 3.2
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## Auditoria VIZ 3.2
+**Fonte:** df_real_m.iloc[-1] (M36 da Celula 5A)
+
+**Formulas:**
+- Margem Bruta = (Receita Liquida - COGS) / Receita Bruta x 100
+- OPEX pct = Total OPEX / Receita Bruta x 100
+- Benchmarks: Margem maior 80%, OPEX menor 50%, EBITDA maior 20%
+:::
+"""
+        display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E8F5E9; border-left: 5px solid #388E3C; padding: 15px; border-radius: 4px; margin: 15px 0;">
@@ -683,6 +696,19 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
 :::
 """
         display(Markdown(insight_md))
+        # Auditoria VIZ 3.3
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## Auditoria VIZ 3.3
+**Fonte:** df_real_s (granularidade semanal, Celula 5A)
+
+**Formulas:**
+- Runway = Caixa / Despesas Semanais
+- Vale de Caixa = min(Caixa) nas 24 semanas
+- Reserva = Media Saidas x 4 semanas
+:::
+"""
+        display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #FFFDE7; border-left: 5px solid #FBC02D; padding: 15px; border-radius: 4px; margin: 15px 0;">
@@ -817,6 +843,19 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
 :::
 """
         display(Markdown(insight_md))
+        # Auditoria VIZ 3.4
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## Auditoria VIZ 3.4
+**Fonte:** df_real_m, df_ideal_m (Celulas 5A/5B)
+
+**Formulas:**
+- Alavancagem = Delta EBITDA / Delta Receita
+- Delta = (Valor M36 - Valor M12) / Valor M12 x 100
+- Interpretacao: Alavancagem maior que 1 = Modelo escalavel
+:::
+"""
+        display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E8F5E9; border-left: 5px solid #388E3C; padding: 15px; border-radius: 4px; margin: 15px 0;">
@@ -998,6 +1037,19 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
 :::
 """
         display(Markdown(insight_md))
+        # Auditoria VIZ 3.5
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## Auditoria VIZ 3.5
+**Fonte:** df_real_m vs df_ideal_m (Celulas 5A e 5B)
+
+**Formulas:**
+- Delta = (Real - Ideal) / |Ideal| x 100
+- Verde = Real superando Ideal
+- Vermelho = Real abaixo do Ideal
+:::
+"""
+        display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E3F2FD; border-left: 5px solid #1976D2; padding: 15px; border-radius: 4px; margin: 15px 0;">
