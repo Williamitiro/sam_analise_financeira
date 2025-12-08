@@ -642,9 +642,12 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     
     if report_mode:
         display(Markdown(df_tabela.to_markdown(index=False)))
+        display(Markdown("*Fonte: Motor V13 | df_real_m interpolado para granularidade semanal*"))
+        display(Markdown(""))  # Espaço para desconectar insight da tabela
         display(Markdown("\\newpage"))
     else:
         display(HTML(df_tabela.to_html(index=False, escape=False)))
+        display(HTML("<br/>"))  # Espaço para desconectar insight da tabela
     
     # Insight Dinâmico
     reserva_seguranca = np.mean(saidas) * 4  # 4 semanas
@@ -729,13 +732,13 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     x_trend = np.linspace(min(receita), max(receita), 100)
     ax.plot(x_trend, p(x_trend), color='#1976D2', linewidth=2, linestyle='--', label='Tendência Real')
     
-    # Linha Ideal (tracejada)
+    # Linha Ideal (tracejada) - cor vibrante e traço espesso para visibilidade
     if len(receita_ideal) == len(ebitda_pct_ideal):
-        ax.plot(receita_ideal, ebitda_pct_ideal, color='#9E9E9E', linewidth=1.5, linestyle=':', alpha=0.5, label='Trajetória Ideal')
+        ax.plot(receita_ideal, ebitda_pct_ideal, color='#7B1FA2', linewidth=2.5, linestyle='--', alpha=0.8, label='Trajetória Ideal')
     
-    # Zonas de benchmark
-    ax.axhline(y=0, color='#D32F2F', linestyle='-', linewidth=1, alpha=0.5)
-    ax.axhline(y=20, color='#FBC02D', linestyle='--', linewidth=1, alpha=0.5, label='Benchmark 20%')
+    # Zonas de benchmark - linhas mais visíveis
+    ax.axhline(y=0, color='#D32F2F', linestyle='-', linewidth=1.5, alpha=0.7)
+    ax.axhline(y=20, color='#FF9800', linestyle='--', linewidth=2, alpha=0.8, label='Benchmark 20%')
     ax.axhspan(-100, 0, alpha=0.1, color='#F44336', label='Zona Prejuízo')
     ax.axhspan(0, 20, alpha=0.05, color='#FFC107')
     ax.axhspan(20, 100, alpha=0.1, color='#4CAF50')
@@ -933,16 +936,23 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     if report_mode:
         plt.show()
         
-        # COMO LER (Legenda obrigatória)
+        # COMO LER (Legenda obrigatória) - explicação detalhada
         como_ler = """
 **📖 COMO LER ESTE GRÁFICO:**
 
-1. **Heatmap Esquerdo:** Delta (diferença) entre Real e Ideal
-2. **Cores Verdes:** Real superando o Ideal (bom)
-3. **Cores Vermelhas:** Real abaixo do Ideal (atenção)
-4. **Tabela Direita:** Valores absolutos do cenário Real
-5. **Colunas:** Marcos importantes (M1, M6, M12, M18, M24, M30, M36)
-6. **Regra de Sucesso:** Quadrados ficando mais verdes ao longo do tempo
+**HEATMAP (ESQUERDA) - O Delta (Δ):**
+- Mostra a **diferença percentual** entre Real e Ideal, NÃO os valores absolutos.
+- **Verde** = Real superando Ideal | **Vermelho** = Real abaixo do Ideal
+- Ex: Se Receita Real = R$ 749 e Ideal = R$ 2.135, Delta = -65% (vermelho)
+- **OPEX %:** Vermelho = OPEX maior que benchmark (ruim); Verde = menor (bom)
+- **EBITDA %:** Valores negativos no Delta = margem ABAIXO do ideal
+
+**TABELA (DIREITA) - Valores Absolutos:**
+- Mostra os valores REAIS da simulação, em R$ ou %.
+- EBITDA de -234.8% = prejuízo 2.3x maior que receita naquele mês.
+- Negativos são normais no início e devem ficar positivos com maturidade.
+
+**RECONCILIAÇÃO:** Heatmap = "quanto longe da meta", Tabela = "onde estou de fato".
 """
         display(Markdown(como_ler))
         display(Markdown("\\newpage"))

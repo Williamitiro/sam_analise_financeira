@@ -1,5 +1,5 @@
 # ============================================================================
-# LOADER DADOS RELATÓRIO - ORQUESTADOR PRINCIPAL (V1.0)
+# LOADER DADOS RELATÓRIO - ORQUESTRADOR PRINCIPAL (V1.0)
 # ============================================================================
 # OBJETIVO: Importar módulos, rodar simulações e gerar outputs para o relatório.
 # DATA: 2025-12-07
@@ -93,9 +93,9 @@ def main(report_mode=True, run_monte_carlo=False):
     
     # 7. GERAR PÁGINA 3: FINANCEIRO (DRE + Custos + Fluxo de Caixa)
     executar_pagina_3_financeiro(
-        df_real=df_real_m,
+        df_real_m=df_real_m,
         df_real_s=df_real_s,
-        df_ideal=df_ideal_m,
+        df_ideal_m=df_ideal_m,
         premissas=PREMISSAS,
         report_mode=report_mode
     )
