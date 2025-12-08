@@ -174,7 +174,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', fontsize=9)
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax1, "Fonte: Motor V13 | df_real_m['caixa', 'ebitda', 'burn_rate']")
+    adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['caixa', 'ebitda', 'burn_rate']")
     
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz1_evolucao_financeira.png')
@@ -355,7 +355,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     ax1.axhline(y=0, color='black', linewidth=0.5)
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax1, "Fonte: Motor V13 | df_real_m['receita_bruta', 'total_cogs', 'total_opex', 'ebitda']")
+    adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['receita_bruta', 'total_cogs', 'total_opex', 'ebitda']")
     
     fig.suptitle('📊 WATERFALL DRE - RECEITA ATÉ EBITDA', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
@@ -451,7 +451,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     ax2b.set_ylim(0, 100)
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax2b, "Fonte: Motor V13 | Breakdown COGS/OPEX/Marketing")
+    adicionar_fonte_dados(ax2b, "Fonte: Celulas 5A/5B | Breakdown COGS/OPEX/Marketing")
     
     fig2.suptitle('📊 COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
@@ -600,7 +600,7 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right', fontsize=9)
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax1, "Fonte: Motor V13 | df_real_m['caixa'] interpolado para semanal")
+    adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['caixa'] interpolado para semanal")
     
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz3_fluxo_caixa_semanal.png')
@@ -642,7 +642,7 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     
     if report_mode:
         display(Markdown(df_tabela.to_markdown(index=False)))
-        display(Markdown("*Fonte: Motor V13 | df_real_m interpolado para granularidade semanal*"))
+        display(Markdown("*Fonte: Celulas 5A/5B | df_real_m interpolado para granularidade semanal*"))
         display(Markdown(""))  # Espaço para desconectar insight da tabela
         display(Markdown("\\newpage"))
     else:
@@ -754,7 +754,7 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     ax.legend(loc='lower right', fontsize=9)
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax, "Fonte: Motor V13 | df_real_m['receita_bruta', 'ebitda_margin']")
+    adicionar_fonte_dados(ax, "Fonte: Celulas 5A/5B | df_real_m['receita_bruta', 'ebitda_margin']")
     
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz4_alavancagem.png')
@@ -927,7 +927,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     ax2.set_title('Valores Absolutos (Real)', fontsize=12, fontweight='bold')
     
     # Fonte dos dados
-    adicionar_fonte_dados(ax1, "Fonte: Motor V13 | df_real_m vs df_ideal_m (marcos M1-M36)")
+    adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m vs df_ideal_m (marcos M1-M36)")
     
     fig.suptitle('📊 EVOLUÇÃO DRE: REAL VS IDEAL', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()

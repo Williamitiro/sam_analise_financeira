@@ -1,0 +1,219 @@
+---
+title: "Relatório Executivo — Simulação Financeira & Growth Machine"
+author: "William Kuroda"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+format:
+  pdf:
+    toc: true
+    toc-title: "Sumário"
+    number-sections: true
+    geometry: margin=2.5cm
+    fontsize: 11pt
+    mainfont: "Helvetica"
+    linkcolor: "#1A73E8"
+  docx:
+    toc: true
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+
+# CAPA {.page}
+
+::: {.center}
+
+**RELATÓRIO EXECUTIVO**  
+**Simulação Financeira & Growth Machine — Página 1 e 2**  
+
+**William Kuroda**  
+Data: `r format(Sys.time(), '%Y-%m-%d')`  
+Versão: 3.0 — Gold Standard
+
+::: {.small}
+Confidencial — Uso interno / apresentação para investidores.  
+Não reproduzir sem autorização.
+:::
+
+:::
+
+\newpage
+
+# SUMÁRIO
+
+<!-- Sumário automático pelo Quarto -->
+
+\newpage
+
+# Introdução
+
+**Objetivo deste documento**
+
+Este arquivo Quarto (.qmd) gera um relatório profissional (PDF / DOCX) contendo:
+
+- Página 1 — Executive Cockpit: visão consolidada de tração, receita e viabilidade;  
+- Página 2 — Growth Machine: funil, mix de canais, elasticidade, balanço de base e payback;  
+
+O notebook fornece os *motores* (funções Python) que executam a simulação e plotam visualizações. Este QMD apenas orquestra a execução e organiza a saída em formato de relatório pronto para impressão e apresentação.
+
+**Design principles**
+
+- Transparência: todas as premissas e fontes de dados são explicitadas.  
+- Audibilidade: cada gráfico gera um metadata JSON em `outputs/metadata/`.  
+- Reprodutibilidade: o notebook roda as mesmas funções que você já usa (não alterei chamadas).  
+
+---
+
+# Instruções de uso
+
+1. Coloque este arquivo na raiz do seu ambiente Quarto ou em diretório que tenha acesso ao pacote de notebooks.  
+2. Garanta que o Python environment tenha as dependências necessárias (pandas, numpy, plotly, matplotlib, quarto).  
+3. Ajuste `root_dir` abaixo caso o caminho relativo para os módulos seja diferente.
+
+---
+
+```{python}
+#| label: setup
+import sys
+import os
+from datetime import datetime
+
+# Ajuste o root_dir conforme sua estrutura de pastas
+root_dir = os.path.abspath('../../')
+if root_dir not in sys.path:
+    sys.path.append(root_dir)
+
+# Paths adicionais (mantidos, não alterei a lógica das importações)
+sys.path.append(os.path.join(root_dir, 'notebooks/ypynb/'))
+sys.path.append(os.path.join(root_dir, 'notebooks/ypynb/celulas/'))
+
+# Import das funções/módulos do seu motor (mantive os nomes originais)
+try:
+    from celula_2_premissas import PREMISSAS
+    from celula_5A_bootstrap_real import executar_analise_real
+    from celula_5B_cenario_ideal import executar_analise_ideal
+    from PAGINA_1_COCKPIT_V4 import executar_pagina_1
+    from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
+except Exception as e:
+    # Em relatório, preferimos falhar com mensagem clara
+    raise ImportError(f"Não foi possível importar módulos necessários. Verifique caminhos e dependências. Erro: {e}")
+
+# Função utilitária para salvar logs simples
+def _log(msg):
+    print(f"[{datetime.now().isoformat()}] {msg}")
+
+_log('Setup concluído — módulos importados com sucesso')
+```
+
+---
+
+# Execução das Simulações (Setup)
+
+> *Observação:* abaixo rodamos **silenciosamente** as funções de análise. Elas retornam os dataframes e dicionários esperados pelo resto do relatório.
+
+```{python}
+#| label: run-sim
+import contextlib
+import io
+
+_log('Iniciando execução das simulações (Real e Ideal)')
+
+with contextlib.redirect_stdout(io.StringIO()):
+    df_real_m, df_real_aux1, df_real_s, df_real_aux2, met_real, aux_real = executar_analise_real(PREMISSAS)
+    df_ideal_m, df_ideal_aux1, df_ideal_s, df_ideal_aux2, met_ideal, aux_ideal = executar_analise_ideal(PREMISSAS)
+
+_log('Simulações executadas — variáveis disponíveis: df_real_m, df_ideal_m, df_real_s, df_ideal_s, met_real, met_ideal')
+
+# Pequena verificação de sanidade
+if df_real_m is None or df_ideal_m is None:
+    raise RuntimeError('df_real_m ou df_ideal_m não foram retornados corretamente pelas funções de simulação.')
+
+_log(f'df_real_m shape: {getattr(df_real_m, "shape", None)}; df_ideal_m shape: {getattr(df_ideal_m, "shape", None)}')
+```
+
+\newpage
+
+# PÁGINA 1: EXECUTIVE COCKPIT
+
+**Objetivo:** Validar a viabilidade macro do negócio, confrontando a Simulação Conservadora (Real) contra os Benchmarks (Ideal).
+
+```{python}
+#| label: pagina1
+_log('Gerando Página 1 — Executive Cockpit')
+executar_pagina_1(df_real_m, df_ideal_m, met_real, met_ideal)
+_log('Página 1 gerada')
+```
+
+\newpage
+
+# PÁGINA 2: GROWTH MACHINE
+
+**Objetivo:** Demonstrar eficiência da máquina de aquisição, identificar gargalos e quantificar oportunidades de melhoria (convertendo análise em ações).
+
+> *Observações de qualidade:* a Página 2 foi desenhada para obedecer aos mandamentos do template (Sankey, Mix, Elasticidade, Balde Furado, Payback), gerar tabelas auxiliares e metadados.
+
+```{python}
+#| label: pagina2
+_log('Gerando Página 2 — Growth Machine')
+executar_pagina_2_growth_machine(
+    df_real_m,
+    df_real_s,
+    df_ideal_m,
+    df_ideal_s,
+    PREMISSAS,
+    report_mode=True
+)
+_log('Página 2 gerada')
+```
+
+\newpage
+
+# Metodologia (resumo técnico)
+
+Este relatório usa o seguinte fluxo:
+
+1. **Premissas Mestre (Célula 2)** — dicionário `PREMISSAS` com +150 parâmetros.  
+2. **Motor Financeiro (Célula 4)** — simula mês a mês, produz `df_real_m` e `df_ideal_m`.  
+3. **Análises específicas (Células 5A / 5B)** — calculam snapshots, KPIs e validam coerência.  
+4. **Visualizações (Páginas 1 e 2)** — geradas por funções que também exportam `metadata.json` e imagens em `outputs/`.
+
+**Notas sobre estatística e verificações**
+- Quando aplicável, os gráficos exibem R², p-values de tendência e intervalos de confiança.  
+- Para identificar independência orgânico/pago, usamos regra de sustentação (3 meses consecutivos).  
+
+\newpage
+
+# Premissas-chave (resumo)
+
+```{python}
+#| label: resumo-premissas
+import pandas as pd
+
+# Exibir apenas as premissas mais relevantes para o relatório
+keys = ['trafego_inicial','marketing_mensal','churn_inicial','arpu_base','mix_planos']
+summary = {k: PREMISSAS.get(k, '—') for k in keys}
+print(pd.DataFrame.from_dict(summary, orient='index', columns=['Valor']))
+```
+
+\newpage
+
+# Anexos & outputs
+
+Os arquivos gerados por cada função são salvos em `outputs/` com a seguinte estrutura:  
+- `outputs/figs/` — imagens PNG (300 dpi) de cada visual.  
+- `outputs/tables/` — CSV com cada tabela auxiliar.  
+- `outputs/metadata/` — JSON com `chart_id`, `insight`, `confidence`, `rows_used`, `warnings`.
+
+
+# Observações finais
+
+- Este QMD mantém a lógica original e as chamadas às funções do seu motor — **não alterei** o comportamento do motor, apenas adicionei rigidez na orquestração (checagens, logging e documentação).  
+- Se quiser, posso agora:
+  1. Adicionar páginas extras (Anexos com cohorts, MC diagnostic),  
+  2. Gerar arte final do layout (capa com logo, cabeçalhos personalizados),  
+  3. Inserir melhores mockups para a Página 2 (callouts/deltas automatizados).  
+
+---
+
+*Fim do relatório.*
