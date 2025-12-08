@@ -1,33 +1,93 @@
 # 🛑 LEIA-ME PRIMEIRO (HANDOFF CONTEXT)
-**Data:** 07/12/2025
-**Status:** MIGRADO PARA ARQUITETURA V7 + EXPORTAÇÃO WORD
+**Data:** 08/12/2025
+**Status:** PÁGINA 3 IMPLEMENTADA - ERRO QUARTO PENDENTE
 
-## 1. O Que Foi Feito (Última Sessão)
-1.  **Padronização V7 (Gold Standard):**
-    - **Página 1 (Cockpit):** Refatorada (`PAGINA_1_COCKPIT.py`). Agora usa Tabelas Markdown (não imagens) e Callouts.
-    - **Página 2 (Growth):** Ajustada. Gráfico de Funil com limites corrigidos.
-2.  **Pivot para Word (.docx):**
-    - Abandonamos o PDF rígido. O output oficial agora é `relatorio_investidores.docx`.
-    - Motivo: O usuário precisa editar layout/quebras manualmente.
-3.  **Limpeza de Código:**
-    - Arquivos `.py` centralizados em `notebooks/ypynb/celulas/`.
-    - Logs de execução ("Iniciando motor...") silenciados via `redirect_stdout` no Quarto.
+---
 
-## 2. A Arquitetura Atual
-- **Orquestrador:** `loader_dados_relatorio.py` (Roda tudo).
-- **Control Panel:** `real_vs_ideal_v7_GOLD.ipynb` (Usa `%autoreload 2` para desenvolvimento).
-- **Output:** `notebooks/quarto_pdf/relatorio_investidores.qmd` -> Gera DOCX.
+## 1. O Que Foi Feito (Sessão Atual - 08/12)
 
-## 3. PRÓXIMO PASSO (IMEDIATO)
-**Iniciar a PÁGINA 3 (Financeiro).**
-O arquivo `notebooks/ypynb/celulas/PAGINA_3_FINANCEIRO.py` ainda **NÃO EXISTE**.
-Sua tarefa é criá-lo seguindo estritamente a estrutura da Página 2 (`PAGINA_2_GROWTH.PY`):
-1.  DRE (Demonstração de Resultado).
-2.  Fluxo de Caixa Semanal (0-24 semanas).
-3.  Waterfalls/Sankey de Custos.
+### ✅ PÁGINA 3: FINANCEIRO - COMPLETA
+O arquivo `PAGINA_3_FINANCEIRO.py` foi **criado e implementado** com 5 visualizações:
+- **VIZ 3.1:** Evolução Financeira Correlacionada (DRE + Dual Y-Axis)
+- **VIZ 3.2:** Estrutura de Custos (Waterfall + Breakdown detalhado)
+- **VIZ 3.3:** Fluxo de Caixa Semanal (identifica vale crítico)
+- **VIZ 3.4:** Alavancagem Operacional (scatter receita vs margem)
+- **VIZ 3.5:** Heatmap DRE Evolutivo (Real vs Ideal)
+- **VIZ 3.6:** Veredito Financeiro Final
 
-> **REGRA DE OURO:** Use `from celula_0_utils import ...` para tudo. Não duplique código. NUNCA use `plt.table`. Use `df.to_markdown()`.
+### ✅ Polimentos Aplicados
+1. **VIZ Headers:** Cada visualização agora tem título + pergunta de negócio antes do gráfico
+2. **VIZ 3.4 Melhorada:** Intro explicando "O que é alavancagem operacional" + COMO LER detalhado
+3. **Linhas tracejadas mais visíveis:** Cor roxa (#7B1FA2), linewidth 2.5
+4. **Heatmap explicação:** COMO LER explica diferença entre Delta e Valores Absolutos
+5. **Espaçamento insight/tabela:** Adicionado separador visual
 
-## 4. Onde estão as regras?
-- **Diretrizes:** `notebooks/docs_notebook/diretrizes_notebook.md` (V21.2).
-- **Plano:** `implementation_plan.md` (Já detalha Page 3).
+---
+
+## 2. ⚠️ ERROS COMETIDOS E COMO EVITAR
+
+### ERRO 1: Parâmetros de função inconsistentes
+**O que aconteceu:** `loader_dados_relatorio.py` chamava `executar_pagina_3_financeiro(df_real=...)` mas a função esperava `df_real_m=...`.
+**Sintoma:** `TypeError: got an unexpected keyword argument 'df_real'`
+**Correção:** Alinhar nomes de parâmetros entre caller e function.
+> 🛑 **REGRA:** Sempre verificar a assinatura da função antes de chamá-la.
+
+### ERRO 2: Replace_file_content corrompendo arquivos
+**O que aconteceu:** A ferramenta de edição tentou replacements em blocos grandes e corrompeu o código (funções truncadas, código misturado).
+**Sintoma:** `SyntaxError: invalid character` ou código faltando.
+**Correção:** Restaurar via `git checkout HEAD -- [arquivo]` e refazer com edições menores.
+> 🛑 **REGRA:** Preferir `write_to_file` para reescrever funções inteiras. Usar `replace_file_content` apenas para edições cirúrgicas de 5-10 linhas.
+
+### ERRO 3: Blockquote (>) no Quarto causa YAML parse error
+**O que aconteceu:** Usei sintaxe `> **texto**` para criar blockquotes no Markdown.
+**Sintoma:** `YAML parse exception at line 4, column 0`
+**Correção:** NÃO RESOLVIDO AINDA - ver próximo passo.
+> 🛑 **REGRA:** Evitar caracteres `>` em strings Markdown que serão renderizadas pelo Quarto.
+
+---
+
+## 3. Arquitetura Atual
+
+```
+notebooks/ypynb/
+├── loader_dados_relatorio.py   # Orquestrador - roda tudo
+├── real_vs_ideal_v7_GOLD.ipynb # Painel de desenvolvimento
+└── celulas/
+    ├── celula_0_utils.py       # Funções compartilhadas
+    ├── celula_2_premissas.py   # PREMISSAS dict
+    ├── celula_4_motor.py       # Motor de simulação
+    ├── PAGINA_1_COCKPIT_V4.py  # ✅ Página 1
+    ├── PAGINA_2_GROWTH.py      # ✅ Página 2
+    └── PAGINA_3_FINANCEIRO.py  # ✅ Página 3 (NOVA)
+
+notebooks/quarto_pdf/
+└── relatorio_investidores.qmd  # Gera DOCX via Quarto
+```
+
+---
+
+## 4. 🚨 PRÓXIMO PASSO (IMEDIATO)
+
+### TAREFA NÃO CONCLUÍDA: Corrigir erro de renderização Quarto
+
+**Erro:**
+```
+YAML parse exception at line 4, column 0,
+while parsing a flow node:
+did not find expected node content
+```
+
+**Causa provável:** Caracteres `>` (blockquote) no texto `intro_alavancagem` em `PAGINA_3_FINANCEIRO.py` (linhas 721-728).
+
+**Ação necessária:**
+1. Abrir `PAGINA_3_FINANCEIRO.py`
+2. Localizar linhas ~721-728 (buscar "O QUE")
+3. Remover os caracteres `>` do início de cada linha
+4. Testar: `quarto render notebooks/quarto_pdf/relatorio_investidores.qmd --to docx`
+
+---
+
+## 5. Referências
+- **Diretrizes:** `notebooks/docs_notebook/diretrizes_notebook.md`
+- **Mockup narrativa:** `notebooks/docs_notebook/mockup_narrativa.md`
+- **Log anterior:** `notebooks/docs_notebook/Finalizing Page 3 Financials.md`
