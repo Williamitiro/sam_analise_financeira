@@ -25,9 +25,12 @@
 |--------------|----------------|---------|
 | Usar `>` para blockquotes em Markdown dinâmico | Usar texto simples ou callouts Quarto | Causa erro YAML no Quarto |
 | Usar `{{` em strings normais para callouts | Usar f-string ou `{` simples | `{{` em string normal fica literal |
+| Usar `{{{{` em f-strings para callouts | Usar `{{` | `{{{{` vira `{{` literal |
 | Fazer bulk replace de `{{` ou `}}` | NÃO MEXER - são escapes de f-string | Quebra todo o código existente |
+| Usar `---` em display(Markdown()) | Usar `***` para separadores | `---` causa YAML parse error |
+| Usar figsize (14,6) ou (12,6) para HTML | Usar `figsize=(10,5)` | Gráficos grandes geram scroll |
 | Criar funções que já existem em celula_0_utils | Importar de celula_0_utils | Evita duplicação e bugs |
-| Adicionar títulos/headers dinâmicos | Colocar no .qmd ou replicar padrão existente | Código existente funciona |
+| Adicionar títulos/headers dinâmicos | Usar `***` como separador (não `---`) | `---` quebra Quarto |
 
 ### **0.3 Padrão para Callouts Quarto:**
 

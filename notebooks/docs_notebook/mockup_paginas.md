@@ -169,6 +169,8 @@ Antes de dar a página como pronta, a IA deve passar este scanner:
 3.  [ ] **Teste do Delta:** A tabela mostra claramente o desvio (Vermelho/Verde)?
 4.  [ ] **Teste da Ação:** O insight termina com uma ordem clara do que fazer?
 5.  [ ] **Teste do Real:** Fica claro que "Real" é uma "Simulação Conservadora"?
+6.  [ ] **Teste do HTML:** Gráficos usam `figsize=(10,5)` para evitar scroll?
+7.  [ ] **Teste Quarto:** Separadores usam `***` (NUNCA `---`)? Callouts usam sintaxe correta?
 
 ---
 

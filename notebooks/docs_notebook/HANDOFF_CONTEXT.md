@@ -1,74 +1,102 @@
 # 🛑 LEIA-ME PRIMEIRO (HANDOFF CONTEXT)
 **Data:** 08/12/2025  
-**Status:** DOCX FUNCIONAL - MELHORIAS PENDENTES
+**Status:** HTML FUNCIONAL - Página 3 completa com títulos, COMO LER melhorado e auditorias
 
 ---
 
 ## ⚠️ REGRAS ABSOLUTAS - LER 3X ANTES DE QUALQUER AÇÃO
 
-### 🚫 REGRA 1: TÍTULOS/HEADERS VÃO NO .QMD, NÃO NO PYTHON
+### 🚫 REGRA 1: NUNCA usar `---` em display(Markdown())
 ```
-❌ ERRADO: display(Markdown("## VIZ 3.1: Titulo"))  # NO PYTHON
-✅ CERTO:  ## VIZ 3.1: Titulo                       # NO ARQUIVO .QMD
-```
-
-### 🚫 REGRA 2: NUNCA FAZER BULK REPLACE DE {{ ou }}
-```
-❌ ERRADO: c.replace('}}', '}')  # QUEBRA F-STRINGS!
-✅ CERTO:  Não tocar em {{ ou }}
+❌ ERRADO: display(Markdown("---"))     # CAUSA YAML PARSE ERROR!
+✅ CERTO:  display(Markdown("***"))     # Usar asteriscos
 ```
 
-### 🚫 REGRA 3: COMMIT ANTES DE QUALQUER REPLACE GLOBAL
+### 🚫 REGRA 2: CALLOUTS - {{ vs {
 ```
+❌ ERRADO: audit_md = """ ::: {{.callout }} """    # String normal com {{ = literal
+✅ CERTO:  audit_md = """ ::: {.callout } """      # String normal usa {
+✅ CERTO:  insight_md = f""" ::: {{.callout }} """ # F-string usa {{
+```
+
+### 🚫 REGRA 3: NUNCA fazer bulk replace de {{ ou }}
+```
+# QUEBRA TODO O CÓDIGO EXISTENTE!
+```
+
+### 🚫 REGRA 4: TAMANHO DE GRÁFICOS PARA HTML
+```
+❌ ERRADO: figsize = (14, 6)   # Muito grande, gera scroll
+✅ CERTO:  figsize = (10, 5)   # Cabe na tela sem scroll
+```
+
+### 🚫 REGRA 5: COMMIT ANTES DE QUALQUER REPLACE GLOBAL
+```bash
 git add .
 git commit -m "Backup antes de alteracao arriscada"
 ```
 
-### 🚫 REGRA 4: TESTAR QUARTO APÓS CADA MUDANÇA
-```
-quarto render notebooks/quarto_pdf/relatorio_investidores.qmd --to docx
+---
+
+## 📁 Arquivos que DEVEM ser lidos ANTES de desenvolver:
+
+| Arquivo | Por que ler? |
+|---------|--------------|
+| `celula_0_utils.py` | Funções compartilhadas - USAR, não recriar |
+| `PAGINA_1_COCKPIT_V4.py` | Padrão a seguir |
+| `PAGINA_2_GROWTH.py` | Padrão a seguir |
+| `diretrizes_checklist.md` | Checklist OBRIGATÓRIO antes de entregar |
+
+---
+
+## ✅ Estado Atual - Página 3 Completa
+
+| Item | Status |
+|------|--------|
+| Fontes "Celulas 5A/5B" | ✅ |
+| COMO LER melhorado (todos VIZ) | ✅ |
+| Auditorias com fórmulas (todos VIZ) | ✅ |
+| Títulos/Intros (todos VIZ) | ✅ |
+| Tamanho gráficos ajustado | ✅ |
+
+---
+
+## 📝 Erros Cometidos Nesta Sessão (NÃO REPETIR!)
+
+| # | Erro | Consequência | Vezes |
+|---|------|--------------|-------|
+| 1 | Usar `---` em Markdown dinâmico | YAML parse error | 2x |
+| 2 | Usar `{{{{` em f-strings | Callout vira texto literal | 2x |
+| 3 | Usar `{{` em string normal | Callout vira texto literal | 3x |
+| 4 | figsize (14,6) para HTML | Barra de scroll | 1x |
+| 5 | Bulk replace de {{ | Quebrou f-strings | 1x |
+
+---
+
+## 🔧 Comando de Renderização
+
+```bash
+quarto render notebooks/quarto_pdf/relatorio_investidores.qmd --to html
 ```
 
 ---
 
-## Lista de Mudanças Perdidas (A RESTAURAR)
-
-| # | Mudança | Arquivo | Status |
-|---|---------|---------|--------|
-| 1 | Linhas tracejadas visiveis VIZ 3.4 (roxo #7B1FA2, laranja #FF9800) | PAGINA_3_FINANCEIRO.py | ⏳ PENDENTE |
-| 2 | Espacamento insight/tabela VIZ 3.3 | PAGINA_3_FINANCEIRO.py | ⏳ PENDENTE |
-| 3 | COMO LER heatmap expandido VIZ 3.5 | PAGINA_3_FINANCEIRO.py | ⏳ PENDENTE |
-| 4 | Headers VIZ com perguntas de negócio | relatorio_investidores.qmd | ⏳ PENDENTE |
-
----
-
-## Arquitetura
+## 📂 Arquitetura
 
 ```
 notebooks/ypynb/celulas/
-├── PAGINA_3_FINANCEIRO.py  # Gráficos e insights dinâmicos APENAS
+├── celula_0_utils.py        # Funções compartilhadas
+├── PAGINA_1_COCKPIT_V4.py   # Página 1
+├── PAGINA_2_GROWTH.py       # Página 2
+├── PAGINA_3_FINANCEIRO.py   # Página 3
 
 notebooks/quarto_pdf/
-└── relatorio_investidores.qmd  # Títulos, headers, texto estático
+└── relatorio_investidores.qmd  # Orquestrador Quarto
+
+notebooks/docs_notebook/
+├── diretrizes_checklist.md     # CHECKLIST OBRIGATÓRIO
+├── diretrizes_notebook.md      # Regras de produto/design
+├── mockup_paginas.md           # Estrutura visual
+├── mockup_narrativa.md         # Estrutura narrativa
+└── HANDOFF_CONTEXT.md          # ESTE ARQUIVO
 ```
-
----
-
-## Por Que o Erro YAML Acontece
-
-O Quarto/Pandoc é MUITO sensível. Estas coisas QUEBRAM:
-- `>` no início de linhas em strings Markdown
-- Markdown mal formatado gerado dinamicamente
-- Caracteres especiais em contextos errados
-
-O que FUNCIONA (não mudar):
-- Callouts `:::` dentro de f-strings com escape `{{...}}`
-- Markdown básico em display()
-- Texto sem caracteres especiais
-
----
-
-## Commit Seguro
-
-Ultimo commit funcional: `c807e29`
-Para restaurar: `git checkout c807e29 -- <arquivo>`
