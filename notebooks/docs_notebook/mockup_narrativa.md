@@ -38,7 +38,7 @@ Aqui está exatamente como cada página deve ser estruturada visualmente e textu
     *   **Real (Preto/Sólido):** Deve estar visível.
     *   **Ideal (Cinza/Tracejado):** Deve servir de fundo.
     *   **Destaque:** O Delta final (Gap de Realização).
-*   **Insight Obrigatório:** "No cenário conservador, atingimos **[X]%** da meta de [KPI], garantindo viabilidade."
+*   **Insight Obrigatório:** "No cenário conservador, atingimos **[X]%** da meta de [KPI], garantindo viabilidade." TODOS INSIGHTS DEVEM SER DINAMICOS
 
 ---
 
@@ -66,7 +66,7 @@ Aqui está exatamente como cada página deve ser estruturada visualmente e textu
 *   **Subtítulo:** "Curva de Retorno Marginal ([INPUT] vs [OUTPUT])"
 *   **Visual:** Scatter Plot + Curva Polinomial (Saturação).
     *   **Cores:** Verde (Acelerando) $\to$ Amarelo (Estável) $\to$ Vermelho (Saturado).
-*   **Insight Obrigatório:** "O modelo permite escalar até **R$ [VALOR]** antes de atingir saturação (retornos decrescentes)."
+*   **Insight Obrigatório:** "O modelo permite escalar até **R$ [VALOR]** antes de atingir saturação (retornos decrescentes)."TODOS INSIGHTS DEVEM SER DINAMICOS
 
 ---
 
@@ -75,7 +75,7 @@ Aqui está exatamente como cada página deve ser estruturada visualmente e textu
 *   **Subtítulo:** "Impacto Financeiro de [ATOR DE PERDA] (R$)"
 *   **Visual:** Waterfall ou Diverging Bars.
     *   **Foco:** Mostrar dinheiro saindo do caixa por ineficiência.
-*   **Insight Obrigatório:** "A ineficiência em [ÁREA] custa **R$ [VALOR]/ano**, representando [P]% da receita."
+*   **Insight Obrigatório:** "A ineficiência em [ÁREA] custa **R$ [VALOR]/ano**, representando [P]% da receita." TODOS INSIGHTS DEVEM SER DINAMICOS
 
 ---
 

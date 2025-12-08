@@ -99,17 +99,17 @@ def format_delta(val):
     return 'color: red; font-weight: bold'
 ```
 
-### **BLOCO E: INSIGHT ESTRATÉGICO (O Veredito)**
+### **BLOCO E: INSIGHT ESTRATÉGICO (O Veredito)** TODOS INSIGHTS DEVEM SER DINAMICOS
 - **Estrutura:** Fato (Dado) -> Causa (Por que) -> Implicação (R$) -> Ação (O que fazer).
 - **Dinâmico:** Texto deve usar variáveis (`f"O valor é {x}"`), nunca hardcoded.
 - **Visual:** Box Colorido (Notebook) ou Callout Tip (PDF).
 
-### **BLOCO F: AUDITORIA & FÓRMULAS (Check Técnico)**
+### **BLOCO F: AUDITORIA & FÓRMULAS (Check Técnico)** TODOS INSIGHTS DEVEM SER DINAMICOS
 **Localizado logo APÓS o Insight** para validação rápida (Ordem Fixada).
 - **Conteúdo:** Fórmula matemática explicada e valores base.
 - **Formato:** Callout Colapsável no PDF (`::: {.callout-note collapse="true"} :::`).
 - *Exemplo:* "LTV = ARPU * Margem / Churn. Check: 100 * 0.8 / 0.05 = 1600."
-
+- nunca hardcoded
 ---
 
 ## 🎨 **4. NOMENCLATURA E ESTRUTURA DE ARQUIVOS (PADRONIZAÇÃO)**

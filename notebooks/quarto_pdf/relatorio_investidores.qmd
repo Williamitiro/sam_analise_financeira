@@ -26,6 +26,7 @@ try:
     from celula_5B_cenario_ideal import executar_analise_ideal
     from PAGINA_1_COCKPIT_V4 import executar_pagina_1
     from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
+    from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
 except ImportError as e:
     print(f"Erro: {e}")
     sys.exit(1)
@@ -47,7 +48,7 @@ Nesta seção, apresentamos o resumo executivo da operação, destacando a traç
 
 ```{python}
 #| label: pagina1
-executar_pagina_1(df_real_m, df_ideal_m, met_real, met_ideal)
+executar_pagina_1(df_real_m, df_ideal_m, met_real, met_ideal, report_mode=True)
 ```
 
 # PÁGINA 2: GROWTH MACHINE
@@ -67,3 +68,21 @@ executar_pagina_2_growth_machine(
     report_mode=True
 )
 ```
+
+# PÁGINA 3: ANÁLISE FINANCEIRA
+
+**Objetivo:** Provar que a conta fecha, comparando o cenário conservador vs benchmarks de mercado.
+
+Analisamos aqui a estrutura de custos (DRE), o fluxo de caixa, a alavancagem operacional e a evolução das margens ao longo de 36 meses.
+
+```{python}
+#| label: pagina3
+executar_pagina_3_financeiro(
+    df_real_m, 
+    df_real_s, 
+    df_ideal_m, 
+    PREMISSAS, 
+    report_mode=True
+)
+```
+

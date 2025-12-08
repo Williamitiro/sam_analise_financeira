@@ -71,10 +71,10 @@ CONTEXTO DA TABELA: "Detalhamento dos desvios mensais e impacto financeiro."
 +-----------------------------------------------------------------------+
 ```
 
-### **BLOCO D: O DIAGNÓSTICO (The Insight)**
+### **BLOCO D: O DIAGNÓSTICO (The Insight)** DINAMICO
 *Regra: Fato $\to$ Causa $\to$ Ação.*
 ```text
-INSIGHT ESTRATÉGICO:
+INSIGHT ESTRATÉGICO: 'nunca hardcoded'
 1. FATO: O LTV Real está 25% abaixo da meta nos primeiros 6 meses.
 2. CAUSA: Alta taxa de Churn (5%) no onboarding inicial puxou a curva para baixo.
 3. AÇÃO: Implementar CS Dedicado na semana 1. Impacto est.: +R$ 30k/mês.

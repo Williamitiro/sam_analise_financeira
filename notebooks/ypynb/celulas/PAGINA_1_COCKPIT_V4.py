@@ -32,7 +32,19 @@ except ImportError:
 # ============================================================================
 # VALIDAÇÕES DE DEPENDÊNCIAS
 # ============================================================================
-# (Removido para modularização)
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+try:
+    from celula_0_utils import (
+        render_atomic_block, setup_plot_style, 
+        salvar_figura_silencioso, salvar_tabela_html_silencioso
+    )
+    HAS_UTILS = True
+except ImportError:
+    HAS_UTILS = False
+    print("⚠️  celula_0_utils não encontrado. Usando fallback.")
 
 
 # ============================================================================
@@ -254,12 +266,12 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     - Textos explicativos (não só técnicos)
     - RUNWAY REAL = caixa / despesas (não infinito quando lucrativo!)
     """
-    # Adjust size for PDF
-    figsize = (10, 3) if report_mode else (18, 5)
+    # AUMENTADO: Tamanho da figura para melhor legibilidade no DOCX
+    figsize = (14, 4) if report_mode else (18, 5)
     fig, axes = plt.subplots(1, 4, figsize=figsize, dpi=150)
     
-    # Se PDF, reduzir fonte do título
-    title_size = 12 if report_mode else 16
+    # AUMENTADO: Fonte do título
+    title_size = 16 if report_mode else 18
     fig.suptitle('📊 PAINEL DE KPIs ESTRATÉGICOS', fontsize=title_size, fontweight='bold', y=1.05)
     
     m36 = df_real.iloc[-1]
@@ -276,12 +288,12 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     emoji_mrr, cor_mrr, status_mrr = calcular_status(mrr_real, mrr_ideal * 0.7)
     
     axes[0].set_facecolor('#fafafa')
-    axes[0].text(0.5, 0.82, '💰 MRR', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.82, '💰 MRR', ha='center', va='center', fontsize=20, fontweight='bold', color='#333333', transform=axes[0].transAxes)
     val_str_0 = formatar_moeda(mrr_real)
-    font_val_0 = 28 if len(val_str_0) < 10 else 22
+    font_val_0 = 36 if len(val_str_0) < 10 else 28
     axes[0].text(0.5, 0.55, val_str_0, ha='center', va='center', fontsize=font_val_0, fontweight='heavy', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.32, f'Meta: {formatar_moeda(mrr_ideal)}', ha='center', va='center', fontsize=11, color='gray', transform=axes[0].transAxes)
-    axes[0].text(0.5, 0.18, f'{emoji_mrr} Gap: {gap_mrr:+.0f}%', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_mrr, 'black'), transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.32, f'Meta: {formatar_moeda(mrr_ideal)}', ha='center', va='center', fontsize=14, color='gray', transform=axes[0].transAxes)
+    axes[0].text(0.5, 0.18, f'{emoji_mrr} Gap: {gap_mrr:+.0f}%', ha='center', va='center', fontsize=16, fontweight='bold', color=CORES.get(cor_mrr, 'black'), transform=axes[0].transAxes)
     axes[0].axis('off')
     
     # Card 2: LTV/CAC
@@ -289,10 +301,10 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     emoji_ltv, cor_ltv, status_ltv = calcular_status(ltv_cac, 3.0)
     
     axes[1].set_facecolor('#fafafa')
-    axes[1].text(0.5, 0.82, '📈 LTV/CAC', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.55, f'{ltv_cac:.1f}x', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.32, 'Meta: ≥3.0x', ha='center', va='center', fontsize=11, color='gray', transform=axes[1].transAxes)
-    axes[1].text(0.5, 0.18, f'{emoji_ltv} {status_ltv}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_ltv, 'black'), transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.82, '📈 LTV/CAC', ha='center', va='center', fontsize=20, fontweight='bold', color='#333333', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.55, f'{ltv_cac:.1f}x', ha='center', va='center', fontsize=40, fontweight='heavy', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.32, 'Meta: ≥3.0x', ha='center', va='center', fontsize=14, color='gray', transform=axes[1].transAxes)
+    axes[1].text(0.5, 0.18, f'{emoji_ltv} {status_ltv}', ha='center', va='center', fontsize=16, fontweight='bold', color=CORES.get(cor_ltv, 'black'), transform=axes[1].transAxes)
     axes[1].axis('off')
     
     # Card 3: Churn
@@ -300,26 +312,26 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     emoji_churn, cor_churn, status_churn = calcular_status(churn, 5.0, inversao=True)
     
     axes[2].set_facecolor('#fafafa')
-    axes[2].text(0.5, 0.82, '🚪 Churn', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.55, f'{churn:.1f}%', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.32, 'Meta: <5.0%', ha='center', va='center', fontsize=11, color='gray', transform=axes[2].transAxes)
-    axes[2].text(0.5, 0.18, f'{emoji_churn} {status_churn}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_churn, 'black'), transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.82, '🚪 Churn', ha='center', va='center', fontsize=20, fontweight='bold', color='#333333', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.55, f'{churn:.1f}%', ha='center', va='center', fontsize=40, fontweight='heavy', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.32, 'Meta: <5.0%', ha='center', va='center', fontsize=14, color='gray', transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.18, f'{emoji_churn} {status_churn}', ha='center', va='center', fontsize=16, fontweight='bold', color=CORES.get(cor_churn, 'black'), transform=axes[2].transAxes)
     axes[2].axis('off')
     
     # Card 4: Runway
     emoji_run, cor_run, status_run = calcular_status(runway_real, 12.0)
     
     axes[3].set_facecolor('#fafafa')
-    axes[3].text(0.5, 0.82, '⏱️ Runway', ha='center', va='center', fontsize=16, fontweight='bold', color='#333333', transform=axes[3].transAxes)
+    axes[3].text(0.5, 0.82, '⏱️ Runway', ha='center', va='center', fontsize=20, fontweight='bold', color='#333333', transform=axes[3].transAxes)
     
     if runway_real >= 999:
-        axes[3].text(0.5, 0.55, '∞', ha='center', va='center', fontsize=34, fontweight='heavy', color=CORES['sucesso'], transform=axes[3].transAxes)
-        axes[3].text(0.5, 0.32, 'Sem despesas!', ha='center', va='center', fontsize=11, color=CORES['sucesso'], transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.55, '∞', ha='center', va='center', fontsize=40, fontweight='heavy', color=CORES['sucesso'], transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.32, 'Sem despesas!', ha='center', va='center', fontsize=14, color=CORES['sucesso'], transform=axes[3].transAxes)
     else:
-        axes[3].text(0.5, 0.55, f'{runway_real:.1f}m', ha='center', va='center', fontsize=34, fontweight='heavy', transform=axes[3].transAxes)
-        axes[3].text(0.5, 0.32, f'Caixa: {formatar_moeda(caixa)}', ha='center', va='center', fontsize=10, color='gray', transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.55, f'{runway_real:.1f}m', ha='center', va='center', fontsize=40, fontweight='heavy', transform=axes[3].transAxes)
+        axes[3].text(0.5, 0.32, f'Caixa: {formatar_moeda(caixa)}', ha='center', va='center', fontsize=14, color='gray', transform=axes[3].transAxes)
     
-    axes[3].text(0.5, 0.18, f'{emoji_run} {status_run}', ha='center', va='center', fontsize=12, fontweight='bold', color=CORES.get(cor_run, 'black'), transform=axes[3].transAxes)
+    axes[3].text(0.5, 0.18, f'{emoji_run} {status_run}', ha='center', va='center', fontsize=16, fontweight='bold', color=CORES.get(cor_run, 'black'), transform=axes[3].transAxes)
     axes[3].axis('off')
     
     # Bordas visíveis
@@ -655,184 +667,198 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
 # ============================================================================
 def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     """
-    Gera insights estratégicos que mudam conforme os dados mudam.
+    Gera insights estratégicos usando padrão Gold Standard (HTML).
+    Padrão: FATO / CAUSA / IMPLICAÇÃO / AÇÃO (igual Página 2).
     """
-    if not report_mode:
-        print("\n" + "="*80)
-        print("📢 INSIGHTS ESTRATÉGICOS - O QUE FAZER COM ESTES DADOS")
-        print("="*80)
-    else:
-        display(Markdown("## 🧠 INSIGHTS ESTRATÉGICOS DO COCKPIT"))
+    # Título da seção
+    display(Markdown("## 🧠 INSIGHTS ESTRATÉGICOS DO COCKPIT"))
     
-    insights = []
-    
+    # =========================================================================
     # INSIGHT 1: LTV/CAC
+    # =========================================================================
     ltv_cac = met_real.get('ltv_cac_medio', 0)
     ltv_cac_ideal = met_ideal.get('ltv_cac_medio', 3.0)
     
     if ltv_cac >= 5.0:
-        status = "EXCELENTE (TOP 10% do mercado)"
-        acao = "Escalar agressivamente - ROI comprovado"
-        emoji = "🟢"
+        status_cor = "#388E3C"  # Verde
+        status_bg = "#E8F5E9"
     elif ltv_cac >= 3.0:
-        status = "SAUDÁVEL"
-        acao = "Otimizar churn para aumentar LTV"
-        emoji = "✅"
+        status_cor = "#388E3C"
+        status_bg = "#E8F5E9"
     elif ltv_cac >= 1.5:
-        status = "ATENÇÃO"
-        acao = "Reduzir CAC ou aumentar retenção URGENTE"
-        emoji = "⚠️"
+        status_cor = "#FBC02D"  # Amarelo
+        status_bg = "#FFFDE7"
     else:
-        status = "CRÍTICO"
-        acao = "PARAR aquisição paga. Focar 100% em retenção."
-        emoji = "🔴"
+        status_cor = "#D32F2F"  # Vermelho
+        status_bg = "#FFEBEE"
+    
+    insight_1 = {
+        "fato": f"LTV/CAC = {ltv_cac:.2f}x no cenário conservador.",
+        "causa": "Relação entre valor do cliente (LTV) e custo de aquisição (CAC).",
+        "implicacao": f"Cada R$ 1 investido em aquisição retorna R$ {ltv_cac:.2f}.",
+        "acao": "Escalar aquisição se > 3.0x. Revisar CAC/Churn se < 3.0x."
+    }
     
     if report_mode:
-        # Markdown Callout (Gold Standard)
+        # Quarto Callout para PDF/DOCX
+        callout_type = "tip" if ltv_cac >= 3.0 else "warning" if ltv_cac >= 1.5 else "important"
         insight_md = f"""
-::: {{.callout-{ 'tip' if 'SAUDÁVEL' in status or 'EXCELENTE' in status else 'warning' if 'ATENÇÃO' in status else 'important' }}}
-### 1. Saúde da Unidade Econômica
-- **Métrica:** LTV/CAC = {ltv_cac:.2f}x (Ideal: {ltv_cac_ideal:.1f}x)
-- **Status:** {status}
-- **Implicação:** Cada R$ 1 investido retorna R$ {ltv_cac:.2f}.
-- **Ação:** {acao}
+::: {{.callout-{callout_type}}}
+## 💡 INSIGHT 1: Saúde Unitária (LTV/CAC)
+- **FATO:** {insight_1['fato']}
+- **CAUSA:** {insight_1['causa']}
+- **IMPLICAÇÃO:** {insight_1['implicacao']}
+- **AÇÃO RECOMENDADA:** {insight_1['acao']}
 :::
 """
         display(Markdown(insight_md))
     else:
-        # Print legacy
-        print(f"\n{emoji} INSIGHT 1: Saúde da Unidade Econômica")
-        print(f"   Métrica: LTV/CAC = {ltv_cac:.2f}x (ideal: {ltv_cac_ideal:.1f}x)")
-        print(f"   Status: {status}")
-        print(f"   Implicação: Cada R$ 1 em aquisição retorna R$ {ltv_cac:.2f}")
-        print(f"   Ação: {acao}")
+        # HTML Rico para Notebook
+        html = f"""
+<div style="background-color: {status_bg}; border-left: 5px solid {status_cor}; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+    <h4 style="margin-top: 0; color: {status_cor};">💡 INSIGHT 1: Saúde Unitária (LTV/CAC)</h4>
+    <ul style="margin-bottom: 0;">
+        <li><b>FATO:</b> {insight_1['fato']}</li>
+        <li><b>CAUSA:</b> {insight_1['causa']}</li>
+        <li><b>IMPLICAÇÃO:</b> {insight_1['implicacao']}</li>
+        <li><b>AÇÃO RECOMENDADA:</b> {insight_1['acao']}</li>
+    </ul>
+</div>
+"""
+        display(HTML(html))
     
+    # =========================================================================
     # INSIGHT 2: Gap de Receita
+    # =========================================================================
     mrr_real = met_real.get('mrr_final', 0)
     mrr_ideal = met_ideal.get('mrr_final', mrr_real)
     gap = mrr_ideal - mrr_real
     gap_pct = (gap / mrr_ideal * 100) if mrr_ideal > 0 else 0
     
     if gap <= 0:
-        status = "SUPERANDO META"
-        acao = "Manter estratégia atual e documentar práticas"
-        emoji = "🟢"
+        status_cor = "#388E3C"
+        status_bg = "#E8F5E9"
     elif gap_pct < 30:
-        status = "PRÓXIMO DA META"
-        acao = "Ajustes finos em conversão e retenção"
-        emoji = "✅"
+        status_cor = "#FBC02D"
+        status_bg = "#FFFDE7"
     else:
-        status = "GAP SIGNIFICATIVO"
-        custo_oportunidade = gap * 36
-        acao = f"{formatar_moeda(custo_oportunidade)} deixados na mesa em 3 anos"
-        emoji = "⚠️"
+        status_cor = "#D32F2F"
+        status_bg = "#FFEBEE"
+    
+    insight_2 = {
+        "fato": f"Gap de {formatar_moeda(gap)} ({gap_pct:.0f}%) entre Real e Ideal.",
+        "causa": "Diferença entre projeção conservadora e cenário otimista.",
+        "implicacao": f"Potencial de {formatar_moeda(gap * 36)} em 3 anos não capturado.",
+        "acao": "Aumentar conversão ou reduzir churn para fechar gap."
+    }
     
     if report_mode:
+        callout_type = "tip" if gap <= 0 else "warning"
         insight_md = f"""
-::: {{.callout-{ 'tip' if gap <= 0 else 'warning' }}}
-### 2. Gap de Receita vs Potencial
-- **Real vs Ideal:** {formatar_moeda(mrr_real)} vs {formatar_moeda(mrr_ideal)}
-- **Gap:** {formatar_moeda(gap)} ({gap_pct:.0f}%)
-- **Status:** {status}
-- **Ação:** {acao}
+::: {{.callout-{callout_type}}}
+## 💡 INSIGHT 2: Gap de Receita
+- **FATO:** {insight_2['fato']}
+- **CAUSA:** {insight_2['causa']}
+- **IMPLICAÇÃO:** {insight_2['implicacao']}
+- **AÇÃO RECOMENDADA:** {insight_2['acao']}
 :::
 """
         display(Markdown(insight_md))
     else:
-        print(f"\n{emoji} INSIGHT 2: Gap de Receita vs Potencial")
-        print(f"   Métrica: Real {formatar_moeda(mrr_real)} vs Ideal {formatar_moeda(mrr_ideal)}")
-        print(f"   Gap: -{formatar_moeda(gap)} ({gap_pct:.0f}% abaixo)")
-        print(f"   Status: {status}")
-        print(f"   Ação: {acao}")
+        html = f"""
+<div style="background-color: {status_bg}; border-left: 5px solid {status_cor}; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+    <h4 style="margin-top: 0; color: {status_cor};">💡 INSIGHT 2: Gap de Receita</h4>
+    <ul style="margin-bottom: 0;">
+        <li><b>FATO:</b> {insight_2['fato']}</li>
+        <li><b>CAUSA:</b> {insight_2['causa']}</li>
+        <li><b>IMPLICAÇÃO:</b> {insight_2['implicacao']}</li>
+        <li><b>AÇÃO RECOMENDADA:</b> {insight_2['acao']}</li>
+    </ul>
+</div>
+"""
+        display(HTML(html))
     
-    # INSIGHT 3: Runway/Caixa - CALCULADO CORRETAMENTE como caixa/despesas
+    # =========================================================================
+    # INSIGHT 3: Runway/Caixa
+    # =========================================================================
     m36 = df_real.iloc[-1]
     caixa_final = m36.get('caixa', 0)
     despesas_mensais = m36.get('total_cogs', 0) + m36.get('total_opex', 0)
     runway = caixa_final / despesas_mensais if despesas_mensais > 0 else 999
-    burn_rate = m36.get('burn_rate', 0)
     
-    # Status baseado no runway REAL (caixa/despesas), não no burn_rate
-    if runway > 24:
-        status = "MUITO CONFORTÁVEL"
-        acao = "Excelente posição de caixa, considerar investir em crescimento"
-        emoji = "🟢"
-    elif runway > 12:
-        status = "CONFORTÁVEL"
-        acao = "Manter disciplina de custos"
-        emoji = "✅"
+    if runway > 12:
+        status_cor = "#388E3C"
+        status_bg = "#E8F5E9"
     elif runway > 6:
-        status = "ATENÇÃO"
-        acao = f"Revisar custos. Despesas mensais: {formatar_moeda(despesas_mensais)}"
-        emoji = "⚠️"
+        status_cor = "#FBC02D"
+        status_bg = "#FFFDE7"
     else:
-        status = "CRÍTICO"
-        acao = f"SEM RECEITA = {runway:.0f} meses até quebrar! Despesas: {formatar_moeda(despesas_mensais)}/mês"
-        emoji = "🔴"
+        status_cor = "#D32F2F"
+        status_bg = "#FFEBEE"
+    
+    insight_3 = {
+        "fato": f"Runway de {runway:.1f} meses com caixa de {formatar_moeda(caixa_final)}.",
+        "causa": f"Caixa disponível ÷ Despesas mensais ({formatar_moeda(despesas_mensais)}).",
+        "implicacao": "Tempo de sobrevivência sem nova receita.",
+        "acao": "Manter >12 meses. Se <6 meses, revisar custos urgente."
+    }
     
     if report_mode:
+        callout_type = "tip" if runway > 12 else "important"
         insight_md = f"""
-::: {{.callout-{ 'tip' if 'CONFORTÁVEL' in status else 'important' }}}
-### 3. Saúde de Caixa & Runway
-- **Runway:** {runway:.1f} meses (Caixa: {formatar_moeda(caixa_final)})
-- **Burn Rate:** {formatar_moeda(burn_rate) if burn_rate > 0 else 'R$ 0 (Lucrativo)'}
-- **Status:** {status}
-- **Ação:** {acao}
+::: {{.callout-{callout_type}}}
+## 💡 INSIGHT 3: Saúde de Caixa
+- **FATO:** {insight_3['fato']}
+- **CAUSA:** {insight_3['causa']}
+- **IMPLICAÇÃO:** {insight_3['implicacao']}
+- **AÇÃO RECOMENDADA:** {insight_3['acao']}
 :::
 """
         display(Markdown(insight_md))
     else:
-        print(f"\n{emoji} INSIGHT 3: Saúde de Caixa")
-        print(f"   Caixa: {formatar_moeda(caixa_final)}")
-        print(f"   Despesas mensais: {formatar_moeda(despesas_mensais)} (COGS + OPEX)")
-        print(f"   Runway: {runway:.1f} meses (se parar de faturar)")
-        print(f"   Burn Rate (fluxo negativo): {formatar_moeda(burn_rate) if burn_rate > 0 else 'R$ 0 (lucrativo)'}")
-        print(f"   Status: {status}")
-        print(f"   Ação: {acao}")
+        html = f"""
+<div style="background-color: {status_bg}; border-left: 5px solid {status_cor}; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+    <h4 style="margin-top: 0; color: {status_cor};">💡 INSIGHT 3: Saúde de Caixa</h4>
+    <ul style="margin-bottom: 0;">
+        <li><b>FATO:</b> {insight_3['fato']}</li>
+        <li><b>CAUSA:</b> {insight_3['causa']}</li>
+        <li><b>IMPLICAÇÃO:</b> {insight_3['implicacao']}</li>
+        <li><b>AÇÃO RECOMENDADA:</b> {insight_3['acao']}</li>
+    </ul>
+</div>
+"""
+        display(HTML(html))
     
-    # INSIGHT 4: Churn
-    churn_real = met_real.get('churn_medio', 0)
-    churn_ideal = 5.0  # 5% é benchmark SaaS
-    
-    if churn_real <= 3:
-        status = "EXCELENTE (Best in Class)"
-        acao = "Mantém! Churn baixo é seu diferencial competitivo"
-        emoji = "🟢"
-    elif churn_real <= 5:
-        status = "BOM (Dentro do benchmark)"
-        acao = "Monitorar e prevenir aumento"
-        emoji = "✅"
-    elif churn_real <= 8:
-        status = "ATENÇÃO"
-        acao = "Investir em Customer Success e onboarding"
-        emoji = "⚠️"
-    else:
-        status = "CRÍTICO"
-        acao = f"Churn de {churn_real:.1f}% destrói valor. Prioridade MÁXIMA em retenção"
-        emoji = "🔴"
+    # =========================================================================
+    # BLOCO DE AUDITORIA (PADRÃO PÁGINA 2)
+    # =========================================================================
+    formulas = """
+1. **LTV** = ARPU × (1 / Churn Rate)
+2. **CAC** = (Gasto Marketing + Gasto Vendas) / Novos Clientes
+3. **LTV/CAC** = LTV ÷ CAC (Meta: ≥3.0x)
+4. **Runway** = Caixa Disponível ÷ Despesas Mensais
+5. **Gap** = MRR Ideal - MRR Real
+"""
     
     if report_mode:
-        insight_md = f"""
-::: {{.callout-{ 'tip' if 'EXCELENTE' in status or 'BOM' in status else 'important' }}}
-### 4. Retenção (Churn)
-- **Churn Médio:** {churn_real:.1f}% (Benchmark: <{churn_ideal:.0f}%)
-- **Status:** {status}
-- **Ação:** {acao}
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## 🔍 AUDITORIA & FÓRMULAS
+{formulas}
 :::
 """
-        display(Markdown(insight_md))
+        display(Markdown(audit_md))
         display(Markdown("\\newpage"))
     else:
-        print(f"\n{emoji} INSIGHT 4: Retenção de Clientes")
-        print(f"   Métrica: Churn médio = {churn_real:.1f}% (benchmark: <{churn_ideal:.0f}%)")
-        print(f"   Status: {status}")
-        print(f"   Ação: {acao}")
+        audit_html = f"""
+<div style="font-size: 11px; color: #555; background-color: #f9f9f9; padding: 10px; border: 1px solid #eee; margin-top: 20px; border-radius: 4px;">
+    <b>🔍 AUDITORIA & FÓRMULAS:</b><br>
+    {formulas.replace(chr(10), '<br>')}
+</div>
+"""
+        display(HTML(audit_html))
     
-    if not report_mode:
-        print("\n" + "-"*80)
-        print("📌 NOTA: Insights gerados automaticamente. Se premissas mudarem, insights atualizam.")
-    
-    return insights
+    return [insight_1, insight_2, insight_3]
 
 # ============================================================================
 # EXECUÇÃO PRINCIPAL
@@ -851,9 +877,8 @@ def executar_pagina_1(df_real_m, df_ideal, met_real, met_ideal, report_mode=Fals
     os.makedirs('outputs/metadata', exist_ok=True)
     os.makedirs('outputs/tabelas', exist_ok=True)
 
-    # 1. Tabela Executiva (Silenciar em PDF por enquanto para evitar logs sujos)
-    if not report_mode:
-        gerar_tabela_executiva(df_real_m, df_ideal, met_real, met_ideal)
+    # 1. Tabela Executiva
+    gerar_tabela_executiva(df_real_m, df_ideal, met_real, met_ideal, report_mode=report_mode)
 
     # 2. KPI Cards
     gerar_kpi_cards(df_real_m, met_real, met_ideal, report_mode=report_mode)
