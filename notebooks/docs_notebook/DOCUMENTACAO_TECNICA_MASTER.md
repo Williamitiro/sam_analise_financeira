@@ -1,145 +1,139 @@
-# 📘 DOCUMENTAÇÃO TÉCNICA MASTER V20.0 - JUPYTER & QUARTO PDF REPORT
-**Projeto:** SAM Análise Financeira - Investor Deck Generator
-**Versão:** 20.0 (Gold Standard - Modular V7)
-**Status:** ✅ Produção (Páginas 1 e 2 Completas + PDF Automatizado)
-**Data:** 07/12/2025
+# DOCUMENTACAO TECNICA MASTER V21.0 - JUPYTER E QUARTO REPORT
+**Projeto:** SAM Analise Financeira - Investor Deck Generator  
+**Versao:** 21.0 (Gold Standard - Tiers 1, 2 e 3 Completos)  
+**Status:** Producao (HTML/DOCX via Quarto)  
+**Data:** 08/12/2025
 
 ---
 
-## 🏗️ 1. Arquitetura do Sistema
+## 1. Arquitetura do Sistema
 
-O projeto migrou de um Notebook monolítico para uma arquitetura modular baseada em scripts Python, orquestrada por um loader central e renderizada via Quarto.
+O projeto usa arquitetura modular baseada em scripts Python, orquestrada por Quarto.
 
 ### 1.1 Diagrama de Componentes
 
-```mermaid
-graph TD
-    A[notebooks/ypynb/celulas/*.py] -->|Import| B(loader_dados_relatorio.py)
-    B -->|Executa| C[Módulos de Página]
-    C -->|Gera| D[DataFrames & Figuras]
-    E[relatorio_investidores.qmd] -->|Chama| B
-    E -->|Renderiza via Quarto| F((PDF Relatório Final))
-    
-    subgraph "Módulos de Página"
-        P1[PAGINA_1_COCKPIT.py]
-        P2[PAGINA_2_GROWTH.py]
-    end
-    
-    subgraph "Core Utilities"
-        U[celula_0_utils.py]
-        M[celula_4_motor.py]
-    end
-    
-    P1 --> U
-    P2 --> U
-    P1 --> M
 ```
+notebooks/ypynb/celulas/
+├── celula_0_utils.py           # Shared Utils (render_atomic_block, formatadores)
+├── celula_2_premissas.py       # Configuracao Central (PREMISSAS - 150+ params)
+├── celula_4_motor.py           # Motor de Simulacao Financeira
+├── celula_5A_bootstrap_real.py # Gera df_real_m (cenario conservador)
+├── celula_5B_cenario_ideal.py  # Gera df_ideal_m (cenario benchmark)
+├── PAGINA_1_COCKPIT_V4.py      # Tier 1: Executive Cockpit
+├── PAGINA_2_GROWTH.py          # Tier 2: Growth Engine
+└── PAGINA_3_FINANCEIRO.py      # Tier 3: Financeiro (DRE + Fluxo + Margens)
 
-### 1.2 Estrutura de Diretórios Crítica
+notebooks/quarto_pdf/
+├── relatorio_investidores.qmd  # Template original (Tiers 1-3)
+└── relatorio_completo.qmd      # Template premium com Carta ao Leitor
 
-```
-e:\Projetos\sam_analise_financeira\notebooks\
-├── quarto_pdf\
-│   └── relatorio_investidores.qmd       # 📄 Template do Relatório PDF
-├── ypynb\
-│   ├── loader_dados_relatorio.py        # 🚀 Orquestrador Principal
-│   └── celulas\
-│       ├── celula_0_utils.py            # 🛠️ Shared Utils (HTML/PDF Sanitizer)
-│       ├── celula_2_premissas.py        # ⚙️ Configuração Central (PREMISSAS)
-│       ├── celula_4_motor.py            # 🧮 Motor de Simulação Financeira
-│       ├── PAGINA_1_COCKPIT.py          # 📊 Visualizações Pág. 1
-│       └── PAGINA_2_GROWTH.PY           # 📊 Visualizações Pág. 2
+notebooks/docs_notebook/
+├── HANDOFF_CONTEXT.md          # Contexto para handoff entre AIs
+├── diretrizes_checklist.md     # CHECKLIST OBRIGATORIO antes de entregar
+├── diretrizes_notebook.md      # Regras de produto/design
+├── mockup_paginas.md           # Estrutura visual padrao
+├── mockup_narrativa.md         # Estrutura narrativa (5 Atos)
+└── DOCUMENTACAO_TECNICA_MASTER.md  # ESTE ARQUIVO
 ```
 
 ---
 
-## 🚀 2. Guia de Uso (Workflow)
+## 2. Guia de Uso (Workflow)
 
-### 2.1 Gerando o Relatório PDF
-
-O comando deve ser executado da raiz do projeto (onde está o `venv`). **Não requer abrir o Jupyter Notebook.**
+### 2.1 Gerando o Relatorio HTML
 
 ```bash
-quarto render notebooks/quarto_pdf/relatorio_investidores.qmd --to pdf
+quarto render notebooks/quarto_pdf/relatorio_completo.qmd --to html
 ```
 
-**O que acontece nos bastidores:**
-1. Quarto inicializa um kernel Python.
-2. `relatorio_investidores.qmd` importa os scripts.
-3. `executar_analise_real` e `ideal` rodam as simulações.
-4. `render_atomic_block` (em `utils.py`) detecta `report_mode=True`.
-5. Gráficos são salvos como PNG e tabelas convertidas para Markdown puro.
-6. PDF final é gerado em `notebooks/quarto_pdf/relatorio_investidores.pdf`.
+### 2.2 Gerando o Relatorio DOCX
 
-### 2.2 Trabalhando no Jupyter Notebook (Desenvolvimento)
+```bash
+quarto render notebooks/quarto_pdf/relatorio_completo.qmd --to docx
+```
 
-1. Abra `notebooks/ypynb/real_vs_ideal.ipynb`.
-2. As células agora apenas importam e chamam as funções.
-3. `report_mode=False` é ativado automaticamente.
-4. Output é gerado com HTML/CSS rico (cores, badges, interatividade).
+### 2.3 O que acontece nos bastidores
 
----
-
-## 🛠️ 3. Padrões de Desenvolvimento (Gold Standard)
-
-### 3.1 Anatomia de uma Página (`PAGINA_X.py`)
-
-Todo arquivo de página deve seguir esta estrutura:
-
-1. **Imports:** Apenas o necessário + `celula_0_utils`.
-2. **Função `gerar_viz_X`:** Cria 1 gráfico específico. Retorna `(fig, df_tabela, insight)`.
-3. **Função `executar_pagina_X`:**
-   - Recebe `df_real`, `df_ideal`, `report_mode`.
-   - Chama as funções de visualização.
-   - Chama `render_atomic_block` para imprimir o output.
-
-### 3.2 O Utilitário `render_atomic_block`
-
-Localizado em `celula_0_utils.py`, é o coração da compatibilidade Híbrida (Notebook/PDF).
-
-- **Entradas:** `chart_id`, Títulos, Figura, Tabela, Insight.
-- **Lógica Dual:**
-  - **Se PDF (`report_mode=True`):**
-    - Tabela viram Markdown puro (remove HTML tags).
-    - Insights usam Quarto Callouts (`::: {.callout-tip} :::`).
-    - Usa `\newpage` para quebra de página.
-    - Separador visual é `***` (evita conflito YAML com `---`).
-  - **Se Notebook (`report_mode=False`):**
-    - Tabelas usam HTML estilizado (Pandas Styler/CSS).
-    - Insights usam `<div>` coloridas.
+1. Quarto inicializa kernel Python
+2. Imports dos modulos de celulas
+3. Simulacoes Real e Ideal executadas silenciosamente
+4. Tiers 1, 2 e 3 renderizados com `report_mode=True`
+5. Graficos salvos como PNG, tabelas em Markdown puro
+6. Arquivo final gerado em `notebooks/quarto_pdf/`
 
 ---
 
-## ⚠️ 4. Troubleshooting & Lições Aprendidas
+## 3. Padroes de Desenvolvimento
 
-### 🚨 Erro: `YAML parse exception`
-- **Sintoma:** O comando `quarto render` falha dizendo que não encontrou `,` ou `}` no YAML.
-- **Causa Real:** Geralmente **NÃO** é o cabeçalho YAML. É algum output Python imprimindo caracteres reservados do Markdown/Pandoc, como `---` (traço triplo) ou HTML malformado no meio do fluxo.
-- **Solução:**
-  1. Use `display(Markdown("***"))` em vez de `---`.
-  2. Nunca imprima HTML cru (`<span>`, `<div>`) em `report_mode=True`. O `render_atomic_block` já trata isso removendo tags via Regex.
+### 3.1 Regras ABSOLUTAS (Ver diretrizes_checklist.md)
 
-### 🚨 Erro: `ImportError: No module named 'celula_2_premissas'`
-- **Causa:** O script Python roda dentro do contexto do arquivo `.qmd`, que pode não ter o diretório `celulas` no `sys.path`.
-- **Solução:** No bloco de setup do `.qmd`, adicione explicitamente:
-  ```python
-  sys.path.append(os.path.join(root_dir, 'notebooks/ypynb/celulas/'))
-  ```
+| Proibido | Fazer Assim |
+|----------|-------------|
+| `---` em Markdown dinamico | Usar `***` |
+| `{{` em strings normais | Usar `{` ou f-string |
+| `{{{{` em f-strings | Usar `{{` |
+| figsize (14,6) para HTML | Usar `(10, 5)` |
+| Textos hardcoded | Tudo dinamico |
+| Bulk replace de `{{` | NAO FAZER |
 
-### 🚨 Gráficos Cortados no PDF
-- **Causa:** Tamanho padrão do matplotlib excede margens A4.
-- **Solução:** Padronizar `figsize=(10, 6)` ou similar no `setup_style` do `utils.py`.
+### 3.2 Estrutura de Visualizacao (Gold Standard)
+
+Cada VIZ deve ter:
+1. Titulo/Pergunta de negocio
+2. Grafico (salvo com `salvar_figura_silencioso`)
+3. COMO LER (explicacao para leigo)
+4. Tabela de prova
+5. Callout INSIGHT (FATO + CAUSA + IMPLICACAO + ACAO)
+6. Callout AUDITORIA (Fonte + Formulas)
+
+### 3.3 Padrao para Callouts Quarto
+
+```python
+# COM variaveis = f-string + {{
+insight_md = f"""
+::: {{.callout-tip}}
+## Titulo com {variavel}
+:::
+"""
+
+# SEM variaveis = string normal + {
+audit_md = """
+::: {.callout-note collapse="true"}
+## Auditoria
+:::
+"""
+```
 
 ---
 
-## 🗑️ 5. Arquivos Obsoletos (Deletados)
+## 4. Troubleshooting
 
-Os seguintes arquivos foram consolidados neste documento e removidos para limpeza:
-- `HANDOFF_FINAL_PAGINA2.md`
-- `HANDOFF_GERAL_STATUS.md`
-- `HANDOFF_GERAL_V7.md`
-- `plano_completo_notebook.md`
-- `mockup_narrativa.md`
-- `mockup_paginas.md`
+### Erro: YAML parse exception
+- **Causa:** `---` em display(Markdown()) ou caracteres especiais
+- **Solucao:** Usar `***` para separadores
 
-Use este `DOCUMENTACAO_TECNICA_MASTER.md` e o `diretrizes_notebook.md` (Design System) como únicas fontes de verdade.
+### Erro: ModuleNotFoundError
+- **Causa:** `root_dir` com caminho errado
+- **Solucao:** Verificar niveis de `../` no os.path.abspath()
+
+### Graficos com Scroll no HTML
+- **Causa:** figsize muito grande
+- **Solucao:** Usar `figsize=(10, 5)`
+
+### Callout aparece como texto literal
+- **Causa:** `{{` em string normal (deveria ser `{`)
+- **Solucao:** Verificar se e f-string ou string normal
+
+---
+
+## 5. Documentacao Relacionada
+
+| Arquivo | Proposito |
+|---------|-----------|
+| `diretrizes_checklist.md` | Checklist OBRIGATORIO antes de entregar |
+| `diretrizes_notebook.md` | Regras de produto e design |
+| `HANDOFF_CONTEXT.md` | Contexto para handoff entre AIs |
+| `mockup_paginas.md` | Estrutura visual padrao |
+| `mockup_narrativa.md` | Estrutura narrativa (5 Atos) |
+
+**Regra:** Sempre ler `diretrizes_checklist.md` antes de desenvolver.

@@ -44,7 +44,7 @@ try:
     HAS_UTILS = True
 except ImportError:
     HAS_UTILS = False
-    print("⚠️  celula_0_utils não encontrado. Usando fallback.")
+    # print("⚠️  celula_0_utils não encontrado. Usando fallback.")
 
 
 # ============================================================================
@@ -62,6 +62,12 @@ CORES = {
     'atencao': '#FF9800',     # Amarelo/Laranja
     'critico': '#F44336',     # Vermelho
 }
+
+# FONTES DE DADOS DINAMICAS
+# Cada visualizacao define sua propria fonte baseada nos dados usados
+def gerar_fonte(dfs_usados):
+    """Gera texto de fonte dinamico baseado nos DataFrames utilizados."""
+    return f"Fonte: {' | '.join(dfs_usados)}"
 
 # Formatadores para moeda e percentual
 def formatar_moeda(valor, prefixo='R$ '):
@@ -252,6 +258,7 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
         df_tab = df_tab.fillna("")
         display(Markdown(df_tab.to_markdown(index=False)))
         display(Markdown("**Nota:** Benchmark = Cenário Ideal."))
+        display(Markdown("*Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)*"))
         display(Markdown("\\newpage"))
     
     return True
@@ -266,13 +273,13 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     - Textos explicativos (não só técnicos)
     - RUNWAY REAL = caixa / despesas (não infinito quando lucrativo!)
     """
-    # AUMENTADO: Tamanho da figura para melhor legibilidade no DOCX
-    figsize = (14, 4) if report_mode else (18, 5)
+    # AUMENTADO: Tamanho da figura para melhor legibilidade no DOCX (Menos achatado)
+    figsize = (16, 5) if report_mode else (18, 6)
     fig, axes = plt.subplots(1, 4, figsize=figsize, dpi=150)
     
     # AUMENTADO: Fonte do título
-    title_size = 16 if report_mode else 18
-    fig.suptitle('📊 PAINEL DE KPIs ESTRATÉGICOS', fontsize=title_size, fontweight='bold', y=1.05)
+    title_size = 18 if report_mode else 20
+    fig.suptitle('📊 PAINEL DE KPIs ESTRATÉGICOS', fontsize=title_size, fontweight='bold', y=0.98)
     
     m36 = df_real.iloc[-1]
     
@@ -346,8 +353,11 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     
     if report_mode:
         plt.close(fig)
+        display(Markdown("## 📊 1.0 PAINEL DE CONTROLE (KPIs)"))
+        display(Markdown("**Visão Geral:** Indicadores chave de performance no final do período (M36)."))
         display(Markdown("![KPI Cards](outputs/figs/pg1_kpi_cards.png)"))
-        display(Markdown("\\newpage"))
+        display(Markdown("*Fonte: df_real_m (Simulacao Real) - Snapshot M36*"))
+        display(Markdown("***"))
     else:
         plt.show()
     
@@ -361,7 +371,7 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
     Gráfico com 2 eixos Y: MRR (R$) + Usuários Ativos.
     CORRIGIDO: Grid visível, Tabela Referência.
     """
-    print("DEBUG: Executing gerar_grafico_temporal_correlacao V2.1 (FIX NAMEERROR)")
+    # print("DEBUG: Executing gerar_grafico_temporal_correlacao V2.1 (FIX NAMEERROR)")
     
     # === DEFINIÇÃO ANTECIPADA DE DADOS_TABELA (PARA EVITAR NAMEERROR) ===
     # Isso garante que a variável exista mesmo que algo falhe depois
@@ -395,11 +405,14 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
                 f"{gap_p:.1f}%"
             ])
             
-    # Criar figura
-    figsize = (10, 5) if report_mode else (14, 8)
+    # Criar figura (Mais alta para evitar achatamento)
+    figsize = (10, 6) if report_mode else (14, 8)
     fig = plt.figure(figsize=figsize, dpi=150)
     
-    ax1 = fig.add_axes([0.1, 0.1, 0.85, 0.8])
+    # Ajuste explícito de margens para evitar cortes de labels
+    plt.subplots_adjust(top=0.90, bottom=0.15, left=0.10, right=0.90)
+    
+    ax1 = fig.add_axes([0.1, 0.12, 0.85, 0.75])  # Mais espaco no topo para labels
     
     meses = df_real['mes'].values
     mrr_ideal = df_ideal['mrr'].values if len(df_ideal) > 0 else mrr_real_arr * 1.5
@@ -428,11 +441,11 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
     # Grid e Ancoras
     ax1.grid(True, alpha=0.4, axis='y')
     
-    trimestres = [3, 6, 9, 12, 18, 24, 30, 36]
+    # Ancoras verticais (sem labels no topo para evitar sobreposicao)
+    trimestres = [6, 12, 18, 24, 30, 36]
     for t in trimestres:
         if t <= len(meses):
-            ax1.axvline(x=t, color='#cccccc', linestyle='--', alpha=0.7)
-            ax1.text(t, ax1.get_ylim()[1] * 0.98, f'M{t}', ha='center', fontsize=8, color='gray')
+            ax1.axvline(x=t, color='#cccccc', linestyle='--', alpha=0.5)
 
     ax1.set_title('📈 EVOLUÇÃO MRR vs USUÁRIOS', fontsize=13, fontweight='bold', pad=15)
     ax1.legend([line1, line2, line3], ['MRR Real', 'MRR Ideal', 'Usuários'], loc='upper left')
@@ -444,13 +457,37 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
     if report_mode:
         plt.close(fig)
         display(Markdown("### 📈 EVOLUÇÃO MRR vs USUÁRIOS"))
+        display(Markdown("**Pergunta:** O crescimento de usuarios esta se convertendo em receita proporcional?"))
         display(Markdown("![Evolução Temporal](outputs/figs/pg1_temporal_correlacao.png)"))
+        display(Markdown("*Fonte: df_real_m vs df_ideal_m | Projecao 36 meses*"))
+        
+        # COMO LER
+        como_ler = """
+::: {.callout-note appearance="simple"}
+### 📖 COMO LER ESTE GRÁFICO
+**O QUE ESTOU VENDO?**
+A correlação entre o crescimento da receita recorrente (MRR - Linha Sólida) e a base de usuários ativos (Linha Pontilhada).
+
+**ELEMENTOS:**
+- **Linha Preta (MRR Real):** Receita recorrente mensal no cenário conservador.
+- **Linha Tracejada Verde (MRR Ideal):** Meta de receita baseada em benchmarks de mercado.
+- **Linha Pontilhada Roxa (Usuários):** Quantidade de clientes ativos pagantes (Eixo Direito).
+
+**INTERPRETAÇÃO:**
+- As linhas devem crescer juntas. Se a linha Roxa (Usuários) sobe mas a Preta (MRR) não, indica queda no ticket médio ou churn financeiro.
+:::
+"""
+        display(Markdown(como_ler))
+        
         display(Markdown("***"))
         display(Markdown("#### 📋 TABELA DE REFERÊNCIA"))
         
         cols = ['Período', 'MRR Real', 'MRR Ideal', 'Usuários', 'Gap %']
         df_tab = pd.DataFrame(dados_tabela, columns=cols)
         display(Markdown(df_tab.to_markdown(index=False)))
+        
+        # Fonte
+        display(Markdown("*Fonte: df_real_m vs df_ideal_m - Projecao 36 meses*"))
         display(Markdown("\\newpage"))
     else:
         plt.show()
@@ -546,8 +583,11 @@ def gerar_tabela_milestones(df_real, df_ideal, met_real, met_ideal, report_mode=
     else:
         # Render markdown table for PDF
         df_milestones = pd.DataFrame(tabela_dados, columns=['Milestone', 'Meta', 'Real', 'Status'])
-        display(Markdown("#### 🏁 TABELA DE MILESTONES"))
+        display(Markdown("#### 🏁 TABELA DE MILESTONES (REAL VS IDEAL)"))
+        display(Markdown("**Objetivo:** Verificar se estamos atingindo os marcos de crescimento no tempo previsto pelo benchmark."))
         display(Markdown(df_milestones.to_markdown(index=False)))
+        display(Markdown("*Fonte: df_real_m vs df_ideal_m (Metas do Benchmark)*"))
+        display(Markdown("***"))
     
     return True
 
@@ -561,9 +601,12 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
     """
     Gráfico com BARRAS DUPLAS: Marketing (azul) x MRR (verde) lado a lado.
     """
-    # Adjust size for PDF
-    figsize = (10, 5) if report_mode else (16, 8)
+    # Adjust size for PDF (menos achatado)
+    figsize = (10, 6) if report_mode else (16, 8)
     fig, ax = plt.subplots(figsize=figsize, dpi=150)
+    
+    # Ajuste de margens
+    plt.subplots_adjust(top=0.90, bottom=0.15, left=0.10, right=0.95)
     
     meses = df_real['mes'].values
     marketing = df_real['gasto_marketing'].values
@@ -618,12 +661,11 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
     # Legenda
     ax.legend(loc='upper left', fontsize=11, framealpha=0.9)
     
-    # Âncoras verticais anuais
+    # Ancoras verticais anuais (sem labels no topo para evitar sobreposicao com Ef)
     for ano in [12, 24, 36]:
         idx = ano - 1
         if idx < len(x):
-            ax.axvline(x=x[idx], color='gray', linestyle='--', linewidth=1, alpha=0.5)
-            ax.text(x[idx], ax.get_ylim()[1]*0.95, f'ANO {ano//12}', ha='center', fontsize=9, color='gray')
+            ax.axvline(x=x[idx], color='gray', linestyle='--', linewidth=1, alpha=0.3)
     
     # Box com resumo - POSIÇÃO: canto superior ESQUERDO, abaixo da legenda
     eficiencia_media = np.mean(eficiencia[eficiencia > 0])
@@ -652,7 +694,32 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
     
     if report_mode:
         plt.close(fig)
-        display(Markdown("![Eficiência Marketing](outputs/figs/pg1_eficiencia_marketing.png)"))
+        display(Markdown("### 💰 EFICIÊNCIA DE MARKETING (ROI)"))
+        display(Markdown("**Pergunta:** O dinheiro investido em marketing esta retornando como receita recorrente?"))
+        display(Markdown("![Eficiencia Marketing](outputs/figs/pg1_eficiencia_marketing.png)"))
+        display(Markdown("*Fonte: df_real_m | gasto_marketing vs mrr*"))
+        
+        # COMO LER
+        como_ler = """
+::: {.callout-note appearance="simple"}
+### 📖 COMO LER ESTE GRÁFICO
+**O QUE ESTOU VENDO?**
+Comparativo direto entre dinheiro investido em Marketing (Azul) e receita recorrente gerada (Verde).
+
+**ELEMENTOS:**
+- **Barra Azul (Investimento):** Custo total de marketing no mês.
+- **Barra Verde (MRR):** Receita recorrente total no final do mês.
+- **Eficiência (Box):** Quantas vezes o MRR cobre o Marketing (Ideal > 1.0x).
+
+**INTERPRETAÇÃO:**
+- No início, é normal a barra Azul ser maior (investimento inicial).
+- A partir do Mês 6, a barra Verde DEVE ultrapassar a Azul e continuar crescendo (efeito "J-Curve").
+:::
+"""
+        display(Markdown(como_ler))
+        
+        # Fonte
+        display(Markdown("*Fonte: df_real_m vs df_ideal_m - Projecao 36 meses*"))
         display(Markdown("\\newpage"))
     else:
         plt.show()
@@ -899,11 +966,11 @@ def executar_pagina_1(df_real_m, df_ideal, met_real, met_ideal, report_mode=Fals
         print("\n" + "="*80)
         print("✅ PÁGINA 1: EXECUTIVE COCKPIT - GERAÇÃO COMPLETA!")
         print("="*80)
-    print("📁 Arquivos gerados:")
-    print("   • outputs/figs/pg1_kpi_cards.png")
-    print("   • outputs/figs/pg1_temporal_correlacao.png")
-    print("   • outputs/figs/pg1_eficiencia_marketing.png")
-    print("="*80)
+        print("📁 Arquivos gerados:")
+        print("   • outputs/figs/pg1_kpi_cards.png")
+        print("   • outputs/figs/pg1_temporal_correlacao.png")
+        print("   • outputs/figs/pg1_eficiencia_marketing.png")
+        print("="*80)
 
 if __name__ == "__main__":
     print("⚠️  Este arquivo agora é um módulo.")

@@ -1,132 +1,90 @@
-# 📋 CHECKLIST DE VERIFICAÇÃO - NOTEBOOKS & EXPORTAÇÃO V2
-
-**Versão:** 2.0  
-**Uso:** OBRIGATÓRIO antes de entregar qualquer alteração  
-**Regra:** TODO item deve passar. Se falhar 1, não entregar.
+# CHECKLIST DE VERIFICACAO - NOTEBOOKS E EXPORTACAO V3
+Versao: 3.0
+Uso: OBRIGATORIO antes de entregar qualquer alteracao
+Regra: TODO item deve passar. Se falhar 1, nao entregar.
 
 ---
 
-## ✅ ANTES DE ESCREVER CÓDIGO
+## 🚨🚨🚨 REGRA FUNDAMENTAL - ZERO HARDCODED 🚨🚨🚨
+### **TUDO DEVE SER DINAMICO E INTELIGENTE!**
 
-- [ ] Li `celula_0_utils.py` para ver funções disponíveis
-- [ ] Li `celula_2_premissas.py` para entender parâmetros
-- [ ] Li `PAGINA_1_COCKPIT_V4.py` ou `PAGINA_2_GROWTH.py` como referência
+| ❌ PROIBIDO | ✅ OBRIGATORIO |
+|------------|----------------|
+| Textos fixos em insights | Insights gerados a partir dos dados |
+| Valores hardcoded | Valores calculados das premissas |
+| Conclusoes estaticas | Conclusoes que mudam conforme os numeros |
+| Titulo generico "A PROVA NUMERICA" | Titulo especifico da tabela (ex: "Tabela de Conversao M36") |
+| Fonte estatica "V10" | Fonte dinamica "df_real_m vs df_ideal" |
+
+**SE MUDAR AS PREMISSAS, OS TEXTOS DEVEM MUDAR AUTOMATICAMENTE!**
+
+---
+
+## ✅ ANTES DE ESCREVER CODIGO
+
+- [ ] Li `celula_0_utils.py` para ver funcoes disponiveis
+- [ ] Li `celula_2_premissas.py` para entender parametros
 - [ ] Fiz backup/commit do estado atual
 
 ---
 
 ## ✅ DURANTE O DESENVOLVIMENTO
 
-### Callouts Quarto (CRÍTICO!)
+### Tabelas e Dados (CRITICO!)
+- [ ] **NUNCA usar titulo generico "A PROVA NUMERICA"** -> Usar titulo especifico
+- [ ] **Tabelas devem ser MARKDOWN** no PDF -> `df.to_markdown()` (nunca texto puro)
+- [ ] **Fonte Dinamica OBRIGATORIA** -> `Fonte: {df_usado} | {descricao}`
+- [ ] Tabela tem explicacao logo abaixo?
 
-- [ ] **f-string com variáveis:** usar `{{` para ter `{` no output
-- [ ] **string normal SEM variáveis:** usar `{` simples
-- [ ] **NUNCA usar `{{{{` em f-strings** (vira `{{` literal!)
+### Graficos e Visualizacao
+- [ ] **Labels nao sobrepoe titulo/legenda** -> Usar `plt.subplots_adjust`
+- [ ] **figsize=(10, 5)** para HTML -> Evita scroll
+- [ ] **Conv% e anotacoes FORA do grafico** -> Evita poluição visual
+- [ ] **COMO LER completo** -> O QUE, ELEMENTOS, INTERPRETACAO
 
-### Separadores Markdown (CRÍTICO!)
+### Callouts Quarto
+- [ ] **Auditoria/Formulas SEM tags HTML** (`<b>`, `<i>`) -> Usar Markdown puro
+- [ ] **f-string com variaveis:** usar `{{` para ter `{` no output
+- [ ] **string normal SEM variaveis:** usar `{` simples
 
-- [ ] **NUNCA usar `---` sozinho em display(Markdown())** - Quarto interpreta como YAML!
-- [ ] **Usar `***` para separadores horizontais** - funciona sem problemas
-
-### Tamanho de Gráficos (CRÍTICO para HTML!)
-
-- [ ] **Tamanho padrão:** `figsize = (10, 5)` - evita barra de scroll
-- [ ] **NUNCA usar (14, 6) ou (12, 6)** - fica muito grande para HTML
-- [ ] Para report_mode: `figsize = (10, 5) if report_mode else (14, 6)`
-
-### Estrutura da Visualização
-
-- [ ] Título/Pergunta de negócio presente (usar `***` como separador)
-- [ ] Gráfico renderizado com `salvar_figura_silencioso()`
-- [ ] Seção "COMO LER" explicando o gráfico
-- [ ] Tabela de prova numérica
-- [ ] Callout INSIGHT (FATO + CAUSA + IMPLICAÇÃO + AÇÃO)
-- [ ] Callout AUDITORIA (Fonte + Fórmulas)
-
-### Fontes de Dados
-
-- [ ] Fonte indica "Celulas 5A/5B" (não "Motor V13")
-- [ ] DataFrame de origem explicitado
+### Separadores Markdown
+- [ ] **NUNCA usar `---` sozinho** -> Usar `***`
 
 ---
 
 ## ✅ ANTES DE ENTREGAR
 
-### Teste de Renderização
-
+### Teste de Renderizacao
 - [ ] Executei: `quarto render ... --to html`
-- [ ] Não há WARNINGS sobre `:::` no output
-- [ ] Não há erro `YAML parse exception`
-- [ ] Abri o HTML e verifiquei visual
-- [ ] Gráficos não geram barra de scroll
+- [ ] Nao ha WARNINGS sobre `:::` no output
+- [ ] Nao ha erro `YAML parse exception`
+- [ ] Tabelas aparecem formatadas (com bordas), nao texto solto
 
-### Revisão de Output
-
-- [ ] Callouts aparecem como CAIXAS (não texto puro)
-- [ ] Tabelas estão formatadas
-- [ ] Gráficos estão legíveis e no tamanho correto
-
-### Git
-
-- [ ] `git add .`
-- [ ] `git commit -m "mensagem descritiva"`
+### Revisao de Output
+- [ ] Fontes estao corretas e dinamicas?
+- [ ] Graficos estao legiveis sem sobreposicao?
+- [ ] Tabelas tem titulos especificos?
 
 ---
 
 ## 🚫 ERROS QUE NUNCA PODEM SER COMETIDOS
 
-| # | ❌ PROIBIDO | Consequência | ✅ FAZER ASSIM |
+| # | ❌ PROIBIDO | Consequencia | ✅ FAZER ASSIM |
 |---|------------|--------------|----------------|
 | 1 | `display(Markdown("---"))` | YAML parse error | Usar `***` |
-| 2 | `{{{{` em f-strings para callouts | Vira `{{` literal | Usar `{{` |
-| 3 | `{{` em strings normais para callouts | Vira `{{` literal | Usar `{` |
-| 4 | Bulk replace de `{{` ou `}}` | Quebra f-strings existentes | NÃO FAZER |
-| 5 | `figsize=(14, 6)` para HTML | Barra de scroll | Usar `(10, 5)` |
-| 6 | `>` para blockquotes dinâmicos | YAML parse error | Não usar |
-| 7 | Recriar funções de celula_0_utils | Duplicação e bugs | Importar |
+| 2 | Titulo "A PROVA NUMERICA" | Generico/Amador | "Detalhe da Conversao" |
+| 3 | Tabela como Texto | Ilegivel | Markdown Table |
+| 4 | HTML (`<b>`) em Callout | Texto literal | Markdown (`**`) |
+| 5 | Annotations DENTRO grafico | Poluicao | Legenda externa |
+| 6 | Fonte "Modelo V10" | Informacao Falsa | Fonte Dinamica |
 
 ---
 
 ## 📝 LOG DE ERROS ENCONTRADOS
 
-| Data | Erro | Causa | Solução Aplicada |
+| Data | Erro | Causa | Solucao Aplicada |
 |------|------|-------|------------------|
-| 08/12 | `:::` found in document | `{{{{` em f-string | Mudar para `{{` |
-| 08/12 | YAML parse exception | `---` em Markdown | Mudar para `***` |
-| 08/12 | Gráficos com scroll | figsize (14,6) | Mudar para (10,5) |
-| 08/12 | Callout como texto | string normal com `{{` | Usar f-string |
-
----
-
-## 📐 PADRÕES DE CÓDIGO
-
-### Padrão para Títulos/Intros VIZ:
-```python
-if report_mode:
-    display(Markdown("***"))  # Separador (NÃO usar ---)
-    display(Markdown("## VIZ X.X: Titulo"))
-    display(Markdown("**Pergunta:** Texto da pergunta de negocio"))
-```
-
-### Padrão para Callouts:
-```python
-# COM variáveis = f-string + {{
-insight_md = f"""
-::: {{.callout-tip}}
-## Título com {variavel}
-:::
-"""
-
-# SEM variáveis = string normal + {
-audit_md = """
-::: {.callout-note}
-## Título fixo
-:::
-"""
-```
-
-### Padrão para Figsize:
-```python
-figsize = (10, 5) if report_mode else (14, 6)
-fig, ax = plt.subplots(figsize=figsize, dpi=150)
-```
+| 08/12 | Tabela como texto | Tabela sem formatacao Markdown | `df.to_markdown()` |
+| 08/12 | Titulo Generico | Hardcoded "A PROVA NUMERICA" | Parametro `table_title` |
+| 08/12 | Labels cortados | Falta de Margem | `subplots_adjust` |
+| 08/12 | Fonte Estatica | Texto hardcoded | Fonte Dinamica |
