@@ -76,6 +76,10 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 3.1: Evolução Financeira Correlacionada")
+    else:
+        display(Markdown("***"))
+        display(Markdown("## VIZ 3.1: Evolucao Financeira"))
+        display(Markdown("**Pergunta:** A empresa caminha para o break-even? Quando o caixa fica positivo?"))
     
     # =========================================
     # TABELA DRE DETALHADA (ANTES DO GRÁFICO!)
@@ -281,6 +285,10 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     """
     if not report_mode:
         print("\n🔹 VIZ 3.2: Estrutura de Custos + Decomposição")
+    else:
+        display(Markdown("***"))
+        display(Markdown("## VIZ 3.2: Estrutura de Custos"))
+        display(Markdown("**Pergunta:** Onde esta o dinheiro? A estrutura de custos e saudavel?"))
     
     m36 = df_real.iloc[-1]
     
@@ -564,6 +572,10 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 3.3: Fluxo de Caixa Semanal")
+    else:
+        display(Markdown("***"))
+        display(Markdown("## VIZ 3.3: Fluxo de Caixa Semanal"))
+        display(Markdown("**Pergunta:** O caixa sobrevive ao ramp-up? Qual o momento mais critico?"))
     
     # Se não tiver dados semanais, simular a partir do mensal
     if 'semana' not in df_real_s.columns:
@@ -774,6 +786,10 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 3.4: Alavancagem Operacional")
+    else:
+        display(Markdown("***"))
+        display(Markdown("## VIZ 3.4: Alavancagem Operacional"))
+        display(Markdown("**Pergunta:** A empresa escala de forma eficiente?"))
     
     # Dados
     receita = df_real['receita_bruta'].values
@@ -936,6 +952,10 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 3.5: Heatmap DRE Evolutivo")
+    else:
+        display(Markdown("***"))
+        display(Markdown("## VIZ 3.5: Evolucao DRE - Real vs Ideal"))
+        display(Markdown("**Pergunta:** Estamos convergindo para o cenario ideal?"))
     
     # Meses chave
     meses_key = [0, 5, 11, 17, 23, 29, 35]  # M1, M6, M12, M18, M24, M30, M36
