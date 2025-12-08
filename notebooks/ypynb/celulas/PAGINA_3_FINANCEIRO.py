@@ -224,6 +224,19 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
 :::
 """
         display(Markdown(insight_md))
+        # Auditoria VIZ 3.1
+        audit_md = f"""
+::: {{.callout-note collapse="true"}}
+## Auditoria VIZ 3.1
+**Fonte:** df_real_m (Celula 5A), df_ideal_m (Celula 5B)
+
+**Formulas:**
+- Break-even = Primeiro mes onde EBITDA maior que 0
+- Gap = Mes break-even Real - Mes break-even Ideal
+- Reducao Burn = (Burn M1 - Burn M36) / Burn M1 x 100
+:::
+"""
+        display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E8F5E9; border-left: 5px solid #388E3C; padding: 15px; border-radius: 4px; margin: 15px 0;">

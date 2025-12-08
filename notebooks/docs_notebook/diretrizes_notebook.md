@@ -1,8 +1,71 @@
 # 📘 DOCUMENTO MESTRE - DIRETRIZES DE PRODUTO & DESIGN V21.1 (BÍBLIA DO PROJETO)
 
-**Versão:** V21.2 (Gold Standard + Word Export)
+**Versão:** V21.3 (Gold Standard + Word Export + Regras Técnicas)
 **Status:** DEFINITIVO
 **Aplicação:** Todas as páginas do relatório (Notebook Jupyter & DOCX via Quarto).
+
+---
+
+## 🚨 **0. LEIA ANTES DE DESENVOLVER QUALQUER CÓDIGO**
+
+### **0.1 Arquivos que DEVEM ser lidos ANTES de começar:**
+
+| Arquivo | Conteúdo | Por que ler? |
+|---------|----------|--------------|
+| `celula_0_utils.py` | Funções compartilhadas (render_atomic_block, formata_moeda, etc) | **USAR estas funções**, não recriar |
+| `celula_2_premissas.py` | Dicionário PREMISSAS com +150 parâmetros | Fonte de todas as configurações |
+| `celula_5A_bootstrap_real.py` | Gera df_real_m (cenário conservador) | Fonte dos dados REAL |
+| `celula_5B_cenario_ideal.py` | Gera df_ideal_m (cenário benchmark) | Fonte dos dados IDEAL |
+| `PAGINA_1_COCKPIT_V4.py` | Exemplo de página funcional | Padrão a seguir |
+| `PAGINA_2_GROWTH.py` | Exemplo de página funcional | Padrão a seguir |
+
+### **0.2 O QUE NÃO PODE FAZER (REGRAS ABSOLUTAS):**
+
+| ❌ NÃO FAZER | ✅ FAZER ASSIM | Por quê |
+|--------------|----------------|---------|
+| Usar `>` para blockquotes em Markdown dinâmico | Usar texto simples ou callouts Quarto | Causa erro YAML no Quarto |
+| Usar `{{` em strings normais para callouts | Usar f-string ou `{` simples | `{{` em string normal fica literal |
+| Fazer bulk replace de `{{` ou `}}` | NÃO MEXER - são escapes de f-string | Quebra todo o código existente |
+| Criar funções que já existem em celula_0_utils | Importar de celula_0_utils | Evita duplicação e bugs |
+| Adicionar títulos/headers dinâmicos | Colocar no .qmd ou replicar padrão existente | Código existente funciona |
+
+### **0.3 Padrão para Callouts Quarto:**
+
+```python
+# ✅ CORRETO: f-string com {{ escape
+insight_md = f"""
+::: {{.callout-tip}}
+## Título
+Conteúdo com {variavel}
+:::
+"""
+
+# ✅ CORRETO: string normal SEM variáveis usa { simples
+audit_md = """
+::: {.callout-note collapse="true"}
+## Auditoria
+Texto fixo sem variáveis
+:::
+"""
+
+# ❌ ERRADO: string normal com {{
+audit_md = """
+::: {{.callout-note}}  # VAI APARECER LITERAL!
+"""
+```
+
+### **0.4 Antes de qualquer mudança arriscada:**
+
+```bash
+git add .
+git commit -m "Backup antes de alteracao"
+```
+
+### **0.5 Após qualquer mudança:**
+
+```bash
+quarto render notebooks/quarto_pdf/relatorio_investidores.qmd --to docx
+```
 
 ---
 
@@ -48,108 +111,56 @@ O Dashboard segue esta jornada linear obrigatória:
 Como a empresa é um projeto (ainda não operacional), usamos simulações:
 
 - **CENÁRIO "REAL" (Simulação Conservadora):** "Pés no chão", nível Difícil. É o teste de estresse.
-  - *Representação Visual:* Linhas Sólidas, Cores Escuras (Preto/Azul).
-- **CENÁRIO "IDEAL" (Benchmark/Meta):** Onde queremos chegar (Padrão de Mercado).
-  - *Representação Visual:* Linhas Tracejadas, "Ghost Bars" (Fundo Cinza).
-- **CENÁRIO "MONTE CARLO" (Probabilístico):** Faixa de incerteza (P10-P90).
-  - *Representação Visual:* Área Sombreada (`alpha=0.2`).
+- **CENÁRIO "IDEAL" (Benchmark de Mercado):** "Benchmark do que a indústria alcança". Métrica aspiracional.
 
-### **2.2 Granularidade Obrigatória**
-O sistema exige três níveis de resolução para passar na auditoria:
-1.  **Mensal (M0-M36):** Visão Estratégica (Padrão para a maioria).
-2.  **Semanal (S0-S24):** Visão Tática (Obrigatório em Viz 3).
-3.  **Diário (D0-D180):** Visão Forense (Fluxo de Caixa curto prazo).
+### **2.2 Granularidade Temporal (Regra de Inversão)**
+
+| Horizonte | Granularidade | Lógica |
+| :--- | :--- | :--- |
+| **M0 - M6** | Semanal (0W - 24W) | Caixa curto, riscos rápidos demais para mensal. |
+| **M7 - M36** | Mensal (M7 - M36) | Erros mensais se compensam, visão de tendência. |
 
 ---
 
-## 📐 **3. RECEITA CANÔNICA DE UMA CÉLULA (O LAYOUT)**
+## 🧱 **3. ESTRUTURA CANÔNICA DA CÉLULA (O "Gold Standard")**
 
-Toda visualização ("Viz") é um bloco atômico composto por **6 elementos obrigatórios**, nesta ordem exata de renderização (ver `celula_0_utils.py`):
+Uma célula de visualização **DEVE** conter estes 6 elementos obrigatórios, nesta ordem:
 
-### **BLOCO A: TÍTULO DUPLO**
-```python
-TÍTULO COLOQUIAL: "O dinheiro está voltando rápido o suficiente?" (Pergunta de Negócio)
-TÍTULO TÉCNICO: "Payback Period - Simulação Conservadora vs Benchmark (Semanas 0-24)"
-FONTE DOS DADOS: "Dados: df_real_m + benchmarks_saas_b2c"
+```
+[1. TÍTULO/PERGUNTA DE NEGÓCIO] - "A empresa vai sobreviver ao vale de caixa?"
+[2. GRÁFICO/VISUAL]             - Matplotlib/Plotly, limpo e profissional.
+[3. LEGENDA "COMO LER"]         - Explicação para quem nunca viu o gráfico.
+[4. TABELA DE PROVA]            - Números que validam o insight (auditável).
+[5. CALLOUT INSIGHT]            - FATO + CAUSA + IMPLICAÇÃO + AÇÃO.
+[6. CALLOUT AUDITORIA]          - Formulas e fonte dos dados.
 ```
 
-### **BLOCO B: O GRÁFICO (GOLD STANDARD)**
-- **Comparação Tripla:** Real Sólido vs Ideal Tracejado vs Benchmark Vermelho.
-- **Log Scale:** Obrigatória quando misturar milhões (Receita) com unidades (Clientes).
-- **Anotações:** Setas e Badges para eventos importantes (ex: Cruzamento de Meta).
-- **Tamanho:** `figsize=(10, 6)` (Otimizado para A4 PDF).
+### **3.1 Cada Elemento em Detalhe:**
 
-### **BLOCO C: LEGENDA "COMO LER"**
-- Manual de instrução obrigatório.
-- *Template:* "A linha preta representa sua simulação conservadora. A área cinza é a meta de mercado. Se a preta sair da área cinza, temos um problema."
+1. **Título/Pergunta:** Pode estar no .qmd (estático) ou no código (dinâmico) - ambos funcionam
+2. **Gráfico:** Usar `salvar_figura_silencioso()` para salvar sem exibir duplicado
+3. **COMO LER:** Markdown simples explicando cada elemento do gráfico
+4. **Tabela:** `df.to_markdown(index=False)` em report_mode, HTML rico no notebook
+5. **Insight:** Callout `::: {.callout-tip}` com as 4 partes obrigatórias
+6. **Auditoria:** Callout `::: {.callout-note collapse="true"}` com fonte e fórmulas
 
-### **BLOCO D: TABELA PROVA NUMÉRICA (A VERDADE)**
-A tabela deve eliminar qualquer dúvida deixada pelo gráfico.
-- **Colunas Obrigatórias:**
-  1.  **Período:** Mês/Semana.
-  2.  **Real (Conservador):** Valor simulado.
-  3.  **Ideal (Meta):** Valor alvo.
-  4.  **Δ (Delta):** Diferença Absoluta ou %. **Obrigatório.**
-  5.  **Status:** Badge colorido (Verde/Amarelo/Vermelho).
-
-**Código de Estilo (Exemplo):**
-```python
-def format_delta(val):
-    if val > 0: return 'color: green; font-weight: bold'
-    return 'color: red; font-weight: bold'
-```
-
-### **BLOCO E: INSIGHT ESTRATÉGICO (O Veredito)** TODOS INSIGHTS DEVEM SER DINAMICOS
-- **Estrutura:** Fato (Dado) -> Causa (Por que) -> Implicação (R$) -> Ação (O que fazer).
-- **Dinâmico:** Texto deve usar variáveis (`f"O valor é {x}"`), nunca hardcoded.
-- **Visual:** Box Colorido (Notebook) ou Callout Tip (PDF).
-
-### **BLOCO F: AUDITORIA & FÓRMULAS (Check Técnico)** TODOS INSIGHTS DEVEM SER DINAMICOS
-**Localizado logo APÓS o Insight** para validação rápida (Ordem Fixada).
-- **Conteúdo:** Fórmula matemática explicada e valores base.
-- **Formato:** Callout Colapsável no PDF (`::: {.callout-note collapse="true"} :::`).
-- *Exemplo:* "LTV = ARPU * Margem / Churn. Check: 100 * 0.8 / 0.05 = 1600."
-- nunca hardcoded
 ---
 
-## 🎨 **4. NOMENCLATURA E ESTRUTURA DE ARQUIVOS (PADRONIZAÇÃO)**
+## 📁 **4. CONVENÇÕES DE ARQUIVOS**
 
-### **4.1 Estrutura de Diretórios**
-```
-notebooks/
-├── quarto_pdf/relatorio_investidores.qmd
-├── ypynb/
-│   ├── loader_dados_relatorio.py    (Orquestrador)
-│   ├── celulas/
-│   │   ├── celula_0_utils.py        (Renderizador Atômico)
-│   │   ├── PAGINA_1_COCKPIT.py      (Módulo Pág 1)
-│   │   ├── PAGINA_2_GROWTH.PY       (Módulo Pág 2)
-│   │   └── ...
-```
+| Tipo | Nomenclatura | Local |
+|------|--------------|-------|
+| Módulo de página | `PAGINA_X_NOME.py` | `notebooks/ypynb/celulas/` |
+| Utilitários | `celula_0_utils.py` | `notebooks/ypynb/celulas/` |
+| Premissas | `celula_2_premissas.py` | `notebooks/ypynb/celulas/` |
+| Motor | `celula_4_motor.py` | `notebooks/ypynb/celulas/` |
+| Simulações | `celula_5A/5B/5C/5D_*.py` | `notebooks/ypynb/celulas/` |
+| Relatório QMD | `relatorio_investidores.qmd` | `notebooks/quarto_pdf/` |
 
-### **4.2 Padrão de Nomenclatura de Arquivos (Outputs)**
-Os arquivos gerados pelos scripts devem seguir rigorosamente:
-- **Figuras:** `outputs/figs/pg{PÁGINA}_viz{NUM}_{NOME_NO_SNAKE_CASE}.png`
-  - *Ex:* `pg2_viz1_funil_aquisicao.png`
-- **Metadados:** `outputs/metadata/pg{PÁGINA}_viz{NUM}.json`
-- **Tabelas:** `outputs/tables/pg{PÁGINA}_viz{NUM}_tabela.html`
-
-### **4.3 Padrão de Nomenclatura de Funções (Python)**
-Toda função de visualização deve seguir esta assinatura:
-```python
-def gerar_pg{NUM}_viz{NUM}_{NOME}(df_real, df_ideal, mc_results, benchmarks, report_mode=False):
-    """
-    Parâmetros:
-      - df_real: DataFrame do cenário conservador.
-      - df_ideal: DataFrame da meta.
-      - mc_results: DataFrame da simulação de Monte Carlo.
-      - benchmarks: Dicionário de constantes de mercado.
-      - report_mode: Booleano (True=DOCX Clean, False=Notebook Rich).
-    """
-    pass
-```
+---
 
 ## 📝 **5. EXPORTAÇÃO (WORD FIRST)**
+
 A partir de V21.2, a saída principal é **Microsoft Word (.docx)** para permitir edição final de layout.
 - **Tabelas:** Devem ser Markdown puro (`df.to_markdown()`). NUNCA `plt.table`.
 - **Gráficos:** `.png` salvos em alta resolução (300dpi).
@@ -157,26 +168,26 @@ A partir de V21.2, a saída principal é **Microsoft Word (.docx)** para permiti
 
 ---
 
-## 📊 **5. DIRETRIZES VISUAIS ESPECÍFICAS (POR TIPO)**
+## 📊 **6. DIRETRIZES VISUAIS ESPECÍFICAS (POR TIPO)**
 
-### **5.1 Gráficos de Linhas (Evolução)**
+### **6.1 Gráficos de Linhas (Evolução)**
 - **Linha Real:** `color='#000000'`, `linewidth=2` (Sólido).
 - **Linha Ideal:** `color='#AAAAAA'`, `linestyle='--'` (Tracejado).
 - **Benchmark:** `color='red'`, `linestyle=':'` (Pontilhado).
 - **Anastomoses:** Use `ax.annotate` com setas para mostrar onde cruzamos o benchmark.
 
-### **5.2 Gráficos de Barras (Comparação)**
+### **6.2 Gráficos de Barras (Comparação)**
 - **Ghost Bar:** Barra Ideal larga e cinza ao fundo (`alpha=0.3`). Barra Real estreita e sólida na frente.
 - **Rótulos:** Valor absoluto no topo da barra. Conversão % no meio da barra (se aplicável).
 
-### **5.3 Tabelas (Auditoria)**
+### **6.3 Tabelas (Auditoria)**
 - **Fonte:** Monospace/Courier para alinhamento vertical dos números.
 - **Cabeçalho:** Fundo escuro, texto branco.
 - **Status:** Badges visuais (Ex: `<span style='color:green'>✔</span>`).
 
 ---
 
-## � **6. O RESULTADO FINAL ESPERADO**
+## 🎯 **7. O RESULTADO FINAL ESPERADO**
 
 Cada célula executada no notebook deve se parecer com um **Slide Profissional da McKinsey**, mas gerado via código:
 1.  Começa com uma pergunta instigante.
