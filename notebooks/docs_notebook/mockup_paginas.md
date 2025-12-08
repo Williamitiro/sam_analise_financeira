@@ -80,6 +80,50 @@ INSIGHT ESTRATÉGICO: 'nunca hardcoded'
 3. AÇÃO: Implementar CS Dedicado na semana 1. Impacto est.: +R$ 30k/mês.
 ```
 
+### **BLOCO E: COMO LER (Obrigatório)**
+*Regra: Explicar para qualquer pessoa entender, incluindo termos técnicos.*
+
+```text
+📖 COMO LER ESTE GRÁFICO:
+
+**O QUE ESTOU VENDO?**
+[Explicar o propósito do gráfico em 1-2 linhas simples]
+
+**ELEMENTOS:**
+- [Elemento 1]: [O que é] - [O que significa na prática]
+- [Elemento 2]: [O que é] - [O que significa na prática]
+- [Cores/Zonas]: Explicar o que cada área significa
+
+**COMO INTERPRETAR:**
+- [Condição A] = [O que significa para o negócio]
+- [Condição B] = [O que significa para o negócio]
+
+**TERMOS IMPORTANTES:**
+- [Termo técnico 1]: [Definição em português claro]
+- [Termo técnico 2]: [Definição em português claro]
+```
+
+**EXEMPLO REAL (VIZ Fluxo de Caixa):**
+```text
+📖 COMO LER ESTE GRÁFICO:
+
+**O QUE ESTOU VENDO?**
+Saúde do caixa semana a semana nos primeiros 6 meses.
+
+**ELEMENTOS:**
+- Linha Azul (Saldo Caixa): Quanto dinheiro temos no banco
+- Linha Vermelha (Limite Crítico): Se caixa cair abaixo, menos de 2 semanas de sobrevivência
+- Ponto Vermelho (Vale): Semana mais perigosa
+
+**COMO INTERPRETAR:**
+- Caixa NUNCA deve tocar a linha vermelha = risco de insolvência
+- Runway abaixo de 4 semanas = ALERTA MÁXIMO
+
+**TERMOS IMPORTANTES:**
+- Runway: Quantas semanas a empresa sobrevive sem receita nova
+- Vale de Caixa: Momento de menor liquidez
+```
+
 ---
 
 ## 3. AS VARIAÇÕES DE CÉLULA POR PÁGINA
