@@ -833,7 +833,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-3.png" id="tier2-3" width="872" height="399" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-3.png" id="tier2-3" width="908" height="414" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -984,7 +984,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-14.png" id="tier2-14" width="810" height="393" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-14.png" id="tier2-14" width="843" height="409" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1130,7 +1130,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-25.png" id="tier2-25" width="818" height="393" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-25.png" id="tier2-25" width="852" height="409" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1282,7 +1282,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-36.png" id="tier2-36" width="763" height="394" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-36.png" id="tier2-36" width="794" height="410" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1556,7 +1556,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-58.png" id="tier2-58" width="830" height="393" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-58.png" id="tier2-58" width="865" height="409" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2554,9 +2554,13 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>O QUE ESTOU VENDO?</strong> A “corrida” financeira entre quanto custa trazer um cliente (Linha Vermelha) e quanto lucro esse cliente gera ao longo da vida (Linha Verde).</p>
-<p><strong>ELEMENTOS DO GRÁFICO:</strong> - <strong>Linha Verde (LTV):</strong> Lifetime Value - lucro bruto total que um cliente deixa na empresa. - <strong>Linha Vermelha (CAC):</strong> Custo de Aquisição - quanto gastamos para fechar um contrato. - <strong>Área Sombreada Verde:</strong> Lucro Líquido por cliente. - <strong>Múltiplo (Seta):</strong> Quantas vezes o valor do cliente cobre o custo (Ideal &gt; 3x).</p>
-<p><strong>COMO INTERPRETAR:</strong> - <strong>Boca de Jacaré:</strong> Queremos que a linha Verde se afaste da Vermelha para cima. - <strong>Cruzamento:</strong> Se a vermelha estiver acima da verde, cada venda gera prejuízo.</p>
+<p><strong>📖 COMO LER ESTE GRÁFICO:</strong></p>
+<ol type="1">
+<li><strong>Linha Verde (LTV):</strong> Quanto lucro um cliente deixa na empresa ao longo da vida.</li>
+<li><strong>Linha Vermelha (CAC):</strong> Quanto custa atrair esse cliente (Marketing + Vendas).</li>
+<li><strong>Seta de Múltiplo:</strong> Quantas vezes o valor do cliente paga seu custo (Meta &gt; 3.0x).</li>
+</ol>
+<p><strong>INTERPRETAÇÃO:</strong> - <strong>Boca de Jacaré:</strong> A linha verde deve subir e se afastar da vermelha. - <strong>Zona de Perigo:</strong> Se as linhas se cruzarem, você está pagando para trabalhar.</p>
 </div>
 </div>
 </div>
@@ -2703,9 +2707,17 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>O QUE ESTOU VENDO?</strong> A porcentagem de clientes originais que continuam pagando após X meses.</p>
-<p><strong>ELEMENTOS:</strong> - <strong>Linhas (Safras):</strong> Grupos de clientes que entraram no mesmo mês. - <strong>Colunas (Idade):</strong> Meses de vida do cliente. - <strong>Cores:</strong> Verde = Alta Retenção | Vermelho = Alta Evasão.</p>
-<p><strong>INTERPRETAÇÃO:</strong> - Se as safras mais recentes (linhas de baixo) são mais verdes, o produto está melhorando.</p>
+<p><strong>📖 COMO LER ESTE GRÁFICO (COHORTS):</strong></p>
+<ol type="1">
+<li><strong>Linhas (Safra):</strong> Clientes que entraram no mesmo mês (ex: Safra d Mês 1).</li>
+<li><strong>Colunas (Idade):</strong> Meses após a compra inicial.</li>
+<li><strong>Cores:</strong>
+<ul>
+<li>🟢 <strong>Verde:</strong> Alta retenção (Clientes fiéis).</li>
+<li>🔴 <strong>Vermelho:</strong> Alta evasão (Churn alto).</li>
+</ul></li>
+</ol>
+<p><strong>INTERPRETAÇÃO:</strong> - <strong>Leitura Vertical:</strong> Compare a coluna “M1” de baixo para cima. Se estiver ficando mais verde, a retenção inicial está melhorando. - <strong>Leitura Horizontal:</strong> A cor deve decair suavemente. Quedas bruscas indicam problemas no produto.</p>
 </div>
 </div>
 </div>
@@ -2829,7 +2841,14 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>O QUE ESTOU VENDO?</strong> Monitoramento semanal de cancelamentos. <strong>REGRA:</strong> Pontos acima da linha vermelha indicam surtos anormais de churn.</p>
+<p><strong>📖 COMO LER ESTE GRÁFICO (SPC):</strong></p>
+<ol type="1">
+<li><strong>Linha Preta (Pontos):</strong> Taxa de Churn real da semana.</li>
+<li><strong>Faixa Azul (Túnel):</strong> Variação normal esperada (Ruído estatístico).</li>
+<li><strong>Linha Vermelha (Limite):</strong> Teto máximo aceitável.</li>
+<li><strong>Pontos Vermelhos:</strong> Anomalias (Surtos de cancelamento).</li>
+</ol>
+<p><strong>INTERPRETAÇÃO:</strong> - Pontos dentro da faixa azul = Operação sob controle. - Pontos vermelhos = Algo quebrou (Bug, Incidente, Campanha ruim) -&gt; <strong>Investigar Imediatamente</strong>.</p>
 </div>
 </div>
 </div>
@@ -2848,26 +2867,6 @@ Important
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;">S21</td>
-<td style="text-align: left;">11.19%</td>
-<td style="text-align: left;">🟢 OK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">S22</td>
-<td style="text-align: left;">12.37%</td>
-<td style="text-align: left;">🟢 OK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">S23</td>
-<td style="text-align: left;">11.51%</td>
-<td style="text-align: left;">🟢 OK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">S24</td>
-<td style="text-align: left;">12.14%</td>
-<td style="text-align: left;">🟢 OK</td>
-</tr>
 <tr class="odd">
 <td style="text-align: left;">S25</td>
 <td style="text-align: left;">11.96%</td>
@@ -2929,13 +2928,13 @@ Important
 <p><strong>Pergunta:</strong> Se dobrar a base de clientes, a unidade continua lucrativa?</p>
 </div>
 <div id="tier4-49" class="cell-output cell-output-display cell-output-markdown">
-<section id="se-escalar-agressivamente-a-unidade-quebra" class="level2">
-<h2 class="anchored" data-anchor-id="se-escalar-agressivamente-a-unidade-quebra">Se escalar agressivamente, a unidade quebra?</h2>
+<section id="a-qualidade-do-cliente-cai-quando-a-empresa-cresce" class="level2">
+<h2 class="anchored" data-anchor-id="a-qualidade-do-cliente-cai-quando-a-empresa-cresce">A qualidade do cliente cai quando a empresa cresce?</h2>
 </section>
 </div>
 <div id="tier4-50" class="cell-output cell-output-display cell-output-markdown">
-<section id="viz-4.4-escala-vs-ltvcac-unit-economics-at-scale" class="level3">
-<h3 class="anchored" data-anchor-id="viz-4.4-escala-vs-ltvcac-unit-economics-at-scale">📉 VIZ 4.4: Escala vs LTV/CAC (Unit Economics at Scale)</h3>
+<section id="viz-4.4-qualidade-marginal-na-escala-ltvcac-vs-volume" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.4-qualidade-marginal-na-escala-ltvcac-vs-volume">📉 VIZ 4.4: Qualidade Marginal na Escala (LTV/CAC vs Volume)</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
@@ -2962,7 +2961,13 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>O QUE ESTOU VENDO?</strong> Relacionamento entre crescimento (Eixo X) e eficiência (Eixo Y). <strong>IDEAL:</strong> Pontos subindo ou estáveis à direita.</p>
+<p><strong>📖 COMO LER ESTE GRÁFICO (ESCALA):</strong></p>
+<ol type="1">
+<li><strong>Eixo X (Tamanho):</strong> Quantos clientes ativos temos.</li>
+<li><strong>Eixo Y (Qualidade):</strong> LTV/CAC (Eficiência Unitária).</li>
+<li><strong>Pontos Coloridos:</strong> Meses de operação (Amarelo = Mais recente).</li>
+</ol>
+<p><strong>INTERPRETAÇÃO:</strong> - <strong>Cenário Ideal:</strong> Pontos avançando para a direita (Crescimento) mantendo altura (Eficiência). - <strong>Cenário Ruim:</strong> Pontos caindo conforme a base cresce (Desgaste de escala). - <strong>Regra:</strong> Nunca crescer para a “Zona de Perigo” (abaixo de 1x).</p>
 </div>
 </div>
 </div>
@@ -3075,7 +3080,13 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Decomposição do valor vitalício de um cliente, descontando todos os custos e impostos.</p>
+<p><strong>📖 COMO LER ESTE GRÁFICO (WATERFALL):</strong></p>
+<ol type="1">
+<li><strong>Barra Azul Clara (LTV Bruto):</strong> Todo dinheiro que entra do cliente.</li>
+<li><strong>Barras Vermelhas:</strong> O que é descontado (Custos, Impostos, Aquisição).</li>
+<li><strong>Barra Final (Verde):</strong> O lucro limpo que sobra no bolso.</li>
+</ol>
+<p><strong>INTERPRETAÇÃO:</strong> - Mostra a “mordida” de cada etapa no valor do cliente. - Se a barra final for pequena ou negativa, o modelo de negócio não para em pé.</p>
 </div>
 </div>
 </div>

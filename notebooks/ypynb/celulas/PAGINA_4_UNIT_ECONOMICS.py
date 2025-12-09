@@ -127,20 +127,19 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
             
             tabela_md += f"| M{m} | {formata_moeda(l_val)} | {formata_moeda(c_val)} | {mult:.1f}x | {status} |\n"
 
+    ax.legend(loc='upper left', frameon=True, fontsize=9)
+
     # Renderização via Atomic Block
     legend_md = """
-**O QUE ESTOU VENDO?**
-A "corrida" financeira entre quanto custa trazer um cliente (Linha Vermelha) e quanto lucro esse cliente gera ao longo da vida (Linha Verde).
+**📖 COMO LER ESTE GRÁFICO:**
 
-**ELEMENTOS DO GRÁFICO:**
-- **Linha Verde (LTV):** Lifetime Value - lucro bruto total que um cliente deixa na empresa.
-- **Linha Vermelha (CAC):** Custo de Aquisição - quanto gastamos para fechar um contrato.
-- **Área Sombreada Verde:** Lucro Líquido por cliente.
-- **Múltiplo (Seta):** Quantas vezes o valor do cliente cobre o custo (Ideal > 3x).
+1. **Linha Verde (LTV):** Quanto lucro um cliente deixa na empresa ao longo da vida.
+2. **Linha Vermelha (CAC):** Quanto custa atrair esse cliente (Marketing + Vendas).
+3. **Seta de Múltiplo:** Quantas vezes o valor do cliente paga seu custo (Meta > 3.0x).
 
-**COMO INTERPRETAR:**
-- **Boca de Jacaré:** Queremos que a linha Verde se afaste da Vermelha para cima.
-- **Cruzamento:** Se a vermelha estiver acima da verde, cada venda gera prejuízo.
+**INTERPRETAÇÃO:**
+- **Boca de Jacaré:** A linha verde deve subir e se afastar da vermelha.
+- **Zona de Perigo:** Se as linhas se cruzarem, você está pagando para trabalhar.
 """
 
     formulas = """
@@ -283,16 +282,17 @@ def gerar_viz_4_2_cohorts(df_real, report_mode=False):
 
     # Renderização via Atomic Block
     legend_md = """
-**O QUE ESTOU VENDO?**
-A porcentagem de clientes originais que continuam pagando após X meses.
+**📖 COMO LER ESTE GRÁFICO (COHORTS):**
 
-**ELEMENTOS:**
-- **Linhas (Safras):** Grupos de clientes que entraram no mesmo mês.
-- **Colunas (Idade):** Meses de vida do cliente.
-- **Cores:** Verde = Alta Retenção | Vermelho = Alta Evasão.
+1. **Linhas (Safra):** Clientes que entraram no mesmo mês (ex: Safra d Mês 1).
+2. **Colunas (Idade):** Meses após a compra inicial.
+3. **Cores:**
+   - 🟢 **Verde:** Alta retenção (Clientes fiéis).
+   - 🔴 **Vermelho:** Alta evasão (Churn alto).
 
 **INTERPRETAÇÃO:**
-- Se as safras mais recentes (linhas de baixo) são mais verdes, o produto está melhorando.
+- **Leitura Vertical:** Compare a coluna "M1" de baixo para cima. Se estiver ficando mais verde, a retenção inicial está melhorando.
+- **Leitura Horizontal:** A cor deve decair suavemente. Quedas bruscas indicam problemas no produto.
 """
 
     formulas = """
@@ -384,11 +384,19 @@ def gerar_viz_4_3_churn_volatility(df_real_s, premissas, report_mode=False):
     for _, row in df_plot.tail(5).iterrows():
         val = row['churn_rate'] * 100
         status = "🔴 ALERTA" if val > ucl else "🟢 OK"
-        tabela_md += f"| S{int(row['semana'])} | {val:.2f}% | {status} |\n"
+    tabela_md += f"| S{int(row['semana'])} | {val:.2f}% | {status} |\n"
         
     legend_md = """
-**O QUE ESTOU VENDO?** Monitoramento semanal de cancelamentos.
-**REGRA:** Pontos acima da linha vermelha indicam surtos anormais de churn.
+**📖 COMO LER ESTE GRÁFICO (SPC):**
+
+1. **Linha Preta (Pontos):** Taxa de Churn real da semana.
+2. **Faixa Azul (Túnel):** Variação normal esperada (Ruído estatístico).
+3. **Linha Vermelha (Limite):** Teto máximo aceitável.
+4. **Pontos Vermelhos:** Anomalias (Surtos de cancelamento).
+
+**INTERPRETAÇÃO:**
+- Pontos dentro da faixa azul = Operação sob controle.
+- Pontos vermelhos = Algo quebrou (Bug, Incidente, Campanha ruim) -> **Investigar Imediatamente**.
 """
     formulas = "**Fonte:** df_real_s | UCL = Média + 2 Desvios Padrão"
     
@@ -466,10 +474,21 @@ def gerar_viz_4_4_escala_unit_economics(df_real_m, premissas, report_mode=False)
     tabela_md = "| Faixa de Clientes | LTV/CAC Médio | Status |\n|:---|---:|:---|\n"
     avg_ltv_cac = ltv_cac.mean()
     tabela_md += f"| Média Geral | {avg_ltv_cac:.2f}x | {'🟢 OK' if avg_ltv_cac > 3 else '🟡 BAIXO'} |\n"
+    
+    # Legend Plot
+    ax.legend(loc='lower left', fontsize=9, frameon=True)
 
     legend_md = """
-**O QUE ESTOU VENDO?** Relacionamento entre crescimento (Eixo X) e eficiência (Eixo Y).
-**IDEAL:** Pontos subindo ou estáveis à direita.
+**📖 COMO LER ESTE GRÁFICO (ESCALA):**
+
+1. **Eixo X (Tamanho):** Quantos clientes ativos temos.
+2. **Eixo Y (Qualidade):** LTV/CAC (Eficiência Unitária).
+3. **Pontos Coloridos:** Meses de operação (Amarelo = Mais recente).
+
+**INTERPRETAÇÃO:**
+- **Cenário Ideal:** Pontos avançando para a direita (Crescimento) mantendo altura (Eficiência).
+- **Cenário Ruim:** Pontos caindo conforme a base cresce (Desgaste de escala).
+- **Regra:** Nunca crescer para a "Zona de Perigo" (abaixo de 1x).
 """
     formulas = "**Fonte:** df_real_m | 'usuarios_ativos' vs 'ltv/cac'"
     
@@ -482,8 +501,8 @@ def gerar_viz_4_4_escala_unit_economics(df_real_m, premissas, report_mode=False)
 
     render_atomic_block(
         chart_id="pg4_viz4_escala",
-        title_colloquial="Se escalar agressivamente, a unidade quebra?",
-        title_technical="VIZ 4.4: Escala vs LTV/CAC (Unit Economics at Scale)",
+        title_colloquial="A qualidade do cliente cai quando a empresa cresce?",
+        title_technical="VIZ 4.4: Qualidade Marginal na Escala (LTV/CAC vs Volume)",
         fig=fig, legend_md=legend_md, df_tabela=tabela_md,
         insight_dict=insight, formulas_md=formulas, report_mode=report_mode,
         table_title="📋 TESTE DE ESCALA", data_source_text="Fonte: df_real_m"
@@ -556,8 +575,21 @@ def gerar_viz_4_5_waterfall_leaks(df_real_m, premissas, report_mode=False):
     tabela_md = "| Componente | Valor |\n|:---|---:|\n"
     for l, v in zip(labels, values):
         tabela_md += f"| {l} | {formata_moeda(v)} |\n"
-        
-    legend_md = "Decomposição do valor vitalício de um cliente, descontando todos os custos e impostos."
+     
+    # Legend Plot (Bar labels are enough, but explicit legend helps)
+    # ax.legend() -> Waterfall using colors mostly, specific labels on bars.
+
+    legend_md = """
+**📖 COMO LER ESTE GRÁFICO (WATERFALL):**
+
+1. **Barra Azul Clara (LTV Bruto):** Todo dinheiro que entra do cliente.
+2. **Barras Vermelhas:** O que é descontado (Custos, Impostos, Aquisição).
+3. **Barra Final (Verde):** O lucro limpo que sobra no bolso.
+
+**INTERPRETAÇÃO:**
+- Mostra a "mordida" de cada etapa no valor do cliente.
+- Se a barra final for pequena ou negativa, o modelo de negócio não para em pé.
+"""
     formulas = "Profit = LTV Bruto - COGS - Impostos - CAC"
     
     insight = {
