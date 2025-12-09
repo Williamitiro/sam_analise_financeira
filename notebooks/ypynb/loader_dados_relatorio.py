@@ -25,6 +25,7 @@ try:
     from PAGINA_1_COCKPIT_V4 import executar_pagina_1
     from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
     from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
+    from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
 except ImportError as e:
     print(f"❌ ERRO CRÍTICO DE IMPORTAÇÃO: {e}")
     print("Verifique se o path está correto e se os arquivos __init__.py existem se necessário (embora sys.path resolva).")
@@ -96,6 +97,15 @@ def main(report_mode=True, run_monte_carlo=False):
         df_real_m=df_real_m,
         df_real_s=df_real_s,
         df_ideal_m=df_ideal_m,
+        premissas=PREMISSAS,
+        report_mode=report_mode
+    )
+    
+    # 8. GERAR PÁGINA 4: UNIT ECONOMICS (LTV/CAC + Cohorts + RPE)
+    executar_pagina_4_unit_economics(
+        df_real_m=df_real_m,
+        df_real_s=df_real_s,
+        df_ideal=df_ideal_m,
         premissas=PREMISSAS,
         report_mode=report_mode
     )

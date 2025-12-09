@@ -5,6 +5,7 @@
 
 import pandas as pd
 import numpy as np
+import textwrap
 import matplotlib.pyplot as plt
 import json
 import os
@@ -147,7 +148,7 @@ def salvar_tabela_html_silencioso(df_tabela, filename):
 # 3. RENDERING ENGINE (ATOMIC BLOCK V20.0)
 # ============================================================================
 
-def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend_md, df_tabela, insight_dict, formulas_md=None, report_mode=False):
+def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend_md, df_tabela, insight_dict, formulas_md=None, report_mode=False, table_title=None, data_source_text=None):
     """
     Renderiza um Bloco de Análise Atômica completo no Notebook (Padrão V21.1).
     Se report_mode=True: 
@@ -168,26 +169,60 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     
     # 2. BLOCO B: GRÁFICO
     display(fig)
+    if data_source_text:
+        display(Markdown(f"*{data_source_text}*"))
     plt.close(fig) 
     
     # 3. BLOCO C: LEGENDA "COMO LER"
-    # Use *** instead of --- to avoid YAML confusion
     display(Markdown("***")) 
-    display(Markdown(f"#### 📖 COMO LER ESTE GRÁFICO:\n{legend_md}"))
-    
-    # 4. BLOCO D: TABELA AUXILIAR
-    display(Markdown("#### 📋 A PROVA NUMÉRICA:"))
     
     if report_mode:
-        # Modo Relatório: Markdown Puro e Limpo
+        # Modo PDF/Quarto: Callout Note Simple (Igual Tier 1)
+        como_ler_block = f"""
+::: {{.callout-note appearance="simple"}}
+### 📖 COMO LER ESTE GRÁFICO
+{legend_md}
+:::
+"""
+        display(Markdown(como_ler_block))
+    else:
+        # Modo Notebook HTML
+        display(Markdown(f"#### 📖 COMO LER ESTE GRÁFICO:\n{legend_md}"))
+    
+    # 4. BLOCO D: TABELA AUXILIAR
+    # Título Customizado ou Default
+    titulo_tabela = table_title if table_title else "📋 A PROVA NUMÉRICA:"
+    display(Markdown(f"#### {titulo_tabela}"))
+    
+    if isinstance(df_tabela, str):
+        # CASO ESPECIAL: Tabela passada como String Markdown pura (Manual)
+        # Útil para casos onde pandas.to_markdown quebra a formatação
+        display(Markdown(f"\n\n{df_tabela}\n\n"))
+        
+        # Em modo notebook, se quisermos salvar HTML, precisaríamos parsear ou ignorar.
+        # Aqui vamos salvar apenas o arquivo texto se for string.
+        if not report_mode:
+            pass # Não salva HTML se for string manual
+            
+    elif report_mode:
+        # Modo Relatório: Markdown Puro e Limpo via Pandas
         df_clean = df_tabela.fillna('')
         
         # 1. Remove tags HTML de colunas de texto (mas mantém conteúdo)
         # Ex: <span class='status-green'>SUPEROU</span> -> SUPEROU
         df_clean = df_clean.replace(to_replace=r'<[^>]+>', value='', regex=True)
         
-        # 2. Converte para Markdown
-        markdown_table = df_clean.to_markdown(index=False)
+        # 2. Converte para Markdown (Força formato pipe padrão e sanitiza)
+        # remove_index=False se quiser index, mas aqui é False
+        markdown_table = df_clean.to_markdown(index=False, tablefmt="pipe")
+        
+        # Correção ROBUSTA de caracteres de separação (long-dashes e em-dashes)
+        # Substitui travessões longos que o tabulate ou copy-paste podem ter gerado
+        markdown_table = markdown_table.replace('—', '-').replace('–', '-')
+        
+        # Garante quebras de linha para o processador Markdown do Quarto
+        markdown_table = f"\n\n{markdown_table}\n\n"
+        
         display(Markdown(markdown_table))
     else:
         # Modo Notebook: HTML Rico com CSS
@@ -247,11 +282,18 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     if formulas_md:
         if report_mode:
             # SANITIZAÇÃO DE HTML PARA MARKDOWN (CORREÇÃO V21.1)
-            # Converte <b>, <i> para Markdown e remove outras tags
-            audit_clean = formulas_md\
+            # Remove qualquer tag HTML restante (<...>) e converte basics
+            import re
+            
+            # Remove indentação excessiva para evitar Code Block no Markdown
+            audit_clean = textwrap.dedent(formulas_md).strip()
+            
+            audit_clean = audit_clean\
                 .replace("<b>", "**").replace("</b>", "**")\
                 .replace("<i>", "*").replace("</i>", "*")\
                 .replace("<br>", "\n")
+            
+            audit_clean = re.sub(r'<[^>]+>', '', audit_clean)
             
             # Quarto Callout para Auditoria
             audit_md = f"""
@@ -276,5 +318,6 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     
     # 6. Salvar arquivos
     salvar_figura_silencioso(fig, f"{chart_id}.png")
-    salvar_tabela_html_silencioso(df_tabela, f"{chart_id}")
+    if not isinstance(df_tabela, str):
+        salvar_tabela_html_silencioso(df_tabela, f"{chart_id}")
     salvar_metadados_json(chart_id, title_technical, "df_real vs df_ideal", insight_dict, chart_id)

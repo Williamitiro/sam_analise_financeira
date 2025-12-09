@@ -37,6 +37,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="relatorio_completo_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="relatorio_completo_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -63,8 +92,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#setup-do-ambiente" id="toc-setup-do-ambiente" class="nav-link" data-scroll-target="#setup-do-ambiente">Setup do Ambiente</a></li>
   <li><a href="#execucao-das-simulacoes" id="toc-execucao-das-simulacoes" class="nav-link" data-scroll-target="#execucao-das-simulacoes">Execucao das Simulacoes</a></li>
   <li><a href="#tier-1---executive-cockpit-1" id="toc-tier-1---executive-cockpit-1" class="nav-link" data-scroll-target="#tier-1---executive-cockpit-1">TIER 1 - Executive Cockpit</a></li>
-  <li><a href="#tier-2---growth-engine-1" id="toc-tier-2---growth-engine-1" class="nav-link" data-scroll-target="#tier-2---growth-engine-1">TIER 2 - Growth Engine</a></li>
+  <li><a href="#tier-2---a-máquina-de-crescimento-growth-engine" id="toc-tier-2---a-máquina-de-crescimento-growth-engine" class="nav-link" data-scroll-target="#tier-2---a-máquina-de-crescimento-growth-engine">TIER 2 - A MÁQUINA DE CRESCIMENTO (Growth Engine)</a>
+  <ul class="collapse">
+  <li><a href="#introdução-estratégica" id="toc-introdução-estratégica" class="nav-link" data-scroll-target="#introdução-estratégica">🚀 INTRODUÇÃO ESTRATÉGICA</a>
+  <ul class="collapse">
+  <li><a href="#objetivos-desta-seção" id="toc-objetivos-desta-seção" class="nav-link" data-scroll-target="#objetivos-desta-seção">🎯 OBJETIVOS DESTA SEÇÃO:</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#tier-3---financeiro-completo" id="toc-tier-3---financeiro-completo" class="nav-link" data-scroll-target="#tier-3---financeiro-completo">TIER 3 - Financeiro Completo</a></li>
+  <li><a href="#tier-4---unit-economics-operação" id="toc-tier-4---unit-economics-operação" class="nav-link" data-scroll-target="#tier-4---unit-economics-operação">TIER 4 - UNIT ECONOMICS &amp; OPERAÇÃO</a></li>
   <li><a href="#metodologia-completa" id="toc-metodologia-completa" class="nav-link" data-scroll-target="#metodologia-completa">Metodologia Completa</a></li>
   <li><a href="#premissas-chave" id="toc-premissas-chave" class="nav-link" data-scroll-target="#premissas-chave">Premissas-Chave</a></li>
   <li><a href="#conclusoes-executivas" id="toc-conclusoes-executivas" class="nav-link" data-scroll-target="#conclusoes-executivas">Conclusoes Executivas</a></li>
@@ -766,9 +802,23 @@ Note
 </div>
 </div>
 </section>
-<section id="tier-2---growth-engine-1" class="level1">
-<h1>TIER 2 - Growth Engine</h1>
-<p><strong>Objetivo:</strong> Demonstrar eficiencia da maquina de aquisicao, identificar gargalos e quantificar oportunidades de melhoria.</p>
+<section id="tier-2---a-máquina-de-crescimento-growth-engine" class="level1">
+<h1>TIER 2 - A MÁQUINA DE CRESCIMENTO (Growth Engine)</h1>
+<hr>
+<section id="introdução-estratégica" class="level2">
+<h2 class="anchored" data-anchor-id="introdução-estratégica">🚀 INTRODUÇÃO ESTRATÉGICA</h2>
+<p>O <strong>Tier 2</strong> aprofunda a análise na eficiência operacional da aquisição de clientes. Enquanto o Tier 1 mostrou <em>o que</em> aconteceu (Resultado), o Tier 2 explica <em>como</em> e <em>por que</em> aconteceu (Causas).</p>
+<section id="objetivos-desta-seção" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-desta-seção">🎯 OBJETIVOS DESTA SEÇÃO:</h3>
+<ol type="1">
+<li><strong>Validar a Tese de Aquisição:</strong> O funil converte conforme o esperado?</li>
+<li><strong>Auditar a Qualidade do Crescimento:</strong> O LTV/CAC e o Payback suportam escala?</li>
+<li><strong>Identificar Gargalos Táticos:</strong> Onde estamos perdendo eficiência marginal?</li>
+<li><strong>Mapear Riscos Invisíveis:</strong> O churn está corroendo o valor criado?</li>
+</ol>
+<hr>
+</section>
+</section>
 <div id="tier2" class="cell" data-execution_count="4">
 <div id="tier2-1" class="cell-output cell-output-display cell-output-markdown">
 <section id="o-volume-de-vendas-sustenta-a-operação-no-cenário-conservador" class="level2">
@@ -776,36 +826,46 @@ Note
 </section>
 </div>
 <div id="tier2-2" class="cell-output cell-output-display cell-output-markdown">
-<section id="funil-de-aquisição-conservador-vs-benchmark-log-scale" class="level3">
-<h3 class="anchored" data-anchor-id="funil-de-aquisição-conservador-vs-benchmark-log-scale">📉 Funil de Aquisição: Conservador vs Benchmark (Log Scale)</h3>
+<section id="viz-2.1-funil-de-aquisição-conservador-vs-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.1-funil-de-aquisição-conservador-vs-benchmark">📉 VIZ 2.1: Funil de Aquisição (Conservador vs Benchmark)</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-3.png" id="tier2-3" width="888" height="395" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-3.png" id="tier2-3" width="872" height="399" class="figure-img"></p>
 </figure>
 </div>
 </div>
 <div id="tier2-4" class="cell-output cell-output-display cell-output-markdown">
-<hr>
+<p><em>Fonte: df_real_m (Simulacao) vs df_ideal (Meta)</em></p>
 </div>
 <div id="tier2-5" class="cell-output cell-output-display cell-output-markdown">
-<section id="como-ler-este-gráfico-2" class="level4">
-<h4 class="anchored" data-anchor-id="como-ler-este-gráfico-2">📖 COMO LER ESTE GRÁFICO:</h4>
-<pre><code>1. **Eixo Y (Esquerda):** Etapas do Funil (Visitantes -&gt; Leads -&gt; Vendas -&gt; Ativos).
-2. **Barras Escuras (Sólidas):** Valores do seu cenário conservador ("Real").
-3. **Barras Cinza (Fundo):** Benchmark de mercado ou Meta ("Ideal").
-4. **Escala Logarítmica:** O Eixo X cresce exponencialmente para permitir visualizar milhões e unidades no mesmo gráfico.
-5. **Regra de Sucesso:** Se a barra escura ultrapassar ou igualar a cinza, o benchmark foi atingido.</code></pre>
-</section>
+<hr>
 </div>
 <div id="tier2-6" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica">📋 A PROVA NUMÉRICA:</h4>
-</section>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Comparativo direto entre o funil realizado (Barras Escuras) e a meta estipulada (Barras Cinzas).</p>
+<p><strong>ELEMENTOS VISUAIS:</strong> - <strong>Barras Escuras:</strong> Resultados do cenário Conservador. - <strong>Barras Cinza (Fundo):</strong> Benchmark de mercado (Ideal). - <strong>Eixo X (Log):</strong> Escala exponencial para visualizar grandes discrepâncias de volume.</p>
+<p><strong>INTERPRETAÇÃO:</strong> - Se a barra escura preencher completamente a cinza, a meta foi batida. Se ultrapassar, o desempenho é superior ao benchmark.</p>
+</div>
+</div>
 </div>
 <div id="tier2-7" class="cell-output cell-output-display cell-output-markdown">
+<section id="detalhamento-do-funil-real-vs-meta" class="level4">
+<h4 class="anchored" data-anchor-id="detalhamento-do-funil-real-vs-meta">Detalhamento do Funil (Real vs Meta)</h4>
+</section>
+</div>
+<div id="tier2-8" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 11%">
@@ -861,7 +921,7 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-8" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-9" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -881,9 +941,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-9" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-10" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -892,56 +952,71 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<pre><code>1. **Taxa de Conversão Global** = (Novos Pagantes / Visitantes Únicos) * 100
-2. **Benchmark (Ideal)**: Definido nas premissas (ex: 1.0% para SaaS B2C).
-3. **Delta**: Diferença percentual (p.p.) entre a conversão Real e a Meta.
-4. **Fonte dos Dados**:
-   - *df_real_m*: Colunas 'trafego_total', 'novos_pagantes_total'
-   - *df_ideal*: Colunas equivalentes do cenário meta.</code></pre>
+<ol type="1">
+<li><strong>Taxa de Conversão Global</strong> = (Novos Pagantes / Visitantes Únicos) * 100</li>
+<li><strong>Benchmark (Ideal)</strong>: Definido nas premissas (ex: 1.0% para SaaS B2C).</li>
+<li><strong>Delta</strong>: Diferença percentual (p.p.) entre a conversão Real e a Meta.</li>
+<li><strong>Fonte dos Dados</strong>:
+<ul>
+<li><em>df_real_m</em>: Colunas ‘trafego_total’, ‘novos_pagantes_total’</li>
+<li><em>df_ideal</em>: Colunas equivalentes do cenário meta.</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </div>
-</div>
-<div id="tier2-10" class="cell-output cell-output-display cell-output-markdown">
-
 </div>
 <div id="tier2-11" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier2-12" class="cell-output cell-output-display cell-output-markdown">
 <section id="o-negócio-para-em-pé-saúde-unitária" class="level2">
 <h2 class="anchored" data-anchor-id="o-negócio-para-em-pé-saúde-unitária">O negócio para em pé? (Saúde Unitária)</h2>
 </section>
 </div>
-<div id="tier2-12" class="cell-output cell-output-display cell-output-markdown">
-<section id="evolução-ltvcac-vs-zonas-de-risco" class="level3">
-<h3 class="anchored" data-anchor-id="evolução-ltvcac-vs-zonas-de-risco">📉 Evolução LTV/CAC vs Zonas de Risco</h3>
+<div id="tier2-13" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-2.2-evolução-ltvcac-vs-zonas-de-risco" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.2-evolução-ltvcac-vs-zonas-de-risco">📉 VIZ 2.2: Evolução LTV/CAC vs Zonas de Risco</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-13.png" id="tier2-13" width="818" height="394" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-14.png" id="tier2-14" width="810" height="393" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-14" class="cell-output cell-output-display cell-output-markdown">
-<hr>
-</div>
 <div id="tier2-15" class="cell-output cell-output-display cell-output-markdown">
-<section id="como-ler-este-gráfico-3" class="level4">
-<h4 class="anchored" data-anchor-id="como-ler-este-gráfico-3">📖 COMO LER ESTE GRÁFICO:</h4>
-<pre><code>1. **Linha Azul Sólida:** Evolução do seu LTV/CAC ao longo do tempo.
-2. **Zona Verde (&gt;3x):** Ideal. Significa que cada real investido no cliente volta 3x.
-3. **Zona Amarela (1x-3x):** Operação paga as contas, mas sobra pouco para crescer.
-4. **Zona Vermelha (&lt;1x):** Prejuízo. Custa mais trazer o cliente do que ele rende.</code></pre>
-</section>
+<p><em>Fonte: df_real_m (LTV/CAC) | Benchmark: 3.0x</em></p>
 </div>
 <div id="tier2-16" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-1" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-1">📋 A PROVA NUMÉRICA:</h4>
-</section>
+<hr>
 </div>
 <div id="tier2-17" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> A evolução da eficiência financeira (Quanto retorna de Valor para cada R$ 1 investido em Aquisição).</p>
+<p><strong>ELEMENTOS VISUAIS:</strong> - <strong>Linha Azul:</strong> LTV/CAC Real ao longo do tempo. - <strong>Zona Verde (&gt;3x):</strong> Alta eficiência (Escalável). - <strong>Zona Vermelha (&lt;1x):</strong> Destruição de valor (Prejuízo unitário).</p>
+<p><strong>INTERPRETAÇÃO:</strong> - Mantenha a operação na zona verde ou amarela. A zona vermelha indica que custa mais trazer um cliente do que ele paga.</p>
+</div>
+</div>
+</div>
+<div id="tier2-18" class="cell-output cell-output-display cell-output-markdown">
+<section id="evolução-da-eficiência-ltvcac" class="level4">
+<h4 class="anchored" data-anchor-id="evolução-da-eficiência-ltvcac">Evolução da Eficiência LTV/CAC</h4>
+</section>
+</div>
+<div id="tier2-19" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 14%">
@@ -991,7 +1066,7 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-18" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-20" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1011,9 +1086,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-19" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-21" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1022,57 +1097,72 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<pre><code>1. **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
-2. **CAC (Custo Aquisição)** = Gastos Marketing / Novos Clientes
-3. **LTV/CAC**: Razão de eficiência. Quanto retorna para cada R$ 1 investido.
-4. **Zonas de Risco**:
-   - 🟢 &gt; 3.0x: Alta eficiência (Escalável)
-   - 🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar
-   - 🔴 &lt; 1.0x: Destruição de valor (Prejuízo unitário)</code></pre>
+<ol type="1">
+<li><strong>LTV (Lifetime Value)</strong> = (ARPU × Margem Bruta %) / Churn Rate</li>
+<li><strong>CAC (Custo Aquisição)</strong> = Gastos Marketing / Novos Clientes</li>
+<li><strong>LTV/CAC</strong>: Razão de eficiência. Quanto retorna para cada R$ 1 investido.</li>
+<li><strong>Zonas de Risco</strong>:
+<ul>
+<li>🟢 &gt; 3.0x: Alta eficiência (Escalável)</li>
+<li>🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar</li>
+<li>🔴 &lt; 1.0x: Destruição de valor (Prejuízo unitário)</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div id="tier2-20" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-22" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-21" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-23" class="cell-output cell-output-display cell-output-markdown">
 <section id="existe-descontrole-tático-de-custos" class="level2">
 <h2 class="anchored" data-anchor-id="existe-descontrole-tático-de-custos">Existe descontrole tático de custos?</h2>
 </section>
 </div>
-<div id="tier2-22" class="cell-output cell-output-display cell-output-markdown">
-<section id="statistical-process-control-spc-volatilidade-semanal-do-cac" class="level3">
-<h3 class="anchored" data-anchor-id="statistical-process-control-spc-volatilidade-semanal-do-cac">📉 Statistical Process Control (SPC): Volatilidade Semanal do CAC</h3>
+<div id="tier2-24" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-2.3-volatilidade-semanal-do-cac-spc" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.3-volatilidade-semanal-do-cac-spc">📉 VIZ 2.3: Volatilidade Semanal do CAC (SPC)</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-23.png" id="tier2-23" width="820" height="393" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-25.png" id="tier2-25" width="818" height="393" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-24" class="cell-output cell-output-display cell-output-markdown">
-<hr>
-</div>
-<div id="tier2-25" class="cell-output cell-output-display cell-output-markdown">
-<section id="como-ler-este-gráfico-4" class="level4">
-<h4 class="anchored" data-anchor-id="como-ler-este-gráfico-4">📖 COMO LER ESTE GRÁFICO:</h4>
-<pre><code>1. **Linha Preta:** O valor do CAC medido naquela semana específica.
-2. **Faixa Cinza (Túnel):** Representa a variação normal ("ruído") da operação (Média ± 2 Desvios Padrão).
-3. **Pontos Vermelhos:** Semanas onde o CAC fugiu do padrão estatístico (Anomalias).
-4. **Objetivo:** Manter a linha preta dentro do túnel cinza.</code></pre>
-</section>
-</div>
 <div id="tier2-26" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-2" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-2">📋 A PROVA NUMÉRICA:</h4>
-</section>
+<p><em>Fonte: df_real_s (CAC Semanal) | Media: R$ 439</em></p>
 </div>
 <div id="tier2-27" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier2-28" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Monitoramento tático de curto prazo para identificar disparadas anormais no Custo de Aquisição (CAC).</p>
+<p><strong>ELEMENTOS VISUAIS:</strong> - <strong>Linha Preta:</strong> Custo real da semana. - <strong>Faixa Cinza:</strong> Variação estatística aceitável (Túnel de Controle). - <strong>Pontos Vermelhos:</strong> Anomalias graves.</p>
+<p><strong>INTERPRETAÇÃO:</strong> - Se a linha preta sair do túnel cinza, investigue imediatamente a causa raiz (Bug, Campanha, Sazonalidade).</p>
+</div>
+</div>
+</div>
+<div id="tier2-29" class="cell-output cell-output-display cell-output-markdown">
+<section id="monitoramento-de-anomalias-semanal" class="level4">
+<h4 class="anchored" data-anchor-id="monitoramento-de-anomalias-semanal">Monitoramento de Anomalias (Semanal)</h4>
+</section>
+</div>
+<div id="tier2-30" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 14%">
@@ -1129,7 +1219,7 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-28" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-31" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1149,9 +1239,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-29" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-32" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1160,60 +1250,114 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<pre><code>1. **CAC Semanal** = Custo Marketing da Semana / Novos Clientes da Semana
-2. **Média (Central)** = Média aritmética de todas as semanas observadas.
-3. **Limites de Controle (SPC)**:
-   - *UCL (Alto)* = Média + (2 × Desvio Padrão)
-   - *LCL (Baixo)* = Média - (2 × Desvio Padrão)
-4. **Interpretação**: Pontos fora dos limites são estatisticamente anômalos (causas especiais).</code></pre>
+<ol type="1">
+<li><strong>CAC Semanal</strong> = Custo Marketing da Semana / Novos Clientes da Semana</li>
+<li><strong>Média (Central)</strong> = Média aritmética de todas as semanas observadas.</li>
+<li><strong>Limites de Controle (SPC)</strong>:
+<ul>
+<li><em>UCL (Alto)</em> = Média + (2 × Desvio Padrão)</li>
+<li><em>LCL (Baixo)</em> = Média - (2 × Desvio Padrão)</li>
+</ul></li>
+<li><strong>Interpretação</strong>: Pontos fora dos limites são estatisticamente anômalos (causas especiais).</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div id="tier2-30" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-33" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-31" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-34" class="cell-output cell-output-display cell-output-markdown">
 <section id="se-dobrar-o-marketing-dobra-a-venda" class="level2">
 <h2 class="anchored" data-anchor-id="se-dobrar-o-marketing-dobra-a-venda">Se dobrar o marketing, dobra a venda?</h2>
 </section>
 </div>
-<div id="tier2-32" class="cell-output cell-output-display cell-output-markdown">
-<section id="curva-de-escala-e-elasticidade-de-canal" class="level3">
-<h3 class="anchored" data-anchor-id="curva-de-escala-e-elasticidade-de-canal">📉 Curva de Escala e Elasticidade de Canal</h3>
+<div id="tier2-35" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-2.4-curva-de-escala-e-elasticidade-de-canal" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.4-curva-de-escala-e-elasticidade-de-canal">📉 VIZ 2.4: Curva de Escala e Elasticidade de Canal</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-33.png" id="tier2-33" width="767" height="393" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-36.png" id="tier2-36" width="763" height="394" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-34" class="cell-output cell-output-display cell-output-markdown">
-<hr>
-</div>
-<div id="tier2-35" class="cell-output cell-output-display cell-output-markdown">
-<section id="como-ler-este-gráfico-5" class="level4">
-<h4 class="anchored" data-anchor-id="como-ler-este-gráfico-5">📖 COMO LER ESTE GRÁFICO:</h4>
-<pre><code>1. **Bolinhas Azuis:** Cada bolinha é um mês real. (Mais escuro = Mais recente).
-2. **Linha Azul Sólida:** A tendência real matemática. Se curvar para baixo, estamos perdendo eficiência.
-3. **Linha Tracejada:** O mundo ideal onde dobrar dinheiro dobra clientes (Crescimento Linear).
-4. **Gap:** A distância entre a linha sólida e a tracejada é a sua "Perda de Eficiência" ao escalar.</code></pre>
-</section>
-</div>
-<div id="tier2-36" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-3" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-3">📋 A PROVA NUMÉRICA:</h4>
-</section>
-</div>
 <div id="tier2-37" class="cell-output cell-output-display cell-output-markdown">
-<div class="line-block">Investimento (R$) | Clientes Estimados | Clientes (Se Linear) | Perda Eficiência | Diagnóstico |</div>
-<p>|:——————–|———————:|———————–:|:——————-|:———————-| | R$ 1.500,00 | 7 | 9 | 22.6% | RETORNOS DECRESCENTES | | R$ 11.594,66 | 52 | 70 | 26.0% | RETORNOS DECRESCENTES | | R$ 21.689,32 | 89 | 132 | 32.4% | RETORNOS DECRESCENTES |</p>
+<p><em>Fonte: df_real_m (Marketing vs Vendas) | Regressão Polinomial (Grau 2)</em></p>
 </div>
 <div id="tier2-38" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier2-39" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Teste de elasticidade de canal (Se dobrar investimento, vendas dobram?).</p>
+<p><strong>ELEMENTOS VISUAIS:</strong> - <strong>Bolinhas Azuis:</strong> Mês real (Escuro=Recente). - <strong>Linha Sólida:</strong> Tendência Real. - <strong>Linha Tracejada:</strong> Crescimento Linear Ideal.</p>
+<p><strong>INTERPRETAÇÃO:</strong> - Se a linha sólida “deitar” (curvar para baixo), significa que o canal está saturando e o CAC marginal está subindo.</p>
+</div>
+</div>
+</div>
+<div id="tier2-40" class="cell-output cell-output-display cell-output-markdown">
+<section id="teste-de-elasticidade-de-canal" class="level4">
+<h4 class="anchored" data-anchor-id="teste-de-elasticidade-de-canal">Teste de Elasticidade de Canal</h4>
+</section>
+</div>
+<div id="tier2-41" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Investimento</th>
+<th style="text-align: right;">Clientes Est.</th>
+<th style="text-align: right;">Linear (Ideal)</th>
+<th style="text-align: right;">Perda Efic.</th>
+<th style="text-align: left;">Diagnostico</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">R$ 1.500,00</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">22.6%</td>
+<td style="text-align: left;">RETORNOS DECRESCENTES</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">R$ 11.594,66</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">26.0%</td>
+<td style="text-align: left;">RETORNOS DECRESCENTES</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">R$ 21.689,32</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">32.4%</td>
+<td style="text-align: left;">RETORNOS DECRESCENTES</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier2-42" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1233,9 +1377,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-39" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-43" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1244,54 +1388,207 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<pre><code>1. **Curva Saturada**: Regressão Polinomial (Grau 2) `y = ax² + bx + c` sobre os dados reais.
-2. **Crescimento Linear (Ideal)**: Projeção `y = x / CAC_minimo`. Assume que o CAC se mantém fixo infinitamente.
-3. **Perda de Eficiência** = 1 - (Clientes Estimados na Curva / Clientes na Reta Linear).
-   - Ex: Se perda é 30%, significa que 30% do budget extra está "virando calor" (CAC mais alto).</code></pre>
+<ol type="1">
+<li><strong>Curva Saturada</strong>: Regressão Polinomial (Grau 2) <em>y = ax² + bx + c</em> sobre os dados reais.</li>
+<li><strong>Crescimento Linear (Ideal)</strong>: Projeção <em>y = x / CAC_minimo</em>. Assume que o CAC se mantém fixo infinitamente.</li>
+<li><strong>Perda de Eficiência</strong> = 1 - (Clientes Estimados na Curva / Clientes na Reta Linear).
+<ul>
+<li>Ex: Se perda é 30%, significa que 30% do budget extra está “virando calor” (CAC mais alto).</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div id="tier2-40" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-44" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-41" class="cell-output cell-output-display cell-output-markdown">
-<section id="quanto-dinheiro-estamos-perdendo-pelo-ralo" class="level2">
-<h2 class="anchored" data-anchor-id="quanto-dinheiro-estamos-perdendo-pelo-ralo">Quanto dinheiro estamos perdendo pelo ralo?</h2>
+<div id="tier2-45" class="cell-output cell-output-display cell-output-markdown">
+<section id="quanto-economizamos-com-trafego-organico" class="level2">
+<h2 class="anchored" data-anchor-id="quanto-economizamos-com-trafego-organico">Quanto economizamos com trafego organico?</h2>
 </section>
 </div>
-<div id="tier2-42" class="cell-output cell-output-display cell-output-markdown">
-<section id="análise-de-vazamento-net-mrr-growth-churn-cost" class="level3">
-<h3 class="anchored" data-anchor-id="análise-de-vazamento-net-mrr-growth-churn-cost">📉 Análise de Vazamento: Net MRR Growth &amp; Churn Cost</h3>
+<div id="tier2-46" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-2.5-impacto-do-mix-de-canais-cac-pago-vs-blended" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.5-impacto-do-mix-de-canais-cac-pago-vs-blended">📉 VIZ 2.5: Impacto do Mix de Canais (CAC Pago vs Blended)</h3>
 </section>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-43.png" id="tier2-43" width="836" height="394" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-47.png" id="tier2-47" width="1388" height="598" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-44" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-48" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_m | CAC Paid vs CAC Blended</em></p>
+</div>
+<div id="tier2-49" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-45" class="cell-output cell-output-display cell-output-markdown">
-<section id="como-ler-este-gráfico-6" class="level4">
-<h4 class="anchored" data-anchor-id="como-ler-este-gráfico-6">📖 COMO LER ESTE GRÁFICO:</h4>
-<pre><code>1. **Barras Verdes (Cima):** Dinheiro novo entrando (Vendas).
-2. **Barras Vermelhas (Baixo):** Dinheiro saindo (Cancelamentos).
-3. **Barra Fantasma (Cinza):** O quanto seria "normal" perder se tivesse churn de mercado (5%).
-4. **Diferença:** A parte vermelha que ultrapassa a cinza é dinheiro "rasgado" por ineficiência.</code></pre>
+<div id="tier2-50" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Diferença entre dependência de anúncios (Vermelho) e custo real (Azul). <strong>INTERPRETAÇÃO:</strong> - <strong>Linhas afastadas:</strong> Branding e Orgânico estão funcionando (Economia). - <strong>Linhas juntas:</strong> O crescimento é 100% dependente de anúncios pagos (Risco).</p>
+</div>
+</div>
+</div>
+<div id="tier2-51" class="cell-output cell-output-display cell-output-markdown">
+<section id="economia-de-canal" class="level4">
+<h4 class="anchored" data-anchor-id="economia-de-canal">📋 ECONOMIA DE CANAL</h4>
 </section>
 </div>
-<div id="tier2-46" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-4" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-4">📋 A PROVA NUMÉRICA:</h4>
+<div id="tier2-52" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Período</th>
+<th style="text-align: right;">CAC Pago</th>
+<th style="text-align: right;">CAC Blended</th>
+<th style="text-align: right;">Economia/Cliente</th>
+<th style="text-align: right;">Total Economizado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">M6</td>
+<td style="text-align: right;">R$ 375,00</td>
+<td style="text-align: right;">R$ 250,00</td>
+<td style="text-align: right;">R$ 125,00</td>
+<td style="text-align: right;">R$ 750,00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">M12</td>
+<td style="text-align: right;">R$ 315,67</td>
+<td style="text-align: right;">R$ 172,18</td>
+<td style="text-align: right;">R$ 143,48</td>
+<td style="text-align: right;">R$ 1.578,33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">M24</td>
+<td style="text-align: right;">R$ 297,95</td>
+<td style="text-align: right;">R$ 214,15</td>
+<td style="text-align: right;">R$ 83,80</td>
+<td style="text-align: right;">R$ 2.681,55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">M36</td>
+<td style="text-align: right;">R$ 293,10</td>
+<td style="text-align: right;">R$ 235,75</td>
+<td style="text-align: right;">R$ 57,35</td>
+<td style="text-align: right;">R$ 5.275,78</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier2-53" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> Tráfego orgânico reduz o CAC em R$ 57,35 por cliente.</li>
+<li><strong>CAUSA:</strong> Mix balanceado entre canais pagos e gratuitos.</li>
+<li><strong>IMPLICAÇÃO:</strong> Menor sensibilidade a aumentos de CPM nas plataformas de ads.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Manter investimento em SEO para ampliar o gap.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier2-54" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>CAC Pago</strong> = Gasto Ads / Novos Clientes (Só de Ads)</li>
+<li><strong>CAC Blended</strong> = Gasto Ads / Novos Clientes (Totais)</li>
+<li><strong>Economia</strong> = CAC Pago - CAC Blended</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="tier2-55" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier2-56" class="cell-output cell-output-display cell-output-markdown">
+<section id="quanto-dinheiro-estamos-perdendo-pelo-ralo" class="level2">
+<h2 class="anchored" data-anchor-id="quanto-dinheiro-estamos-perdendo-pelo-ralo">Quanto dinheiro estamos perdendo pelo ralo?</h2>
 </section>
 </div>
-<div id="tier2-47" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-57" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-2.5-análise-de-vazamento-net-growth-churn" class="level3">
+<h3 class="anchored" data-anchor-id="viz-2.5-análise-de-vazamento-net-growth-churn">📉 VIZ 2.5: Análise de Vazamento (Net Growth &amp; Churn)</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier2-output-58.png" id="tier2-58" width="830" height="393" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier2-59" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_m (Churn MRR) | Benchmark: 5%</em></p>
+</div>
+<div id="tier2-60" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier2-61" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Análise de vazamento de receita (Churn) vs Novos Contratos.</p>
+<p><strong>ELEMENTOS VISUAIS:</strong> - <strong>Verde:</strong> Vendas Novas (Entrada). - <strong>Vermelho:</strong> Cancelamentos (Saída). - <strong>Cinza:</strong> Perda “Normal” de mercado (5%).</p>
+<p><strong>INTERPRETAÇÃO:</strong> - A parte vermelha que excede a sombra cinza é ineficiência de retenção que corrói o crescimento.</p>
+</div>
+</div>
+</div>
+<div id="tier2-62" class="cell-output cell-output-display cell-output-markdown">
+<section id="impacto-financeiro-do-churn" class="level4">
+<h4 class="anchored" data-anchor-id="impacto-financeiro-do-churn">Impacto Financeiro do Churn</h4>
+</section>
+</div>
+<div id="tier2-63" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 12%">
@@ -1347,7 +1644,7 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-48" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-64" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1367,9 +1664,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-49" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-65" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1378,21 +1675,25 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<pre><code>1. **Churn Rate Real** = Clientes Cancelados / Clientes Ativos Iniciais
-2. **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados no mês.
-3. **Perda Aceitável (Benchmark)** = MRR Inicial × 5.0% (Meta de Mercado).
-4. **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitável.
-   - Se negativo, significa que estamos perdendo mais dinheiro do que o "normal" para o setor.</code></pre>
+<ol type="1">
+<li><strong>Churn Rate Real</strong> = Clientes Cancelados / Clientes Ativos Iniciais</li>
+<li><strong>Perda Real (Churn MRR)</strong> = Valor somado dos contratos cancelados no mês.</li>
+<li><strong>Perda Aceitável (Benchmark)</strong> = MRR Inicial × 5.0% (Meta de Mercado).</li>
+<li><strong>Dinheiro Rasgado (Waste)</strong> = Perda Real - Perda Aceitável.
+<ul>
+<li>Se negativo, significa que estamos perdendo mais dinheiro do que o “normal” para o setor.</li>
+</ul></li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div id="tier2-50" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-66" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-51" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-67" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1573,7 +1874,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-11.png" id="tier3-11" width="1484" height="765" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-11.png" id="tier3-11" width="1486" height="767" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1609,7 +1910,7 @@ Note
 </div>
 <div id="tier3-15" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1618,7 +1919,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Fonte:</strong> df_real_m (Celula 5A), df_ideal_m (Celula 5B)</p>
 <p><strong>Formulas:</strong> - Break-even = Primeiro mes onde EBITDA maior que 0 - Gap = Mes break-even Real - Mes break-even Ideal - Reducao Burn = (Burn M1 - Burn M36) / Burn M1 x 100</p>
@@ -1704,7 +2005,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-22.png" id="tier3-22" width="1484" height="765" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-22.png" id="tier3-22" width="1486" height="768" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1841,7 +2142,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-28.png" id="tier3-28" width="1436" height="765" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-28.png" id="tier3-28" width="1433" height="767" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1870,7 +2171,7 @@ Note
 </div>
 <div id="tier3-31" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1879,7 +2180,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div id="callout-30" class="callout-30-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Fonte:</strong> df_real_m.iloc[-1] (M36 da Celula 5A)</p>
 <p><strong>Formulas:</strong> - Margem Bruta = (Receita Liquida - COGS) / Receita Bruta x 100 - OPEX pct = Total OPEX / Receita Bruta x 100 - Benchmarks: Margem maior 80%, OPEX menor 50%, EBITDA maior 20%</p>
@@ -1901,7 +2202,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-35.png" id="tier3-35" width="1484" height="766" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-35.png" id="tier3-35" width="1486" height="768" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2018,7 +2319,7 @@ Note
 </div>
 <div id="tier3-43" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2027,7 +2328,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div id="callout-32" class="callout-32-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Fonte:</strong> df_real_s (granularidade semanal, Celula 5A)</p>
 <p><strong>Formulas:</strong> - Runway = Caixa / Despesas Semanais - Vale de Caixa = min(Caixa) nas 24 semanas - Reserva = Media Saidas x 4 semanas</p>
@@ -2049,7 +2350,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-47.png" id="tier3-47" width="1379" height="766" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-47.png" id="tier3-47" width="1373" height="768" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2085,7 +2386,7 @@ Note
 </div>
 <div id="tier3-51" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2094,7 +2395,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div id="callout-34" class="callout-34-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Fonte:</strong> df_real_m, df_ideal_m (Celulas 5A/5B)</p>
 <p><strong>Formulas:</strong> - Alavancagem = Delta EBITDA / Delta Receita - Delta = (Valor M36 - Valor M12) / Valor M12 x 100 - Interpretacao: Alavancagem maior que 1 = Modelo escalavel</p>
@@ -2116,7 +2417,7 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier3-output-55.png" id="tier3-55" width="1791" height="765" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier3-output-55.png" id="tier3-55" width="1791" height="767" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -2151,7 +2452,7 @@ Note
 </div>
 <div id="tier3-59" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-36-contents" aria-controls="callout-36" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2160,7 +2461,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-28" class="callout-28-contents callout-collapse collapse">
+<div id="callout-36" class="callout-36-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Fonte:</strong> df_real_m vs df_ideal_m (Celulas 5A e 5B)</p>
 <p><strong>Formulas:</strong> - Delta = (Real - Ideal) / |Ideal| x 100 - Verde = Real superando Ideal - Vermelho = Real abaixo do Ideal</p>
@@ -2192,6 +2493,695 @@ Important
 </div>
 </div>
 </div>
+<section id="tier-4---unit-economics-operação" class="level1">
+<h1>TIER 4 - UNIT ECONOMICS &amp; OPERAÇÃO</h1>
+<p><strong>Objetivo:</strong> Validar a saúde da unidade econômica (Cliente) e a eficiência operacional da escala.</p>
+</section>
+<div id="tier4" class="cell" data-execution_count="6">
+<div id="tier4-1" class="cell-output cell-output-display cell-output-markdown">
+<section id="página-4-unit-economics-operação" class="level1">
+<h1>PÁGINA 4: UNIT ECONOMICS &amp; OPERAÇÃO</h1>
+</section>
+</div>
+<div id="tier4-2" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Objetivo:</strong> Validar se a unidade econômica (Cliente) é saudável e escalável.</p>
+</div>
+<div id="tier4-3" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-4" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-5" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.1-ltv-vs-cac-a-regua-de-ouro" class="level2">
+<h2 class="anchored" data-anchor-id="viz-4.1-ltv-vs-cac-a-regua-de-ouro">VIZ 4.1: LTV vs CAC (A ‘Regua de Ouro’)</h2>
+</section>
+</div>
+<div id="tier4-6" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta:</strong> O valor que o cliente deixa paga o custo de traze-lo?</p>
+</div>
+<div id="tier4-7" class="cell-output cell-output-display cell-output-markdown">
+<section id="ltv-vs-cac-a-criação-de-valor" class="level2">
+<h2 class="anchored" data-anchor-id="ltv-vs-cac-a-criação-de-valor">LTV vs CAC: A CRIAÇÃO DE VALOR</h2>
+</section>
+</div>
+<div id="tier4-8" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.1-ltv-vs-cac-a-regua-de-ouro-1" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.1-ltv-vs-cac-a-regua-de-ouro-1">📉 VIZ 4.1: LTV vs CAC (A ‘Regua de Ouro’)</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier4-output-9.png" id="tier4-9" width="1389" height="536" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier4-10" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_m (Célula 5A) | Colunas: ‘ltv’, ‘cac_blended’</em></p>
+</div>
+<div id="tier4-11" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-12" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> A “corrida” financeira entre quanto custa trazer um cliente (Linha Vermelha) e quanto lucro esse cliente gera ao longo da vida (Linha Verde).</p>
+<p><strong>ELEMENTOS DO GRÁFICO:</strong> - <strong>Linha Verde (LTV):</strong> Lifetime Value - lucro bruto total que um cliente deixa na empresa. - <strong>Linha Vermelha (CAC):</strong> Custo de Aquisição - quanto gastamos para fechar um contrato. - <strong>Área Sombreada Verde:</strong> Lucro Líquido por cliente. - <strong>Múltiplo (Seta):</strong> Quantas vezes o valor do cliente cobre o custo (Ideal &gt; 3x).</p>
+<p><strong>COMO INTERPRETAR:</strong> - <strong>Boca de Jacaré:</strong> Queremos que a linha Verde se afaste da Vermelha para cima. - <strong>Cruzamento:</strong> Se a vermelha estiver acima da verde, cada venda gera prejuízo.</p>
+</div>
+</div>
+</div>
+<div id="tier4-13" class="cell-output cell-output-display cell-output-markdown">
+<section id="detalhamento-da-eficiência-unitária-ltvcac" class="level4">
+<h4 class="anchored" data-anchor-id="detalhamento-da-eficiência-unitária-ltvcac">📋 DETALHAMENTO DA EFICIÊNCIA UNITÁRIA (LTV/CAC)</h4>
+</section>
+</div>
+<div id="tier4-14" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Período</th>
+<th style="text-align: right;">LTV (R<span class="math inline">\() | CAC (R\)</span>)</th>
+<th style="text-align: right;">Múltiplo</th>
+<th style="text-align: right;">Status</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">M1</td>
+<td style="text-align: right;">R$ 626,25</td>
+<td style="text-align: right;">R$ 500,00</td>
+<td style="text-align: right;">1.3x</td>
+<td style="text-align: left;">🟡 ATENÇÃO</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">M6</td>
+<td style="text-align: right;">R$ 688,08</td>
+<td style="text-align: right;">R$ 250,00</td>
+<td style="text-align: right;">2.8x</td>
+<td style="text-align: left;">🟡 ATENÇÃO</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">M12</td>
+<td style="text-align: right;">R$ 734,90</td>
+<td style="text-align: right;">R$ 172,18</td>
+<td style="text-align: right;">4.3x</td>
+<td style="text-align: left;">🟢 EXCELENTE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">M24</td>
+<td style="text-align: right;">R$ 897,35</td>
+<td style="text-align: right;">R$ 214,15</td>
+<td style="text-align: right;">4.2x</td>
+<td style="text-align: left;">🟢 EXCELENTE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">M36</td>
+<td style="text-align: right;">R$ 1.135,54</td>
+<td style="text-align: right;">R$ 235,75</td>
+<td style="text-align: right;">4.8x</td>
+<td style="text-align: left;">🟢 EXCELENTE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier4-15" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> Múltiplo LTV/CAC atinge 4.8x no M36.</li>
+<li><strong>CAUSA:</strong> Resultado combinado de expansão do LTV e otimização do CAC.</li>
+<li><strong>IMPLICAÇÃO:</strong> Cada R$ 1 investido em marketing retorna R$ 4.82 de margem bruta.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Acelerar investimento em aquisição (Growth) pois a unidade é lucrativa.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier4-16" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-40" class="callout-40-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Fonte:</strong> df_real_m (Célula 5A)</p>
+<p><strong>Fórmulas:</strong> 1. <strong>LTV (Lifetime Value)</strong> = (ARPU × Margem Bruta %) / Churn Rate 2. <strong>CAC (Blended)</strong> = (Gasto Marketing + Gasto Vendas) / Novos Clientes Totais 3. <strong>Múltiplo</strong> = LTV / CAC</p>
+<p><strong>Metodologia:</strong> - <strong>Modelo de LTV:</strong> Perpetuidade simples (1/Churn). Assume que a taxa de cancelamento e o ticket médio se mantêm constantes durante a vida do cliente. - <strong>Interpretação:</strong> Valores acima de 3.0x indicam alta eficiência; abaixo de 1.0x indicam queima de caixa por cliente.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier4-17" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier4-18" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-19" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.2-cohort-analysis-retencao-por-safra" class="level2">
+<h2 class="anchored" data-anchor-id="viz-4.2-cohort-analysis-retencao-por-safra">VIZ 4.2: Cohort Analysis (Retencao por Safra)</h2>
+</section>
+</div>
+<div id="tier4-20" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta:</strong> Os clientes antigos continuam pagando ao longo do tempo?</p>
+</div>
+<div id="tier4-21" class="cell-output cell-output-display cell-output-markdown">
+<section id="os-clientes-antigos-continuam-pagando-ao-longo-do-tempo" class="level2">
+<h2 class="anchored" data-anchor-id="os-clientes-antigos-continuam-pagando-ao-longo-do-tempo">Os clientes antigos continuam pagando ao longo do tempo?</h2>
+</section>
+</div>
+<div id="tier4-22" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.2-cohort-analyis-retencao-por-safra" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.2-cohort-analyis-retencao-por-safra">📉 VIZ 4.2: Cohort Analyis (Retencao por Safra)</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier4-output-23.png" id="tier4-23" width="1232" height="631" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier4-24" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: Simulação df_real_m (Célula 5A) | Churn Rate Mensal</em></p>
+</div>
+<div id="tier4-25" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-26" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> A porcentagem de clientes originais que continuam pagando após X meses.</p>
+<p><strong>ELEMENTOS:</strong> - <strong>Linhas (Safras):</strong> Grupos de clientes que entraram no mesmo mês. - <strong>Colunas (Idade):</strong> Meses de vida do cliente. - <strong>Cores:</strong> Verde = Alta Retenção | Vermelho = Alta Evasão.</p>
+<p><strong>INTERPRETAÇÃO:</strong> - Se as safras mais recentes (linhas de baixo) são mais verdes, o produto está melhorando.</p>
+</div>
+</div>
+</div>
+<div id="tier4-27" class="cell-output cell-output-display cell-output-markdown">
+<section id="média-histórica-de-retenção" class="level4">
+<h4 class="anchored" data-anchor-id="média-histórica-de-retenção">📋 MÉDIA HISTÓRICA DE RETENÇÃO</h4>
+</section>
+</div>
+<div id="tier4-28" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Período de Vida</th>
+<th style="text-align: right;">Retenção Média</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Primeiro Mês (M1)</td>
+<td style="text-align: right;">90.3%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Semestre (M6)</td>
+<td style="text-align: right;">55.7%</td>
+<td style="text-align: left;">🟡 ATENÇÃO</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ano (M12)</td>
+<td style="text-align: right;">31.2%</td>
+<td style="text-align: left;">🔴 CRÍTICO</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier4-29" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> Retenção média no mês 12 (M12) é de 31.2%.</li>
+<li><strong>CAUSA:</strong> Taxa de churn mensal estabilizada em torno de 9.4%.</li>
+<li><strong>IMPLICAÇÃO:</strong> A base de clientes renova seu valor quase integralmente ano a ano.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Focar em expansão (Upsell) nas cohorts antigas (M12+) para aumentar LTV.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier4-30" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-43-contents" aria-controls="callout-43" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-43" class="callout-43-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Fonte:</strong> df_real[‘churn_rate’] (Célula 5A)</p>
+<p><strong>Metodologia (Simulação Sintética):</strong> - Como o modelo é financeiro (não transacional individual), geramos uma <strong>Matriz Sintética</strong>. - <strong>Lógica:</strong> Aplicamos o Churn Rate Global do mês sobre cada safra passada retroativamente. - <strong>Limitação:</strong> Assume que todas as safras decaem na mesma taxa do mês vigente (Churn Homogêneo).</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier4-31" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier4-32" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-33" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.3-volatilidade-semanal-controle-de-risco" class="level2">
+<h2 class="anchored" data-anchor-id="viz-4.3-volatilidade-semanal-controle-de-risco">VIZ 4.3: Volatilidade Semanal (Controle de Risco)</h2>
+</section>
+</div>
+<div id="tier4-34" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta:</strong> O sangramento de clientes esta estavel ou imprevisivel?</p>
+</div>
+<div id="tier4-35" class="cell-output cell-output-display cell-output-markdown">
+<section id="o-sangramento-de-clientes-esta-sob-controle" class="level2">
+<h2 class="anchored" data-anchor-id="o-sangramento-de-clientes-esta-sob-controle">O sangramento de clientes esta sob controle?</h2>
+</section>
+</div>
+<div id="tier4-36" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.3-churn-volatility-control-spc" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.3-churn-volatility-control-spc">📉 VIZ 4.3: Churn Volatility Control (SPC)</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier4-output-37.png" id="tier4-37" width="1392" height="567" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier4-38" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_s</em></p>
+</div>
+<div id="tier4-39" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-40" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Monitoramento semanal de cancelamentos. <strong>REGRA:</strong> Pontos acima da linha vermelha indicam surtos anormais de churn.</p>
+</div>
+</div>
+</div>
+<div id="tier4-41" class="cell-output cell-output-display cell-output-markdown">
+<section id="diário-de-bordo-últimas-5-semanas" class="level4">
+<h4 class="anchored" data-anchor-id="diário-de-bordo-últimas-5-semanas">📋 DIÁRIO DE BORDO (Últimas 5 Semanas)</h4>
+</section>
+</div>
+<div id="tier4-42" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Semana</th>
+<th style="text-align: left;">Churn Rate</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S21</td>
+<td style="text-align: left;">11.19%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S22</td>
+<td style="text-align: left;">12.37%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S23</td>
+<td style="text-align: left;">11.51%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S24</td>
+<td style="text-align: left;">12.14%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S25</td>
+<td style="text-align: left;">11.96%</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier4-43" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> Média semanal de 11.67% com 1 surtos recentes.</li>
+<li><strong>CAUSA:</strong> Volatilidade natural vs Eventos de Cauda.</li>
+<li><strong>IMPLICAÇÃO:</strong> Previsibilidade da base de clientes.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Investigar surtos.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier4-44" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-46-contents" aria-controls="callout-46" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-46" class="callout-46-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Fonte:</strong> df_real_s | UCL = Média + 2 Desvios Padrão</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier4-45" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier4-46" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-47" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.4-escala-vs-saúde-unitária-elasticidade" class="level2">
+<h2 class="anchored" data-anchor-id="viz-4.4-escala-vs-saúde-unitária-elasticidade">VIZ 4.4: Escala vs Saúde Unitária (Elasticidade)</h2>
+</section>
+</div>
+<div id="tier4-48" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta:</strong> Se dobrar a base de clientes, a unidade continua lucrativa?</p>
+</div>
+<div id="tier4-49" class="cell-output cell-output-display cell-output-markdown">
+<section id="se-escalar-agressivamente-a-unidade-quebra" class="level2">
+<h2 class="anchored" data-anchor-id="se-escalar-agressivamente-a-unidade-quebra">Se escalar agressivamente, a unidade quebra?</h2>
+</section>
+</div>
+<div id="tier4-50" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.4-escala-vs-ltvcac-unit-economics-at-scale" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.4-escala-vs-ltvcac-unit-economics-at-scale">📉 VIZ 4.4: Escala vs LTV/CAC (Unit Economics at Scale)</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier4-output-51.png" id="tier4-51" width="1275" height="598" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier4-52" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_m</em></p>
+</div>
+<div id="tier4-53" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-54" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Relacionamento entre crescimento (Eixo X) e eficiência (Eixo Y). <strong>IDEAL:</strong> Pontos subindo ou estáveis à direita.</p>
+</div>
+</div>
+</div>
+<div id="tier4-55" class="cell-output cell-output-display cell-output-markdown">
+<section id="teste-de-escala" class="level4">
+<h4 class="anchored" data-anchor-id="teste-de-escala">📋 TESTE DE ESCALA</h4>
+</section>
+</div>
+<div id="tier4-56" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Faixa de Clientes</th>
+<th style="text-align: right;">LTV/CAC Médio</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Média Geral</td>
+<td style="text-align: right;">3.85x</td>
+<td style="text-align: left;">🟢 OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier4-57" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> A inclinação da curva é 1.0326.</li>
+<li><strong>CAUSA:</strong> Comportamento dos custos marginais e retenção em escala.</li>
+<li><strong>IMPLICAÇÃO:</strong> Viabilidade de escalar agressivamente.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Acelerar.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier4-58" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-49" class="callout-49-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Fonte:</strong> df_real_m | ‘usuarios_ativos’ vs ‘ltv/cac’</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier4-59" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier4-60" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-61" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.5-waterfall-de-lucratividade-por-cliente" class="level2">
+<h2 class="anchored" data-anchor-id="viz-4.5-waterfall-de-lucratividade-por-cliente">VIZ 4.5: Waterfall de Lucratividade (Por Cliente)</h2>
+</section>
+</div>
+<div id="tier4-62" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta:</strong> Onde fica o dinheiro do cliente?</p>
+</div>
+<div id="tier4-63" class="cell-output cell-output-display cell-output-markdown">
+<section id="onde-fica-o-dinheiro-do-cliente" class="level2">
+<h2 class="anchored" data-anchor-id="onde-fica-o-dinheiro-do-cliente">Onde fica o dinheiro do cliente?</h2>
+</section>
+</div>
+<div id="tier4-64" class="cell-output cell-output-display cell-output-markdown">
+<section id="viz-4.5-unit-profitability-waterfall" class="level3">
+<h3 class="anchored" data-anchor-id="viz-4.5-unit-profitability-waterfall">📉 VIZ 4.5: Unit Profitability Waterfall</h3>
+</section>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_completo_files/figure-html/tier4-output-65.png" id="tier4-65" width="1253" height="614" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div id="tier4-66" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: df_real_m (Last Month)</em></p>
+</div>
+<div id="tier4-67" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier4-68" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER ESTE GRÁFICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Decomposição do valor vitalício de um cliente, descontando todos os custos e impostos.</p>
+</div>
+</div>
+</div>
+<div id="tier4-69" class="cell-output cell-output-display cell-output-markdown">
+<section id="unit-profit-decomposition" class="level4">
+<h4 class="anchored" data-anchor-id="unit-profit-decomposition">📋 UNIT PROFIT DECOMPOSITION</h4>
+</section>
+</div>
+<div id="tier4-70" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Componente</th>
+<th style="text-align: right;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">LTV Bruto</td>
+<td style="text-align: right;">R$ 1.417,56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">COGS</td>
+<td style="text-align: right;">R$ -282,02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Impostos</td>
+<td style="text-align: right;">R$ -141,76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CAC</td>
+<td style="text-align: right;">R$ -235,75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LUCRO LÍQUIDO</td>
+<td style="text-align: right;">R$ 758,03</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier4-71" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INSIGHT ESTRATÉGICO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>FATO:</strong> Sobram R$ 758,03 de lucro limpo por cliente.</li>
+<li><strong>CAUSA:</strong> Estrutura de custos e eficiência de aquisição.</li>
+<li><strong>IMPLICAÇÃO:</strong> Potencial de reinvestimento.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Otimizar.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tier4-72" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-52-contents" aria-controls="callout-52" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA &amp; FÓRMULAS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-52" class="callout-52-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Profit = LTV Bruto - COGS - Impostos - CAC</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier4-73" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier4-74" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>🔍 VEREDITO UNIT ECONOMICS: EXCELENTE</strong></p>
+<p>“Nesta análise de Unit Economics, nós provamos que:</p>
+<ol type="1">
+<li><strong>O cliente é lucrativo (Viz 4.1):</strong> Múltiplo de <strong>4.8x</strong>.</li>
+<li><strong>Retenção Sólida (Viz 4.2):</strong> Cohorts saudáveis.</li>
+<li><strong>Risco Controlado (Viz 4.3):</strong> Volatilidade de churn monitorada via SPC.</li>
+<li><strong>Escala Segura (Viz 4.4):</strong> Economia de escala positiva.</li>
+<li><strong>Lucro Real (Viz 4.5):</strong> Unit Profit positivo após todos descontos.</li>
+</ol>
+<p><strong>Conclusão:</strong> A ‘máquina de vendas’ está calibrada.”</p>
+</div>
+</div>
+</div>
+</div>
 <section id="metodologia-completa" class="level1">
 <h1>Metodologia Completa</h1>
 <ol type="1">
@@ -2206,7 +3196,7 @@ Important
 </section>
 <section id="premissas-chave" class="level1">
 <h1>Premissas-Chave</h1>
-<div id="cell-premissas" class="cell" data-execution_count="6">
+<div id="cell-premissas" class="cell" data-execution_count="7">
 <div id="premissas" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <thead>

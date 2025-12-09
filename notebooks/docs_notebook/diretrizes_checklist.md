@@ -39,8 +39,9 @@ Regra: TODO item deve passar. Se falhar 1, nao entregar.
 ### Graficos e Visualizacao
 - [ ] **Labels nao sobrepoe titulo/legenda** -> Usar `plt.subplots_adjust`
 - [ ] **figsize=(10, 5)** para HTML -> Evita scroll
+- [ ] **COMO LER Compacto (Inline)** -> Nada de listas verticais. Texto corrido.
+- [ ] **Fonte Externa** -> Passar `data_source_text` para `render_atomic_block` (Nunca `ax.text`)
 - [ ] **Conv% e anotacoes FORA do grafico** -> Evita poluição visual
-- [ ] **COMO LER completo** -> O QUE, ELEMENTOS, INTERPRETACAO
 
 ### Callouts Quarto
 - [ ] **Auditoria/Formulas SEM tags HTML** (`<b>`, `<i>`) -> Usar Markdown puro

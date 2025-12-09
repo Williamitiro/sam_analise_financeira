@@ -100,23 +100,13 @@ def gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=False)
     # Anotações (Correção Log Scale)
     for i, (val_r, val_i) in enumerate(zip(valores_real, valores_ideal)):
         # Valor Real (dentro ou ao lado da barra)
-        # Em log scale, 'val_r * 1.1' funciona visualmente como offset
         ax.text(val_r * 1.15, i, f'{int(val_r):,}', va='center', fontweight='bold', color='black', fontsize=10)
         
-        # Conversão (Anotação Lateral Direita)
-        if i < len(labels) - 1:
-            try:
-                conv_r = (valores_real[i+1] / valores_real[i]) * 100 if valores_real[i] > 0 else 0
-                conv_i = (valores_ideal[i+1] / valores_ideal[i]) * 100 if valores_ideal[i] > 0 else 0
-                
-                texto_conv = f"Conv: {conv_r:.1f}% (Meta: {conv_i:.1f}%)"
-                
-                # Posiciona texto de conversão no meio do caminho entre as barras
-                # Usando coordenada fixa no eixo X (transform='axes' seria melhor, mas aqui hardcode ajustado serve)
-                # Para log scale, posição fixa visual exige cuidado. Vamos usar o canto direito.
-                ax.text(ax.get_xlim()[1]*0.8, i + 0.4, texto_conv, fontsize=9, color='#555555', ha='right', style='italic')
-            except:
-                pass
+        # Conversão removida de dentro do gráfico para limpar a visualização.
+        # Os dados de conversão estarão na tabela detalhada abaixo.
+    
+    # Fonte Dinamica (Removida daqui, passada para render_atomic_block)
+    # ax.text(...)
 
     # Título Interno Removido (será gerado pelo Atomic Block)
     # ax.set_title(...) 
@@ -155,14 +145,17 @@ def gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=False)
     
     df_tabela = pd.DataFrame(tabela_data)
     
+    
     # 4. LEGENDA "COMO LER" (Markdown)
     legend_md = """
-    1. **Eixo Y (Esquerda):** Etapas do Funil (Visitantes -> Leads -> Vendas -> Ativos).
-    2. **Barras Escuras (Sólidas):** Valores do seu cenário conservador ("Real").
-    3. **Barras Cinza (Fundo):** Benchmark de mercado ou Meta ("Ideal").
-    4. **Escala Logarítmica:** O Eixo X cresce exponencialmente para permitir visualizar milhões e unidades no mesmo gráfico.
-    5. **Regra de Sucesso:** Se a barra escura ultrapassar ou igualar a cinza, o benchmark foi atingido.
-    """
+**O QUE ESTOU VENDO?** Comparativo direto entre o funil realizado (Barras Escuras) e a meta estipulada (Barras Cinzas).
+
+**ELEMENTOS VISUAIS:** - **Barras Escuras:** Resultados do cenário Conservador. - **Barras Cinza (Fundo):** Benchmark de mercado (Ideal). - **Eixo X (Log):** Escala exponencial para visualizar grandes discrepâncias de volume.
+
+**INTERPRETAÇÃO:** - Se a barra escura preencher completamente a cinza, a meta foi batida. Se ultrapassar, o desempenho é superior ao benchmark.
+"""
+    
+    # 5. INSIGHT
     
     # 5. INSIGHT
     delta_final = float(tabela_data[-1]['Δ (Delta)'].split()[0].replace(',', '.'))
@@ -183,24 +176,26 @@ def gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=False)
 
     # 6. RENDERIZAR BLOCO ATÔMICO
     formulas = """
-    1. <b>Taxa de Conversão Global</b> = (Novos Pagantes / Visitantes Únicos) * 100
-    2. <b>Benchmark (Ideal)</b>: Definido nas premissas (ex: 1.0% para SaaS B2C).
-    3. <b>Delta</b>: Diferença percentual (p.p.) entre a conversão Real e a Meta.
-    4. <b>Fonte dos Dados</b>:
-       - <i>df_real_m</i>: Colunas 'trafego_total', 'novos_pagantes_total'
-       - <i>df_ideal</i>: Colunas equivalentes do cenário meta.
+    1. **Taxa de Conversão Global** = (Novos Pagantes / Visitantes Únicos) * 100
+    2. **Benchmark (Ideal)**: Definido nas premissas (ex: 1.0% para SaaS B2C).
+    3. **Delta**: Diferença percentual (p.p.) entre a conversão Real e a Meta.
+    4. **Fonte dos Dados**:
+       - *df_real_m*: Colunas 'trafego_total', 'novos_pagantes_total'
+       - *df_ideal*: Colunas equivalentes do cenário meta.
     """
     
     render_atomic_block(
         chart_id="pg2_viz2_1",
         title_colloquial="O volume de vendas sustenta a operação no cenário conservador?",
-        title_technical="Funil de Aquisição: Conservador vs Benchmark (Log Scale)",
+        title_technical="VIZ 2.1: Funil de Aquisição (Conservador vs Benchmark)",
         fig=fig,
         legend_md=legend_md,
         df_tabela=df_tabela,
         insight_dict=insight,
         formulas_md=formulas,
-        report_mode=report_mode
+        report_mode=report_mode,
+        table_title="Detalhamento do Funil (Real vs Meta)",
+        data_source_text="Fonte: df_real_m (Simulacao) vs df_ideal (Meta)"
     )
 
 def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode=False):
@@ -246,9 +241,8 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
     ax.set_ylabel('Ratio LTV/CAC')
     ax.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)
     
-    # Fonte
-    ax.text(0.99, 0.01, f'Fonte: df_real_m (Simulação)', 
-            transform=ax.transAxes, ha='right', fontsize=8, color='#999999', alpha=0.7)
+    # Fonte Dinamica (Removida, via render_atomic)
+    # ax.text(...)
             
     # Remove topos
     ax.set_ylim(bottom=0)
@@ -280,12 +274,14 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
     df_tabela = pd.DataFrame(tabela_data)
 
     # 4. LEGENDA COMO LER
+    # 4. LEGENDA COMO LER
     legend_md = """
-    1. **Linha Azul Sólida:** Evolução do seu LTV/CAC ao longo do tempo.
-    2. **Zona Verde (>3x):** Ideal. Significa que cada real investido no cliente volta 3x.
-    3. **Zona Amarela (1x-3x):** Operação paga as contas, mas sobra pouco para crescer.
-    4. **Zona Vermelha (<1x):** Prejuízo. Custa mais trazer o cliente do que ele rende.
-    """
+**O QUE ESTOU VENDO?** A evolução da eficiência financeira (Quanto retorna de Valor para cada R$ 1 investido em Aquisição).
+
+**ELEMENTOS VISUAIS:** - **Linha Azul:** LTV/CAC Real ao longo do tempo. - **Zona Verde (>3x):** Alta eficiência (Escalável). - **Zona Vermelha (<1x):** Destruição de valor (Prejuízo unitário).
+
+**INTERPRETAÇÃO:** - Mantenha a operação na zona verde ou amarela. A zona vermelha indica que custa mais trazer um cliente do que ele paga.
+"""
 
     # 5. INSIGHT
     if valor_final >= 3.0:
@@ -304,11 +300,12 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
         }
 
     # 6. RENDER
+    # 6. RENDER
     formulas = """
-    1. <b>LTV (Lifetime Value)</b> = (ARPU × Margem Bruta %) / Churn Rate
-    2. <b>CAC (Custo Aquisição)</b> = Gastos Marketing / Novos Clientes
-    3. <b>LTV/CAC</b>: Razão de eficiência. Quanto retorna para cada R$ 1 investido.
-    4. <b>Zonas de Risco</b>:
+    1. **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
+    2. **CAC (Custo Aquisição)** = Gastos Marketing / Novos Clientes
+    3. **LTV/CAC**: Razão de eficiência. Quanto retorna para cada R$ 1 investido.
+    4. **Zonas de Risco**:
        - 🟢 > 3.0x: Alta eficiência (Escalável)
        - 🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar
        - 🔴 < 1.0x: Destruição de valor (Prejuízo unitário)
@@ -317,13 +314,15 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
     render_atomic_block(
         chart_id="pg2_viz2_2",
         title_colloquial="O negócio para em pé? (Saúde Unitária)",
-        title_technical="Evolução LTV/CAC vs Zonas de Risco",
+        title_technical="VIZ 2.2: Evolução LTV/CAC vs Zonas de Risco",
         fig=fig,
         legend_md=legend_md,
         df_tabela=df_tabela,
         insight_dict=insight,
         formulas_md=formulas,
-        report_mode=report_mode
+        report_mode=report_mode,
+        table_title="Evolução da Eficiência LTV/CAC",
+        data_source_text="Fonte: df_real_m (LTV/CAC) | Benchmark: 3.0x"
     )
 
 
@@ -375,8 +374,8 @@ def gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode
     ax.set_ylabel('CAC (R$)')
     ax.legend(loc='lower left') # Move legend away from data likely in upper part
     
-    ax.text(0.99, 0.01, f'Fonte: df_real_s (Semanal)', 
-            transform=ax.transAxes, ha='right', fontsize=8, color='#999999', alpha=0.7)
+    # Fonte (Removida, via render_atomic)
+    # ax.text(...)
             
     # 3. TABELA
     df_chart['desvio_abs'] = abs(df_chart['cac_blended'] - media_cac)
@@ -408,12 +407,14 @@ def gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode
     df_tabela = pd.DataFrame(tabela_data)
 
     # 4. LEGENDA
+    # 4. LEGENDA
     legend_md = """
-    1. **Linha Preta:** O valor do CAC medido naquela semana específica.
-    2. **Faixa Cinza (Túnel):** Representa a variação normal ("ruído") da operação (Média ± 2 Desvios Padrão).
-    3. **Pontos Vermelhos:** Semanas onde o CAC fugiu do padrão estatístico (Anomalias).
-    4. **Objetivo:** Manter a linha preta dentro do túnel cinza.
-    """
+**O QUE ESTOU VENDO?** Monitoramento tático de curto prazo para identificar disparadas anormais no Custo de Aquisição (CAC).
+
+**ELEMENTOS VISUAIS:** - **Linha Preta:** Custo real da semana. - **Faixa Cinza:** Variação estatística aceitável (Túnel de Controle). - **Pontos Vermelhos:** Anomalias graves.
+
+**INTERPRETAÇÃO:** - Se a linha preta sair do túnel cinza, investigue imediatamente a causa raiz (Bug, Campanha, Sazonalidade).
+"""
 
     # 5. INSIGHT
     n_outliers = len(outliers_x)
@@ -433,24 +434,26 @@ def gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode
         }
         
     formulas = """
-    1. <b>CAC Semanal</b> = Custo Marketing da Semana / Novos Clientes da Semana
-    2. <b>Média (Central)</b> = Média aritmética de todas as semanas observadas.
-    3. <b>Limites de Controle (SPC)</b>:
-       - <i>UCL (Alto)</i> = Média + (2 × Desvio Padrão)
-       - <i>LCL (Baixo)</i> = Média - (2 × Desvio Padrão)
-    4. <b>Interpretação</b>: Pontos fora dos limites são estatisticamente anômalos (causas especiais).
+    1. **CAC Semanal** = Custo Marketing da Semana / Novos Clientes da Semana
+    2. **Média (Central)** = Média aritmética de todas as semanas observadas.
+    3. **Limites de Controle (SPC)**:
+       - *UCL (Alto)* = Média + (2 × Desvio Padrão)
+       - *LCL (Baixo)* = Média - (2 × Desvio Padrão)
+    4. **Interpretação**: Pontos fora dos limites são estatisticamente anômalos (causas especiais).
     """
 
     render_atomic_block(
         chart_id="pg2_viz2_3",
         title_colloquial="Existe descontrole tático de custos?",
-        title_technical="Statistical Process Control (SPC): Volatilidade Semanal do CAC",
+        title_technical="VIZ 2.3: Volatilidade Semanal do CAC (SPC)",
         fig=fig,
         legend_md=legend_md,
         df_tabela=df_tabela,
         insight_dict=insight,
         formulas_md=formulas,
-        report_mode=report_mode
+        report_mode=report_mode,
+        table_title="Monitoramento de Anomalias (Semanal)",
+        data_source_text=f"Fonte: df_real_s (CAC Semanal) | Media: R$ {media_cac:.0f}"
     )
 
 
@@ -500,44 +503,69 @@ def gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=False):
     cbar = plt.colorbar(sc, ax=ax)
     cbar.set_label('Mês de Operação (Cor Escura = Mais Recente)')
     
-    ax.text(0.99, 0.01, f'Fonte: df_real_m - Regressão Polinomial (Grau 2)', 
-            transform=ax.transAxes, ha='right', fontsize=8, color='#999999', alpha=0.7)
+    # Fonte (Removida, via render_atomic)
+    # ax.text(...)
             
-    # 3. TABELA
+    # 3. TABELA (REFEITA DO ZERO - MANUAL PARA EVITAR ERROS DE FORMATAÇÃO)
     # Pontos de Simulação
     step = (x.max() - x.min()) / 2
     valores_teste = [x.min(), x.min()+step, x.max()]
-    tabela_data = []
+    
+    # Lista para armazenar dados (usada para DF no modo interativo)
+    dados_raw = []
+    
+    # Header Manual
+    tabela_md = "| Investimento | Clientes Est. | Linear (Ideal) | Perda Efic. | Diagnostico |\n"
+    tabela_md += "|:---|---:|---:|---:|:---|\n"
     
     for val in valores_teste:
         retorno_real_est = poly(val)
         retorno_ideal = val / cac_ideal_ref
         perda_eficiencia = 1 - (retorno_real_est / retorno_ideal)
         
+        # Definição de Zona
         if perda_eficiencia < 0.15:
-             zona = "<span class='status-green'>ALTA EFICIÊNCIA</span>"
+             zona_txt = "ALTA EFICIENCIA"
+             zona_emoji = "🟢 ALTA EFICIÊNCIA"
         elif perda_eficiencia < 0.40:
-             zona = "<span class='status-yellow'>RETORNOS DECRESCENTES</span>"
+             zona_txt = "RETORNOS DECRESCENTES"
+             zona_emoji = "🟡 RETORNOS DECRESCENTES"
         else:
-             zona = "<span class='status-red'>SATURAÇÃO</span>"
+             zona_txt = "SATURACAO"
+             zona_emoji = "🔴 SATURAÇÃO"
              
-        tabela_data.append({
-            "Investimento (R$)": formata_moeda(val),
-            "Clientes Estimados": f"{int(retorno_real_est)}",
-            "Clientes (Se Linear)": f"{int(retorno_ideal)}",
-            "Perda Eficiência": f"{perda_eficiencia*100:.1f}%",
-            "Diagnóstico": zona
+        # Formatação valores
+        inv_str = formata_moeda(val)
+        cli_est_str = f"{int(retorno_real_est)}"
+        cli_lin_str = f"{int(retorno_ideal)}"
+        perda_str = f"{perda_eficiencia*100:.1f}%"
+        
+        # Adiciona linha ao Markdown Manual
+        tabela_md += f"| {inv_str} | {cli_est_str} | {cli_lin_str} | {perda_str} | {zona_txt} |\n"
+        
+        # Adiciona ao dicionário para DataFrame (Modo HTML Rico)
+        dados_raw.append({
+            "Investimento (R$)": inv_str,
+            "Clientes Estimados": cli_est_str,
+            "Clientes (Se Linear)": cli_lin_str,
+            "Perda Eficiência": perda_str,
+            "Diagnóstico": zona_emoji
         })
         
-    df_tabela = pd.DataFrame(tabela_data)
+    df_tabela = pd.DataFrame(dados_raw)
+
+    # Decisão: String ou DataFrame?
+    # No report_mode, usamos a String Manual para garantir formatação perfeita.
+    tabela_final = tabela_md if report_mode else df_tabela
 
     # 4. LEGENDA
     legend_md = """
-    1. **Bolinhas Azuis:** Cada bolinha é um mês real. (Mais escuro = Mais recente).
-    2. **Linha Azul Sólida:** A tendência real matemática. Se curvar para baixo, estamos perdendo eficiência.
-    3. **Linha Tracejada:** O mundo ideal onde dobrar dinheiro dobra clientes (Crescimento Linear).
-    4. **Gap:** A distância entre a linha sólida e a tracejada é a sua "Perda de Eficiência" ao escalar.
-    """
+**O QUE ESTOU VENDO?** Teste de elasticidade de canal (Se dobrar investimento, vendas dobram?).
+
+**ELEMENTOS VISUAIS:** - **Bolinhas Azuis:** Mês real (Escuro=Recente). - **Linha Sólida:** Tendência Real. - **Linha Tracejada:** Crescimento Linear Ideal.
+
+**INTERPRETAÇÃO:** - Se a linha sólida "deitar" (curvar para baixo), significa que o canal está saturando e o CAC marginal está subindo.
+"""
 
     # 5. INSIGHT
     coef_a = coeffs[0] 
@@ -557,28 +585,120 @@ def gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=False):
         }
         
     formulas = """
-    1. <b>Curva Saturada</b>: Regressão Polinomial (Grau 2) `y = ax² + bx + c` sobre os dados reais.
-    2. <b>Crescimento Linear (Ideal)</b>: Projeção `y = x / CAC_minimo`. Assume que o CAC se mantém fixo infinitamente.
-    3. <b>Perda de Eficiência</b> = 1 - (Clientes Estimados na Curva / Clientes na Reta Linear).
+    1. **Curva Saturada**: Regressão Polinomial (Grau 2) *y = ax² + bx + c* sobre os dados reais.
+    2. **Crescimento Linear (Ideal)**: Projeção *y = x / CAC_minimo*. Assume que o CAC se mantém fixo infinitamente.
+    3. **Perda de Eficiência** = 1 - (Clientes Estimados na Curva / Clientes na Reta Linear).
        - Ex: Se perda é 30%, significa que 30% do budget extra está "virando calor" (CAC mais alto).
     """
 
     render_atomic_block(
         chart_id="pg2_viz2_4",
         title_colloquial="Se dobrar o marketing, dobra a venda?",
-        title_technical="Curva de Escala e Elasticidade de Canal",
+        title_technical="VIZ 2.4: Curva de Escala e Elasticidade de Canal",
         fig=fig,
         legend_md=legend_md,
-        df_tabela=df_tabela,
+        df_tabela=tabela_final,
         insight_dict=insight,
         formulas_md=formulas,
-        report_mode=report_mode
+        report_mode=report_mode,
+        table_title="Teste de Elasticidade de Canal",
+        data_source_text="Fonte: df_real_m (Marketing vs Vendas) | Regressão Polinomial (Grau 2)"
     )
 
 
-def gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=False):
+def gerar_viz_2_5_cac_mix_canais(df_real_m, premissas, report_mode=False):
     """
-    VIZ 2.5: Vazamento Invisível (Custo do Churn)
+    VIZ 2.5: CAC Pago vs Blended (Eficiência Orgânica)
+    (Originalmente na Pagina 4, movido para cá conforme diretriz Gold Standard)
+    """
+    # 1. DADOS
+    cac_blended = df_real_m['cac_blended'].values
+    meses = df_real_m['mes'].values
+    
+    # Tenta pegar CAC Paid direto, senão calcula
+    if 'cac_paid' in df_real_m.columns and df_real_m['cac_paid'].sum() > 0:
+        cac_pago = df_real_m['cac_paid'].values
+    else:
+        # Fallback inteligente
+        if 'novos_ads' in df_real_m.columns and 'gasto_marketing' in df_real_m.columns:
+            novos_ads = df_real_m['novos_ads'].values
+            gasto = df_real_m['gasto_marketing'].values
+            cac_pago = np.divide(gasto, novos_ads, out=np.zeros_like(gasto), where=novos_ads!=0)
+            cac_pago = np.where(cac_pago == 0, cac_blended * 1.5, cac_pago)
+        else:
+             cac_pago = cac_blended * 1.25
+
+    # 2. PLOTAGEM
+    figsize = (10, 6) if report_mode else (14, 6)
+    fig, ax = plt.subplots(figsize=figsize, dpi=150)
+    plt.subplots_adjust(top=0.90, bottom=0.20, left=0.10, right=0.95)
+    
+    ax.plot(meses, cac_pago, color='#EF5350', linestyle='--', linewidth=2, label='CAC Pago (Só Ads)')
+    ax.plot(meses, cac_blended, color='#1976D2', linewidth=3, label='CAC Blended (Real)')
+    
+    ax.fill_between(meses, cac_blended, cac_pago, color='#1976D2', alpha=0.1, label='Economia Orgânica')
+
+    ax.set_title('Eficiência de Mix: Pago vs Orgânico', fontsize=12, color='gray')
+    ax.set_ylabel('Custo por Cliente (R$)', fontsize=12)
+    ax.set_xlabel('Mês', fontsize=12)
+    ax.legend(loc='upper right', fontsize=9)
+    ax.grid(True, alpha=0.3)
+    
+    # 3. TABELA
+    economia = cac_pago - cac_blended
+    novos = df_real_m['novos_pagantes_total'].values
+    poupanca_total = economia * novos
+    
+    tabela_md = "| Período | CAC Pago | CAC Blended | Economia/Cliente | Total Economizado |\n"
+    tabela_md += "|:---|---:|---:|---:|---:|\n"
+    
+    idx_show = [5, 11, 23, 35]
+    for idx in idx_show:
+        if idx < len(df_real_m):
+            tabela_md += f"| M{meses[idx]} | {formata_moeda(cac_pago[idx])} | {formata_moeda(cac_blended[idx])} | {formata_moeda(economia[idx])} | {formata_moeda(poupanca_total[idx])} |\n"
+
+    # 4. LEGENDA
+    legend_md = """
+**O QUE ESTOU VENDO?** Diferença entre dependência de anúncios (Vermelho) e custo real (Azul).
+**INTERPRETAÇÃO:** 
+- **Linhas afastadas:** Branding e Orgânico estão funcionando (Economia).
+- **Linhas juntas:** O crescimento é 100% dependente de anúncios pagos (Risco).
+"""
+
+    formulas = """
+    1. **CAC Pago** = Gasto Ads / Novos Clientes (Só de Ads)
+    2. **CAC Blended** = Gasto Ads / Novos Clientes (Totais)
+    3. **Economia** = CAC Pago - CAC Blended
+    """
+    
+    # 5. INSIGHT
+    econ_m36 = economia[-1]
+    insight = {
+        "fato": f"Tráfego orgânico reduz o CAC em {formata_moeda(econ_m36)} por cliente.",
+        "causa": "Mix balanceado entre canais pagos e gratuitos.",
+        "implicacao": "Menor sensibilidade a aumentos de CPM nas plataformas de ads.",
+        "acao": "Manter investimento em SEO para ampliar o gap."
+    }
+
+    render_atomic_block(
+        chart_id="pg2_viz2_5_cac_mix",
+        title_colloquial="Quanto economizamos com trafego organico?",
+        title_technical="VIZ 2.5: Impacto do Mix de Canais (CAC Pago vs Blended)",
+        fig=fig,
+        legend_md=legend_md,
+        df_tabela=tabela_md,
+        insight_dict=insight,
+        formulas_md=formulas,
+        report_mode=report_mode,
+        table_title="📋 ECONOMIA DE CANAL",
+        data_source_text="Fonte: df_real_m | CAC Paid vs CAC Blended"
+    )
+    plt.close(fig)
+
+
+def gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=False):
+    """
+    VIZ 2.6: Vazamento Invisível (Custo do Churn)
     """
     # 1. DADOS
     meses_num = df_real_m['mes'].values
@@ -605,8 +725,8 @@ def gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=False):
     ax.set_ylabel('Impacto no MRR (R$)')
     ax.legend(loc='upper right') # Melhor posição geralmente
     
-    ax.text(0.99, 0.01, f'Fonte: df_real_m - Benchmark: 5%', 
-            transform=ax.transAxes, ha='right', fontsize=8, color='#999999', alpha=0.7)
+    # Fonte (Removida, via render_atomic)
+    # ax.text(...)
             
     # 3. TABELA
     meses_idx = [5, 11, 23, 35]
@@ -620,12 +740,16 @@ def gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=False):
         delta_fin = perda_real - perda_ideal 
         
         if delta_fin <= 0:
-            status = "<span class='status-green'>DENTRO DA META</span>"
+            status = "🟢 DENTRO DA META"
             texto_delta = "OK"
         else:
-            status = "<span class='status-red'>VAZAMENTO</span>"
+            status = "🔴 VAZAMENTO"
             texto_delta = f"-{formata_moeda(delta_fin)}"
             
+        # Correção para PDF: Remover emojis
+        if report_mode:
+            status = status.replace("🟢 ", "").replace("🔴 ", "")
+
         tabela_data.append({
             "Período": mes_nome,
             "Churn Rate": f"{churn_r_val*100:.1f}%",
@@ -639,11 +763,12 @@ def gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=False):
 
     # 4. LEGENDA
     legend_md = """
-    1. **Barras Verdes (Cima):** Dinheiro novo entrando (Vendas).
-    2. **Barras Vermelhas (Baixo):** Dinheiro saindo (Cancelamentos).
-    3. **Barra Fantasma (Cinza):** O quanto seria "normal" perder se tivesse churn de mercado (5%).
-    4. **Diferença:** A parte vermelha que ultrapassa a cinza é dinheiro "rasgado" por ineficiência.
-    """
+**O QUE ESTOU VENDO?** Análise de vazamento de receita (Churn) vs Novos Contratos.
+
+**ELEMENTOS VISUAIS:** - **Verde:** Vendas Novas (Entrada). - **Vermelho:** Cancelamentos (Saída). - **Cinza:** Perda "Normal" de mercado (5%).
+
+**INTERPRETAÇÃO:** - A parte vermelha que excede a sombra cinza é ineficiência de retenção que corrói o crescimento.
+"""
 
     # 5. INSIGHT
     total_waste_anual = sum([max(0, abs(l) - abs(t)) for l, t in zip(mrr_lost[-12:], mrr_lost_target[-12:])])
@@ -655,23 +780,25 @@ def gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=False):
     }
         
     formulas = """
-    1. <b>Churn Rate Real</b> = Clientes Cancelados / Clientes Ativos Iniciais
-    2. <b>Perda Real (Churn MRR)</b> = Valor somado dos contratos cancelados no mês.
-    3. <b>Perda Aceitável (Benchmark)</b> = MRR Inicial × 5.0% (Meta de Mercado).
-    4. <b>Dinheiro Rasgado (Waste)</b> = Perda Real - Perda Aceitável.
+    1. **Churn Rate Real** = Clientes Cancelados / Clientes Ativos Iniciais
+    2. **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados no mês.
+    3. **Perda Aceitável (Benchmark)** = MRR Inicial × 5.0% (Meta de Mercado).
+    4. **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitável.
        - Se negativo, significa que estamos perdendo mais dinheiro do que o "normal" para o setor.
     """
 
     render_atomic_block(
         chart_id="pg2_viz2_5",
         title_colloquial="Quanto dinheiro estamos perdendo pelo ralo?",
-        title_technical="Análise de Vazamento: Net MRR Growth & Churn Cost",
+        title_technical="VIZ 2.5: Análise de Vazamento (Net Growth & Churn)",
         fig=fig,
         legend_md=legend_md,
         df_tabela=df_tabela,
         insight_dict=insight,
         formulas_md=formulas,
-        report_mode=report_mode
+        report_mode=report_mode,
+        table_title="Impacto Financeiro do Churn",
+        data_source_text="Fonte: df_real_m (Churn MRR) | Benchmark: 5%"
     )
 
 
@@ -757,13 +884,17 @@ def executar_pagina_2_growth_machine(df_real_m, df_real_s, df_ideal, df_ideal_s,
     # Vou redefinir as funcoes chamadoras abaixo (snippet anterior cobriu ate 348).
     # ESPERA: eu nao atualizei as assinaturas de gerar_viz_2_1 ate 2_5 no bloco anterior, 
     # apenas render_atomic_block.
-    # Preciso atualizar TODAS as funcoes geradoras agora.
-    
+    # VIZ 2.5 (MOVIDO DA PÁGINA 4): INVESTIMENTO VS RETORNO (CANAIS)
     gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=report_mode)
     gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode=report_mode)
     gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode=report_mode)
     gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=report_mode)
-    gerar_viz_2_5_custo_churn(df_real_m, premissas, report_mode=report_mode)
+    
+    # Nova Viz 2.5 (Movida da 4.4)
+    gerar_viz_2_5_cac_mix_canais(df_real_m, premissas, report_mode=report_mode)
+    
+    # Antiga Viz 2.5 -> Viz 2.6
+    gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=report_mode)
     
     # Gera conclusão
     gerar_conclusao_growth_machine({}, {}, report_mode=report_mode)

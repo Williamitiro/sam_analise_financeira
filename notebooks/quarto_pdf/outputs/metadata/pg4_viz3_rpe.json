@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg4_viz3_rpe",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-09T11:25:01.550525",
+  "title_simple": "VIZ 4.3: Produtividade (Revenue per Employee)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Time termina com 1 pessoas gerando R$ 716.491,20/ano cada.",
+    "causa": "Relação entre crescimento de receita e contratações.",
+    "implicacao": "Indicador de alavancagem operacional.",
+    "acao": "Liberar contratações estratégicas."
+  },
+  "files": {
+    "png": "outputs/figs/pg4_viz3_rpe.png",
+    "json": "outputs/metadata/pg4_viz3_rpe.json",
+    "table": "outputs/tables/pg4_viz3_rpe_tabela.html"
+  },
+  "validation_status": "ok"
+}

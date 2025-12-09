@@ -129,6 +129,7 @@ from celula_5B_cenario_ideal import executar_analise_ideal
 from PAGINA_1_COCKPIT_V4 import executar_pagina_1
 from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
 from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
+from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
 ```
 
 # Execucao das Simulacoes
@@ -155,9 +156,21 @@ with contextlib.redirect_stdout(io.StringIO()):
 
 \newpage
 
-# TIER 2 - Growth Engine
+# TIER 2 - A MÁQUINA DE CRESCIMENTO (Growth Engine)
 
-**Objetivo:** Demonstrar eficiencia da maquina de aquisicao, identificar gargalos e quantificar oportunidades de melhoria.
+***
+
+## 🚀 INTRODUÇÃO ESTRATÉGICA
+
+O **Tier 2** aprofunda a análise na eficiência operacional da aquisição de clientes. Enquanto o Tier 1 mostrou *o que* aconteceu (Resultado), o Tier 2 explica *como* e *por que* aconteceu (Causas).
+
+### 🎯 OBJETIVOS DESTA SEÇÃO:
+1. **Validar a Tese de Aquisição:** O funil converte conforme o esperado?
+2. **Auditar a Qualidade do Crescimento:** O LTV/CAC e o Payback suportam escala?
+3. **Identificar Gargalos Táticos:** Onde estamos perdendo eficiência marginal?
+4. **Mapear Riscos Invisíveis:** O churn está corroendo o valor criado?
+
+***
 
 ```{python}
 #| label: tier2
@@ -182,6 +195,24 @@ with contextlib.redirect_stdout(io.StringIO()):
 #| label: tier3
 with contextlib.redirect_stdout(io.StringIO()):
     executar_pagina_3_financeiro(
+        df_real_m,
+        df_real_s,
+        df_ideal_m,
+        PREMISSAS,
+        report_mode=True
+    )
+```
+
+\newpage
+
+# TIER 4 - UNIT ECONOMICS & OPERAÇÃO
+
+**Objetivo:** Validar a saúde da unidade econômica (Cliente) e a eficiência operacional da escala.
+
+```{python}
+#| label: tier4
+with contextlib.redirect_stdout(io.StringIO()):
+    executar_pagina_4_unit_economics(
         df_real_m,
         df_real_s,
         df_ideal_m,

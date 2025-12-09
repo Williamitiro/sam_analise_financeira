@@ -2,8 +2,8 @@
   "chart_id": "pg2_viz2_5",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-08T15:10:47.160676",
-  "title_simple": "Análise de Vazamento: Net MRR Growth & Churn Cost",
+  "timestamp": "2025-12-09T08:07:59.346647",
+  "title_simple": "VIZ 2.5: Análise de Vazamento (Net Growth & Churn)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
     "fato": "O churn acima do benchmark custou R$ 9,104 no último ano.",
