@@ -19,6 +19,16 @@ if celulas_dir not in sys.path:
 # Imports dos Módulos Refatorados
 try:
     from celula_2_premissas import PREMISSAS
+    
+    # Carregar configuração do Monte Carlo (adiciona PREMISSAS['monte_carlo'])
+    import os as _os
+    _config_mc_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'celulas', 'celula_2B_config_MC.py')
+    if _os.path.exists(_config_mc_path):
+        exec(open(_config_mc_path, encoding='utf-8').read())
+        print("✅ Configuração Monte Carlo carregada.")
+    else:
+        print("⚠️ Arquivo celula_2B_config_MC.py não encontrado. Monte Carlo pode falhar.")
+    
     from celula_5A_bootstrap_real import executar_analise_real
     from celula_5B_cenario_ideal import executar_analise_ideal
     from celula_5D_monte_carlo import executar_monte_carlo
@@ -26,6 +36,7 @@ try:
     from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
     from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
     from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
+    from PAGINA_5_RISCO import executar_pagina_5_risco
 except ImportError as e:
     print(f"❌ ERRO CRÍTICO DE IMPORTAÇÃO: {e}")
     print("Verifique se o path está correto e se os arquivos __init__.py existem se necessário (embora sys.path resolva).")
@@ -109,6 +120,20 @@ def main(report_mode=True, run_monte_carlo=False):
         premissas=PREMISSAS,
         report_mode=report_mode
     )
+    
+    # 9. GERAR PÁGINA 5: RISCO & CENÁRIOS (Monte Carlo + Sensibilidade)
+    if run_monte_carlo and mc_results is not None:
+        executar_pagina_5_risco(
+            df_real_m=df_real_m,
+            df_ideal_m=df_ideal_m,
+            mc_results=df_mc,  # DataFrame do MC
+            premissas=PREMISSAS,
+            df_real_s=df_real_s,
+            df_ideal_s=df_ideal_s,
+            report_mode=report_mode
+        )
+    else:
+        print("\n⏭️  PÁGINA 5 PULADA (Monte Carlo não executado)")
     
     print("\n" + "="*80)
     print("✅ GERAÇÃO DE RELATÓRIO CONCLUÍDA COM SUCESSO!")
