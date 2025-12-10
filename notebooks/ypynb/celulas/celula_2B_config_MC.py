@@ -26,7 +26,7 @@ PREMISSAS['monte_carlo'] = {
             'nome': 'Recessão / Crise',
             'descricao': 'CAC alto, churn elevado, conversão baixa',
             'multiplicadores': {
-                'churn_inicial': 1.30,           # +30% churn
+                'churn_inicial': 1.25,           # +25% churn
                 'taxa_trial_para_pagante': 0.75, # -25% conversão
                 'marketing_fixo_mensal': 0.70,   # -30% budget
                 'cpc_instagram': 1.25,           # +25% CPC
@@ -76,7 +76,7 @@ PREMISSAS['monte_carlo'] = {
             'dist': 'normal'
         },
         'taxa_trial_para_pagante': {
-            'std': 0.30,          # ±30% variação (alta incerteza)
+            'std': 0.20,          # ±20% variação (corrigido de 30%)
             'min': 0.01,          # 1% mínimo
             'max': 0.60,          # 60% máximo (muito otimista)
             'dist': 'normal'
@@ -90,9 +90,9 @@ PREMISSAS['monte_carlo'] = {
         
         # RETENÇÃO
         'churn_inicial': {
-            'std': 0.30,          # ±30% variação
+            'std': 0.20,          # ±20% variação (corrigido de 30%)
             'min': 0.005,         # 0.5% mínimo (mundo perfeito)
-            'max': 0.50,          # 50% máximo (desastre)
+            'max': 0.35,          # 50% máximo (desastre)
             'dist': 'normal'
         },
         
@@ -168,7 +168,7 @@ PREMISSAS['monte_carlo'] = {
         
         # CRESCIMENTO ORGÂNICO
         'crescimento_trafego_mes_1_6': {
-            'std': 0.30,
+            'std': 0.20,          # ±20% variação (corrigido de 30%)
             'min': 0.05,
             'max': 0.40,
             'dist': 'normal'
