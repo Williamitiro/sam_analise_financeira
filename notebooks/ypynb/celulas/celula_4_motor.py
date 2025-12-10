@@ -1011,7 +1011,7 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
         'ltv_media': float(df_mensal['ltv'].mean()),
         'ltv_cac_medio': float(ltv_cac_serie.mean()),
         'runway_final': float(dados['runway_meses'][-1]) if dados['runway_meses'][-1] < 999 else float('inf'),
-        'churn_medio': float(df_mensal['churn_rate'].mean() * 100),
+        'churn_medio': float(df_mensal['churn_rate'].mean()),
         'margem_bruta_media': float(df_mensal['margem_bruta_pct'].mean()),
         'ebitda_margin_media': float(df_mensal['ebitda_margin'].mean())
     })

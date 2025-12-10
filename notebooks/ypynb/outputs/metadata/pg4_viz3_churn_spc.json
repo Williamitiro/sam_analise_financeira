@@ -2,7 +2,7 @@
   "chart_id": "pg4_viz3_churn_spc",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-10T08:25:41.824483",
+  "timestamp": "2025-12-10T09:05:31.652867",
   "title_simple": "VIZ 4.3: Churn Volatility Control (SPC)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {

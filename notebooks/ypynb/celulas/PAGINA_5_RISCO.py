@@ -52,6 +52,18 @@ except:
     pass
 
 
+class RiskPageOutput:
+    """Wrapper para output da Página 5 para evitar poluição visual no notebook."""
+    def __init__(self, data):
+        self.data = data
+    def __repr__(self):
+        return f"<RiskPageOutput: {list(self.data.keys())}>"
+    def __getitem__(self, key):
+        return self.data[key]
+    def keys(self):
+        return self.data.keys()
+
+
 # ============================================================================
 # SEÇÃO 1: GERADOR DE CENÁRIO ESTRESSE (5C)
 # ============================================================================
@@ -1185,12 +1197,12 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     if not report_mode:
         print("\n✅ PÁGINA 5 - FASE 1 + ATO 1 GERADOS COM SUCESSO!")
     
-    return {
+    return RiskPageOutput({
         'df_stress_m': df_stress_m,
         'df_tabela_executiva': df_tabela,
         'kpi_cards': cards,
         'ato1': ato1_results
-    }
+    })
 
 
 # ============================================================================
