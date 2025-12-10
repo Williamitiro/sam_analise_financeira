@@ -42,18 +42,25 @@ except ImportError as e:
     print("Verifique se o path está correto e se os arquivos __init__.py existem se necessário (embora sys.path resolva).")
     sys.exit(1)
 
-def main(report_mode=True, run_monte_carlo=False):
+def main(report_mode=True, run_monte_carlo=False, max_tier=5):
     """
     Função Mestre que gera todos os dados para o Relatório de Investidores.
     
     Args:
         report_mode (bool): Se True, gera outputs otimizados para PDF (Markdown, sem logs excessivos).
         run_monte_carlo (bool): Se True, roda a simulação de Monte Carlo (pode demorar).
+        max_tier (int): Número máximo de páginas/tiers a renderizar (1-5).
+                       - 1 = Apenas Página 1 (Cockpit)
+                       - 2 = Páginas 1-2 (+ Growth)
+                       - 3 = Páginas 1-3 (+ Financeiro)
+                       - 4 = Páginas 1-4 (+ Unit Economics)
+                       - 5 = Páginas 1-5 (+ Risco) - Requer run_monte_carlo=True
     """
     print("="*80)
     print("🚀 ORQUESTADOR DE RELATÓRIO - INICIANDO GERAÇÃO")
     print(f"   Modo Relatório: {report_mode}")
     print(f"   Monte Carlo: {run_monte_carlo}")
+    print(f"   Max Tier: {max_tier}")
     print("="*80)
     
     warnings.filterwarnings('ignore')
@@ -81,59 +88,61 @@ def main(report_mode=True, run_monte_carlo=False):
         print("\n⏭️  4. MONTE CARLO PULADO (run_monte_carlo=False)")
         mc_results = None
     
-    # 5. GERAR PÁGINA 1: COCKPIT
-    # Nota: executar_pagina_1 espera (df_real_m, df_ideal, met_real, met_ideal)
-    # Ajuste: PAGINA_1_COCKPIT pode precisar de tratamento de argumentos se met_real for diferente do esperado.
-    # Assumindo compatibilidade.
-    executar_pagina_1(
-        df_real_m=df_real_m, 
-        df_ideal=df_ideal_m, 
-        met_real=met_real, 
-        met_ideal=met_ideal,
-        report_mode=report_mode
-    )
-    
-    # 6. GERAR PÁGINA 2: GROWTH MACHINE
-    executar_pagina_2_growth_machine(
-        df_real_m=df_real_m,
-        df_real_s=df_real_s,
-        df_ideal=df_ideal_m,
-        df_ideal_s=df_ideal_s,
-        premissas=PREMISSAS,
-        report_mode=report_mode
-    )
-    
-    # 7. GERAR PÁGINA 3: FINANCEIRO (DRE + Custos + Fluxo de Caixa)
-    executar_pagina_3_financeiro(
-        df_real_m=df_real_m,
-        df_real_s=df_real_s,
-        df_ideal_m=df_ideal_m,
-        premissas=PREMISSAS,
-        report_mode=report_mode
-    )
-    
-    # 8. GERAR PÁGINA 4: UNIT ECONOMICS (LTV/CAC + Cohorts + RPE)
-    executar_pagina_4_unit_economics(
-        df_real_m=df_real_m,
-        df_real_s=df_real_s,
-        df_ideal=df_ideal_m,
-        premissas=PREMISSAS,
-        report_mode=report_mode
-    )
-    
-    # 9. GERAR PÁGINA 5: RISCO & CENÁRIOS (Monte Carlo + Sensibilidade)
-    if run_monte_carlo and mc_results is not None:
-        executar_pagina_5_risco(
-            df_real_m=df_real_m,
-            df_ideal_m=df_ideal_m,
-            mc_results=df_mc,  # DataFrame do MC
-            premissas=PREMISSAS,
-            df_real_s=df_real_s,
-            df_ideal_s=df_ideal_s,
+    # 5. GERAR PÁGINA 1: COCKPIT (TIER 1)
+    if max_tier >= 1:
+        executar_pagina_1(
+            df_real_m=df_real_m, 
+            df_ideal=df_ideal_m, 
+            met_real=met_real, 
+            met_ideal=met_ideal,
             report_mode=report_mode
         )
-    else:
-        print("\n⏭️  PÁGINA 5 PULADA (Monte Carlo não executado)")
+    
+    # 6. GERAR PÁGINA 2: GROWTH MACHINE (TIER 2)
+    if max_tier >= 2:
+        executar_pagina_2_growth_machine(
+            df_real_m=df_real_m,
+            df_real_s=df_real_s,
+            df_ideal=df_ideal_m,
+            df_ideal_s=df_ideal_s,
+            premissas=PREMISSAS,
+            report_mode=report_mode
+        )
+    
+    # 7. GERAR PÁGINA 3: FINANCEIRO (TIER 3)
+    if max_tier >= 3:
+        executar_pagina_3_financeiro(
+            df_real_m=df_real_m,
+            df_real_s=df_real_s,
+            df_ideal_m=df_ideal_m,
+            premissas=PREMISSAS,
+            report_mode=report_mode
+        )
+    
+    # 8. GERAR PÁGINA 4: UNIT ECONOMICS (TIER 4)
+    if max_tier >= 4:
+        executar_pagina_4_unit_economics(
+            df_real_m=df_real_m,
+            df_real_s=df_real_s,
+            df_ideal=df_ideal_m,
+            premissas=PREMISSAS,
+            report_mode=report_mode
+        )
+    
+    # 9. GERAR PÁGINA 5: RISCO & CENÁRIOS (TIER 5)
+    if max_tier >= 5:
+        if run_monte_carlo and mc_results is not None:
+            executar_pagina_5_risco(
+                df_real_m=df_real_m,
+                df_ideal_m=df_ideal_m,
+                mc_results=df_mc,  # DataFrame do MC
+                premissas=PREMISSAS,
+                df_real_s=df_real_s,
+                df_ideal_s=df_ideal_s,
+                report_mode=report_mode
+            )
+        else:
+            print("\n⏭️  PÁGINA 5 PULADA (Monte Carlo não executado)")
     
     print("\n" + "="*80)
     print("✅ GERAÇÃO DE RELATÓRIO CONCLUÍDA COM SUCESSO!")

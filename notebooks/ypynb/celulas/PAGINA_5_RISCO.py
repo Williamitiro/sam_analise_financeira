@@ -380,95 +380,106 @@ def preparar_dados_fan_chart(mc_results, df_real_m, df_ideal_m):
     return percentis
 
 
-def plotar_fan_chart(dados_fan, report_mode=False, zoom_percentil=90):
+def plotar_fan_chart(dados_fan, report_mode=False, zoom_percentil=90, prob_acima_teto=0):
     """
-    Gera o Fan Chart com áreas percentiladas - VERSÃO MELHORADA.
+    Gera o Fan Chart com áreas percentiladas - VERSÃO OTIMIZADA VISUALMENTE.
     
-    MELHORIAS:
-    - Limita o eixo Y ao P90 para que linhas Real/Ideal sejam visíveis
-    - Cores mais distintas para cada elemento
-    - Anotações claras nos pontos finais
-    - Legenda fora do gráfico para não obstruir
+    MUDANÇAS:
+    - Eixo Y travado em R$ 800k (teto) para evitar chatamento por outliers.
+    - Tabela resumo (P10, P50, P90) embutida no gráfico.
+    - Nota explícita sobre a % de cenários acima do teto.
     """
     
-    figsize = (12, 7) if report_mode else (14, 8)
+    figsize = (10, 5) if report_mode else (12, 7)
     fig, ax = plt.subplots(figsize=figsize, dpi=150)
     
     meses = dados_fan['mes'].values
     
-    # Calcular limite Y inteligente (baseado no P90 + 20% margem)
-    y_max = dados_fan['p90'].max() * 1.2
-    y_min = min(dados_fan['p5'].min() * 1.1, -10000)  # Pelo menos -10k para mostrar zona de risco
+    # 1. LIMITES DO EIXO (HARD CAP 800k)
+    y_hard_cap = 800000
+    y_min = min(dados_fan['p5'].min() * 1.1, -10000)
     
-    # CAMADA 1: Área P10-P90 (80% de confiança - foco principal)
+    # CAMADA 1: Área P10-P90 (80% de confiança)
     ax.fill_between(meses, dados_fan['p10'], dados_fan['p90'], 
-                    alpha=0.25, color='#9E9E9E', label='P10-P90 (80% dos cenários)')
+                    alpha=0.25, color='#BDBDBD', label='P10-P90 (80% cenários)')
     
-    # CAMADA 2: Área P25-P75 (50% de confiança - zona mais provável)
+    # CAMADA 2: Área P25-P75 (50% de confiança)
     ax.fill_between(meses, dados_fan['p25'], dados_fan['p75'], 
-                    alpha=0.4, color='#616161', label='P25-P75 (50% mais provável)')
+                    alpha=0.4, color='#757575', label='P25-P75 (50% mais provável)')
     
-    # LINHA CENTRAL: P50 (Mediana) - DESTAQUE
+    # LINHA CENTRAL: P50 (Mediana)
     ax.plot(meses, dados_fan['p50'], color='#212121', linewidth=3.5, 
             linestyle='-', label='P50 (Mediana)', zorder=5)
     
-    # LINHA REFERÊNCIA: Cenário Real (5A) - AZUL VIBRANTE
+    # LINHA REAL
     ax.plot(meses, dados_fan['real'], color='#1565C0', linewidth=3, 
-            linestyle='-', label='Cenário Real (5A)', zorder=6, marker='o', 
+            linestyle='-', label='Cenário Real', zorder=6, marker='o', 
             markersize=4, markevery=6)
     
-    # LINHA ASPIRACIONAL: Cenário Ideal (5B) - VERDE VIBRANTE
+    # LINHA IDEAL
     ax.plot(meses, dados_fan['ideal'], color='#2E7D32', linewidth=3, 
-            linestyle='--', label='Cenário Ideal (5B)', zorder=6, marker='s', 
+            linestyle='--', label='Cenário Ideal', zorder=6, marker='s', 
             markersize=4, markevery=6)
     
-    # LINHA DE QUEBRA (Caixa = 0) - VERMELHO FORTE
+    # QUEBRA (Zero)
     ax.axhline(y=0, color='#D32F2F', linestyle='-', linewidth=2.5, 
-               alpha=0.8, label='Linha de Quebra (R$ 0)', zorder=4)
+               alpha=0.8, label='Quebra (R$ 0)', zorder=4)
     
-    # MÊS 6 - Linha vertical de decisão
-    ax.axvline(x=6, color='#FF9800', linestyle='--', linewidth=2, alpha=0.7, label='Mês 6 (Decisão)')
+    # MÊS 6 DECISÃO
+    ax.axvline(x=6, color='#FF9800', linestyle='--', linewidth=2, alpha=0.7)
     
-    # Limitar eixo Y para visibilidade
-    ax.set_ylim(y_min, y_max)
+    # APLICAR CAP
+    ax.set_ylim(y_min, y_hard_cap)
     
     # Formatação
-    ax.set_xlabel('Mês', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Caixa Acumulado (R$)', fontsize=13, fontweight='bold')
-    ax.set_title('Distribuição Probabilística do Caixa - Monte Carlo\n' + 
-                 'Foco: 80% dos cenários mais prováveis (P10-P90)', 
-                 fontsize=14, color='#333', fontweight='bold', pad=15)
+    ax.set_xlabel('Mês', fontsize=11, fontweight='bold')
+    ax.set_ylabel('Caixa Acumulado (R$)', fontsize=11, fontweight='bold')
+    ax.set_title('Distribuição de Cenários (Monte Carlo)\n' + 
+                 'Foco na Zona Operacional (< 800k)', 
+                 fontsize=13, color='#333', fontweight='bold', pad=15)
     
-    # Formatar eixo Y como moeda
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'R$ {x/1000:.0f}k'))
+    ax.grid(True, alpha=0.2, linestyle=':', zorder=0)
     
-    # Grid
-    ax.grid(True, alpha=0.3, linestyle=':', zorder=0)
-    ax.set_axisbelow(True)
+    # LEGENDA SIMPLIFICADA
+    ax.legend(loc='upper left', frameon=True, fontsize=9, ncol=2)
     
-    # Legenda FORA do gráfico (à direita)
-    ax.legend(loc='upper left', bbox_to_anchor=(1.02, 1), frameon=True, fontsize=10)
+    # =========================================================
+    # TABELA RESUMO (Top Right)
+    # =========================================================
     
-    # Anotações nos pontos finais
-    mes_final = meses[-1]
-    offset_y = (y_max - y_min) * 0.02
+    # Dados finais
+    v90 = dados_fan['p90'].iloc[-1]
+    v50 = dados_fan['p50'].iloc[-1]
+    v10 = dados_fan['p10'].iloc[-1]
     
-    # Anotação P50
-    ax.annotate(f'P50: {formata_moeda(dados_fan["p50"].iloc[-1])}', 
-                xy=(mes_final, dados_fan['p50'].iloc[-1]),
-                xytext=(mes_final - 5, dados_fan['p50'].iloc[-1] + offset_y * 3),
-                fontsize=10, fontweight='bold', color='#212121',
-                arrowprops=dict(arrowstyle='->', color='#212121', lw=1.5))
+    # Tabela dados
+    celul_text = [
+        [f'P90 (Otimista)', formata_moeda(v90)],
+        [f'P50 (Provável)', formata_moeda(v50)],
+        [f'P10 (Pessimista)', formata_moeda(v10)]
+    ]
     
-    # Anotação Real
-    ax.annotate(f'Real: {formata_moeda(dados_fan["real"].iloc[-1])}', 
-                xy=(mes_final, dados_fan['real'].iloc[-1]),
-                xytext=(mes_final - 5, dados_fan['real'].iloc[-1] - offset_y * 5),
-                fontsize=10, fontweight='bold', color='#1565C0',
-                arrowprops=dict(arrowstyle='->', color='#1565C0', lw=1.5))
+    # Adicionar tabela
+    the_table = ax.table(cellText=celul_text,
+                         colWidths=[0.3, 0.25],
+                         loc='upper right',
+                         bbox=[0.68, 0.75, 0.30, 0.2]) # [left, bottom, width, height]
     
+    the_table.auto_set_font_size(False)
+    the_table.set_fontsize(9)
+    the_table.scale(1, 1.3)
+    
+    # =========================================================
+    # NOTA DE OUTLIERS
+    # =========================================================
+    if prob_acima_teto > 0:
+        nota_text = f"⚠️ NOTA: Escala limitada a R$ 800k para visualização.\n{prob_acima_teto:.1%} dos cenários superaram este teto (cauda longa)."
+        props = dict(boxstyle='round', facecolor='#FFF3E0', alpha=0.9, edgecolor='#FF9800')
+        ax.text(0.98, 0.68, nota_text, transform=ax.transAxes, fontsize=8,
+                verticalalignment='top', horizontalalignment='right', bbox=props, color='#E65100')
+
     plt.tight_layout()
-    
     return fig
 
 
@@ -502,72 +513,91 @@ def plotar_grafico_mes6(mc_results, df_real_m, df_ideal_m, premissas, report_mod
         caixa_real_m6 = 0
         caixa_ideal_m6 = 0
     
+    # DEPENDÊNCIA: Garantir import do KDE
+    from scipy.stats import gaussian_kde
+    
     # Criar figura
-    figsize = (10, 6) if report_mode else (12, 7)
+    figsize = (10, 5) if report_mode else (12, 7)
     fig, ax = plt.subplots(figsize=figsize, dpi=150)
     
-    # Histograma
-    n, bins, patches = ax.hist(caixa_mes6, bins=30, color='#90CAF9', edgecolor='#1565C0', 
-                                alpha=0.7, density=True, label='Distribuição MC')
+    # Gerar KDE (Densidade)
+    # -------------------------------------------------------------------------
+    density = gaussian_kde(caixa_mes6)
     
-    # Colorir barras por zona
-    for patch, left_edge in zip(patches, bins[:-1]):
-        if left_edge < 0:
-            patch.set_facecolor('#EF5350')  # Vermelho - quebra
-            patch.set_alpha(0.8)
-        elif left_edge < 10000:
-            patch.set_facecolor('#FFA726')  # Laranja - risco
-            patch.set_alpha(0.8)
-        else:
-            patch.set_facecolor('#66BB6A')  # Verde - seguro
-            patch.set_alpha(0.8)
+    # Definir range do eixo X para o cálculo da curva (de min a max com margem)
+    xs = np.linspace(min(caixa_mes6.min(), -20000), max(caixa_mes6.max(), 100000), 1000)
+    ys = density(xs)
     
-    # Linhas de referência
-    ax.axvline(x=0, color='#D32F2F', linestyle='-', linewidth=3, label='Quebra (R$ 0)')
-    ax.axvline(x=caixa_real_m6, color='#1565C0', linestyle='--', linewidth=2.5, 
-               label=f'Real M6: {formata_moeda(caixa_real_m6)}')
-    ax.axvline(x=caixa_ideal_m6, color='#2E7D32', linestyle='--', linewidth=2.5, 
-               label=f'Ideal M6: {formata_moeda(caixa_ideal_m6)}')
+    # Plotar linha de densidade
+    ax.plot(xs, ys, color='#1565C0', linewidth=2.5, label='Densidade de Probabilidade')
     
-    # Percentis
-    p25 = np.percentile(caixa_mes6, 25)
+    # Preencher área (Area Chart Style) com degradê simulado (transparência)
+    ax.fill_between(xs, ys, alpha=0.2, color='#90CAF9')
+    
+    # LIMITES E ZOOM (Foco 0-100k)
+    # -------------------------------------------------------------------------
+    x_min_zoom = -30000  # Um pouco negativo para ver a quebra
+    x_max_zoom = 100000  # Cap em 100k
+    ax.set_xlim(x_min_zoom, x_max_zoom)
+    
+    # Calcular % acima do teto para nota
+    pct_acima_100k = (caixa_mes6 > 100000).mean()
+    
+    # Linhas de referência verticais
+    ax.axvline(x=0, color='#D32F2F', linestyle='-', linewidth=2.5, label='Quebra (R$ 0)')
+    
+    # Ponto Real e Ideal (se estiverem dentro do zoom)
+    if caixa_real_m6 < x_max_zoom:
+        ax.axvline(x=caixa_real_m6, color='#1565C0', linestyle='--', linewidth=2, 
+                   label=f'Real: {formata_moeda(caixa_real_m6)}')
+    
+    if caixa_ideal_m6 < x_max_zoom:
+        ax.axvline(x=caixa_ideal_m6, color='#2E7D32', linestyle='--', linewidth=2, 
+                   label=f'Ideal: {formata_moeda(caixa_ideal_m6)}')
+        
+    # Mediana
     p50 = np.percentile(caixa_mes6, 50)
-    p75 = np.percentile(caixa_mes6, 75)
-    
-    ax.axvline(x=p50, color='#212121', linestyle='-', linewidth=2, 
-               label=f'Mediana: {formata_moeda(p50)}')
-    
+    if p50 < x_max_zoom:
+        ax.axvline(x=p50, color='#212121', linestyle='-', linewidth=2, label=f'Mediana: {formata_moeda(p50)}')
+
     # Probabilidades
     prob_quebra = (caixa_mes6 < 0).mean()
     prob_risco = ((caixa_mes6 >= 0) & (caixa_mes6 < 10000)).mean()
     prob_seguro = (caixa_mes6 >= 10000).mean()
+    p25 = np.percentile(caixa_mes6, 25)
+    p75 = np.percentile(caixa_mes6, 75)
     
-    # Caixa de texto com probabilidades
-    textstr = f'📊 Distribuição Mês 6:\n' \
-              f'🔴 Quebra (< R$ 0): {prob_quebra:.1%}\n' \
-              f'🟠 Risco (R$ 0-10k): {prob_risco:.1%}\n' \
-              f'🟢 Seguro (> R$ 10k): {prob_seguro:.1%}\n' \
-              f'─────────────────\n' \
-              f'P25: {formata_moeda(p25)}\n' \
-              f'P50: {formata_moeda(p50)}\n' \
-              f'P75: {formata_moeda(p75)}'
+    # Caixa de texto simplificada (Top Right)
+    textstr = f'📊 Zonas de Risco (M6):\n' \
+              f'🔴 Quebra (<0): {prob_quebra:.1%}\n' \
+              f'🟠 Risco (0-10k): {prob_risco:.1%}\n' \
+              f'🟢 Seguro (>10k): {prob_seguro:.1%}'
     
-    props = dict(boxstyle='round,pad=0.5', facecolor='white', alpha=0.9, edgecolor='#666')
-    ax.text(0.98, 0.98, textstr, transform=ax.transAxes, fontsize=11,
-            verticalalignment='top', horizontalalignment='right', bbox=props,
-            fontfamily='monospace')
+    props = dict(boxstyle='round,pad=0.5', facecolor='white', alpha=0.95, edgecolor='#CCC')
+    ax.text(0.97, 0.95, textstr, transform=ax.transAxes, fontsize=10,
+            verticalalignment='top', horizontalalignment='right', bbox=props)
+    
+    # Nota de Outlier (> 100k)
+    if pct_acima_100k > 0:
+        nota_text = f"⚠️ ZOOM ATIVADO: {pct_acima_100k:.1%} dos cenários estão acima de R$ 100k (não mostrados)."
+        props_nota = dict(boxstyle='round', facecolor='#E3F2FD', alpha=0.9, edgecolor='#2196F3')
+        ax.text(0.02, 0.95, nota_text, transform=ax.transAxes, fontsize=8,
+                verticalalignment='top', horizontalalignment='left', bbox=props_nota, color='#0D47A1')
     
     # Formatação
-    ax.set_xlabel('Caixa no Mês 6 (R$)', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Densidade', fontsize=13, fontweight='bold')
-    ax.set_title('🎯 PONTO DE DECISÃO: Distribuição do Caixa no MÊS 6\n' + 
-                 'Onde você estará quando precisar decidir?', 
-                 fontsize=14, color='#333', fontweight='bold', pad=15)
+    ax.set_xlabel('Caixa no Mês 6 (R$)', fontsize=11, fontweight='bold')
+    ax.set_ylabel('Densidade de Probabilidade', fontsize=11, fontweight='bold')
+    ax.set_title('Decisão Crítica Mês 6: Distribuição de Probabilidade\n' + 
+                 'Foco na Zona de Risco (-20k a 100k)', 
+                 fontsize=13, color='#333', fontweight='bold', pad=15)
     
     ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'R$ {x/1000:.0f}k'))
+    ax.yaxis.set_visible(False) # Ocultar eixo Y (densidade pura não é intuitiva)
     
-    ax.grid(True, alpha=0.3, linestyle=':', axis='y')
-    ax.legend(loc='upper left', frameon=True, fontsize=9)
+    ax.grid(True, alpha=0.2, linestyle=':', axis='x')
+    
+    # Legenda limpa
+    ax.legend(loc='upper right', bbox_to_anchor=(1, 0.75), frameon=False, fontsize=9)
     
     plt.tight_layout()
     
@@ -666,8 +696,16 @@ def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_m
     # =========================================================================
     # 1. GRÁFICO FAN CHART PRINCIPAL
     # =========================================================================
+    # Calcular probabilidade acima do teto (800k) para a nota
+    caixa_final_col = 'caixa_final' if 'caixa_final' in mc_results.columns else 'caixa'
+    if caixa_final_col in mc_results.columns:
+        caixa_final = mc_results[caixa_final_col]
+        prob_acima_teto = (caixa_final > 800000).mean()
+    else:
+        prob_acima_teto = 0
+        
     dados_fan = preparar_dados_fan_chart(mc_results, df_real_m, df_ideal_m)
-    fig1 = plotar_fan_chart(dados_fan, report_mode)
+    fig1 = plotar_fan_chart(dados_fan, report_mode, prob_acima_teto=prob_acima_teto)
     
     if report_mode:
         try:
@@ -675,10 +713,11 @@ def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_m
             os.makedirs('outputs/figs', exist_ok=True)
             plt.savefig('outputs/figs/pag5_monte_carlo_fan_chart.png', dpi=150, bbox_inches='tight')
             display(Markdown("![Fan Chart Monte Carlo](outputs/figs/pag5_monte_carlo_fan_chart.png)"))
+            display(Markdown("_Fonte: mc_results (Célula 5D - Monte Carlo) | df_real_m vs df_ideal_m (Célula 5A/5B)_"))
         except:
             pass
     else:
-        plt.show()
+        display(fig1)
     plt.close(fig1)
     
     # =========================================================================
@@ -757,7 +796,7 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
         print("🎯 ZOOM: PONTO DE DECISÃO - MÊS 6")
         print("-"*40)
     else:
-        display(Markdown("---"))
+        display(Markdown("***"))
         display(Markdown("### 🎯 ZOOM: PONTO DE DECISÃO - MÊS 6"))
     
     fig2, dados_m6 = plotar_grafico_mes6(mc_results, df_real_m, df_ideal_m, premissas, report_mode)
@@ -766,10 +805,11 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
         try:
             plt.savefig('outputs/figs/pag5_distribuicao_mes6.png', dpi=150, bbox_inches='tight')
             display(Markdown("![Distribuição Mês 6](outputs/figs/pag5_distribuicao_mes6.png)"))
+            display(Markdown("_Fonte: mc_results (Célula 5D) | df_real_m, df_ideal_m (Célula 5A/5B)_"))
         except:
             pass
     else:
-        plt.show()
+        display(fig2)
     plt.close(fig2)
     
     # Como ler o gráfico do Mês 6
@@ -993,6 +1033,151 @@ P(Quebra) = Count(caixa < 0) / n_simulações
 
 
 # ============================================================================
+# SEÇÃO 4B: VEREDITO NARRATIVO (GOLD STANDARD V22.0)
+# ============================================================================
+
+def gerar_veredito_risco(df_real_m, mc_results, df_stress_m, ato1_results, report_mode=False):
+    """
+    Gera o veredito narrativo final da Página 5, conectando todos os Atos em uma conclusão.
+    
+    REGRA V22.0: Texto corrido (storytelling), NÃO lista de bullets.
+    
+    INPUTS:
+        df_real_m: DataFrame Real mensal
+        mc_results: DataFrame Monte Carlo
+        df_stress_m: DataFrame Estresse
+        ato1_results: Dict com resultados do Ato 1 (probabilidades, dados_mes6, etc)
+        report_mode: Se True, formata para Quarto/DOCX
+    """
+    
+    # =========================================================================
+    # 1. EXTRAIR MÉTRICAS PARA A NARRATIVA (100% DINÂMICO)
+    # =========================================================================
+    
+    # Probabilidades do Monte Carlo
+    probs = ato1_results.get('probabilidades', {})
+    prob_sobrevivencia = 1 - probs.get('prob_quebra', 0)
+    var95 = probs.get('var95', 0)
+    p50 = probs.get('p50', 0)
+    
+    # Dados do Mês 6 (Ponto de Decisão)
+    dados_m6 = ato1_results.get('dados_mes6', {})
+    prob_seguro_m6 = dados_m6.get('prob_seguro_m6', 0)
+    p50_m6 = dados_m6.get('p50_m6', 0)
+    
+    # Cenário Estresse
+    caixa_stress_final = df_stress_m['caixa'].iloc[-1] if 'caixa' in df_stress_m.columns else 0
+    stress_sobrevive = caixa_stress_final > 0
+    
+    # Cenário Real
+    caixa_real_final = df_real_m['caixa'].iloc[-1] if 'caixa' in df_real_m.columns else 0
+    arr_real_final = df_real_m['arr'].iloc[-1] if 'arr' in df_real_m.columns else 0
+    
+    # Dispersão (mede incerteza)
+    caixa_final_col = mc_results.get('caixa_final', mc_results.get('caixa', pd.Series([0])))
+    p5 = caixa_final_col.quantile(0.05) if len(caixa_final_col) > 0 else 0
+    p95 = caixa_final_col.quantile(0.95) if len(caixa_final_col) > 0 else 0
+    dispersao = p95 - p5
+    dispersao_relativa = dispersao / max(abs(p50), 1)
+    
+    # =========================================================================
+    # 2. DETERMINAR STATUS GERAL
+    # =========================================================================
+    
+    # Critérios de aprovação
+    criterio_1_sobrevivencia = prob_sobrevivencia > 0.90  # >90% chance de caixa positivo
+    criterio_2_mes6 = prob_seguro_m6 > 0.60  # >60% seguro no M6
+    criterio_3_stress = stress_sobrevive  # Sobrevive ao estresse
+    criterio_4_dispersao = dispersao_relativa < 4  # Incerteza controlada
+    
+    criterios_ok = sum([criterio_1_sobrevivencia, criterio_2_mes6, criterio_3_stress, criterio_4_dispersao])
+    
+    if criterios_ok >= 4:
+        status_geral = "APROVADO"
+        emoji_status = "✅"
+        tendencia = "robusto e resiliente"
+    elif criterios_ok >= 2:
+        status_geral = "APROVADO COM RESSALVAS"
+        emoji_status = "⚠️"
+        tendencia = "funcional mas com margem apertada"
+    else:
+        status_geral = "REPROVADO"
+        emoji_status = "🔴"
+        tendencia = "frágil e dependente de execução perfeita"
+    
+    # =========================================================================
+    # 3. CONSTRUIR NARRATIVA DINÂMICA (TEXTO CORRIDO)
+    # =========================================================================
+    
+    # Diagnóstico do Mês 6
+    if prob_seguro_m6 > 0.70:
+        diagnostico_m6 = "seguro para continuar"
+        recomendacao_m6 = "manter o curso atual"
+    elif prob_seguro_m6 > 0.50:
+        diagnostico_m6 = "viável mas exige atenção"
+        recomendacao_m6 = "criar buffer de R$ 30-50k antes do mês 6"
+    else:
+        diagnostico_m6 = "crítico e arriscado"
+        recomendacao_m6 = "revisar estrutura de custos ou buscar captação"
+    
+    # Diagnóstico do Estresse
+    if stress_sobrevive:
+        diagnostico_stress = f"sobrevive ao estresse, terminando com {formata_moeda(caixa_stress_final)}"
+    else:
+        diagnostico_stress = f"não sobrevive ao estresse (caixa final: {formata_moeda(caixa_stress_final)})"
+    
+    veredito_md = f"""
+### 🏁 VEREDITO FINAL: GESTÃO DE RISCO (Status: {emoji_status} {status_geral})
+
+A análise probabilística desta seção confirma que o modelo é **{tendencia}** para os próximos 36 meses.
+
+Começamos com a **Simulação Monte Carlo** (Ato 1), que revelou uma probabilidade de sobrevivência 
+de **{prob_sobrevivencia:.1%}** — ou seja, em {prob_sobrevivencia*100:.0f} de cada 100 futuros 
+simulados, a startup termina com caixa positivo. O **P50 (mediana)** projeta um caixa final de 
+**{formata_moeda(p50)}**, enquanto o **VaR 95%** (pior cenário nos 5% mais pessimistas) indica 
+risco máximo de **{formata_moeda(var95)}**.
+
+O **Ponto de Decisão no Mês 6** mostrou-se **{diagnostico_m6}**, com **{prob_seguro_m6:.1%}** de 
+probabilidade de caixa acima de R$ 10k. A recomendação tática para este marco é: **{recomendacao_m6}**.
+
+O **Cenário de Estresse** (Mundo C) aplicou multiplicadores adversos (churn 2x, CAC 1.5x, conversão 0.5x) 
+e verificou que o modelo **{diagnostico_stress}**. {"Isso demonstra resiliência estrutural." if stress_sobrevive else "Isso indica fragilidade e necessidade de colchão de segurança."}
+
+A **dispersão entre P5 e P95** foi de **{formata_moeda(dispersao)}** ({dispersao_relativa:.1f}x a mediana), 
+indicando {"incerteza controlada e premissas confiáveis" if dispersao_relativa < 3 else "alta incerteza que exige revisão de premissas"}.
+
+**CONCLUSÃO ESTRATÉGICA:**
+
+O modelo {"passa" if "APROVADO" in status_geral else "não passa"} no teste de risco com nota 
+**{criterios_ok}/4** nos critérios de robustez. {"A startup está pronta para acelerar com confiança." if criterios_ok >= 3 else "Recomenda-se aumentar runway antes de escalar agressivamente."} 
+O gargalo principal identificado é {"a dispersão das premissas" if dispersao_relativa > 3 else "o cenário de estresse" if not stress_sobrevive else "nenhum crítico no momento"}.
+
+**PRÓXIMOS PASSOS:**
+1. {"Manter curso atual e executar conforme planejado" if criterios_ok >= 4 else "Criar buffer financeiro de R$ 30-50k antes do Mês 6"}
+2. {"Monitorar métricas mensalmente" if criterios_ok >= 3 else "Revisar CAC e churn semanalmente nos primeiros 3 meses"}
+3. {"Preparar deck para Série A" if criterios_ok >= 4 else "Focar em break-even antes de buscar investimento"}
+"""
+    
+    # =========================================================================
+    # 4. RENDERIZAÇÃO CONDICIONAL
+    # =========================================================================
+    
+    if report_mode:
+        # Quarto Callout para o Veredito
+        callout_type = "tip" if "APROVADO" == status_geral else "warning" if "RESSALVAS" in status_geral else "important"
+        display(Markdown(f"::: {{.callout-{callout_type}}}\n{veredito_md}\n:::"))
+    else:
+        display(Markdown(veredito_md))
+    
+    return {
+        'status_geral': status_geral,
+        'criterios_ok': criterios_ok,
+        'prob_sobrevivencia': prob_sobrevivencia,
+        'tendencia': tendencia
+    }
+
+
+# ============================================================================
 # SEÇÃO 5: RENDERIZAÇÃO DA FASE 1 (Tabela + Cards)
 
 def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, premissas, report_mode=False):
@@ -1156,8 +1341,11 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
         print("="*80)
     else:
         display(Markdown("# PÁGINA 5: RISCO & CENÁRIOS"))
-        display(Markdown("**Objetivo:** Quantificar risco, provar robustez, vender proteção de downside."))
-        display(Markdown("**Tempo de Leitura:** 15 minutos"))
+        display(Markdown(
+            "**Objetivo:** Quantificar o risco do modelo através de simulações Monte Carlo, "
+            "cenários de estresse e análise de sensibilidade, provando robustez e proteção de downside "
+            "para o investidor."
+        ))
         display(Markdown("***"))
     
     # 1. Gerar Cenário Estresse (Mundo C)
@@ -1194,14 +1382,27 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
         print("   • ATO 5: Gap Analysis Real vs Estresse")
         print("-"*40)
     
+    # 5. VEREDITO NARRATIVO FINAL (GOLD STANDARD V22.0)
     if not report_mode:
-        print("\n✅ PÁGINA 5 - FASE 1 + ATO 1 GERADOS COM SUCESSO!")
+        print("\n" + "-"*40)
+        print("🏁 Gerando Veredito Final...")
+    else:
+        display(Markdown("***"))
+    
+    veredito_results = gerar_veredito_risco(
+        df_real_m, mc_results, df_stress_m, ato1_results, report_mode
+    )
+    
+    if not report_mode:
+        print("   ✅ Veredito gerado com sucesso!")
+        print("\n✅ PÁGINA 5 - FASE 1 + ATO 1 + VEREDITO GERADOS COM SUCESSO!")
     
     return RiskPageOutput({
         'df_stress_m': df_stress_m,
         'df_tabela_executiva': df_tabela,
         'kpi_cards': cards,
-        'ato1': ato1_results
+        'ato1': ato1_results,
+        'veredito': veredito_results
     })
 
 

@@ -101,6 +101,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#tier-3---financeiro-completo" id="toc-tier-3---financeiro-completo" class="nav-link" data-scroll-target="#tier-3---financeiro-completo">TIER 3 - Financeiro Completo</a></li>
   <li><a href="#tier-4---unit-economics-operação" id="toc-tier-4---unit-economics-operação" class="nav-link" data-scroll-target="#tier-4---unit-economics-operação">TIER 4 - UNIT ECONOMICS &amp; OPERAÇÃO</a></li>
+  <li><a href="#tier-5---análise-de-risco-cenários-monte-carlo" id="toc-tier-5---análise-de-risco-cenários-monte-carlo" class="nav-link" data-scroll-target="#tier-5---análise-de-risco-cenários-monte-carlo">TIER 5 - ANÁLISE DE RISCO &amp; CENÁRIOS (Monte Carlo)</a></li>
   <li><a href="#metodologia-completa" id="toc-metodologia-completa" class="nav-link" data-scroll-target="#metodologia-completa">Metodologia Completa</a></li>
   <li><a href="#premissas-chave" id="toc-premissas-chave" class="nav-link" data-scroll-target="#premissas-chave">Premissas-Chave</a></li>
   <li><a href="#conclusoes-executivas" id="toc-conclusoes-executivas" class="nav-link" data-scroll-target="#conclusoes-executivas">Conclusoes Executivas</a></li>
@@ -3193,6 +3194,863 @@ Tip
 </div>
 </div>
 </div>
+<section id="tier-5---análise-de-risco-cenários-monte-carlo" class="level1">
+<h1>TIER 5 - ANÁLISE DE RISCO &amp; CENÁRIOS (Monte Carlo)</h1>
+<p><strong>Objetivo:</strong> Quantificar a incerteza e a probabilidade de sobrevivência através de simulações estocásticas (Monte Carlo).</p>
+</section>
+<div id="tier5" class="cell" data-execution_count="7">
+<div id="tier5-1" class="cell-output cell-output-display cell-output-markdown">
+<section id="página-5-risco-cenários" class="level1">
+<h1>PÁGINA 5: RISCO &amp; CENÁRIOS</h1>
+</section>
+</div>
+<div id="tier5-2" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Objetivo:</strong> Quantificar o risco do modelo através de simulações Monte Carlo, cenários de estresse e análise de sensibilidade, provando robustez e proteção de downside para o investidor.</p>
+</div>
+<div id="tier5-3" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-4" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-5" class="cell-output cell-output-display cell-output-markdown">
+<section id="painel-executivo-de-risco" class="level2">
+<h2 class="anchored" data-anchor-id="painel-executivo-de-risco">📊 PAINEL EXECUTIVO DE RISCO</h2>
+</section>
+</div>
+<div id="tier5-6" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Objetivo:</strong> Snapshot de 3 minutos - o investidor vê tudo de uma vez.</p>
+</div>
+<div id="tier5-7" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">🛡️ SOBREVIVÊNCIA</th>
+<th style="text-align: center;">⚠️ VAR 95%</th>
+<th style="text-align: center;">🚀 UPSIDE</th>
+<th style="text-align: center;">📊 DISPERSÃO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>96.7%</strong></td>
+<td style="text-align: center;"><strong>R$ 6.741,31</strong></td>
+<td style="text-align: center;"><strong>1088%</strong></td>
+<td style="text-align: center;"><strong>11.8x</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Prob. Caixa &gt; R$ 0</td>
+<td style="text-align: center;">Pior Cenário (5%)</td>
+<td style="text-align: center;">P95 vs P50</td>
+<td style="text-align: center;">Incerteza (P95-P5)/P50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">+6.7% vs meta 90%</td>
+<td style="text-align: center;">7k vs limite -50k</td>
+<td style="text-align: center;">1088% potencial acima mediana</td>
+<td style="text-align: center;">Alta incerteza</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">🟢</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier5-8" class="cell-output cell-output-display cell-output-markdown">
+<section id="tabela-executiva-master-de-risco" class="level3">
+<h3 class="anchored" data-anchor-id="tabela-executiva-master-de-risco">📋 TABELA EXECUTIVA MASTER DE RISCO</h3>
+</section>
+</div>
+<div id="tier5-9" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 22%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Categoria</th>
+<th style="text-align: left;">Métrica</th>
+<th style="text-align: left;">Real</th>
+<th style="text-align: left;">Ideal</th>
+<th style="text-align: left;">Estresse</th>
+<th style="text-align: left;">Benchmark</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">🎲 PROBABILIDADES</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Prob. Quebra (Caixa &lt; R$ 0)</td>
+<td style="text-align: left;">3.3%</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt; 10%</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Prob. Caixa &lt; R$ 50k</td>
+<td style="text-align: left;">18.7%</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt; 20%</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Prob. Caixa &gt; R$ 100k</td>
+<td style="text-align: left;">67.3%</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; 50%</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Prob. ARR &gt; R$ 1M</td>
+<td style="text-align: left;">42.7%</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; 60%</td>
+<td style="text-align: left;">🟡</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Prob. LTV/CAC &gt; 5x</td>
+<td style="text-align: left;">38.7%</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; 30%</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">💰 CENÁRIO REAL (5A)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Caixa Final</td>
+<td style="text-align: left;">R$ 141.820,36</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 50k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ARR Final</td>
+<td style="text-align: left;">R$ 716.491,20</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 1M</td>
+<td style="text-align: left;">🟡</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">MRR Final</td>
+<td style="text-align: left;">R$ 59.707,60</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 50k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">LTV/CAC</td>
+<td style="text-align: left;">4.8x</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; 3.0x</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">🌟 CENÁRIO IDEAL (5B)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Caixa Final</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">R$ 17.065,04</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 100k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ARR Final</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">R$ 1.034.038,80</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 1.5M</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">⚠️ CENÁRIO ESTRESSE (5C)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Caixa Final</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">R$ 70.910,18</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">🟡</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ARR Final</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">R$ 501.543,84</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">🔴</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">📊 MONTE CARLO</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">VaR 95% (Pior 5%)</td>
+<td style="text-align: left;">R$ 6.741,31</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; -R$ 50k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">CVaR 95%</td>
+<td style="text-align: left;">R$ -4.547,46</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; -R$ 100k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">P50 (Mediana)</td>
+<td style="text-align: left;">R$ 152.029,52</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&gt; R$ 50k</td>
+<td style="text-align: left;">🟢</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Dispersão (P95-P5)</td>
+<td style="text-align: left;">R$ 1.798.952,00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt; R$ 200k</td>
+<td style="text-align: left;">🟡</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier5-10" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>LEGENDA:</strong> - 🟢 = Excelente (acima benchmark) - 🟡 = Atenção (próximo ao limite) - 🔴 = Crítico (abaixo benchmark)</p>
+</div>
+<div id="tier5-11" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-tip callout-titled" title="💡 INTERPRETAÇÃO RÁPIDA">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>💡 INTERPRETAÇÃO RÁPIDA
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>✅ <strong>Risco de quebra:</strong> 3.3% (&lt; 5% - Excelente)</li>
+<li>✅ <strong>Cenário Real:</strong> Atinge metas principais</li>
+<li>⚠️ <strong>Dispersão:</strong> Alta incerteza - revisar premissas</li>
+<li>🔴 <strong>Cenário Estresse:</strong> Modelo resiliente</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="📊 REAL vs IDEAL: ESTRATÉGIA DE CRESCIMENTO">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📊 REAL vs IDEAL: ESTRATÉGIA DE CRESCIMENTO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th>Métrica M36</th>
+<th>💰 Real (Conservador)</th>
+<th>🌟 Ideal (Agressivo)</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ARR</strong></td>
+<td>R$ 716.491,20</td>
+<td>R$ 1.034.038,80</td>
+<td><strong>1.4x</strong></td>
+</tr>
+<tr class="even">
+<td><strong>MRR</strong></td>
+<td>R$ 59.707,60</td>
+<td>R$ 86.169,90</td>
+<td>+44%</td>
+</tr>
+<tr class="odd">
+<td><strong>Caixa</strong></td>
+<td>R$ 141.820,36</td>
+<td>R$ 17.065,04</td>
+<td>R$ -124.755,33</td>
+</tr>
+</tbody>
+</table>
+<p><strong>⚠️ OBSERVAÇÃO IMPORTANTE:</strong></p>
+<p>O cenário <strong>Ideal (Agressivo)</strong> pode apresentar <strong>caixa negativo em meses iniciais</strong>. Isso é <strong>intencional</strong> e segue a estratégia clássica de startups com investimento:</p>
+<ul>
+<li>🔥 <strong>Investimento Antecipado:</strong> Marketing R$ 10k/mês (vs R$ 1.5k do Real)</li>
+<li>📈 <strong>Crescimento Acelerado:</strong> ARR <strong>1.4x maior</strong> no M36</li>
+<li>💡 <strong>Lógica:</strong> <em>“Queimar caixa hoje para capturar mercado e criar valor futuro”</em></li>
+</ul>
+<p>Startups como <strong>Amazon, Uber e Netflix</strong> operaram no prejuízo por anos para maximizar crescimento. O cenário Ideal simula este comportamento — sacrifica caixa curto prazo por escala.</p>
+</div>
+</div>
+</div>
+<div id="tier5-12" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-13" class="cell-output cell-output-display cell-output-markdown">
+<section id="ato-1-monte-carlo-fan-chart" class="level2">
+<h2 class="anchored" data-anchor-id="ato-1-monte-carlo-fan-chart">📊 ATO 1: Monte Carlo Fan Chart</h2>
+</section>
+</div>
+<div id="tier5-14" class="cell-output cell-output-display cell-output-markdown">
+<p><strong>Pergunta Central:</strong> <em>“Qual a probabilidade real de chegarmos vivos aos 36 meses?”</em></p>
+</div>
+<div id="tier5-15" class="cell-output cell-output-display cell-output-markdown">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figs/pag5_monte_carlo_fan_chart.png" class="img-fluid figure-img"></p>
+<figcaption>Fan Chart Monte Carlo</figcaption>
+</figure>
+</div>
+</div>
+<div id="tier5-16" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: mc_results (Célula 5D - Monte Carlo) | df_real_m vs df_ideal_m (Célula 5A/5B)</em></p>
+</div>
+<div id="tier5-17" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled" title="📖 COMO LER O GRÁFICO FAN CHART">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-56-contents" aria-controls="callout-56" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER O GRÁFICO FAN CHART
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-56" class="callout-56-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Este gráfico responde: <em>“Em 80% dos futuros possíveis, onde estará meu caixa?”</em></p>
+<p><strong>ELEMENTOS VISUAIS:</strong></p>
+<ul>
+<li><strong>Área CINZA ESCURO (centro):</strong> P25-P75 = 50% dos cenários mais prováveis
+<ul>
+<li>Se seu planejamento estiver nesta faixa, você está alinhado com a maioria das simulações</li>
+</ul></li>
+<li><strong>Área CINZA CLARO (externa):</strong> P10-P90 = 80% dos cenários
+<ul>
+<li>Esta é a faixa de “realidade” - cenários fora disso são outliers</li>
+</ul></li>
+<li><strong>Linha PRETA (P50):</strong> Resultado mais provável (mediana)
+<ul>
+<li>Use como referência principal de planejamento</li>
+</ul></li>
+<li><strong>Linha AZUL com ●:</strong> Cenário Real (conservador)
+<ul>
+<li>Trajetória se tudo correr “ok” - sem grandes vitórias ou perdas</li>
+</ul></li>
+<li><strong>Linha VERDE TRACEJADA com ■:</strong> Cenário Ideal (benchmark)
+<ul>
+<li>O que alcançaríamos com execução perfeita + sorte</li>
+</ul></li>
+<li><strong>Linha VERMELHA HORIZONTAL:</strong> Ponto de quebra (R$ 0)
+<ul>
+<li>Cruzar esta linha = morte da startup</li>
+</ul></li>
+<li><strong>Linha LARANJA VERTICAL (Mês 6):</strong> Seu ponto de decisão
+<ul>
+<li>Marcador para avaliar se continua ou para</li>
+</ul></li>
+</ul>
+<p><strong>COMO INTERPRETAR:</strong></p>
+<p>✅ <strong>Cenário Saudável:</strong> - Área cinza escuro (P25-P75) está ACIMA de R$ 0 durante todos os 36 meses - Linha Real (azul) está próxima ou dentro da área cinza escuro - Linha P50 (preta) sobe consistentemente</p>
+<p>⚠️ <strong>Sinais de Alerta:</strong> - Área P10 (borda inferior cinza claro) cruza a linha vermelha - Linha Real está abaixo de P25 = execução pior que 75% dos cenários - Fan abre muito = alta incerteza, modelo instável</p>
+<p>🔴 <strong>Cenário Crítico:</strong> - P25 cruza linha vermelha = mais de 25% de chance de quebra - Linha Real está fora da área cinza = modelo descalibrado - Mês 6 está na zona cinza perto de R$ 0 = decisão arriscada</p>
+<p><strong>TERMOS IMPORTANTES:</strong></p>
+<ul>
+<li><strong>P50 (Mediana):</strong> Metade dos cenários fica acima, metade abaixo</li>
+<li><strong>P10/P90:</strong> 80% dos cenários estão entre estes valores</li>
+<li><strong>Fan Chart:</strong> “Gráfico de Leque” - mostra incerteza crescente ao longo do tempo</li>
+<li><strong>VaR (Value at Risk):</strong> O pior cenário nos 5% mais pessimistas</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="tier5-18" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-19" class="cell-output cell-output-display cell-output-markdown">
+<section id="zoom-ponto-de-decisão---mês-6" class="level3">
+<h3 class="anchored" data-anchor-id="zoom-ponto-de-decisão---mês-6">🎯 ZOOM: PONTO DE DECISÃO - MÊS 6</h3>
+</section>
+</div>
+<div id="tier5-20" class="cell-output cell-output-display cell-output-markdown">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figs/pag5_distribuicao_mes6.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição Mês 6</figcaption>
+</figure>
+</div>
+</div>
+<div id="tier5-21" class="cell-output cell-output-display cell-output-markdown">
+<p><em>Fonte: mc_results (Célula 5D) | df_real_m, df_ideal_m (Célula 5A/5B)</em></p>
+</div>
+<div id="tier5-22" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled" title="📖 COMO LER O GRÁFICO MÊS 6">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-57-contents" aria-controls="callout-57" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER O GRÁFICO MÊS 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-57" class="callout-57-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTOU VENDO?</strong> Histograma mostrando: <em>“Onde provavelmente estarei no mês 6?”</em></p>
+<p><strong>CORES DAS BARRAS:</strong> - 🔴 <strong>VERMELHO (esquerda):</strong> Cenários de QUEBRA (caixa &lt; R$ 0) - Probabilidade: <strong>0.7%</strong> das simulações</p>
+<ul>
+<li>🟠 <strong>LARANJA (centro-esquerda):</strong> Cenários de RISCO (R$ 0 a R$ 10k)
+<ul>
+<li>Probabilidade: <strong>16.0%</strong> das simulações</li>
+<li>Caixa insuficiente para emergências</li>
+</ul></li>
+<li>🟢 <strong>VERDE (direita):</strong> Cenários SEGUROS (&gt; R$ 10k)
+<ul>
+<li>Probabilidade: <strong>83.3%</strong> das simulações</li>
+<li>Margem confortável para continuar</li>
+</ul></li>
+</ul>
+<p><strong>LINHAS VERTICAIS:</strong> - Linha AZUL = Cenário Real projetado para M6 - Linha VERDE = Cenário Ideal para M6 - Linha PRETA = Mediana (50% acima, 50% abaixo)</p>
+<p><strong>SUA DECISÃO NO MÊS 6:</strong> - Se caixa &lt; R$ 0 → Fechar ou buscar investimento urgente - Se caixa entre R$ 0-10k → Continuar com cautela extrema - Se caixa &gt; R$ 10k → Continuar com confiança</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier5-23" class="cell-output cell-output-display cell-output-markdown">
+<section id="tabela-de-percentis-monte-carlo" class="level3">
+<h3 class="anchored" data-anchor-id="tabela-de-percentis-monte-carlo">📋 TABELA DE PERCENTIS MONTE CARLO</h3>
+</section>
+</div>
+<div id="tier5-24" class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Métrica</th>
+<th style="text-align: left;">P5</th>
+<th style="text-align: left;">P10</th>
+<th style="text-align: left;">P25</th>
+<th style="text-align: left;">P50</th>
+<th style="text-align: left;">P75</th>
+<th style="text-align: left;">P90</th>
+<th style="text-align: left;">P95</th>
+<th style="text-align: left;">Média</th>
+<th style="text-align: left;">Desvio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Caixa Final</td>
+<td style="text-align: left;">R$ 6.741,31</td>
+<td style="text-align: left;">R$ 20.326,64</td>
+<td style="text-align: left;">R$ 75.820,05</td>
+<td style="text-align: left;">R$ 152.029,52</td>
+<td style="text-align: left;">R$ 593.034,40</td>
+<td style="text-align: left;">R$ 1.424.143,40</td>
+<td style="text-align: left;">R$ 1.805.693,31</td>
+<td style="text-align: left;">R$ 441.981,40</td>
+<td style="text-align: left;">R$ 599.763,42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARR Final</td>
+<td style="text-align: left;">R$ 57.773,58</td>
+<td style="text-align: left;">R$ 84.547,32</td>
+<td style="text-align: left;">R$ 196.833,60</td>
+<td style="text-align: left;">R$ 838.752,60</td>
+<td style="text-align: left;">R$ 2.140.037,70</td>
+<td style="text-align: left;">R$ 3.133.346,52</td>
+<td style="text-align: left;">R$ 3.388.630,38</td>
+<td style="text-align: left;">R$ 1.209.804,42</td>
+<td style="text-align: left;">R$ 1.175.132,65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MRR Final</td>
+<td style="text-align: left;">R$ 4.814,47</td>
+<td style="text-align: left;">R$ 7.045,61</td>
+<td style="text-align: left;">R$ 16.402,80</td>
+<td style="text-align: left;">R$ 69.896,05</td>
+<td style="text-align: left;">R$ 178.336,48</td>
+<td style="text-align: left;">R$ 261.112,21</td>
+<td style="text-align: left;">R$ 282.385,86</td>
+<td style="text-align: left;">R$ 100.817,04</td>
+<td style="text-align: left;">R$ 97.927,72</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Usuários Final</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">74</td>
+<td style="text-align: left;">170</td>
+<td style="text-align: left;">740</td>
+<td style="text-align: left;">1,850</td>
+<td style="text-align: left;">2,716</td>
+<td style="text-align: left;">2,946</td>
+<td style="text-align: left;">1,052</td>
+<td style="text-align: left;">1,022</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LTV/CAC</td>
+<td style="text-align: left;">1.8x</td>
+<td style="text-align: left;">2.0x</td>
+<td style="text-align: left;">2.7x</td>
+<td style="text-align: left;">4.0x</td>
+<td style="text-align: left;">6.4x</td>
+<td style="text-align: left;">9.0x</td>
+<td style="text-align: left;">10.1x</td>
+<td style="text-align: left;">4.8x</td>
+<td style="text-align: left;">2.7x</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Churn Médio</td>
+<td style="text-align: left;">6.0%</td>
+<td style="text-align: left;">6.1%</td>
+<td style="text-align: left;">6.9%</td>
+<td style="text-align: left;">8.7%</td>
+<td style="text-align: left;">11.3%</td>
+<td style="text-align: left;">14.3%</td>
+<td style="text-align: left;">15.2%</td>
+<td style="text-align: left;">9.5%</td>
+<td style="text-align: left;">3.1%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tier5-25" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled" title="📖 COMO LER A TABELA DE PERCENTIS">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-58-contents" aria-controls="callout-58" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📖 COMO LER A TABELA DE PERCENTIS
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-58" class="callout-58-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><strong>O QUE ESTA TABELA MOSTRA?</strong> Distribuição estatística de cada métrica ao final de 36 meses, baseada nas simulações Monte Carlo.</p>
+<p><strong>COLUNAS EXPLICADAS:</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 40%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Coluna</th>
+<th>Significado</th>
+<th>Como usar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>P5</strong></td>
+<td>Pior cenário (5% mais pessimistas)</td>
+<td>Use para VaR - quanto pode perder</td>
+</tr>
+<tr class="even">
+<td><strong>P10</strong></td>
+<td>Cenário pessimista conservador</td>
+<td>Use para planejamento de contingência</td>
+</tr>
+<tr class="odd">
+<td><strong>P25</strong></td>
+<td>Limite inferior “normal”</td>
+<td>75% dos cenários superam este valor</td>
+</tr>
+<tr class="even">
+<td><strong>P50</strong></td>
+<td><strong>MEDIANA - USE ESTE PARA PLANEJAR</strong></td>
+<td>Valor mais provável</td>
+</tr>
+<tr class="odd">
+<td><strong>P75</strong></td>
+<td>Limite superior “normal”</td>
+<td>25% dos cenários superam este valor</td>
+</tr>
+<tr class="even">
+<td><strong>P90</strong></td>
+<td>Cenário otimista realista</td>
+<td>Meta stretch alcançável</td>
+</tr>
+<tr class="odd">
+<td><strong>P95</strong></td>
+<td>Melhor cenário (5% mais otimistas)</td>
+<td>Upside máximo provável</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LEITURA RÁPIDA:</strong> 1. Olhe o P50 (mediana) para cada métrica - é seu caso base 2. Compare P5 vs P50 - se diferença for grande, há muito risco 3. Compare P50 vs P95 - se diferença for grande, há muito upside 4. Largura (P95-P5) mostra a incerteza total</p>
+<p><strong>MÉTRICAS-CHAVE:</strong> - <strong>Caixa Final:</strong> Quanto dinheiro sobra no mês 36 - <strong>ARR Final:</strong> Receita Recorrente Anual no final - <strong>LTV/CAC:</strong> Saúde unitária - deve ser &gt; 3x para ser sustentável - <strong>Churn:</strong> Taxa de cancelamento - menor é melhor</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tier5-26" class="cell-output cell-output-display cell-output-markdown">
+<section id="probabilidades-críticas-final-m36" class="level3">
+<h3 class="anchored" data-anchor-id="probabilidades-críticas-final-m36">🎯 PROBABILIDADES CRÍTICAS (Final M36)</h3>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 31%">
+<col style="width: 35%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Evento</th>
+<th style="text-align: center;">Probabilidade</th>
+<th style="text-align: left;">O que significa</th>
+<th style="text-align: center;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Caixa &lt; R$ 0 (Quebra)</td>
+<td style="text-align: center;"><strong>3.3%</strong></td>
+<td style="text-align: left;">Risco de morte da startup</td>
+<td style="text-align: center;">🟢 Baixo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Caixa &gt; R$ 50k</td>
+<td style="text-align: center;"><strong>81.3%</strong></td>
+<td style="text-align: left;">Caixa mínimo para emergências</td>
+<td style="text-align: center;">🟢 Bom</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Caixa &gt; R$ 100k</td>
+<td style="text-align: center;"><strong>67.3%</strong></td>
+<td style="text-align: left;">Caixa confortável para growth</td>
+<td style="text-align: center;">🟢 Ótimo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARR &gt; R$ 1M</td>
+<td style="text-align: center;"><strong>42.7%</strong></td>
+<td style="text-align: left;">Faturamento mínimo para Série A</td>
+<td style="text-align: center;">🟡 Desenvolver</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LTV/CAC &gt; 5x</td>
+<td style="text-align: center;"><strong>38.7%</strong></td>
+<td style="text-align: left;">Unit Economics excelente</td>
+<td style="text-align: center;">🟢 Saudável</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<div id="tier5-27" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-important no-icon callout-titled" title="💡 INSIGHT ESTRATÉGICO - ROBUSTEZ DO MODELO">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>💡 INSIGHT ESTRATÉGICO - ROBUSTEZ DO MODELO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="fato-o-que-os-números-dizem" class="level4">
+<h4 class="anchored" data-anchor-id="fato-o-que-os-números-dizem">FATO (O que os números dizem)</h4>
+<ul>
+<li><strong>Sobrevivência (M36):</strong> 96.7% de probabilidade de caixa positivo</li>
+<li><strong>Mediana do Caixa:</strong> R$ 152.029,52 - valor mais provável ao final</li>
+<li><strong>VaR 95%:</strong> R$ 6.741,31 - pior cenário nos 5% mais pessimistas</li>
+<li><strong>Dispersão:</strong> R$ 1.798.952,00 entre P5 e P95</li>
+</ul>
+</section>
+<section id="ponto-de-decisão-mês-6" class="level4">
+<h4 class="anchored" data-anchor-id="ponto-de-decisão-mês-6">PONTO DE DECISÃO MÊS 6</h4>
+<ul>
+<li><strong>Status:</strong> 🟢 Seguro</li>
+<li><strong>Caixa Mediana M6:</strong> R$ 28.391,17</li>
+<li><strong>Prob. Seguro (&gt;R$ 10k):</strong> 83.3%</li>
+<li><strong>Recomendação M6:</strong> Continuar com confiança</li>
+</ul>
+</section>
+<section id="implicação" class="level4">
+<h4 class="anchored" data-anchor-id="implicação">IMPLICAÇÃO</h4>
+<ul>
+<li>✅ Modelo robusto com proteção estrutural</li>
+<li>⚠️ Alta dispersão - incerteza significativa nas premissas</li>
+</ul>
+</section>
+<section id="ação-recomendada" class="level4">
+<h4 class="anchored" data-anchor-id="ação-recomendada">AÇÃO RECOMENDADA</h4>
+<p>✅ <strong>Manter curso atual</strong> - modelo validado, focar em execução</p>
+</section>
+</div>
+</div>
+</div>
+<div id="tier5-28" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled" title="🔍 AUDITORIA TÉCNICA">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🔍 AUDITORIA TÉCNICA
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-60" class="callout-60-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="parâmetros-da-simulação" class="level4">
+<h4 class="anchored" data-anchor-id="parâmetros-da-simulação">PARÂMETROS DA SIMULAÇÃO</h4>
+<ul>
+<li><strong>Número de simulações:</strong> 150</li>
+<li><strong>Horizonte:</strong> 36 meses</li>
+<li><strong>Seed:</strong> 42 (reprodutível)</li>
+<li><strong>Variáveis estocásticas:</strong> Churn, CAC, Conversão, Tráfego</li>
+</ul>
+</section>
+<section id="fórmulas-utilizadas" class="level4">
+<h4 class="anchored" data-anchor-id="fórmulas-utilizadas">FÓRMULAS UTILIZADAS</h4>
+<pre><code>Caixa[t] = Caixa[t-1] + (MRR[t] - Custos_Totais[t])
+VaR_95 = Percentil_5(caixa_final_array)
+CVaR_95 = Média(caixa | caixa &lt; VaR_95)
+P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
+</section>
+<section id="fonte-de-dados" class="level4">
+<h4 class="anchored" data-anchor-id="fonte-de-dados">FONTE DE DADOS</h4>
+<ul>
+<li>Monte Carlo: <code>celula_5D_monte_carlo.py</code></li>
+<li>Premissas: <code>celula_2_premissas.py</code> + <code>celula_2B_config_MC.py</code></li>
+</ul>
+</section>
+<section id="arquivos-gerados" class="level4">
+<h4 class="anchored" data-anchor-id="arquivos-gerados">ARQUIVOS GERADOS</h4>
+<ul>
+<li><code>outputs/figs/pag5_monte_carlo_fan_chart.png</code></li>
+<li><code>outputs/figs/pag5_distribuicao_mes6.png</code></li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+</div>
+<div id="tier5-29" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-30" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>🏁 VEREDITO FINAL: GESTÃO DE RISCO (Status: ⚠️ APROVADO COM RESSALVAS)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A análise probabilística desta seção confirma que o modelo é <strong>funcional mas com margem apertada</strong> para os próximos 36 meses.</p>
+<p>Começamos com a <strong>Simulação Monte Carlo</strong> (Ato 1), que revelou uma probabilidade de sobrevivência de <strong>96.7%</strong> — ou seja, em 97 de cada 100 futuros simulados, a startup termina com caixa positivo. O <strong>P50 (mediana)</strong> projeta um caixa final de <strong>R$ 152.029,52</strong>, enquanto o <strong>VaR 95%</strong> (pior cenário nos 5% mais pessimistas) indica risco máximo de <strong>R$ 6.741,31</strong>.</p>
+<p>O <strong>Ponto de Decisão no Mês 6</strong> mostrou-se <strong>seguro para continuar</strong>, com <strong>83.3%</strong> de probabilidade de caixa acima de R$ 10k. A recomendação tática para este marco é: <strong>manter o curso atual</strong>.</p>
+<p>O <strong>Cenário de Estresse</strong> (Mundo C) aplicou multiplicadores adversos (churn 2x, CAC 1.5x, conversão 0.5x) e verificou que o modelo <strong>sobrevive ao estresse, terminando com R$ 70.910,18</strong>. Isso demonstra resiliência estrutural.</p>
+<p>A <strong>dispersão entre P5 e P95</strong> foi de <strong>R$ 1.798.952,00</strong> (11.8x a mediana), indicando alta incerteza que exige revisão de premissas.</p>
+<p><strong>CONCLUSÃO ESTRATÉGICA:</strong></p>
+<p>O modelo passa no teste de risco com nota <strong>3/4</strong> nos critérios de robustez. A startup está pronta para acelerar com confiança. O gargalo principal identificado é a dispersão das premissas.</p>
+<p><strong>PRÓXIMOS PASSOS:</strong> 1. Criar buffer financeiro de R$ 30-50k antes do Mês 6 2. Monitorar métricas mensalmente 3. Focar em break-even antes de buscar investimento</p>
+</div>
+</div>
+</div>
+</div>
 <section id="metodologia-completa" class="level1">
 <h1>Metodologia Completa</h1>
 <ol type="1">
@@ -3207,7 +4065,7 @@ Tip
 </section>
 <section id="premissas-chave" class="level1">
 <h1>Premissas-Chave</h1>
-<div id="cell-premissas" class="cell" data-execution_count="7">
+<div id="cell-premissas" class="cell" data-execution_count="8">
 <div id="premissas" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <thead>
