@@ -100,9 +100,16 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
     ax.fill_between(meses, ltv, cac, where=(ltv < cac), interpolate=True, color='#D32F2F', alpha=0.1, label='Prejuízo Unitário')
 
     # Anotação Múltiplo Final
-    multiplo_final = ltv[-1] / cac[-1] if cac[-1] > 0 else 0
+    # CORREÇÃO V2: Tratar CAC=0 como "infinito" (aquisição orgânica)
+    if cac[-1] <= 0:
+        multiplo_final = 10000.0 if ltv[-1] > 0 else 0.0
+        multiplo_str = "∞"
+    else:
+        multiplo_final = ltv[-1] / cac[-1]
+        multiplo_str = f"{multiplo_final:.1f}x"
+    
     ax.annotate(
-        f"{multiplo_final:.1f}x",
+        multiplo_str,
         xy=(meses[-1], (ltv[-1] + cac[-1])/2),
         xytext=(meses[-1] + 1, (ltv[-1] + cac[-1])/2),
         fontsize=12, fontweight='bold', color='#2E7D32',
@@ -119,13 +126,20 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
             m = meses[idx]
             l_val = ltv[idx]
             c_val = cac[idx]
-            mult = l_val / c_val if c_val > 0 else 0
             
-            if mult >= 3.0: status = "🟢 EXCELENTE"
+            # CORREÇÃO V2: Tratar CAC=0 como infinito
+            if c_val <= 0:
+                mult = 10000.0 if l_val > 0 else 0.0
+                mult_str = "∞" if l_val > 0 else "0.0x"
+            else:
+                mult = l_val / c_val
+                mult_str = f"{mult:.1f}x"
+            
+            if mult >= 3.0 or c_val <= 0: status = "🟢 EXCELENTE"
             elif mult >= 1.0: status = "🟡 ATENÇÃO"
             else: status = "🔴 CRÍTICO"
             
-            tabela_md += f"| M{m} | {formata_moeda(l_val)} | {formata_moeda(c_val)} | {mult:.1f}x | {status} |\n"
+            tabela_md += f"| M{m} | {formata_moeda(l_val)} | {formata_moeda(c_val)} | {mult_str} | {status} |\n"
 
     ax.legend(loc='upper left', frameon=True, fontsize=9)
 
@@ -169,11 +183,22 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
     
     causa_final = " e ".join(causa_texto)
 
+    # CORREÇÃO V2: Insight dinâmico para CAC=0 (orgânico)
+    if multiplo_final >= 9999:
+        implicacao_texto = "Crescimento 100% orgânico - CAC é zero. Cada cliente é lucro puro."
+        acao_texto = "Manter estratégia orgânica e reinvestir margem em produto/retenção."
+    elif multiplo_final > 3:
+        implicacao_texto = f"Cada R$ 1 investido em marketing retorna R$ {multiplo_final:.2f} de margem bruta."
+        acao_texto = "Acelerar investimento em aquisição (Growth) pois a unidade é lucrativa."
+    else:
+        implicacao_texto = f"Cada R$ 1 investido retorna apenas R$ {multiplo_final:.2f}. Eficiência baixa."
+        acao_texto = "Focar em Retenção/Pricing antes de escalar."
+
     insight = {
-        "fato": f"Múltiplo LTV/CAC atinge {multiplo_final:.1f}x no M36.",
+        "fato": f"Múltiplo LTV/CAC atinge {multiplo_str} no M36.",
         "causa": f"Resultado combinado de {causa_final}.",
-        "implicacao": "Cada R$ 1 investido em marketing retorna R$ {:.2f} de margem bruta.".format(multiplo_final),
-        "acao": "Acelerar investimento em aquisição (Growth) pois a unidade é lucrativa." if multiplo_final > 3 else "Focar em Retenção/Pricing antes de escalar."
+        "implicacao": implicacao_texto,
+        "acao": acao_texto
     }
 
     render_atomic_block(

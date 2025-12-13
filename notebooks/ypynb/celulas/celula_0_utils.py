@@ -210,6 +210,9 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
         # Aqui vamos salvar apenas o arquivo texto se for string.
         if not report_mode:
             pass # Não salva HTML se for string manual
+        
+        # CORREÇÃO V7.6: Espaçamento após tabela string
+        display(Markdown(""))
             
     elif report_mode:
         # Modo Relatório: Markdown Puro e Limpo via Pandas
@@ -246,8 +249,15 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
         """
         html_table = style + df_tabela.to_html(index=False, escape=False, classes='dataframe')
         display(HTML(html_table))
+        
+        # CORREÇÃO V7.6: Espaçamento após tabela HTML
+        display(Markdown(""))
     
     # 5. BLOCO E: INSIGHT ESTRATÉGICO
+    # CORREÇÃO V7.6: Separador visual antes do insight
+    display(Markdown(""))  # Espaçamento extra
+    display(Markdown("***"))  # Linha horizontal (*** evita conflito YAML do Quarto)
+    
     if report_mode:
         # Quarto Callout para Insight (Tip/Important)
         insight_class = "tip" # ou important

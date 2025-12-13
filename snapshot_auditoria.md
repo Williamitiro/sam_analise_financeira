@@ -1,400 +1,404 @@
-# 🛡️ RELATÓRIO DE AUDITORIA ANALÍTICA COMPLETA
-**Data:** 13/12/2025 05:38 | **Motor:** V13 Production | **Snapshot:** Full Coverage
+# 🔬 RELATÓRIO DE AUDITORIA FORENSE V7.0
+
+**Gerado:** 13/12/2025 11:22:47
+**Premissas:** V9.0-full-documented
+**Motor:** V13 | **Colunas:** 107
+**Monte Carlo:** 150 simulações
+
+> ⚠️ DOCUMENTO CONFIDENCIAL
 
 ---
-## 1. CALIBRAGEM DO MODELO (PREMISSAS)
-| Categoria | Variável | Valor Configurado |
+
+# 1. 📋 TODAS AS PREMISSAS
+
+| Categoria | Parâmetro | Valor |
 |---|---|---|
 | Growth | `usuarios_pagos_iniciais` | 5 |
 | Growth | `trafego_inicial` | 100 |
-| Growth | `crescimento_trafego_mes_1_6` | 0.05 |
-| Growth | `churn_inicial` | 0.12 |
-| Growth | `churn_base` | 0.07 |
-| Pricing | `preco_lite` | 500 |
-| Pricing | `preco_trader` | 1500 |
-| Pricing | `preco_pro` | 5000 |
-| Custos | `custo_ia_lite` | 200 |
-| Custos | `custo_ia_trader` | 600 |
-| Custos | `custo_ia_pro` | 2000 |
-| Marketing | `marketing_fixo_mensal` | 0.0 |
-| Marketing | `marketing_perc_receita` | 0.0 |
-| RH | `salario_fundador` | 5000.0 |
-| RH | `trigger_fundador` | 25000.0 |
-| RH | `salario_dev_senior` | 30000.0 |
+| Growth | `crescimento_trafego_mes_1_6` | 0.05% |
+| Growth | `taxa_visitante_para_trial` | 0.05% |
+| Growth | `taxa_trial_para_pagante` | 0.12% |
+| Churn | `churn_inicial` | 0.12% |
+| Churn | `churn_maturidade` | 0.06% |
+| Churn | `churn_base` | 0.07% |
+| Churn | `churn_decaimento_mensal` | 0.00% |
+| Pricing | `preco_lite` | R$ 69,90 |
+| Pricing | `preco_trader` | R$ 99,90 |
+| Pricing | `preco_pro` | R$ 169,90 |
+| Pricing | `mix_lite` | 0.50% |
+| Pricing | `mix_trader` | 0.35% |
+| Pricing | `mix_pro` | 0.15% |
+| COGS | `custo_ia_lite` | 200 |
+| COGS | `custo_ia_trader` | 600 |
+| COGS | `custo_ia_pro` | 2000 |
+| Marketing | `marketing_fixo_mensal` | 0.0000 |
+| Marketing | `marketing_perc_receita` | 0.40% |
+| Marketing | `marketing_teto` | R$ 25.000,00 |
+| RH | `salario_fundador` | R$ 5.000,00 |
+| RH | `trigger_fundador` | R$ 25.000,00 |
+| RH | `salario_dev_senior` | R$ 30.000,00 |
 | RH | `trigger_dev` | 15 |
-| RH | `salario_cs` | 4500.0 |
+| RH | `salario_cs` | R$ 4.500,00 |
 | RH | `trigger_cs` | 1000 |
-| RH | `encargos_trabalhistas` | 0.7 |
-| Capital | `caixa_inicial` | 4000.0 |
-| Capital | `aporte_mensal` | 2000.0 |
+| RH | `encargos_trabalhistas` | 0.70% |
+| Capital | `caixa_inicial` | R$ 4.000,00 |
+| Capital | `aporte_mensal` | R$ 2.000,00 |
 | Capital | `meses_aporte` | 10 |
-
-## 📑 COCKPIT EXECUTIVO (1 Blocos)
-
-### VIZ 1.1: Tabela Executiva Master
-> *Visão Geral do Negócio*
-
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Visão consolidada dos KPIs.
-- **Causa:** Performance agregada.
-- **Implicação:** Diagnóstico rápido da saúde do negócio.
-- **Ação:** Verificar métricas em vermelho (Críticas).
-
-**📊 DADOS TABULADOS:**
-| Métrica                          | M1        | M6         | M12        | M36       | Benchmark   | Status   |
-|:---------------------------------|:----------|:-----------|:-----------|:----------|:------------|:---------|
-| **💰 RECEITA**                   |           |            |            |           |             |          |
-| MRR                              | R$ 9.0k   | R$ 30.0k   | R$ 28.0k   | R$ 30.5k  | R$ 42.0k    | 🔴       |
-| ARR (Anual)                      | R$ 108.0k | R$ 360.0k  | R$ 336.0k  | R$ 366.0k | R$ 504.0k   | 🔴       |
-| Usuários Ativos                  | 5         | 19         | 17         | 20        | 28          | 🔴       |
-| ****                             |           |            |            |           |             |          |
-| **📊 UNIT ECONOMICS**            |           |            |            |           |             |          |
-| LTV/CAC (Índice de Retorno)      | nanx      | nanx       | nanx       | nanx      | 3.0x        | 🔴       |
-| CAC (Custo Aquisição Cliente)    | R$ nan    | R$ nan     | R$ 0       | R$ 0      | R$ 250      | ✅       |
-| Churn (Taxa Cancelamento %)      | 12.0%     | 11.2%      | 10.3%      | 6.8%      | 5.0%        | 🔴       |
-| Payback (Meses p/ Recuperar CAC) | nanm      | nanm       | nanm       | -22.7m    | >12m        | 🔴       |
-| ****                             |           |            |            |           |             |          |
-| **💵 CAIXA & RUNWAY**            |           |            |            |           |             |          |
-| Caixa Disponível                 | R$ 9.2k   | R$ -165.5k | R$ -443.9k | R$ -1.7M  | R$ 50.0k    | 🔴       |
-| Runway (Meses de Sobrevivência)  | 2.5m      | 0.0m       | 0.0m       | -22.7m    | >12m        | 🔴       |
-| Burn Rate (Queima Mensal)        | R$ 0      | R$ 46.8k   | R$ 47.7k   | R$ 46.6k  | R$ 0        | 🔴       |
-| ****                             |           |            |            |           |             |          |
-| **📈 MARGENS**                   |           |            |            |           |             |          |
-| Margem Bruta %                   | 45.1%     | 45.1%      | 45.1%      | 45.1%     | 70.0%       | 🔴       |
-| EBITDA (Lucro Operacional)       | R$ 3.2k   | R$ -46.8k  | R$ -47.7k  | R$ -46.6k | R$ 0        | 🔴       |
+| Capital | `caixa_reserva_operacional` | R$ 500,00 |
+| Infra T1 | `t1_vps_app_api` | R$ 120,00 |
+| Infra T1 | `t1_vps_windows_mt5` | R$ 180,00 |
+| Infra T1 | `t1_database_managed` | R$ 80,00 |
+| Infra T1 | `t1_storage_s3` | R$ 20,00 |
+| Infra T1 | `t1_ferramentas_dev` | R$ 300,00 |
+| Infra T1 | `t1_scraping_news` | R$ 100,00 |
+| Infra T1 | `t1_email_transacional` | R$ 50,00 |
 
 ---
 
-## 📑 GROWTH MACHINE (5 Blocos)
+# 2. 🧾 EXTRATO DETALHADO MÊS 1 (AUDITORIA FORENSE)
 
-### VIZ 2.1: Funil de Aquisição (Conservador vs Benchmark)
-> *O volume de vendas sustenta a operação no cenário conservador?*
+> Estilo `auditoria_forense.py` - Cada centavo rastreado
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** No M36, a conversão global de 0.55% supera a meta.
-- **Causa:** Otimização contínua do funil e qualificação do tráfego pago.
-- **Implicação:** Maior eficiência de capital: CAC menor que o planejado.
-- **Ação:** Acelerar investimento em Topo de Funil para escalar.
+## 2.1 Entradas Mês 1
+| Descrição | Valor |
+|---|---|
+| (+) Caixa Inicial | R$ 4.000,00 |
+| (+) Aportes/Investimento | R$ 2.000,00 |
+| (+) Receita Bruta | R$ 509,50 |
+| (+) Receita Líquida | R$ 433,67 |
 
-**📊 DADOS TABULADOS:**
-| Período   |   Visitantes (Real) | Conv. Global Real   | Conv. Meta (Ideal)   | Δ (Delta)   | Status                                     |
-|:----------|--------------------:|:--------------------|:---------------------|:------------|:-------------------------------------------|
-| M1        |                 107 | 0.00%               | 0.31%                | -0.31 p.p.  | <span class='status-yellow'>PRÓXIMO</span> |
-| M6        |                 165 | 0.00%               | 0.00%                | +0.00 p.p.  | <span class='status-green'>SUPEROU</span>  |
-| M12       |                 185 | 0.54%               | 0.52%                | +0.02 p.p.  | <span class='status-green'>SUPEROU</span>  |
-| M36       |                 360 | 0.55%               | 0.54%                | +0.01 p.p.  | <span class='status-green'>SUPEROU</span>  |
+## 2.2 Saídas Mês 1
+| Descrição | Valor |
+|---|---|
+| (-) Marketing | R$ 1,00 |
+| (-) Infraestrutura | R$ 860,00 |
+| (-) Pessoal/RH | R$ 0.00 |
+| (-) COGS Total | R$ 3.600,00 |
+| (-) OPEX Total | R$ 861,00 |
+| (-) Impostos | R$ 30,57 |
+| (-) Taxas Pagamento | R$ 14,69 |
+| (-) CAPEX | R$ -1,00 |
 
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-
-    1. **Taxa de Conversão Global** = (Novos Pagantes / Visitantes Únicos) * 100
-    2. **Benchmark (Ideal)**: Definido nas premissas (ex: 1.0% para SaaS B2C).
-    3. **Delta**: Diferença percentual (p.p.) entre a conversão Real e a Meta.
-    4. **Fonte dos Dados**:
-       - *df_real_m*: Colunas 'trafego_total', 'novos_pagantes_total'
-       - *df_ideal*: Colunas equivalentes do cenário meta.
-    
-
-</details>
-
----
-
-### VIZ 2.2: Evolução LTV/CAC vs Zonas de Risco
-> *O negócio para em pé? (Saúde Unitária)*
-
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** LTV/CAC final de 0.0x está abaixo do benchmark de 3.0x.
-- **Causa:** Provável CAC alto demais ou Churn impactando o LTV.
-- **Implicação:** Queima de caixa ineficiente; risco de solvência na escala.
-- **Ação:** Suspender aumento de mídia e focar em reduzir CAC.
-
-**📊 DADOS TABULADOS:**
-| Período   | LTV/CAC Real   | Target Mínimo   | Distância   | Saúde Financeira                        |
-|:----------|:---------------|:----------------|:------------|:----------------------------------------|
-| M6        | nanx           | 3.0x            | +nanx       | <span class='status-red'>CRÍTICO</span> |
-| M12       | nanx           | 3.0x            | +nanx       | <span class='status-red'>CRÍTICO</span> |
-| M24       | nanx           | 3.0x            | +nanx       | <span class='status-red'>CRÍTICO</span> |
-| M36       | nanx           | 3.0x            | +nanx       | <span class='status-red'>CRÍTICO</span> |
-
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-
-    1. **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
-    2. **CAC (Custo Aquisição)** = Gastos Marketing / Novos Clientes
-    3. **LTV/CAC**: Razão de eficiência. Quanto retorna para cada R$ 1 investido.
-    4. **Zonas de Risco**:
-       - 🟢 > 3.0x: Alta eficiência (Escalável)
-       - 🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar
-       - 🔴 < 1.0x: Destruição de valor (Prejuízo unitário)
-    
-
-</details>
+## 2.3 Resultado Mês 1
+| Métrica | Valor |
+|---|---|
+| Caixa Final | **R$ 1.971,67** |
+| Burn Rate | R$ 4.028,33 |
+| Runway | 0.9 meses |
+| Lucro/Prejuízo | R$ -4.027,37 |
 
 ---
 
-### VIZ 2.3: Volatilidade Semanal do CAC (SPC)
-> *Existe descontrole tático de custos?*
+# 3. 📊 TABELA COMPLETA DO MOTOR (TODAS AS COLUNAS)
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Identificados 4 semanas com volatilidade estatística anormal.
-- **Causa:** Provável teste de canal novo ou sazonalidade agressiva.
-- **Implicação:** Risco de estourar budget mensal se a correção não for imediata.
-- **Ação:** Investigar 'root cause' das semanas vermelhas na tabela.
+> **Total de colunas disponíveis: 107**
 
-**📊 DADOS TABULADOS:**
-| Semana   | CAC Real   | Média (Centro)   | UCL (Limite)   | Status                                          |
-|:---------|:-----------|:-----------------|:---------------|:------------------------------------------------|
-| S6       | R$ 576.13  | R$ 89.49         | R$ 490.44      | <span class='status-red'>ANOMALIA (ALTA)</span> |
-| S7       | R$ 550.02  | R$ 89.49         | R$ 490.44      | <span class='status-red'>ANOMALIA (ALTA)</span> |
-| S8       | R$ 523.92  | R$ 89.49         | R$ 490.44      | <span class='status-red'>ANOMALIA (ALTA)</span> |
-| S9       | R$ 497.81  | R$ 89.49         | R$ 490.44      | <span class='status-red'>ANOMALIA (ALTA)</span> |
-| S24      | R$ nan     | R$ 89.49         | R$ 490.44      | <span class='status-green'>CONTROLADO</span>    |
+## 3.1 Tráfego & Aquisição
 
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `trafego_total` | 107 | 137 | 163 | 207 | 241 | 300 | 346 |
+| `trafego_pago` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `trafego_organico` | 107 | 137 | 163 | 207 | 241 | 300 | 346 |
+| `trials_total` | 5 | 6 | 8 | 10 | 12 | 15 | 17 |
+| `novos_pagantes_total` | 0 | 0 | 0 | 1 | 1 | 1 | 2 |
+| `novos_ads` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `novos_organicos` | 0 | 0 | 0 | 1 | 1 | 1 | 2 |
 
+## 3.2 Usuários
 
-    1. **CAC Semanal** = Custo Marketing da Semana / Novos Clientes da Semana
-    2. **Média (Central)** = Média aritmética de todas as semanas observadas.
-    3. **Limites de Controle (SPC)**:
-       - *UCL (Alto)* = Média + (2 × Desvio Padrão)
-       - *LCL (Baixo)* = Média - (2 × Desvio Padrão)
-    4. **Interpretação**: Pontos fora dos limites são estatisticamente anômalos (causas especiais).
-    
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `usuarios_ativos` | 5 | 5 | 5 | 9 | 12 | 14 | 17 |
+| `usuarios_lite` | 2 | 2 | 2 | 5 | 6 | 7 | 8 |
+| `usuarios_trader` | 2 | 2 | 2 | 3 | 4 | 5 | 6 |
+| `usuarios_pro` | 1 | 1 | 1 | 1 | 2 | 2 | 3 |
+| `churn_usuarios` | 0 | 0 | 0 | 0 | 1 | 0 | 1 |
+| `reativacoes` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
 
-</details>
+## 3.3 Receita
 
----
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `receita_bruta` | R$ 509,50 | R$ 509,50 | R$ 509,50 | R$ 819,10 | R$ 1.158,80 | R$ 1.328,60 | R$ 1.668,30 |
+| `receita_assinaturas` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| `receita_lite` | R$ 139,80 | R$ 139,80 | R$ 139,80 | R$ 349,50 | R$ 419,40 | R$ 489,30 | R$ 559,20 |
+| `receita_trader` | R$ 199,80 | R$ 199,80 | R$ 199,80 | R$ 299,70 | R$ 399,60 | R$ 499,50 | R$ 599,40 |
+| `receita_pro` | R$ 169,90 | R$ 169,90 | R$ 169,90 | R$ 169,90 | R$ 339,80 | R$ 339,80 | R$ 509,70 |
+| `mrr` | R$ 509,50 | R$ 509,50 | R$ 509,50 | R$ 819,10 | R$ 1.158,80 | R$ 1.328,60 | R$ 1.668,30 |
+| `arr` | R$ 6.114,00 | R$ 6.114,00 | R$ 6.114,00 | R$ 9.829,20 | R$ 13.905,60 | R$ 15.943,20 | R$ 20.019,60 |
+| `arpu` | R$ 101,90 | R$ 101,90 | R$ 101,90 | R$ 91,01 | R$ 96,57 | R$ 94,90 | R$ 98,14 |
 
-### VIZ 2.5: Impacto do Mix de Canais (CAC Pago vs Blended)
-> *Quanto economizamos com trafego organico?*
+## 3.4 Custos
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Tráfego orgânico reduz o CAC em R$ 0,00 por cliente.
-- **Causa:** Mix balanceado entre canais pagos e gratuitos.
-- **Implicação:** Menor sensibilidade a aumentos de CPM nas plataformas de ads.
-- **Ação:** Manter investimento em SEO para ampliar o gap.
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `total_cogs` | R$ 3.600,00 | R$ 3.600,00 | R$ 3.600,00 | R$ 4.800,00 | R$ 7.600,00 | R$ 8.400,00 | R$ 11.200,00 |
+| `custo_ia_total` | R$ 3.600,00 | R$ 3.600,00 | R$ 3.600,00 | R$ 4.800,00 | R$ 7.600,00 | R$ 8.400,00 | R$ 11.200,00 |
+| `total_opex` | R$ 861,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 51.860,00 |
+| `gasto_marketing` | R$ 1,00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| `custo_infra_fixo` | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 |
+| `custo_pessoal` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 51.000,00 |
 
-**📊 DADOS TABULADOS:**
-| Período | CAC Pago | CAC Blended | Economia/Cliente | Total Economizado |
-|:---|---:|---:|---:|---:|
-| M6 | N/A | N/A | N/A | N/A |
-| M12 | R$ 0,00 | R$ 0,00 | R$ 0,00 | R$ 0,00 |
-| M24 | R$ 0,00 | R$ 0,00 | R$ 0,00 | R$ 0,00 |
-| M36 | R$ 0,00 | R$ 0,00 | R$ 0,00 | R$ 0,00 |
+## 3.5 Margens
 
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `margem_bruta` | R$ -3.166,33 | R$ -3.166,33 | R$ -3.166,33 | R$ -4.102,80 | R$ -6.613,66 | R$ -7.269,13 | R$ -9.779,98 |
+| `margem_bruta_pct` | -621.46% | -621.46% | -621.46% | -500.89% | -570.73% | -547.13% | -586.22% |
+| `ebitda` | R$ -4.027,33 | R$ -4.026,33 | R$ -4.026,33 | R$ -4.962,80 | R$ -7.473,66 | R$ -8.129,13 | R$ -61.639,98 |
+| `ebitda_margin` | -790.45% | -790.25% | -790.25% | -605.88% | -644.95% | -611.86% | -3694.78% |
+| `lucro_liquido` | R$ -4.027,37 | R$ -4.026,37 | R$ -4.026,37 | R$ -4.962,84 | R$ -7.973,70 | R$ -8.629,13 | R$ -62.139,98 |
+| `margem_liquida` | R$ -790,45 | R$ -790,26 | R$ -790,26 | R$ -605,89 | R$ -688,10 | R$ -649,49 | R$ -3.724,75 |
 
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
+## 3.6 Caixa
 
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `caixa` | R$ 1.971,67 | R$ -8.363,75 | R$ -24.521,70 | R$ -50.833,61 | R$ -103.028,30 | R$ -150.585,57 | R$ -458.463,12 |
+| `burn_rate` | 402832.51% | 402632.51% | 402632.51% | 496280.05% | 1947365.55% | 812912.56% | 6163998.06% |
+| `runway_meses` | 0.9 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| `aportes_capital` | R$ 2.000,00 | R$ 2.000,00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
 
-    1. **CAC Pago** = Gasto Ads / Novos Clientes (Só de Ads)
-    2. **CAC Blended** = Gasto Ads / Novos Clientes (Totais)
-    3. **Economia** = CAC Pago - CAC Blended
-    
+## 3.7 Unit Economics
 
-</details>
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `ltv` | R$ -5.277,21 | R$ -5.629,02 | R$ -6.118,50 | R$ -4.823,99 | R$ -6.446,06 | R$ -6.787,23 | R$ -8.522,86 |
+| `cac_blended` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| `cac_paid` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| `ltv_cac` | 0.00x | 0.00x | 0.00x | 0.00x | 0.00x | 0.00x | 0.00x |
+| `payback_meses` | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
 
----
+## 3.8 Churn
 
-### VIZ 2.5: Análise de Vazamento (Net Growth & Churn)
-> *Quanto dinheiro estamos perdendo pelo ralo?*
-
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** O churn acima do benchmark custou R$ 3,639 no último ano.
-- **Causa:** Taxa de churn superior ao benchmark de 5%.
-- **Implicação:** Redução direta do Valuation e necessidade de repor receita mais rápido.
-- **Ação:** Implementar squad de retenção para estancar o sangramento.
-
-**📊 DADOS TABULADOS:**
-| Período   | Churn Rate   | Perda Real   | Limite Aceitável   | Dinheiro Rasgado   | Status    |
-|:----------|:-------------|:-------------|:-------------------|:-------------------|:----------|
-| M6        | 11.2%        | R$ 2.952,38  | R$ 1.550,00        | -R$ 1.402,38       | VAZAMENTO |
-| M12       | 10.3%        | R$ 1.647,06  | R$ 1.400,00        | -R$ 247,06         | VAZAMENTO |
-| M24       | 8.5%         | R$ 1.433,33  | R$ 1.075,00        | -R$ 358,33         | VAZAMENTO |
-| M36       | 6.8%         | R$ 1.578,95  | R$ 1.500,00        | -R$ 78,95          | VAZAMENTO |
-
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-
-    1. **Churn Rate Real** = Clientes Cancelados / Clientes Ativos Iniciais
-    2. **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados no mês.
-    3. **Perda Aceitável (Benchmark)** = MRR Inicial × 5.0% (Meta de Mercado).
-    4. **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitável.
-       - Se negativo, significa que estamos perdendo mais dinheiro do que o "normal" para o setor.
-    
-
-</details>
+| Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
+|---|---|---|---|---|---|---|---|
+| `churn_rate` | 12.00% | 11.25% | 10.35% | 9.45% | 8.55% | 7.65% | 6.75% |
+| `retention_rate` | 88.00% | 88.75% | 89.65% | 90.55% | 91.45% | 92.35% | 93.25% |
 
 ---
 
-## 📑 FINANCEIRO & DRE (1 Blocos)
+# 4. ⚖️ COMPARATIVO: REAL vs IDEAL vs ESTRESSE
 
-### VIZ 3.0: Decomposição da DRE (M36)
-> *De onde vem e para onde vai o dinheiro?*
+## 4.1 Snapshot M36
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Estrutura de custos analisada.
-- **Causa:** Breakdown de M36.
-- **Implicação:** Entendimento da eficiência.
-- **Ação:** Otimizar linha a linha.
-
-**📊 DADOS TABULADOS:**
-| Categoria            | Valor        | % Receita   | Status   |
-|:---------------------|:-------------|:------------|:---------|
-| 📈 Receita Bruta     | R$ 30,500    | 100%        | —        |
-| (-) Impostos & Taxas | R$ 4,539     | 14.9%       | —        |
-| = Receita Líquida    | R$ 25,961    | 85.1%       | —        |
-| (-) COGS Total       | R$ 12,200    | 40.0%       | 🟡       |
-| = Margem Bruta       | R$ 13,761    | 45.1%       | 🟡       |
-| (-) OPEX Total       | R$ 60,360    | 197.9%      | 🟡       |
-| = EBITDA             | R$ -46599.09 | -152.8%     | 🔴       |
+| Métrica | Real | Ideal | Estresse | Gap Real/Ideal |
+|---|---|---|---|---|
+| MRR | R$ 1.668,30 | R$ 1.977,90 | R$ 509,50 | 15.7% |
+| ARR | R$ 20.019,60 | R$ 23.734,80 | R$ 6.114,00 | 15.7% |
+| Usuários | 17 | 21 | 5 | 19.0% |
+| Caixa | R$ -458.463,12 | R$ -1.722.476,62 | R$ -117.453,90 | 73.4% |
+| Receita | R$ 1.668,30 | R$ 1.977,90 | R$ 509,50 | 15.7% |
+| Lucro | R$ -62.139,98 | R$ -63.076,46 | R$ -4.526,33 | 1.5% |
+| LTV/CAC | 0.00x | 0.00x | 0.00x | 0.0% |
+| Churn | 6.75% | 6.00% | 18.75% | -12.5% |
+| Runway | 0.0m | 0.0m | 0.0m | 0.0% |
 
 ---
 
-## 📑 UNIT ECONOMICS (4 Blocos)
+# 5. 🎲 MONTE CARLO COMPLETO
 
-### VIZ 4.1: LTV vs CAC (A 'Regua de Ouro')
-> *LTV vs CAC: A CRIAÇÃO DE VALOR*
+## 5.1 Configuração
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Múltiplo LTV/CAC atinge 0.0x no M36.
-- **Causa:** Resultado combinado de expansão do LTV e CAC estável.
-- **Implicação:** Cada R$ 1 investido em marketing retorna R$ 0.00 de margem bruta.
-- **Ação:** Focar em Retenção/Pricing antes de escalar.
+- **Simulações:** 50
+- **Cenários:** ['pessimista', 'base', 'otimista']
+- **Variáveis:** ['marketing_fixo_mensal', 'taxa_trial_para_pagante', 'taxa_visitante_para_trial', 'churn_inicial', 'cpc_instagram', 'cpc_facebook', 'cpc_google', 'cpc_youtube', 'mix_lite', 'custo_ia_lite', 'custo_ia_trader', 'custo_ia_pro', 'imposto_simples_inicial', 'b2b_probabilidade_anual', 'crescimento_trafego_mes_1_6']
 
-**📊 DADOS TABULADOS:**
-| Período | LTV (R$) | CAC (R$) | Múltiplo | Status |
-|:---|---:|---:|---:|:---|
-| M1 | R$ 6.767,66 | N/A | 0.0x | 🔴 CRÍTICO |
-| M6 | R$ 6.332,32 | N/A | 0.0x | 🔴 CRÍTICO |
-| M12 | R$ 7.179,86 | R$ 0,00 | 0.0x | 🔴 CRÍTICO |
-| M24 | R$ 7.563,60 | R$ 0,00 | 0.0x | 🔴 CRÍTICO |
-| M36 | R$ 10.193,27 | R$ 0,00 | 0.0x | 🔴 CRÍTICO |
+## 5.2 Estatísticas Percentis
 
+> **Colunas MC disponíveis:** ['sim', 'scenario', 'seed', 'success', 'time_elapsed', 'caixa_final', 'mrr_final', 'arr_final', 'usuarios_final', 'cac_medio', 'ltv_medio', 'churn_medio', 'margem_bruta_media', 'ebitda_margin_media', 'nrr', 'burn_rate_medio', 'runway_final', 'quebrou', 'runway_critico', 'var95_caixa', 'cvar95_caixa', 'roi_total_pct', 'payback_meses_medio', 'ltv_cac', 'caixa_series', 'mrr_series']
 
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
+| Métrica | P5 | P50 | P95 | Média |
+|---|---|---|---|---|
+| sim | R$ 2,00 | R$ 24,50 | R$ 47,00 | R$ 24,50 |
+| seed | R$ 1.152.694.214,85 | R$ 1.719.181.864,50 | R$ 1.791.669.362,15 | R$ 1.554.515.147,17 |
+| time_elapsed | R$ 0,05 | R$ 0,06 | R$ 0,07 | R$ 0,06 |
+| caixa_final | R$ -1.067.786,48 | R$ -160.449,41 | R$ 30.433,87 | R$ -348.662,12 |
+| mrr_final | R$ 509,50 | R$ 1.498,40 | R$ 4.315,99 | R$ 1.860,85 |
+| arr_final | R$ 6.114,00 | R$ 17.980,80 | R$ 51.791,88 | R$ 22.330,26 |
+| usuarios_final | 5 | 16 | 45 | 19 |
+| cac_medio | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| ltv_medio | R$ 446,39 | R$ 805,66 | R$ 1.115,61 | R$ 796,62 |
+| churn_medio | R$ 0,06 | R$ 0,09 | R$ 0,16 | R$ 0,10 |
+| margem_bruta_media | R$ 66,70 | R$ 68,68 | R$ 70,19 | R$ 68,56 |
+| ebitda_margin_media | R$ -1.327,57 | R$ -354,49 | R$ -50,99 | R$ -532,50 |
+| nrr | R$ 1,00 | R$ 1,00 | R$ 1,00 | R$ 0,99 |
+| burn_rate_medio | R$ 630,54 | R$ 5.541,71 | R$ 30.329,46 | R$ 10.583,77 |
+| runway_final | R$ 0.00 | R$ 0.00 | R$ 27,58 | R$ 4,33 |
+| var95_caixa | R$ -982.200,00 | R$ -71.707,91 | R$ 8.116,40 | R$ -305.862,62 |
+| cvar95_caixa | R$ -1.043.356,82 | R$ -135.114,44 | R$ 6.242,15 | R$ -339.120,15 |
+| roi_total_pct | -10988.09% | -745.62% | 58.59% | -2518.75% |
+| ltv_cac | 10000.00x | 10000.00x | 10000.00x | 10000.00x |
 
+## 5.3 Probabilidades de Risco
 
-**Fonte:** df_real_m (Célula 5A)
-
-**Fórmulas:**
-1. **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
-2. **CAC (Blended)** = (Gasto Marketing + Gasto Vendas) / Novos Clientes Totais
-3. **Múltiplo** = LTV / CAC
-
-**Metodologia:**
-- **Modelo de LTV:** Perpetuidade simples (1/Churn). Assume que a taxa de cancelamento e o ticket médio se mantêm constantes durante a vida do cliente.
-- **Interpretação:** Valores acima de 3.0x indicam alta eficiência; abaixo de 1.0x indicam queima de caixa por cliente.
-
-
-</details>
-
----
-
-### VIZ 4.2: Cohort Analyis (Retencao por Safra)
-> *Os clientes antigos continuam pagando ao longo do tempo?*
-
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Retenção média no mês 12 (M12) é de 31.2%.
-- **Causa:** Taxa de churn mensal estabilizada em torno de 9.4%.
-- **Implicação:** A base de clientes renova seu valor quase integralmente ano a ano.
-- **Ação:** Focar em expansão (Upsell) nas cohorts antigas (M12+) para aumentar LTV.
-
-**📊 DADOS TABULADOS:**
-| Período de Vida | Retenção Média | Status |
-|:---|---:|:---|
-| Primeiro Mês (M1) | 90.3% | 🟢 OK |
-| Semestre (M6) | 55.7% | 🟡 ATENÇÃO |
-| Ano (M12) | 31.2% | 🔴 CRÍTICO |
-
-
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-
-**Fonte:** df_real['churn_rate'] (Célula 5A)
-
-**Metodologia (Simulação Sintética):**
-- Como o modelo é financeiro (não transacional individual), geramos uma **Matriz Sintética**.
-- **Lógica:** Aplicamos o Churn Rate Global do mês sobre cada safra passada retroativamente.
-- **Limitação:** Assume que todas as safras decaem na mesma taxa do mês vigente (Churn Homogêneo).
-
-
-</details>
+| Indicador | Valor |
+|---|---|
+| Prob. Caixa < 0 | 🔴 **70.7%** |
+| Prob. Quebra | 🔴 **70.0%** |
 
 ---
 
-### VIZ 4.4: Qualidade Marginal na Escala (LTV/CAC vs Volume)
-> *A qualidade do cliente cai quando a empresa cresce?*
+# 6. ⚠️ ALERTAS DO MOTOR
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** A inclinação da curva é -350.3095.
-- **Causa:** Comportamento dos custos marginais e retenção em escala.
-- **Implicação:** Viabilidade de escalar agressivamente.
-- **Ação:** Revisar funil antes de escalar.
-
-**📊 DADOS TABULADOS:**
-| Faixa de Clientes | LTV/CAC Médio | Status |
-|:---|---:|:---|
-| Média Geral | 5900.21x | 🟢 OK |
-
-
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-**Fonte:** df_real_m | 'usuarios_ativos' vs 'ltv/cac'
-
-</details>
-
----
-
-### VIZ 4.5: Unit Profitability Waterfall
-> *Onde fica o dinheiro do cliente?*
-
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Sobram R$ 7.934,01 de lucro limpo por cliente.
-- **Causa:** Estrutura de custos e eficiência de aquisição.
-- **Implicação:** Potencial de reinvestimento.
-- **Ação:** Otimizar.
-
-**📊 DADOS TABULADOS:**
-| Componente | Valor |
-|:---|---:|
-| LTV Bruto | R$ 22.592,59 |
-| COGS | R$ -12.399,32 |
-| Impostos | R$ -2.259,26 |
-| CAC | R$ -0,00 |
-| LUCRO LÍQUIDO | R$ 7.934,01 |
-
-
-<details><summary>🔍 Ver Fórmulas e Auditoria</summary>
-
-Profit = LTV Bruto - COGS - Impostos - CAC
-
-</details>
+- ℹ️ {'tipo': 'runway_critico', 'mes': 1, 'runway': np.float64(0.8901109225123263)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 2, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 3: Marketing CORTADO (100%). Caixa negativo: R$ -258.45. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 3, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 4: Marketing CORTADO (100%). Caixa negativo: R$ -2284.78. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 4, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 5: Marketing CORTADO (100%). Caixa negativo: R$ -4311.10. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 5, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 6: Marketing CORTADO (100%). Caixa negativo: R$ -6337.43. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 6, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 7: Marketing CORTADO (100%). Caixa negativo: R$ -8363.75. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 7, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 8: Marketing CORTADO (100%). Caixa negativo: R$ -10390.08. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 8, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 9: Marketing CORTADO (100%). Caixa negativo: R$ -12416.40. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 9, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 10: Marketing CORTADO (100%). Caixa negativo: R$ -14442.73. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 10, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 11: Marketing CORTADO (100%). Caixa negativo: R$ -16469.05. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 11, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 12: Marketing CORTADO (100%). Caixa negativo: R$ -20495.38. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 12, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 13: Marketing CORTADO (100%). Caixa negativo: R$ -24521.70. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 13, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 14: Marketing CORTADO (100%). Caixa negativo: R$ -28548.03. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 14, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 15: Marketing CORTADO (100%). Caixa negativo: R$ -32574.35. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 15, 'runway': np.float64(0.0)}
+- ℹ️ ⚠️ Mês 16: Marketing CORTADO (100%). Caixa negativo: R$ -36741.18. Sobrevivência ameaçada.
+- ℹ️ {'tipo': 'runway_critico', 'mes': 16, 'runway': np.float64(0.0)}
 
 ---
 
-## 📑 RISCO & CENÁRIOS (1 Blocos)
+# 7. 📋 LISTA COMPLETA DE COLUNAS DO DataFrame
 
-### VIZ 5.2: Análise de Sensibilidade (Tornado Plot)
-> *O que pode matar o negócio?*
+> Total: 107 colunas
 
-**🧠 INSIGHT AUTOMÁTICO:**
-- **Fato:** Sensibilidade mapeada para top 10 variáveis.
-- **Causa:** Variação de +/- 20% nas premissas base.
-- **Implicação:** Identificação dos drivers críticos de risco.
-- **Ação:** Monitorar de perto as variáveis do topo do gráfico.
-
-**📊 DADOS TABULADOS:**
-| premissa                    | nome_display                |   valor_base |   valor_min |   valor_max |   ltv_cac_base |   ltv_cac_min |   ltv_cac_max |   impacto_absoluto |   impacto_relativo |   ranking |
-|:----------------------------|:----------------------------|-------------:|------------:|------------:|---------------:|--------------:|--------------:|-------------------:|-------------------:|----------:|
-| churn_inicial               | Churn Base (%)              |         0.12 |       0.096 |       0.144 |        11009.1 |      11100.4  |       7396.35 |           3704.05  |          0.336452  |         1 |
-| preco_trader                | Preço Trader                |      1500    |    1200     |    1800     |        11009.1 |       9673.94 |      12344.3  |           2670.36  |          0.242559  |         2 |
-| custo_ia_pro                | custo_ia_pro                |      2000    |    1600     |    2400     |        11009.1 |      12054.9  |       9963.37 |           2091.5   |          0.189979  |         3 |
-| custo_ia_trader             | Custo IA Trader             |       600    |     480     |     720     |        11009.1 |      11636.6  |      10381.7  |           1254.9   |          0.113987  |         4 |
-| taxa_trial_para_pagante     | Conv. Trial -> Pago         |         0.12 |       0.096 |       0.144 |        11009.1 |       9580.56 |      10193.3  |            612.71  |          0.0556548 |         5 |
-| taxa_visitante_para_trial   | taxa_visitante_para_trial   |         0.05 |       0.04  |       0.06  |        11009.1 |       9580.56 |      10193.3  |            612.71  |          0.0556548 |         6 |
-| trafego_inicial             | Tráfego Inicial             |       100    |      80     |     120     |        11009.1 |       9580.56 |      10193.3  |            612.71  |          0.0556548 |         7 |
-| imposto_simples_inicial     | Imposto Inicial             |         0.06 |       0.048 |       0.072 |        11009.1 |      11301.9  |      10716.3  |            585.621 |          0.0531941 |         8 |
-| custo_ia_lite               | custo_ia_lite               |       200    |     160     |     240     |        11009.1 |      11288    |      10730.3  |            557.734 |          0.0506611 |         9 |
-| crescimento_trafego_mes_1_6 | crescimento_trafego_mes_1_6 |         0.05 |       0.04  |       0.06  |        11009.1 |      11009.1  |      10583.2  |            425.948 |          0.0386905 |        10 |
+```
+  1. mes
+  2. trafego_total
+  3. trafego_pago
+  4. trafego_organico
+  5. trials_total
+  6. trials_pagos
+  7. trials_organicos
+  8. novos_pagantes_total
+  9. novos_ads
+ 10. novos_organicos
+ 11. novos_afiliados
+ 12. reativacoes
+ 13. taxa_trafego_trial
+ 14. taxa_trial_pago
+ 15. eficiencia_time
+ 16. usuarios_ativos
+ 17. usuarios_lite
+ 18. usuarios_trader
+ 19. usuarios_pro
+ 20. churn_usuarios
+ 21. churn_mrr
+ 22. upgrades_lite_trader
+ 23. expansion_mrr
+ 24. mrr_cohort_m0
+ 25. cogs_recorrente
+ 26. churn_mrr_cohort_m0
+ 27. receita_bruta
+ 28. receita_assinaturas
+ 29. receita_b2b
+ 30. receita_lite
+ 31. receita_trader
+ 32. receita_pro
+ 33. mrr
+ 34. arr
+ 35. arpu
+ 36. crescimento_mrr_mom
+ 37. crescimento_mrr_yoy
+ 38. net_new_mrr
+ 39. impostos
+ 40. aliquota_efetiva
+ 41. taxas_pagamento
+ 42. inadimplencia
+ 43. chargeback
+ 44. total_deducoes
+ 45. receita_liquida
+ 46. custo_ia_lite
+ 47. custo_ia_trader
+ 48. custo_ia_pro
+ 49. custo_ia_total
+ 50. comissao_afiliados
+ 51. custo_suporte_variavel
+ 52. total_cogs
+ 53. margem_bruta
+ 54. margem_bruta_pct
+ 55. custo_infra_fixo
+ 56. infra_tier_ativo
+ 57. headcount_total
+ 58. headcount_fundadores
+ 59. headcount_dev
+ 60. headcount_cs
+ 61. custo_pessoal
+ 62. salarios_brutos
+ 63. encargos
+ 64. gasto_marketing
+ 65. gasto_instagram
+ 66. gasto_facebook
+ 67. gasto_youtube
+ 68. gasto_google
+ 69. cpc_blended
+ 70. custo_escritorio
+ 71. custo_contabilidade
+ 72. despesas_viagens
+ 73. despesas_conselho
+ 74. despesas_freelancer
+ 75. despesas_beneficios
+ 76. total_opex
+ 77. margem_contribuicao
+ 78. margem_contribuicao_pct
+ 79. ebitda
+ 80. ebitda_margin
+ 81. depreciacao
+ 82. ebit
+ 83. ebit_margin
+ 84. lucro_liquido
+ 85. margem_liquida
+ 86. fluxo_operacional
+ 87. fluxo_investimento
+ 88. fluxo_financiamento
+ 89. aportes_capital
+ 90. capex
+ 91. distribuicao_lucros
+ 92. caixa
+ 93. burn_rate
+ 94. runway_meses
+ 95. ltv
+ 96. cac_blended
+ 97. cac_paid
+ 98. ltv_cac
+ 99. payback_meses
+100. payback_semanas
+101. vida_media_cliente
+102. churn_rate
+103. retention_rate
+104. regra_40
+105. burn_multiple
+106. trafego_potencial_perdido
+107. saturacao_mercado
+```
 
 ---
+
+# 📋 METADADOS
+
+| Campo | Valor |
+|---|---|
+| Timestamp | 13/12/2025 11:22:47 |
+| Colunas Motor | 107 |
+| Métricas MC | 78 |
+| Alertas | 71 |
+
+---
+*Fim do Relatório*

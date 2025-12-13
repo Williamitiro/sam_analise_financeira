@@ -477,7 +477,12 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     # =========================================
     # GRÁFICO 2: COMPOSIÇÃO DE CUSTOS (PIE + BARRAS)
     # =========================================
+    # PADRONIZAÇÃO: Tamanho e Margens (Match Página 1)
+    figsize = (10, 6) if report_mode else (14, 8)
     fig2, (ax2a, ax2b) = plt.subplots(1, 2, figsize=figsize, dpi=150)
+    
+    # Ajuste explícito de margens (GOLD STANDARD PÁGINA 1)
+    plt.subplots_adjust(top=0.90, bottom=0.15, left=0.10, right=0.95)
     
     # Pie: Composição OPEX
     opex_labels = ['Marketing', 'Pessoal', 'Infra', 'Outros']
@@ -499,22 +504,47 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     bars1 = ax2b.bar(x - width/2, real_vals, width, label='Real', color='#1976D2')
     bars2 = ax2b.bar(x + width/2, bench_vals, width, label='Benchmark SaaS', color='#9E9E9E', alpha=0.6)
     
+    # GRID E LIMITES
+    ax2b.grid(True, alpha=0.4, linestyle='-', axis='y')
+    ax2b.set_ylim(0, 100) # Mantém foco no 0-100%
+    
+    # Lógica Inteligente de Rótulos (Evita estouro de canvas em outliers POSITIVOS e NEGATIVOS)
     for bar, val in zip(bars1, real_vals):
-        ax2b.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1, f'{val:.1f}%', 
-                 ha='center', fontsize=9, fontweight='bold')
+        # Definição segura de pos_y para não estourar o bbox
+        if val > 100:
+            # Caso > 100%: Trava no topo
+            pos_y = 92 
+            text_str = f'{val:.0f}% (!)'
+            font_color = '#D32F2F' # Vermelho
+            fw = 'heavy'
+        elif val < 0:
+            # Caso NEGATIVO (ex: -500%): Trava no fundo (dentro da área visível)
+            pos_y = 5 
+            text_str = f'{val:.0f}% (!)'
+            font_color = '#D32F2F' # Vermelho
+            fw = 'heavy'
+        else:
+            # Caso Normal (0 a 100)
+            pos_y = val + 2
+            text_str = f'{val:.1f}%'
+            font_color = 'black'
+            fw = 'bold'
+            
+        ax2b.text(bar.get_x() + bar.get_width()/2, pos_y, text_str, 
+                 ha='center', fontsize=9, fontweight=fw, color=font_color,
+                 bbox=dict(facecolor='white', alpha=0.7, edgecolor='none', pad=0.5))
     
     ax2b.set_xticks(x)
-    ax2b.set_xticklabels(metricas)
-    ax2b.set_ylabel('%')
+    ax2b.set_xticklabels(metricas, fontsize=10)
+    ax2b.set_ylabel('%', fontsize=11)
     ax2b.set_title('Real vs Benchmark SaaS', fontsize=12, fontweight='bold')
-    ax2b.legend()
-    ax2b.set_ylim(0, 100)
+    ax2b.legend(loc='upper right', fontsize=9)
     
     # Fonte dos dados
     adicionar_fonte_dados(ax2b, "Fonte: Celulas 5A/5B | Breakdown COGS/OPEX/Marketing")
     
-    fig2.suptitle('📊 COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=1.02)
-    plt.tight_layout()
+    fig2.suptitle('📊 COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=0.98)
+    # plt.tight_layout() REMOVIDO PARA MARGENS CONTROLADAS
     salvar_figura_silencioso(fig2, 'outputs/figs/pg3_viz2_composicao_custos.png')
     
     if report_mode:

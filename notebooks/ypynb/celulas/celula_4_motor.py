@@ -196,19 +196,23 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
             taxa_crescimento_meta = p_run['crescimento_trafego_mes_13_plus']
         
         # Budget de Marketing com verificação de caixa
-        # CLÁUSULA DE RESCISÃO: Se marketing estiver desabilitado, zera tudo ignorando regras.
-        if not p_run.get('marketing_habilitado', True):
+        # CORREÇÃO V13.2: Marketing Zero Explícito com fallback R$1
+        mkt_fixo = p_run.get('marketing_fixo_mensal', 0.0)
+        mkt_perc = p_run.get('marketing_perc_receita', 0.0)
+        mkt_hab = p_run.get('marketing_habilitado', True)
+        
+        # Se marketing desabilitado OU (fixo=0 E perc=0), força zero total
+        if not mkt_hab or (mkt_fixo <= 0 and mkt_perc <= 0):
             budget_mkt_desejado = 0.0
         elif mes == 0:
-            budget_mkt_desejado = p_run['marketing_fixo_mensal']
+            # Fallback R$1 mínimo para evitar divisão por zero em cálculos de CPC
+            budget_mkt_desejado = max(1.0, mkt_fixo)
         else:
             # LÓGICA HÍBRIDA:
             # 1. Calcula % da Receita do mês anterior
             # 2. Aplica piso (Fixo Mensal) e teto (Marketing Teto)
-            # NOTA: Se você quer gastar ZERO, precisa zerar 'marketing_fixo_mensal' E 'marketing_perc_receita',
-            #       ou setar 'marketing_habilitado': False nas premissas.
-            budget_calc = dados['receita_bruta'][mes - 1] * p_run['marketing_perc_receita']
-            budget_mkt_desejado = np.clip(budget_calc, p_run['marketing_fixo_mensal'], p_run['marketing_teto'])
+            budget_calc = dados['receita_bruta'][mes - 1] * mkt_perc
+            budget_mkt_desejado = np.clip(budget_calc, mkt_fixo, p_run['marketing_teto'])
         
         # V12.3 CORREÇÃO 1: Regras de marketing estritas (usar caixa físico)
         # Regra: se caixa negativo -> corte total; se abaixo de 20% da reserva -> -50%;
@@ -768,7 +772,9 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
             if caixa_atual <= THRESHOLD_QUEBRA:
                 dados['runway_meses'][mes] = 0.0 # Quebra total
             else:
-                dados['runway_meses'][mes] = caixa_atual / despesa_operacional_mensal
+                # CORREÇÃO V13.2: Runway nunca negativo (0 = quebrado)
+                runway_calc = caixa_atual / despesa_operacional_mensal
+                dados['runway_meses'][mes] = max(0.0, runway_calc)
         else:
             dados['runway_meses'][mes] = 999.0 # Sem custos, vida infinita
             
@@ -832,11 +838,18 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
 
         dados['ltv'][mes] = ltv_val
         
-        # LTV/CAC
-        if not np.isnan(ltv_val) and not np.isnan(dados['cac_blended'][mes]) and dados['cac_blended'][mes] > 0:
-            dados['ltv_cac'][mes] = ltv_val / dados['cac_blended'][mes]
+        # CORREÇÃO V13.2: LTV/CAC padronizado (sem NaN no output)
+        cac_atual = dados['cac_blended'][mes]
+        if np.isnan(cac_atual) or cac_atual <= 0:
+            # CAC zero/NaN significa aquisição 100% orgânica
+            if not np.isnan(ltv_val) and ltv_val > 0:
+                dados['ltv_cac'][mes] = 10000.0  # Símbolo de "infinito" (cap)
+            else:
+                dados['ltv_cac'][mes] = 0.0  # Sem LTV = 0
+        elif not np.isnan(ltv_val):
+            dados['ltv_cac'][mes] = ltv_val / cac_atual
         else:
-            dados['ltv_cac'][mes] = np.nan
+            dados['ltv_cac'][mes] = 0.0  # Fallback conservador
         
         # Payback
         if not np.isnan(dados['cac_blended'][mes]) and dados['cac_blended'][mes] > 0 and usuarios_ativos > 0:

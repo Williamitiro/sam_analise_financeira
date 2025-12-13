@@ -95,7 +95,7 @@ PREMISSAS['monte_carlo'] = {
         # RETENÇÃO
         'churn_inicial': {
             'std': 0.20,          # ±20% variação (corrigido de 30%)
-            'min': 0.05,         # 0.5% mínimo (mundo perfeito)
+            'min': 0.005,         # 0.5% mínimo (mundo perfeito)
             'max': 0.35,          # 50% máximo (desastre)
             'dist': 'normal'
         },

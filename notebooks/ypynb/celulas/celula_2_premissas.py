@@ -42,7 +42,7 @@ PREMISSAS = {
     # 3. AQUISIÇÃO, GROWTH & METAS
     # ========================================================================
     'usuarios_pagos_iniciais': 5,  # Começamos pequenos
-    'trafego_inicial': 500,        # Visitas no site/app
+    'trafego_inicial': 100,        # Visitas no site/app
     
     # --- METAS DE CRESCIMENTO MENSAL (DRIVERS) ---
     # A meta semanal será calculada baseada nestes números no final do script.
@@ -119,9 +119,9 @@ PREMISSAS = {
     # 6. INFRAESTRUTURA & CUSTOS VARIÁVEIS (TIERS)
     # ========================================================================
     # Custo Variável por Usuário (IA Tokens + Server Load)
-    'custo_ia_lite': 3.00, 
-    'custo_ia_trader': 5.00, 
-    'custo_ia_pro': 13.00,
+    'custo_ia_lite': 200, 
+    'custo_ia_trader': 600, 
+    'custo_ia_pro': 2000,
     
     'custo_ferramentas_base': 1.00,         # Ferramentas fixas (Jira, etc), já está nos custos de ferramentas do tier 1!!!
     'custo_suporte_por_1000_users': 1.00,   # Zendesk variável - não tem agoagora eu o fundador vou dar suporte e vou automatizar!!!
@@ -179,7 +179,7 @@ PREMISSAS = {
     # ========================================================================
     # R$ 2.000 é o teto máximo.
     # O script de validação vai checar se isso paga o CAC.
-    'marketing_fixo_mensal': 1500.00,
+    'marketing_fixo_mensal': 0.00,
     'marketing_perc_receita': 0.40,           # Reinveste 40% da receita em ads
     'marketing_teto': 25000.00,               # Teto futuro
 
@@ -208,7 +208,7 @@ PREMISSAS = {
     # ========================================================================
     # Só contrata se atingir gatilhos de Receita ou Usuários
     'salario_fundador': 5000.00,    'trigger_fundador': 25000.00, # MRR > 25k
-    'salario_dev_senior': 10000.00, 'trigger_dev': 750,           # Users > 750
+    'salario_dev_senior': 30000.00, 'trigger_dev': 15,           # Users > 750
     'salario_cs': 4500.00,          'trigger_cs': 1000,           # Users > 1000
     'encargos_trabalhistas': 0.70,  # CLT + Benefícios
 

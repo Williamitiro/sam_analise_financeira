@@ -524,7 +524,12 @@ def gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=False):
         perda_eficiencia = 1 - (retorno_real_est / retorno_ideal)
         
         # Definição de Zona
-        if perda_eficiencia < 0.15:
+        # Definição de Zona
+        if val < cac_ideal_ref * 0.5:
+             zona_txt = "VOLUME BAIXO"
+             zona_emoji = "⚪ VOLUME INSUFICIENTE"
+             perda_eficiencia = 0.0 # Bônus de dúvida
+        elif perda_eficiencia < 0.15:
              zona_txt = "ALTA EFICIENCIA"
              zona_emoji = "🟢 ALTA EFICIÊNCIA"
         elif perda_eficiencia < 0.40:
@@ -802,58 +807,121 @@ def gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=False):
     )
 
 
-def gerar_conclusao_growth_machine(metricas_real, metricas_ideal, report_mode=False):
-    """Gera o veredito final da página (Rodapé)."""
-    # Lógica simples baseada em dados reais
+def gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, report_mode=False):
+    """
+    Gera o Veredito Analítico Inteligente (Smart Insight).
+    Lógica: Identifica o ARQUÉTIPO DO CENÁRIO com base em múltiplas variáveis.
+    """
+    
+    # 1. DIAGNÓSTICO DE VARIÁVEIS CHAVE
+    # ----------------------------------------------------------------
+    idx_final = 35 if len(df_real_m) > 35 else -1
+    
+    # A. Volume (Tráfego)
+    trafego_real = df_real_m.iloc[idx_final]['trafego_total']
+    trafego_ideal = df_ideal.iloc[idx_final]['trafego_total']
+    gap_trafego = (trafego_ideal - trafego_real) / trafego_ideal if trafego_ideal > 0 else 0
+    tem_trafego = gap_trafego < 0.80 # Se gap > 80%, não teve tráfego relevante
+    
+    # B. Unit Economics
+    ltv_cac = df_real_m.iloc[idx_final]['ltv_cac']
+    economics_ok = ltv_cac >= 3.0
+    economics_zerado = ltv_cac == 0 or pd.isna(ltv_cac)
+    
+    # C. Retenção
+    churn_real = df_real_m.iloc[idx_final]['churn_rate']
+    churn_loss = churn_real - 0.05 # Gap vs Benchmark 5%
+    churn_critico = churn_real > 0.07 # > 7% é desastre
+    
+    # D. Causa Raiz (Financeiro)
+    # Verifica se houve investimento em MKT (se 'marketing_teto' > 0 e se houve gasto real)
+    gasto_total = df_real_m['gasto_marketing'].sum()
+    budget_zerado = gasto_total < 1000 # R$ 1000 em 3 anos é nada.
+    
+    # 2. MATCH DO ARQUÉTIPO (CENÁRIOS)
+    # ----------------------------------------------------------------
+    titulo_cenario = ""
+    texto_narrativo = ""
+    cor_box = "callout-note" # Default (Azul)
+    
+    # CENÁRIO A: INANIÇÃO (O caso do Estresse atual)
+    if budget_zerado or (not tem_trafego and economics_zerado):
+        titulo_cenario = "CENÁRIO CRÍTICO: INANIÇÃO DE CAPITAL (STARVATION)"
+        cor_box = "callout-important" # Vermelho
+        texto_narrativo = f"""
+        **Diagnóstico:** O modelo de crescimento **não foi validado por falta de 'combustível'**. A simulação indica que restrições severas de caixa ativaram travas de segurança, impedindo investimentos mínimos em aquisição (Topo de Funil).
+        
+        **Evidência:** O volume de tráfego ficou {gap_trafego*100:.1f}% abaixo da meta, inviabilizando qualquer teste estatístico de conversão. O LTV/CAC zerado confirma que a máquina de vendas nem chegou a ser ligada.
+        
+        **Ação Recomendada:** O negócio é inviável sem uma rodada de capital inicial (Seed/Angel) para financiar o 'Go-to-Market'. Bootstrapping neste cenário leva à falência certa.
+        """
+
+    # CENÁRIO B: BALDE FURADO (Leaky Bucket)
+    elif churn_critico:
+        titulo_cenario = "CENÁRIO DE ALERTA: BALDE FURADO (RETENÇÃO CRÍTICA)"
+        cor_box = "callout-warning" # Laranja
+        texto_narrativo = f"""
+        **Diagnóstico:** O motor de aquisição funciona, mas **a retenção é destrutiva**. Estamos pagando caro para trazer clientes que saem rápido demais.
+        
+        **Evidência:** O Churn Rate final de {churn_real*100:.1f}% está muito acima do tolerável (5%), corroendo todo o valor gerado (LTV). Escalar marketing agora seria queimar dinheiro.
+        
+        **Ação Recomendada:** CONGELAR novos investimentos em mídia paga. Focar 100% dos recursos em Produto e Customer Success até o Churn cair para < 5%.
+        """
+
+    # CENÁRIO C: MÉTRICAS DE VAIDADE (Traffic but no Sales)
+    elif tem_trafego and not economics_ok:
+        titulo_cenario = "CENÁRIO TÁTICO: MÉTRICAS DE VAIDADE (BAIXA CONVERSÃO)"
+        cor_box = "callout-warning"
+        texto_narrativo = f"""
+        **Diagnóstico:** Existe demanda e tráfego, mas **a oferta não converte**. O produto ou a comunicação não estão ressoando com o público atraído.
+        
+        **Evidência:** O volume de visitantes está próximo da meta, mas o Unit Economics (LTV/CAC = {ltv_cac:.1f}x) é insustentável. O problema está na eficiência do Funil (Meio/Fundo), não no Topo.
+        
+        **Ação Recomendada:** Revisar Proposta de Valor, Pricing e Copywriting. Não aumentar tráfego até que a conversão suba.
+        """
+
+    # CENÁRIO D: SUCESSO (Máquina de Vendas)
+    elif economics_ok and not churn_critico:
+        titulo_cenario = "CENÁRIO IDEAL: MÁQUINA DE VENDAS VALIDADA"
+        cor_box = "callout-tip" # Verde
+        texto_narrativo = f"""
+        **Diagnóstico:** A tese foi **plenamente validada**. O negócio demonstra alta eficiência na captura de valor e retenção sólida.
+        
+        **Evidência:** Com LTV/CAC de {ltv_cac:.1f}x e Churn controlado, cada Real investido retorna multiplicado. A operação é previsível e escalável.
+        
+        **Ação Recomendada:** O sinal é verde para aceleração máxima (Scale-up). Buscar Series A para dominar market share agressivamente.
+        """
+        
+    else:
+        # Fallback (Cenário Misto)
+        titulo_cenario = "CENÁRIO MISTO: VALIDAÇÃO PARCIAL"
+        texto_narrativo = f"""
+        **Diagnóstico:** O modelo apresenta sinais mistos. LTV/CAC de {ltv_cac:.1f}x mostra potencial, mas ainda há ajustes finos a fazer.
+        
+        **Ação Recomendada:** Otimizar canais de aquisição e monitorar o Churn ({churn_real*100:.1f}%) de perto antes de escalar.
+        """
+
+    # 3. RENDERIZAÇÃO
+    # ----------------------------------------------------------------
     if report_mode:
-        texto = """
-::: {.callout-important}
-## 🔍 VEREDITO ANALÍTICO DA PÁGINA (GROWTH MACHINE)
-
-"Nesta análise, nós provamos que:
-
-1. **O modelo PASSA no teste macro de viabilidade (Viz 2.1).**
-   → A conversão global e o tráfego sustentam as metas iniciais.
-
-2. **A operação mantém saúde unitária com LTV/CAC Sólido (Viz 2.2).**
-   → Retorno sobre investimento validado acima do custo de capital.
-
-3. **Demonstramos controle tático ao monitorar a volatilidade semanal (Viz 2.3).**
-   → Gestão eficiente de budget sem grandes desvios.
-
-4. **Identificamos o ponto ótimo de escala antes da saturação (Viz 2.4).**
-   → Sabemos exatamente onde investir o próximo real de marketing.
-
-5. **E mapeamos o risco crítico de Churn e seu custo financeiro (Viz 2.5).**
-   → O vazamento está quantificado e endereçável."
+        texto_final = f"""
+::: {{.{cor_box}}}
+## 🧠 VEREDITO ANALÍTICO: {titulo_cenario}
+{texto_narrativo}
 :::
 """
     else:
-        texto = """
-### 🔍 VEREDITO ANALÍTICO DA PÁGINA (GROWTH MACHINE):
-
-> "Nesta análise, nós provamos que:
->
-> 1. **O modelo PASSA no teste macro de viabilidade (Viz 2.1).**
->    → A conversão global e o tráfego sustentam as metas iniciais.
->
-> 2. **A operação mantém saúde unitária com LTV/CAC Sólido (Viz 2.2).**
->    → Retorno sobre investimento validado acima do custo de capital.
->
-> 3. **Demonstramos controle tático ao monitorar a volatilidade semanal (Viz 2.3).**
->    → Gestão eficiente de budget sem grandes desvios.
->
-> 4. **Identificamos o ponto ótimo de escala antes da saturação (Viz 2.4).**
->    → Sabemos exatamente onde investir o próximo real de marketing.
->
-> 5. **E mapeamos o risco crítico de Churn e seu custo financeiro (Viz 2.5).**
->    → O vazamento está quantificado e endereçável."
+        texto_final = f"""
+### 🧠 VEREDITO ANALÍTICO: {titulo_cenario}
+> {texto_narrativo.replace('**', '').replace('    ', '')}
 """
+
     try:
-        display(Markdown(texto))
+        display(Markdown(texto_final))
     except:
-        print(texto)
-    return texto
+        print(texto_final) # Fallback terminal
+        
+    return texto_final
 
 # ============================================================================
 # 3. ORQUESTRAÇÃO
@@ -896,8 +964,8 @@ def executar_pagina_2_growth_machine(df_real_m, df_real_s, df_ideal, df_ideal_s,
     # Antiga Viz 2.5 -> Viz 2.6
     gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=report_mode)
     
-    # Gera conclusão
-    gerar_conclusao_growth_machine({}, {}, report_mode=report_mode)
+    # Gera conclusão DINÂMICA (Smart Verdict)
+    gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, report_mode=report_mode)
     
     if not report_mode:
         print("\n✅ PÁGINA 2 GERADA COM SUCESSO!")
