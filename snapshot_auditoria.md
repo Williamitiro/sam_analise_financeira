@@ -1,6 +1,6 @@
 # 🔬 RELATÓRIO DE AUDITORIA FORENSE V7.0
 
-**Gerado:** 13/12/2025 16:03:07
+**Gerado:** 13/12/2025 18:36:28
 **Premissas:** V9.0-full-documented
 **Motor:** V13 | **Colunas:** 107
 **Monte Carlo:** 150 simulações
@@ -15,7 +15,7 @@
 |---|---|---|
 | Growth | `usuarios_pagos_iniciais` | 5 |
 | Growth | `trafego_inicial` | 250 |
-| Growth | `crescimento_trafego_mes_1_6` | 25.00% |
+| Growth | `crescimento_trafego_mes_1_6` | 20.00% |
 | Growth | `taxa_visitante_para_trial` | 5.00% |
 | Growth | `taxa_trial_para_pagante` | 12.00% |
 | Churn | `churn_inicial` | 12.00% |
@@ -31,7 +31,7 @@
 | COGS | `custo_ia_lite` | R$ 3,00 |
 | COGS | `custo_ia_trader` | R$ 5,00 |
 | COGS | `custo_ia_pro` | R$ 13,00 |
-| Marketing | `marketing_fixo_mensal` | R$ 1,00 |
+| Marketing | `marketing_fixo_mensal` | R$ 1.750,00 |
 | Marketing | `marketing_perc_receita` | R$ 0,40 |
 | Marketing | `marketing_teto` | R$ 25.000,00 |
 | RH | `salario_fundador` | R$ 5.000,00 |
@@ -41,7 +41,7 @@
 | RH | `salario_cs` | R$ 4.500,00 |
 | RH | `trigger_cs` | R$ 1.000,00 |
 | RH | `encargos_trabalhistas` | R$ 0,70 |
-| Capital | `caixa_inicial` | R$ 3.500,00 |
+| Capital | `caixa_inicial` | R$ 2.000,00 |
 | Capital | `aporte_mensal` | 2000.0 |
 | Capital | `meses_aporte` | 10 |
 | Capital | `caixa_reserva_operacional` | R$ 500,00 |
@@ -62,30 +62,30 @@
 ## 2.1 Entradas Mês 1
 | Descrição | Valor |
 |---|---|
-| (+) Caixa Inicial | R$ 3.500,00 |
+| (+) Caixa Inicial | R$ 2.000,00 |
 | (+) Aportes/Investimento | R$ 2.000,00 |
-| (+) Receita Bruta | R$ 509,50 |
-| (+) Receita Líquida | R$ 433,67 |
+| (+) Receita Bruta | R$ 749,20 |
+| (+) Receita Líquida | R$ 637,70 |
 
 ## 2.2 Saídas Mês 1
 | Descrição | Valor |
 |---|---|
-| (-) Marketing | R$ 1,00 |
+| (-) Marketing | R$ 1.750,00 |
 | (-) Infraestrutura | R$ 860,00 |
 | (-) Pessoal/RH | R$ 0.00 |
-| (-) COGS Total | R$ 29,00 |
-| (-) OPEX Total | R$ 861,00 |
-| (-) Impostos | R$ 30,57 |
-| (-) Taxas Pagamento | R$ 14,69 |
+| (-) COGS Total | R$ 40,00 |
+| (-) OPEX Total | R$ 2.610,00 |
+| (-) Impostos | R$ 44,95 |
+| (-) Taxas Pagamento | R$ 21,59 |
 | (-) CAPEX | R$ -1,00 |
 
 ## 2.3 Resultado Mês 1
 | Métrica | Valor |
 |---|---|
-| Caixa Final | **R$ 5.042,67** |
-| Burn Rate | R$ 457,33 |
-| Runway | 7.9 meses |
-| Lucro/Prejuízo | R$ -456,37 |
+| Caixa Final | **R$ 1.986,70** |
+| Burn Rate | R$ 2.013,30 |
+| Runway | 1.5 meses |
+| Lucro/Prejuízo | R$ -2.012,34 |
 
 ---
 
@@ -97,78 +97,78 @@
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `trafego_total` | 257 | 593 | 1,033 | 1,758 | 2,896 | 5,081 | 8,926 |
-| `trafego_pago` | 0 | 148 | 458 | 971 | 1,889 | 3,655 | 7,000 |
-| `trafego_organico` | 257 | 445 | 575 | 786 | 1,007 | 1,425 | 1,925 |
-| `trials_total` | 12 | 30 | 55 | 95 | 159 | 283 | 502 |
-| `novos_pagantes_total` | 0 | 2 | 6 | 10 | 19 | 33 | 59 |
-| `novos_ads` | 0 | 0 | 3 | 6 | 13 | 25 | 48 |
-| `novos_organicos` | 0 | 2 | 3 | 4 | 6 | 8 | 11 |
+| `trafego_total` | 1,123 | 1,402 | 1,759 | 2,846 | 4,755 | 8,266 | 14,535 |
+| `trafego_pago` | 866 | 866 | 1,004 | 1,808 | 3,406 | 6,333 | 11,870 |
+| `trafego_organico` | 257 | 535 | 754 | 1,038 | 1,349 | 1,932 | 2,664 |
+| `trials_total` | 63 | 77 | 95 | 156 | 265 | 463 | 821 |
+| `novos_pagantes_total` | 3 | 6 | 10 | 18 | 31 | 55 | 97 |
+| `novos_ads` | 3 | 4 | 6 | 12 | 23 | 44 | 82 |
+| `novos_organicos` | 0 | 2 | 4 | 6 | 8 | 11 | 15 |
 
 ## 3.2 Usuários
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `usuarios_ativos` | 5 | 10 | 28 | 57 | 113 | 216 | 410 |
-| `usuarios_lite` | 2 | 5 | 14 | 28 | 55 | 107 | 202 |
-| `usuarios_trader` | 2 | 4 | 10 | 20 | 41 | 77 | 147 |
-| `usuarios_pro` | 1 | 1 | 4 | 9 | 17 | 32 | 61 |
-| `churn_usuarios` | 0 | 0 | 2 | 4 | 7 | 11 | 22 |
-| `reativacoes` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 1,00 | R$ 1,00 | R$ 3,00 |
+| `usuarios_ativos` | 8 | 26 | 58 | 107 | 200 | 373 | 693 |
+| `usuarios_lite` | 4 | 13 | 29 | 54 | 99 | 183 | 340 |
+| `usuarios_trader` | 3 | 9 | 20 | 37 | 71 | 134 | 249 |
+| `usuarios_pro` | 1 | 4 | 9 | 16 | 30 | 56 | 104 |
+| `churn_usuarios` | 0 | 2 | 5 | 8 | 13 | 20 | 37 |
+| `reativacoes` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 1,00 | R$ 2,00 | R$ 3,00 | R$ 6,00 |
 
 ## 3.3 Receita
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `receita_bruta` | R$ 509,50 | R$ 919,00 | R$ 2.657,20 | R$ 5.484,30 | R$ 10.828,70 | R$ 20.608,40 | R$ 39.169,00 |
+| `receita_bruta` | R$ 749,20 | R$ 2.487,40 | R$ 5.554,20 | R$ 10.189,30 | R$ 19.110,00 | R$ 35.692,70 | R$ 66.310,70 |
 | `receita_assinaturas` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
-| `receita_lite` | R$ 139,80 | R$ 349,50 | R$ 978,60 | R$ 1.957,20 | R$ 3.844,50 | R$ 7.479,30 | R$ 14.119,80 |
-| `receita_trader` | R$ 199,80 | R$ 399,60 | R$ 999,00 | R$ 1.998,00 | R$ 4.095,90 | R$ 7.692,30 | R$ 14.685,30 |
-| `receita_pro` | R$ 169,90 | R$ 169,90 | R$ 679,60 | R$ 1.529,10 | R$ 2.888,30 | R$ 5.436,80 | R$ 10.363,90 |
-| `mrr` | R$ 509,50 | R$ 919,00 | R$ 2.657,20 | R$ 5.484,30 | R$ 10.828,70 | R$ 20.608,40 | R$ 39.169,00 |
-| `arr` | R$ 6.114,00 | R$ 11.028,00 | R$ 31.886,40 | R$ 65.811,60 | R$ 129.944,40 | R$ 247.300,80 | R$ 470.028,00 |
-| `arpu` | R$ 101,90 | R$ 91,90 | R$ 94,90 | R$ 96,22 | R$ 95,83 | R$ 95,41 | R$ 95,53 |
+| `receita_lite` | R$ 279,60 | R$ 908,70 | R$ 2.027,10 | R$ 3.774,60 | R$ 6.920,10 | R$ 12.791,70 | R$ 23.766,00 |
+| `receita_trader` | R$ 299,70 | R$ 899,10 | R$ 1.998,00 | R$ 3.696,30 | R$ 7.092,90 | R$ 13.386,60 | R$ 24.875,10 |
+| `receita_pro` | R$ 169,90 | R$ 679,60 | R$ 1.529,10 | R$ 2.718,40 | R$ 5.097,00 | R$ 9.514,40 | R$ 17.669,60 |
+| `mrr` | R$ 749,20 | R$ 2.487,40 | R$ 5.554,20 | R$ 10.189,30 | R$ 19.110,00 | R$ 35.692,70 | R$ 66.310,70 |
+| `arr` | R$ 8.990,40 | R$ 29.848,80 | R$ 66.650,40 | R$ 122.271,60 | R$ 229.320,00 | R$ 428.312,40 | R$ 795.728,40 |
+| `arpu` | R$ 93,65 | R$ 95,67 | R$ 95,76 | R$ 95,23 | R$ 95,55 | R$ 95,69 | R$ 95,69 |
 
 ## 3.4 Custos
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `total_cogs` | R$ 29,00 | R$ 48,00 | R$ 144,00 | R$ 301,00 | R$ 591,00 | R$ 1.122,00 | R$ 2.134,00 |
-| `custo_ia_total` | R$ 29,00 | R$ 48,00 | R$ 144,00 | R$ 301,00 | R$ 591,00 | R$ 1.122,00 | R$ 2.134,00 |
-| `total_opex` | R$ 861,00 | R$ 1.159,68 | R$ 1.787,04 | R$ 2.821,96 | R$ 4.676,00 | R$ 8.244,28 | R$ 15.001,20 |
-| `gasto_marketing` | R$ 1,00 | R$ 299,68 | R$ 927,04 | R$ 1.961,96 | R$ 3.816,00 | R$ 7.384,28 | R$ 14.141,20 |
-| `custo_infra_fixo` | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 |
-| `custo_pessoal` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
+| `total_cogs` | R$ 40,00 | R$ 136,00 | R$ 304,00 | R$ 555,00 | R$ 1.042,00 | R$ 1.947,00 | R$ 3.617,00 |
+| `custo_ia_total` | R$ 40,00 | R$ 136,00 | R$ 304,00 | R$ 555,00 | R$ 1.042,00 | R$ 1.947,00 | R$ 3.617,00 |
+| `total_opex` | R$ 2.610,00 | R$ 2.610,00 | R$ 2.889,88 | R$ 4.512,16 | R$ 7.740,80 | R$ 13.654,60 | R$ 39.769,92 |
+| `gasto_marketing` | R$ 1.750,00 | R$ 1.750,00 | R$ 2.029,88 | R$ 3.652,16 | R$ 6.880,80 | R$ 12.794,60 | R$ 23.978,92 |
+| `custo_infra_fixo` | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 860,00 | R$ 7.290,00 |
+| `custo_pessoal` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 8.500,00 |
 
 ## 3.5 Margens
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `margem_bruta` | R$ 404,67 | R$ 734,23 | R$ 2.117,75 | R$ 4.367,11 | R$ 8.626,15 | R$ 16.419,41 | R$ 31.205,77 |
-| `margem_bruta_pct` | 79.43% | 79.89% | 79.70% | 79.63% | 79.66% | 79.67% | 79.67% |
-| `ebitda` | R$ -456,33 | R$ -425,45 | R$ 330,71 | R$ 1.545,15 | R$ 3.950,15 | R$ 8.175,13 | R$ 16.204,57 |
-| `ebitda_margin` | -89.56% | -46.29% | 12.45% | 28.17% | 36.48% | 39.67% | 41.37% |
-| `lucro_liquido` | R$ -456,37 | R$ -425,49 | R$ 330,67 | R$ 1.545,11 | R$ 3.450,10 | R$ 7.675,13 | R$ 15.704,57 |
-| `margem_liquida` | R$ -89,57 | R$ -46,30 | R$ 12,44 | R$ 28,17 | R$ 31,86 | R$ 37,24 | R$ 40,09 |
+| `margem_bruta` | R$ 597,70 | R$ 1.981,22 | R$ 4.423,61 | R$ 8.117,90 | R$ 15.224,00 | R$ 28.433,82 | R$ 52.825,18 |
+| `margem_bruta_pct` | 79.78% | 79.65% | 79.64% | 79.67% | 79.67% | 79.66% | 79.66% |
+| `ebitda` | R$ -2.012,30 | R$ -628,78 | R$ 1.533,73 | R$ 3.605,74 | R$ 7.483,20 | R$ 14.779,22 | R$ 13.055,26 |
+| `ebitda_margin` | -268.59% | -25.28% | 27.61% | 35.39% | 39.16% | 41.41% | 19.69% |
+| `lucro_liquido` | R$ -2.012,34 | R$ -628,82 | R$ 1.533,69 | R$ 3.605,70 | R$ 6.983,16 | R$ 14.279,22 | R$ 12.555,26 |
+| `margem_liquida` | R$ -268,60 | R$ -25,28 | R$ 27,61 | R$ 35,39 | R$ 36,54 | R$ 40,01 | R$ 18,93 |
 
 ## 3.6 Caixa
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `caixa` | R$ 5.042,67 | R$ 12.259,37 | R$ 20.169,97 | R$ 26.055,01 | R$ 30.682,24 | R$ 67.522,96 | R$ 142.679,54 |
-| `burn_rate` | 45732.51% | 42544.79% | 0.00% | 0.00% | 804985.42% | 0.00% | 0.00% |
-| `runway_meses` | 7.9 | 10.2 | 10.4 | 8.3 | 1.8 | 7.2 | 8.3 |
+| `caixa` | R$ 1.986,70 | R$ 5.882,74 | R$ 18.128,51 | R$ 33.743,72 | R$ 55.781,47 | R$ 123.576,73 | R$ 203.616,29 |
+| `burn_rate` | 201329.78% | 62878.11% | 0.00% | 0.00% | 451679.80% | 0.00% | 0.00% |
+| `runway_meses` | 1.5 | 2.1 | 5.7 | 6.7 | 2.7 | 7.9 | 4.7 |
 | `aportes_capital` | R$ 2.000,00 | R$ 2.000,00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
 
 ## 3.7 Unit Economics
 
 | Métrica | M1 | M6 | M12 | M18 | M24 | M30 | M36 |
 |---|---|---|---|---|---|---|---|
-| `ltv` | R$ 674,46 | R$ 667,48 | R$ 771,77 | R$ 890,88 | R$ 1.031,59 | R$ 1.226,06 | R$ 1.268,53 |
-| `cac_blended` | R$ 0.00 | R$ 149,84 | R$ 154,51 | R$ 196,20 | R$ 200,84 | R$ 223,77 | R$ 239,68 |
+| `ltv` | R$ 622,61 | R$ 692,73 | R$ 778,26 | R$ 882,19 | R$ 1.028,65 | R$ 1.229,52 | R$ 1.270,45 |
+| `cac_blended` | R$ 583,33 | R$ 291,67 | R$ 202,99 | R$ 202,90 | R$ 221,96 | R$ 232,63 | R$ 247,21 |
 | `cac_paid` | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 | R$ 0.00 |
-| `ltv_cac` | ∞ | 4.45x | 5.00x | 4.54x | 5.14x | 5.48x | 5.29x |
-| `payback_meses` | 0.0 | 2.0 | 2.0 | 2.6 | 2.6 | 2.9 | 3.1 |
+| `ltv_cac` | 1.07x | 2.38x | 3.83x | 4.35x | 4.63x | 5.29x | 5.14x |
+| `payback_meses` | 7.8 | 3.8 | 2.7 | 2.7 | 2.9 | 3.1 | 3.2 |
 
 ## 3.8 Churn
 
@@ -185,15 +185,15 @@
 
 | Métrica | Real | Ideal | Estresse | Gap Real/Ideal |
 |---|---|---|---|---|
-| MRR | R$ 39.169,00 | R$ 116.718,00 | R$ 1.668,30 | 66.4% |
-| ARR | R$ 470.028,00 | R$ 1.400.616,00 | R$ 20.019,60 | 66.4% |
-| Usuários | 410 | 1,220 | 17 | 66.4% |
-| Caixa | R$ 142.679,54 | R$ 319.098,87 | R$ -2.223,16 | 55.3% |
-| Receita | R$ 39.169,00 | R$ 116.718,00 | R$ 1.668,30 | 66.4% |
-| Lucro | R$ 15.704,57 | R$ 25.939,52 | R$ -32,98 | 39.5% |
-| LTV/CAC | 5.29x | 5.59x | 10000.00x | 5.3% |
+| MRR | R$ 66.310,70 | R$ 112.252,70 | R$ 2.557,30 | 40.9% |
+| ARR | R$ 795.728,40 | R$ 1.347.032,40 | R$ 30.687,60 | 40.9% |
+| Usuários | 693 | 1,173 | 27 | 40.9% |
+| Caixa | R$ 203.616,29 | R$ 280.141,62 | R$ -3.266,90 | 27.3% |
+| Receita | R$ 66.310,70 | R$ 112.252,70 | R$ 2.557,30 | 40.9% |
+| Lucro | R$ 12.555,26 | R$ 22.381,80 | R$ 677,72 | 43.9% |
+| LTV/CAC | 5.14x | 5.49x | 10000.00x | 6.4% |
 | Churn | 6.00% | 6.00% | 17.00% | 0.0% |
-| Runway | 8.3m | 4.4m | 0.0m | -90.2% |
+| Runway | 4.7m | 3.9m | 0.0m | -21.7% |
 
 ---
 
@@ -212,40 +212,55 @@
 | Métrica | P5 | P50 | P95 | Média |
 |---|---|---|---|---|
 | sim | R$ 2,00 | R$ 24,50 | R$ 47,00 | R$ 24,50 |
-| seed | R$ 131.951.950,85 | R$ 1.093.315.554,50 | R$ 1.363.213.179,15 | R$ 862.826.894,83 |
-| time_elapsed | R$ 0,07 | R$ 0,08 | R$ 0,10 | R$ 0,09 |
-| caixa_final | R$ 8.607,94 | R$ 77.377,77 | R$ 1.121.471,47 | R$ 218.330,98 |
-| mrr_final | R$ 1.699,76 | R$ 6.982,70 | R$ 232.385,19 | R$ 48.147,71 |
-| arr_final | R$ 20.397,06 | R$ 83.792,40 | R$ 2.788.622,28 | R$ 577.772,46 |
-| usuarios_final | 17 | 73 | 2,458 | 503 |
-| cac_medio | R$ 0.00 | R$ 0.00 | R$ 249,56 | R$ 72,05 |
-| ltv_medio | R$ 519,21 | R$ 968,31 | R$ 1.274,34 | R$ 942,27 |
+| seed | R$ 934.632.962,85 | R$ 1.275.628.338,50 | R$ 1.376.532.267,15 | R$ 1.195.597.856,17 |
+| time_elapsed | R$ 0,05 | R$ 0,06 | R$ 0,09 | R$ 0,06 |
+| caixa_final | R$ 4.501,28 | R$ 154.967,14 | R$ 1.762.484,93 | R$ 427.569,40 |
+| mrr_final | R$ 4.325,50 | R$ 39.234,05 | R$ 304.412,76 | R$ 94.124,55 |
+| arr_final | R$ 51.906,00 | R$ 470.808,60 | R$ 3.652.953,18 | R$ 1.129.494,64 |
+| usuarios_final | 45 | 409 | 3,229 | 985 |
+| cac_medio | R$ 116,79 | R$ 270,20 | R$ 462,99 | R$ 272,79 |
+| ltv_medio | R$ 507,23 | R$ 955,54 | R$ 1.257,45 | R$ 926,65 |
 | churn_medio | R$ 0,06 | R$ 0,08 | R$ 0,15 | R$ 0,09 |
-| margem_bruta_media | R$ 75,79 | R$ 78,81 | R$ 80,88 | R$ 78,60 |
-| ebitda_margin_media | R$ -40,70 | R$ 14,16 | R$ 44,39 | R$ 9,10 |
-| nrr | R$ 1,00 | R$ 1,00 | R$ 1,03 | R$ 1,01 |
-| burn_rate_medio | R$ 53,96 | R$ 353,28 | R$ 634,08 | R$ 346,54 |
-| runway_final | R$ 2,92 | R$ 20,73 | R$ 83,09 | R$ 31,61 |
-| var95_caixa | R$ -1.943,49 | R$ 7.666,87 | R$ 15.384,97 | R$ 6.707,77 |
-| cvar95_caixa | R$ -2.622,79 | R$ 5.804,15 | R$ 9.753,55 | R$ 4.866,30 |
-| roi_total_pct | -35.96% | 350.79% | 4695.62% | 1121.78% |
-| payback_meses_medio | R$ 1,47 | R$ 2,54 | R$ 4,07 | R$ 2,70 |
-| ltv_cac | 3.99x | 10000.00x | 10000.00x | 6247.50x |
+| margem_bruta_media | R$ 76,96 | R$ 78,84 | R$ 80,91 | R$ 78,88 |
+| ebitda_margin_media | R$ -52,57 | R$ 0,53 | R$ 26,12 | R$ -5,30 |
+| nrr | R$ 1,00 | R$ 1,00 | R$ 1,40 | R$ 1,07 |
+| burn_rate_medio | R$ 91,36 | R$ 499,34 | R$ 1.019,80 | R$ 502,03 |
+| runway_final | R$ 1,60 | R$ 7,39 | R$ 18,57 | R$ 8,05 |
+| var95_caixa | R$ -5.791,04 | R$ 2.485,51 | R$ 7.364,64 | R$ 1.698,63 |
+| cvar95_caixa | R$ -7.637,53 | R$ 1.865,99 | R$ 3.642,05 | R$ 740,65 |
+| roi_total_pct | -29.60% | 897.39% | 17847.28% | 5470.92% |
+| payback_meses_medio | R$ 1,51 | R$ 3,29 | R$ 5,72 | R$ 3,44 |
+| ltv_cac | 1.53x | 3.67x | 10.32x | 71.22x |
 
 ## 5.3 Probabilidades de Risco
 
 | Indicador | Valor |
 |---|---|
-| Prob. Caixa < 0 | ✅ **2.0%** |
-| Prob. Quebra | ✅ **4.7%** |
+| Prob. Caixa < 0 | ✅ **1.3%** |
+| Prob. Quebra | ✅ **10.7%** |
 
 ---
 
 # 6. ⚠️ ALERTAS DO MOTOR
 
-- ℹ️ {'tipo': 'runway_critico', 'mes': 2, 'runway': np.float64(5.841462182009517)}
-- ℹ️ {'tipo': 'runway_critico', 'mes': 24, 'runway': np.float64(1.776929519372213)}
-- ℹ️ {'tipo': 'runway_critico', 'mes': 25, 'runway': np.float64(5.999806751967696)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 1, 'runway': np.float64(1.5038484281403244)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 2, 'runway': np.float64(0.8395916745600899)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 3, 'runway': np.float64(1.0035137170954511)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 4, 'runway': np.float64(1.2804658240022173)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 5, 'runway': np.float64(1.6574273068515797)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 6, 'runway': np.float64(2.1422928050801167)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 7, 'runway': np.float64(2.7598666279279276)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 8, 'runway': np.float64(3.4946603180028633)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 9, 'runway': np.float64(4.342669824796171)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 10, 'runway': np.float64(5.327176469155275)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 11, 'runway': np.float64(5.677079601846657)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 12, 'runway': np.float64(5.676016317535411)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 13, 'runway': np.float64(5.831914430329931)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 14, 'runway': np.float64(5.965130624904721)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 24, 'runway': np.float64(2.6840210107035625)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 34, 'runway': np.float64(4.706177177067826)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 35, 'runway': np.float64(4.671841060236905)}
+- ℹ️ {'tipo': 'runway_critico', 'mes': 36, 'runway': np.float64(4.693033959791339)}
 
 ---
 
@@ -369,10 +384,10 @@
 
 | Campo | Valor |
 |---|---|
-| Timestamp | 13/12/2025 16:03:07 |
+| Timestamp | 13/12/2025 18:36:28 |
 | Colunas Motor | 107 |
 | Métricas MC | 82 |
-| Alertas | 3 |
+| Alertas | 18 |
 
 ---
 *Fim do Relatório*

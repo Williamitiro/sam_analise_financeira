@@ -2,13 +2,13 @@
   "chart_id": "pg4_viz1_ltv_cac",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T16:04:53.779613",
+  "timestamp": "2025-12-13T19:58:49.802614",
   "title_simple": "VIZ 4.1: LTV vs CAC (A 'Regua de Ouro')",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Múltiplo LTV/CAC atinge 5.3x no M36.",
-    "causa": "Resultado combinado de expansão do LTV e CAC estável.",
-    "implicacao": "Cada R$ 1 investido em marketing retorna R$ 5.29 de margem bruta.",
+    "fato": "Múltiplo LTV/CAC atinge 5.1x no M36.",
+    "causa": "Resultado combinado de expansão do LTV e otimização do CAC.",
+    "implicacao": "Cada R$ 1 investido em marketing retorna R$ 5.14 de margem bruta.",
     "acao": "Acelerar investimento em aquisição (Growth) pois a unidade é lucrativa."
   },
   "files": {

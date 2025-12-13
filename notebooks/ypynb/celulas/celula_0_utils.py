@@ -243,22 +243,25 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
         display(Markdown(markdown_table))
     else:
         # Modo Notebook: HTML Rico com CSS
-        style = """
-        <style>
-            .dataframe { font-family: Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 5px; }
-            .dataframe th { background-color: #f0f0f0; color: #333; font-weight: bold; border-bottom: 2px solid #ccc; padding: 10px; text-align: left; }
-            .dataframe td { padding: 10px; border-bottom: 1px solid #eee; }
-            .dataframe tr:hover { background-color: #f9f9f9; }
-            .status-red { color: #D32F2F; font-weight: bold; background-color: #FFEBEE; padding: 2px 6px; border-radius: 4px; }
-            .status-yellow { color: #FBC02D; font-weight: bold; background-color: #FFFDE7; padding: 2px 6px; border-radius: 4px; }
-            .status-green { color: #388E3C; font-weight: bold; background-color: #E8F5E9; padding: 2px 6px; border-radius: 4px; }
-        </style>
-        """
-        html_table = style + df_tabela.to_html(index=False, escape=False, classes='dataframe')
-        display(HTML(html_table))
-        
-        # CORREÇÃO V7.6: Espaçamento após tabela HTML
-        display(Markdown(""))
+        if df_tabela is not None and not df_tabela.empty:
+            style = """
+            <style>
+                .dataframe { font-family: Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 5px; }
+                .dataframe th { background-color: #f0f0f0; color: #333; font-weight: bold; border-bottom: 2px solid #ccc; padding: 10px; text-align: left; }
+                .dataframe td { padding: 10px; border-bottom: 1px solid #eee; }
+                .dataframe tr:hover { background-color: #f9f9f9; }
+                .status-red { color: #D32F2F; font-weight: bold; background-color: #FFEBEE; padding: 2px 6px; border-radius: 4px; }
+                .status-yellow { color: #FBC02D; font-weight: bold; background-color: #FFFDE7; padding: 2px 6px; border-radius: 4px; }
+                .status-green { color: #388E3C; font-weight: bold; background-color: #E8F5E9; padding: 2px 6px; border-radius: 4px; }
+            </style>
+            """
+            html_table = style + df_tabela.to_html(index=False, escape=False, classes='dataframe')
+            display(HTML(html_table))
+            
+            # CORREÇÃO V7.6: Espaçamento após tabela HTML
+            display(Markdown(""))
+        else:
+            display(Markdown("_Sem dados tabulares para exibir._"))
     
     # 5. BLOCO E: INSIGHT ESTRATÉGICO
     # CORREÇÃO V7.6: Separador visual antes do insight

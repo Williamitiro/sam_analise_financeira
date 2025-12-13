@@ -46,7 +46,7 @@ PREMISSAS = {
     
     # --- METAS DE CRESCIMENTO MENSAL (DRIVERS) ---
     # A meta semanal será calculada baseada nestes números no final do script.
-    'crescimento_trafego_mes_1_6': 0.25,      # 25% ao mês (Fase Validação)
+    'crescimento_trafego_mes_1_6': 0.20,      # 25% ao mês (Fase Validação)
     'crescimento_trafego_mes_7_12': 0.07,     # 7% ao mês (Fase Consolidação)
     'crescimento_trafego_mes_13_plus': 0.04,  # 4% ao mês (Fase Escala)
 
@@ -179,7 +179,7 @@ PREMISSAS = {
     # ========================================================================
     # R$ 2.000 é o teto máximo.
     # O script de validação vai checar se isso paga o CAC.
-    'marketing_fixo_mensal': 1.00,
+    'marketing_fixo_mensal': 1750.00,
     'marketing_perc_receita': 0.40,           # Reinveste 40% da receita em ads
     'marketing_teto': 25000.00,               # Teto futuro
 
@@ -245,7 +245,7 @@ PREMISSAS = {
     # ========================================================================
     # 11. CAPITAL & CONTABILIDADE (REALIDADE DO CLIENTE)
     # ========================================================================
-    'caixa_inicial': 3500.00,       # Dinheiro na conta hoje
+    'caixa_inicial': 2000.00,       # Dinheiro na conta hoje
     'aporte_mensal': 2000.00,       # Quanto entra por mês
     'meses_aporte': 10,             # Garantia de aporte por 6 meses, não mexe nisso!!!
 

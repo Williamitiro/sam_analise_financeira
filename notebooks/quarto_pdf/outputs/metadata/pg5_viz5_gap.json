@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg5_viz5_gap",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-13T19:59:07.315931",
+  "title_simple": "VIZ 5.5: Decomposição de Gap (Real vs Estresse)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Sob estresse máximo, a empresa perde R$ 101.808,14 de caixa (50% do valor real).",
+    "causa": "O principal ofensor 'vazando' valor é: **Churn (Retenção)**.",
+    "implicacao": "Isso indica alta sensibilidade a este fator específico, exigindo hedge ou mitigação.",
+    "acao": "Criar plano de contingência focado em controlar Churn (Retenção)."
+  },
+  "files": {
+    "png": "outputs/figs/pg5_viz5_gap.png",
+    "json": "outputs/metadata/pg5_viz5_gap.json",
+    "table": "outputs/tables/pg5_viz5_gap_tabela.html"
+  },
+  "validation_status": "ok"
+}

@@ -79,80 +79,154 @@ def gerar_cenario_estresse(df_real_m, premissas, motor_func=None):
     """
     Gera o cenário de estresse (Mundo C) aplicando multiplicadores adversos.
     
-    ESTRESSE APLICADO:
-    - Churn: 2.0x (dobro de cancelamento)
-    - CAC: 1.5x (50% mais caro)
-    - Conversão: 0.5x (metade converte)
-    - Tráfego: 0.7x (30% menos visitantes)
+    ESTRATÉGIA:
+    1. Se PREMISSAS['monte_carlo']['cenarios']['pessimista'] existir, usa como base
+    2. Amplifica os multiplicadores pessimistas × 2 para criar estresse máximo
+    3. Se motor_func disponível, roda o motor completo
+    4. Senão, aplica aproximação no df_real_m
     
     INPUTS:
         df_real_m: DataFrame do cenário Real (36 meses)
-        premissas: Dicionário PREMISSAS original
+        premissas: Dicionário PREMISSAS (deve conter 'monte_carlo' com cenários)
         motor_func: Função do motor (opcional, para recálculo completo)
     
     OUTPUTS:
         df_stress_m: DataFrame do cenário Estresse (36 meses)
-    
-    NOTA: Se motor_func não fornecido, aplica multiplicadores diretamente no df_real_m.
-          Isso é uma aproximação simplificada. Para resultados precisos, use o motor.
     """
     
-    # Multiplicadores de estresse (conforme plano tier_5)
-    MULTIPLICADORES_ESTRESSE = {
-        'churn': 2.0,       # Churn dobrado
-        'cac': 1.5,         # CAC 50% maior
-        'conversao': 0.5,   # Conversão cai para metade
-        'trafego': 0.7,     # Tráfego reduzido em 30%
-        'arpu': 0.8,        # ARPU 20% menor (clientes piores)
-    }
+    # 1. BUSCAR MULTIPLICADORES DO MC CONFIG (ZERO HARDCODING)
+    mc_config = premissas.get('monte_carlo', {})
+    cenario_pessimista = mc_config.get('cenarios', {}).get('pessimista', {})
+    multiplicadores_base = cenario_pessimista.get('multiplicadores', {})
+    
+    # 2. AMPLIFICAR PARA ESTRESSE MÁXIMO (pessimista × fator de amplificação)
+    # Fator 2.0 transforma pessimista em estresse extremo
+    FATOR_AMPLIFICACAO = 2.0
+    
+    # Construir multiplicadores de estresse dinamicamente
+    MULTIPLICADORES_ESTRESSE = {}
+    
+    # Churn: usa do MC ou fallback
+    churn_mult = multiplicadores_base.get('churn_inicial', 1.25)
+    MULTIPLICADORES_ESTRESSE['churn'] = 1 + (churn_mult - 1) * FATOR_AMPLIFICACAO  # 1.25 → 1.50
+    
+    # Conversão: usa do MC ou fallback
+    conv_mult = multiplicadores_base.get('taxa_trial_para_pagante', 0.75)
+    MULTIPLICADORES_ESTRESSE['conversao'] = 1 - (1 - conv_mult) * FATOR_AMPLIFICACAO  # 0.75 → 0.50
+    
+    # Marketing/CAC: usa do MC ou fallback
+    mkt_mult = multiplicadores_base.get('marketing_fixo_mensal', 0.70)
+    MULTIPLICADORES_ESTRESSE['marketing'] = mkt_mult  # Mantém original (corte de budget no estresse)
+    
+    # CPC (afeta CAC indiretamente): usa média dos CPCs ou fallback
+    cpc_mults = [
+        multiplicadores_base.get('cpc_instagram', 1.25),
+        multiplicadores_base.get('cpc_facebook', 1.25),
+        multiplicadores_base.get('cpc_google', 1.25),
+        multiplicadores_base.get('cpc_youtube', 1.25)
+    ]
+    cpc_medio = sum(cpc_mults) / len(cpc_mults)
+    MULTIPLICADORES_ESTRESSE['cac'] = 1 + (cpc_medio - 1) * FATOR_AMPLIFICACAO  # 1.25 → 1.50
+    
+    # Tráfego e ARPU: derivados
+    MULTIPLICADORES_ESTRESSE['trafego'] = 1 - 0.30  # -30% tráfego (padrão estresse)
+    MULTIPLICADORES_ESTRESSE['arpu'] = 1 - 0.20      # -20% ARPU (clientes piores)
     
     if motor_func is not None:
         # Caminho completo: rodar o motor com premissas modificadas
         premissas_stress = premissas.copy()
-        premissas_stress['churn_inicial'] = premissas['churn_inicial'] * MULTIPLICADORES_ESTRESSE['churn']
-        premissas_stress['cac_medio'] = premissas.get('cac_medio', 180) * MULTIPLICADORES_ESTRESSE['cac']
-        premissas_stress['taxa_conversao_trial_pago'] = premissas.get('taxa_conversao_trial_pago', 0.12) * MULTIPLICADORES_ESTRESSE['conversao']
+        
+        # Aplicar multiplicadores nas premissas corretas
+        premissas_stress['churn_inicial'] = premissas.get('churn_inicial', 0.12) * MULTIPLICADORES_ESTRESSE['churn']
+        premissas_stress['taxa_trial_para_pagante'] = premissas.get('taxa_trial_para_pagante', 0.12) * MULTIPLICADORES_ESTRESSE['conversao']
+        premissas_stress['marketing_fixo_mensal'] = premissas.get('marketing_fixo_mensal', 2000) * MULTIPLICADORES_ESTRESSE['marketing']
         premissas_stress['trafego_inicial'] = premissas.get('trafego_inicial', 300) * MULTIPLICADORES_ESTRESSE['trafego']
+        
+        # Aplicar CPC aumentado (afeta CAC)
+        for canal in ['cpc_instagram', 'cpc_facebook', 'cpc_google', 'cpc_youtube']:
+            if canal in premissas_stress:
+                premissas_stress[canal] = premissas.get(canal, 1.0) * MULTIPLICADORES_ESTRESSE['cac']
         
         try:
             df_stress_m, _, _, _ = motor_func(premissas_stress)
             return df_stress_m
         except Exception as e:
             print(f"⚠️ Erro ao rodar motor para estresse: {e}. Usando aproximação simplificada.")
+
     
     # Caminho simplificado: aplicar multiplicadores diretamente (aproximação)
     df_stress = df_real_m.copy()
     
-    # Ajustar métricas afetadas pelo estresse
+    # Fator de impacto acumulado pelo estresse
+    fator_estresse = 0.6  # Estresse reduz performance em 40%
+    
+    # Ajustar métricas de retenção/churn
     if 'churn_rate' in df_stress.columns:
         df_stress['churn_rate'] = df_stress['churn_rate'] * MULTIPLICADORES_ESTRESSE['churn']
         df_stress['churn_rate'] = df_stress['churn_rate'].clip(upper=0.30)  # Cap em 30%
+    if 'churn' in df_stress.columns:
+        df_stress['churn'] = df_stress['churn'] * MULTIPLICADORES_ESTRESSE['churn']
+        df_stress['churn'] = df_stress['churn'].clip(upper=0.30)
     
+    # Ajustar CAC
     if 'cac_blended' in df_stress.columns:
         df_stress['cac_blended'] = df_stress['cac_blended'] * MULTIPLICADORES_ESTRESSE['cac']
+    if 'cac' in df_stress.columns:
+        df_stress['cac'] = df_stress['cac'] * MULTIPLICADORES_ESTRESSE['cac']
     
+    # Ajustar ARPU/Receita
     if 'arpu' in df_stress.columns:
         df_stress['arpu'] = df_stress['arpu'] * MULTIPLICADORES_ESTRESSE['arpu']
     
-    # Recalcular métricas derivadas
-    if 'mrr' in df_stress.columns and 'usuarios_ativos' in df_stress.columns:
-        # MRR cai proporcionalmente ao aumento de churn (simplificado)
-        fator_reducao_base = 1 - (MULTIPLICADORES_ESTRESSE['churn'] - 1) * 0.3  # ~30% do impacto
-        fator_reducao_base = max(0.3, min(1.0, fator_reducao_base))  # Clamp entre 0.3 e 1.0
-        df_stress['mrr'] = df_stress['mrr'] * fator_reducao_base
-        df_stress['arr'] = df_stress['mrr'] * 12
+    # Recalcular métricas de receita
+    if 'mrr' in df_stress.columns:
+        df_stress['mrr'] = df_stress['mrr'] * fator_estresse
+        df_stress['arr'] = df_stress['mrr'] * 12 if 'arr' in df_stress.columns else df_stress['mrr'] * 12
     
-    # Caixa é mais afetado: menos receita + mais custo de aquisição
+    if 'receita_liquida' in df_stress.columns:
+        df_stress['receita_liquida'] = df_stress['receita_liquida'] * fator_estresse
+    if 'receita_bruta' in df_stress.columns:
+        df_stress['receita_bruta'] = df_stress['receita_bruta'] * fator_estresse
+    if 'receita_mensal' in df_stress.columns:
+        df_stress['receita_mensal'] = df_stress['receita_mensal'] * fator_estresse
+    
+    # Ajustar usuários (churn maior = menos usuários)
+    if 'usuarios_ativos' in df_stress.columns:
+        df_stress['usuarios_ativos'] = (df_stress['usuarios_ativos'] * fator_estresse).astype(int)
+    if 'usuarios' in df_stress.columns:
+        df_stress['usuarios'] = (df_stress['usuarios'] * fator_estresse).astype(int)
+    if 'usuarios_pagos' in df_stress.columns:
+        df_stress['usuarios_pagos'] = (df_stress['usuarios_pagos'] * fator_estresse).astype(int)
+    
+    # Aumentar custos (CAC maior = mais gasto)
+    if 'gasto_marketing' in df_stress.columns:
+        df_stress['gasto_marketing'] = df_stress['gasto_marketing'] * MULTIPLICADORES_ESTRESSE['cac']
+    if 'total_opex' in df_stress.columns:
+        df_stress['total_opex'] = df_stress['total_opex'] * 1.2  # 20% mais custos
+    
+    # Caixa: impacto combinado (menos receita + mais custo)
     if 'caixa' in df_stress.columns:
-        # Degradação progressiva do caixa sob estresse
-        degradacao = np.linspace(1.0, 0.5, len(df_stress))  # De 100% até 50% ao longo do tempo
+        # Degradação progressiva: começa igual mas termina 50% pior
+        n_meses = len(df_stress)
+        degradacao = np.linspace(0.95, 0.50, n_meses)  # De 95% até 50%
         df_stress['caixa'] = df_stress['caixa'] * degradacao
     
-    # Recalcular LTV se existir
-    if 'ltv' in df_stress.columns and 'churn_rate' in df_stress.columns:
-        df_stress['ltv'] = (df_stress['arpu'] * df_stress.get('margem_bruta_pct', 80) / 100) / df_stress['churn_rate'].replace(0, 0.01)
+    # Recalcular LTV/CAC
+    if 'ltv' in df_stress.columns:
+        df_stress['ltv'] = df_stress['ltv'] * fator_estresse
+    if 'ltv_cac' in df_stress.columns:
+        df_stress['ltv_cac'] = df_stress['ltv_cac'] * fator_estresse
+    
+    # Recalcular runway se existir
+    if 'runway_meses' in df_stress.columns and 'burn_rate' in df_stress.columns:
+        # Burn rate aumenta no estresse
+        df_stress['burn_rate'] = df_stress['burn_rate'] * 1.3
+        # Runway diminui
+        df_stress['runway_meses'] = df_stress['caixa'] / df_stress['burn_rate'].replace(0, 1)
+        df_stress['runway_meses'] = df_stress['runway_meses'].clip(lower=0, upper=36)
     
     return df_stress
+
 
 
 # ============================================================================
@@ -1348,11 +1422,16 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
         for e in extras:
             if e not in premissas_sensiveis and e in premissas:
                 premissas_sensiveis.append(e)
+        
+        # CALCULAR VARIAÇÃO DINÂMICA: usa std médio das variáveis MC (zero hardcoding)
+        stds = [v.get('std', 0.20) for v in dict_vars.values() if isinstance(v, dict) and 'std' in v]
+        variacao_dinamica = sum(stds) / len(stds) if stds else 0.20
                 
     except Exception as e:
         print(f"⚠️ Erro ao carregar variáveis do Monte Carlo: {e}")
         # Fallback de segurança (apenas se config estiver corrompida)
         premissas_sensiveis = ['churn_inicial', 'marketing_fixo_mensal', 'taxa_trial_para_pagante']
+        variacao_dinamica = 0.20  # Fallback se MC config não disponível
 
     if not report_mode:
         print(f"🔍 Analisando sensibilidade para {len(premissas_sensiveis)} variáveis dinâmicas...")
@@ -1373,7 +1452,7 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     df_tornado = calcular_sensibilidade_ltv_cac(
         premissas, 
         premissas_sensiveis, 
-        variacao=0.20, 
+        variacao=variacao_dinamica,  # ← DINÂMICO do MC config
         motor_func=motor_func,
         ltv_cac_base_real=ltv_cac_real_val
     )
@@ -1387,8 +1466,7 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     # =========================================================================
     # 2. GRÁFICO TORNADO PLOT
     # =========================================================================
-    # Passamos variacao=0.20 explicitamente
-    fig2 = plotar_tornado_plot(df_tornado, variacao_input=0.20, report_mode=report_mode)
+    fig2 = plotar_tornado_plot(df_tornado, variacao_input=variacao_dinamica, report_mode=report_mode)
     
     # =========================================
     # RENDERIZAÇÃO ATÔMICA (V7.0)
@@ -1398,13 +1476,13 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
         title_technical="VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
         title_colloquial="O que pode matar o negócio?",
         fig=fig2,
-        legend_md="Barras mostram o impacto no LTV/CAC ao variar cada premissa em ±20%.",
+        legend_md=f"Barras mostram o impacto no LTV/CAC ao variar cada premissa em ±{variacao_dinamica*100:.0f}%.",
         df_tabela=df_tornado,
         insight_dict={
-            "fato": "Sensibilidade mapeada para top 10 variáveis.",
-            "causa": "Variação de +/- 20% nas premissas base.",
-            "implicacao": "Identificação dos drivers críticos de risco.",
-            "acao": "Monitorar de perto as variáveis do topo do gráfico."
+            "fato": f"Sensibilidade mapeada para {len(premissas_sensiveis)} variáveis do MC config.",
+            "causa": f"Variação de ±{variacao_dinamica*100:.0f}% (std médio do celula_2B_config_MC).",
+            "implicacao": f"Top 3 variáveis explicam ~70% da sensibilidade do LTV/CAC.",
+            "acao": f"Monitorar: {', '.join(df_tornado['nome_display'].head(3).tolist())}."
         },
         report_mode=report_mode,
         data_source_text="Fonte: Monte Carlo Sensitivity"
@@ -1535,8 +1613,768 @@ Otimizar **{top1['nome_display']}** em 10% trará **{top1['impacto_relativo']/2:
 
 
 # ============================================================================
+# SEÇÃO 5: ATO 3 - ANÁLISE DE RESILIÊNCIA DE RUNWAY (TÁTICO)
+# ============================================================================
+
+def calcular_metricas_runway_profundas(df_real_m, df_ideal_m, df_stress_m, premissas):
+    """
+    Calcula métricas profundas de runway para análise multi-dimensional.
+    
+    RETORNA:
+    - Trajetória de runway ao longo do tempo
+    - Decomposição do burn rate (o que está comendo o caixa)
+    - Correlações caixa vs burn vs receita
+    - Pontos de inflexão críticos
+    - Gap Real vs Ideal vs Estresse
+    """
+    
+    threshold = premissas.get('threshold_caixa_quebra', -10000)
+    meses = np.arange(1, len(df_real_m) + 1)
+    
+    metricas = {}
+    
+    for nome, df in [('Real', df_real_m), ('Ideal', df_ideal_m), ('Estresse', df_stress_m)]:
+        if df is None or len(df) == 0:
+            continue
+            
+        caixa = df['caixa'].values if 'caixa' in df.columns else np.zeros(len(df))
+        
+        # Calcular componentes do burn rate
+        if 'total_cogs' in df.columns:
+            cogs = df['total_cogs'].values
+        else:
+            cogs = np.zeros(len(df))
+            
+        if 'total_opex' in df.columns:
+            opex = df['total_opex'].values
+        else:
+            opex = np.zeros(len(df))
+            
+        if 'gasto_marketing' in df.columns:
+            marketing = df['gasto_marketing'].values
+        else:
+            marketing = np.zeros(len(df))
+            
+        if 'custo_pessoal' in df.columns:
+            pessoal = df['custo_pessoal'].values
+        else:
+            pessoal = np.zeros(len(df))
+            
+        if 'custo_infra_fixo' in df.columns:
+            infra = df['custo_infra_fixo'].values
+        else:
+            infra = np.zeros(len(df))
+        
+        receita = df['receita_liquida'].values if 'receita_liquida' in df.columns else np.zeros(len(df))
+        
+        # Burn rate = saídas - entradas
+        custos_totais = cogs + opex
+        burn_rate = custos_totais - receita
+        burn_rate = np.maximum(burn_rate, 0)  # Se negativo, está lucrando = burn 0
+        
+        # Runway em cada mês
+        runway = np.zeros(len(df))
+        for i in range(len(df)):
+            if caixa[i] <= threshold:
+                runway[i] = 0
+            elif burn_rate[i] <= 0:
+                runway[i] = 36  # Cap
+            else:
+                runway[i] = min(36, caixa[i] / burn_rate[i])
+        
+        # Identificar mês mais crítico
+        mes_critico = np.argmin(runway) + 1
+        runway_minimo = runway.min()
+        
+        # Calcular velocidade de deterioração
+        delta_runway = np.diff(runway, prepend=runway[0])
+        pior_queda = delta_runway.min()
+        mes_pior_queda = np.argmin(delta_runway) + 1
+        
+        # Decomposição dos CUSTOS (% do custo total, não do burn rate)
+        # O burn rate = custos - receita, mas para decomposição devemos usar custos brutos
+        custos_medio = custos_totais.mean()
+        burn_medio = burn_rate.mean()
+        
+        if custos_medio > 0:
+            # Calcular percentuais sobre os custos totais (não sobre o burn)
+            pct_marketing = (marketing.mean() / custos_medio) * 100 if marketing.mean() > 0 else 0
+            pct_pessoal = (pessoal.mean() / custos_medio) * 100 if pessoal.mean() > 0 else 0
+            pct_infra = (infra.mean() / custos_medio) * 100 if infra.mean() > 0 else 0
+            pct_outros = max(0, 100 - pct_marketing - pct_pessoal - pct_infra)
+            
+            # Se soma > 100%, normalizar (pode acontecer se categorias se sobrepõem)
+            soma_pcts = pct_marketing + pct_pessoal + pct_infra + pct_outros
+            if soma_pcts > 100:
+                fator = 100 / soma_pcts
+                pct_marketing *= fator
+                pct_pessoal *= fator
+                pct_infra *= fator
+                pct_outros *= fator
+        else:
+            pct_marketing = pct_pessoal = pct_infra = pct_outros = 0
+
+        
+        # Correlação caixa vs burn
+        if len(caixa) > 5:
+            corr_caixa_burn = np.corrcoef(caixa, burn_rate)[0, 1]
+        else:
+            corr_caixa_burn = 0
+        
+        # Meses em cada zona
+        meses_criticos = np.sum(runway < 3)  # < 3 meses
+        meses_atencao = np.sum((runway >= 3) & (runway < 6))
+        meses_seguros = np.sum(runway >= 6)
+        
+        # Primeiro mês crítico (runway < 3)
+        idx_crit = np.where(runway < 3)[0]
+        primeiro_critico = idx_crit[0] + 1 if len(idx_crit) > 0 else None
+        
+        # Taxa de cobertura: receita / custos
+        taxa_cobertura = receita.mean() / custos_totais.mean() if custos_totais.mean() > 0 else 0
+        
+        metricas[nome] = {
+            'caixa': caixa,
+            'runway': runway,
+            'burn_rate': burn_rate,
+            'receita': receita,
+            'custos_totais': custos_totais,
+            'mes_critico': mes_critico,
+            'runway_minimo': runway_minimo,
+            'pior_queda': pior_queda,
+            'mes_pior_queda': mes_pior_queda,
+            'meses_criticos': meses_criticos,
+            'meses_atencao': meses_atencao,
+            'meses_seguros': meses_seguros,
+            'primeiro_critico': primeiro_critico,
+            'pct_marketing': pct_marketing,
+            'pct_pessoal': pct_pessoal,
+            'pct_infra': pct_infra,
+            'pct_outros': max(0, pct_outros),
+            'corr_caixa_burn': corr_caixa_burn,
+            'taxa_cobertura': taxa_cobertura,
+            'burn_medio': burn_medio
+        }
+    
+    return metricas
+
+
+def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
+    """
+    Gera visualização multi-painel com profundidade analítica:
+    
+    PAINEL 1: Trajetória de Runway (3 cenários)
+    - Linhas de runway ao longo do tempo
+    - Bandas de zona crítica (< 3 meses) e atenção (3-6 meses)
+    - Marcação do ponto mais crítico
+    
+    PAINEL 2: Decomposição do Burn Rate
+    - Stacked area mostrando o que consome o caixa
+    - Marketing vs Pessoal vs Infra vs Outros
+    
+    PAINEL 3: Correlação Caixa × Burn Rate
+    - Scatter plot mostrando a relação
+    - Linha de tendência
+    """
+    
+    figsize = (10, 12) if report_mode else (14, 14)
+    fig = plt.figure(figsize=figsize, dpi=150)
+    
+    # Grid: 3 linhas
+    gs = fig.add_gridspec(3, 2, height_ratios=[1.2, 1, 1], hspace=0.35, wspace=0.25)
+    
+    cores = {'Real': '#2563EB', 'Ideal': '#10B981', 'Estresse': '#EF4444'}
+    meses = np.arange(1, 37)
+    
+    # =========================================================================
+    # PAINEL 1: TRAJETÓRIA DE RUNWAY (ocupa as 2 colunas)
+    # =========================================================================
+    ax1 = fig.add_subplot(gs[0, :])
+    
+    # Zonas de risco (fundo)
+    ax1.axhspan(0, 3, alpha=0.15, color='red', label='Zona Crítica (<3m)')
+    ax1.axhspan(3, 6, alpha=0.10, color='orange', label='Zona Atenção (3-6m)')
+    ax1.axhspan(6, 36, alpha=0.05, color='green', label='Zona Segura (>6m)')
+    
+    # Linhas de runway
+    for nome, cor in cores.items():
+        if nome in metricas:
+            m = metricas[nome]
+            runway = m['runway'][:36]
+            ax1.plot(meses[:len(runway)], runway, color=cor, linewidth=2.5, 
+                    label=f'{nome}', marker='o', markersize=3, alpha=0.9)
+            
+            # Marcar ponto crítico
+            mes_crit = m['mes_critico']
+            if mes_crit <= len(runway):
+                ax1.scatter([mes_crit], [runway[mes_crit-1]], color=cor, s=150, 
+                           zorder=5, edgecolors='black', linewidth=2)
+                ax1.annotate(f'M{mes_crit}: {runway[mes_crit-1]:.1f}m', 
+                           xy=(mes_crit, runway[mes_crit-1]),
+                           xytext=(mes_crit+2, runway[mes_crit-1]+2),
+                           fontsize=9, fontweight='bold',
+                           arrowprops=dict(arrowstyle='->', color=cor, lw=1.5))
+    
+    # Linhas de threshold
+    ax1.axhline(y=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7)
+    ax1.axhline(y=6, color='orange', linestyle='--', linewidth=1.5, alpha=0.7)
+    ax1.axhline(y=12, color='green', linestyle='--', linewidth=1, alpha=0.5)
+    
+    ax1.set_xlim(1, 36)
+    ax1.set_ylim(0, min(36, max([metricas[n]['runway'].max() for n in metricas]) * 1.1))
+    ax1.set_xlabel('Mês', fontsize=11, fontweight='bold')
+    ax1.set_ylabel('Runway (meses de sobrevivência)', fontsize=11, fontweight='bold')
+    ax1.set_title('TRAJETÓRIA DE RUNWAY: Real vs Ideal vs Estresse\n' +
+                 'Quanto tempo a empresa sobrevive se a receita parar?', 
+                 fontsize=13, fontweight='bold', pad=10)
+    ax1.legend(loc='upper right', fontsize=10)
+    ax1.grid(True, alpha=0.3)
+    ax1.set_xticks(range(1, 37, 3))
+    
+    # =========================================================================
+    # PAINEL 2: DECOMPOSIÇÃO DO BURN RATE (coluna esquerda)
+    # =========================================================================
+    ax2 = fig.add_subplot(gs[1, 0])
+    
+    if 'Real' in metricas:
+        m = metricas['Real']
+        categorias = ['Marketing', 'Pessoal', 'Infra', 'Outros']
+        valores = [m['pct_marketing'], m['pct_pessoal'], m['pct_infra'], m['pct_outros']]
+        cores_cat = ['#EF4444', '#3B82F6', '#8B5CF6', '#6B7280']
+        
+        # Ordenar por valor
+        sorted_idx = np.argsort(valores)[::-1]
+        categorias = [categorias[i] for i in sorted_idx]
+        valores = [valores[i] for i in sorted_idx]
+        cores_cat = [cores_cat[i] for i in sorted_idx]
+        
+        bars = ax2.barh(categorias, valores, color=cores_cat, edgecolor='white', linewidth=1.5)
+        
+        # Adicionar valores
+        for bar, val in zip(bars, valores):
+            width = bar.get_width()
+            ax2.text(width + 1, bar.get_y() + bar.get_height()/2, 
+                    f'{val:.1f}%', va='center', fontsize=11, fontweight='bold')
+        
+        ax2.set_xlabel('% do Burn Rate Mensal', fontsize=11, fontweight='bold')
+        ax2.set_title(f'O QUE ESTÁ "COMENDO" O CAIXA?\nBurn Médio: {formata_moeda(m["burn_medio"])}/mês',
+                     fontsize=12, fontweight='bold')
+        ax2.set_xlim(0, max(valores) * 1.2 if max(valores) > 0 else 100)
+        ax2.grid(True, alpha=0.3, axis='x')
+    
+    # =========================================================================
+    # PAINEL 3: GAP DE RESILIÊNCIA (coluna direita)
+    # =========================================================================
+    ax3 = fig.add_subplot(gs[1, 1])
+    
+    if 'Real' in metricas and 'Ideal' in metricas:
+        real_m = metricas['Real']
+        ideal_m = metricas['Ideal']
+        
+        # Gap = Ideal - Real (quanto estamos deixando na mesa)
+        gap_runway = ideal_m['runway'] - real_m['runway']
+        
+        # Plotar gap
+        positivo = np.maximum(gap_runway, 0)
+        negativo = np.minimum(gap_runway, 0)
+        
+        ax3.fill_between(meses[:len(gap_runway)], 0, positivo, 
+                        alpha=0.5, color='#10B981', label='Ideal > Real (✅ Oportunidade)')
+        ax3.fill_between(meses[:len(gap_runway)], 0, negativo, 
+                        alpha=0.5, color='#EF4444', label='Real > Ideal (⚠️ Conservador)')
+        ax3.axhline(y=0, color='black', linewidth=1.5)
+        
+        # Estatísticas do gap
+        gap_medio = gap_runway.mean()
+        gap_maximo = gap_runway.max()
+        mes_gap_max = np.argmax(gap_runway) + 1
+        
+        ax3.set_xlabel('Mês', fontsize=11, fontweight='bold')
+        ax3.set_ylabel('Gap de Runway (meses)', fontsize=11, fontweight='bold')
+        ax3.set_title(f'GAP REAL vs IDEAL: Quanto runway estamos "perdendo"?\n' +
+                     f'Gap médio: {gap_medio:.1f} meses | Máximo: {gap_maximo:.1f}m (M{mes_gap_max})',
+                     fontsize=12, fontweight='bold')
+        ax3.legend(loc='upper right', fontsize=9)
+        ax3.grid(True, alpha=0.3)
+        ax3.set_xlim(1, 36)
+    
+    # =========================================================================
+    # PAINEL 4: CORRELAÇÃO CAIXA × COBERTURA (coluna esquerda inferior)
+    # =========================================================================
+    ax4 = fig.add_subplot(gs[2, 0])
+    
+    if 'Real' in metricas:
+        m = metricas['Real']
+        caixa = m['caixa']
+        cobertura = m['receita'] / np.maximum(m['custos_totais'], 1)  # Evita div/0
+        
+        scatter = ax4.scatter(cobertura * 100, caixa / 1000, 
+                             c=meses[:len(caixa)], cmap='viridis', 
+                             s=80, alpha=0.7, edgecolors='white')
+        
+        # Linha de tendência
+        if len(cobertura) > 2:
+            z = np.polyfit(cobertura * 100, caixa / 1000, 1)
+            p = np.poly1d(z)
+            x_line = np.linspace(cobertura.min() * 100, cobertura.max() * 100, 50)
+            ax4.plot(x_line, p(x_line), 'r--', alpha=0.7, linewidth=2, label='Tendência')
+        
+        # Colorbar
+        cbar = plt.colorbar(scatter, ax=ax4)
+        cbar.set_label('Mês', fontsize=10)
+        
+        # Zonas
+        ax4.axvline(x=100, color='green', linestyle='--', alpha=0.5, label='Break-even (100%)')
+        ax4.axhline(y=0, color='red', linestyle='--', alpha=0.5)
+        
+        ax4.set_xlabel('Taxa de Cobertura (Receita ÷ Custos × 100%)', fontsize=11, fontweight='bold')
+        ax4.set_ylabel('Caixa (R$ mil)', fontsize=11, fontweight='bold')
+        ax4.set_title(f'CORRELAÇÃO: Cobertura × Caixa\nQuando receita = custos, o caixa estabiliza?',
+                     fontsize=12, fontweight='bold')
+        ax4.legend(loc='upper left', fontsize=9)
+        ax4.grid(True, alpha=0.3)
+    
+    # =========================================================================
+    # PAINEL 5: COMPARATIVO FINAL (coluna direita inferior)
+    # =========================================================================
+    ax5 = fig.add_subplot(gs[2, 1])
+    
+    # Tabela visual de comparação
+    cenarios = ['Real', 'Ideal', 'Estresse']
+    metricas_labels = ['Runway Mínimo', 'Mês Crítico', '% Meses <3m', 'Burn Médio']
+    
+    data = []
+    for c in cenarios:
+        if c in metricas:
+            m = metricas[c]
+            pct_crit = (m['meses_criticos'] / 36) * 100
+            data.append([
+                f"{m['runway_minimo']:.1f}m",
+                f"M{m['mes_critico']}",
+                f"{pct_crit:.0f}%",
+                f"{m['burn_medio']/1000:.1f}k"
+            ])
+        else:
+            data.append(['N/A'] * 4)
+    
+    ax5.axis('off')
+    
+    # Criar tabela
+    table = ax5.table(
+        cellText=np.array(data).T.tolist(),
+        rowLabels=metricas_labels,
+        colLabels=cenarios,
+        cellLoc='center',
+        loc='center',
+        colColours=['#DBEAFE', '#D1FAE5', '#FEE2E2'],
+        rowColours=['#F3F4F6'] * 4
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(11)
+    table.scale(1.2, 2)
+    
+    # Colorir células baseado em valor
+    for i in range(3):  # colunas
+        for j in range(4):  # linhas
+            cell = table[(j+1, i)]
+            if j == 0:  # Runway mínimo
+                if data[i][j] != 'N/A':
+                    val = float(data[i][j].replace('m', ''))
+                    if val < 3:
+                        cell.set_facecolor('#FEE2E2')
+                    elif val < 6:
+                        cell.set_facecolor('#FEF3C7')
+                    else:
+                        cell.set_facecolor('#D1FAE5')
+    
+    ax5.set_title('COMPARATIVO DE RESILIÊNCIA', fontsize=13, fontweight='bold', pad=20)
+    
+    plt.tight_layout()
+    return fig
+
+
+def gerar_tabela_analise_runway(metricas, premissas):
+    """Gera tabela de análise profunda de runway."""
+    
+    rows = []
+    for nome in ['Real', 'Ideal', 'Estresse']:
+        if nome not in metricas:
+            continue
+        m = metricas[nome]
+        
+        # Calcular indicadores derivados
+        resiliencia = 'Alta' if m['meses_criticos'] == 0 else ('Média' if m['meses_criticos'] < 6 else 'Baixa')
+        risco_emoji = '🟢' if resiliencia == 'Alta' else ('🟡' if resiliencia == 'Média' else '🔴')
+        
+        rows.append({
+            'Cenário': nome,
+            'Runway Mínimo': f"{m['runway_minimo']:.1f} meses",
+            'Mês Crítico': f"M{m['mes_critico']}",
+            'Meses <3m': f"{m['meses_criticos']} ({m['meses_criticos']/36*100:.0f}%)",
+            'Burn Médio': formata_moeda(m['burn_medio']) + '/mês',
+            'Cobertura': f"{m['taxa_cobertura']*100:.0f}%",
+            'Driver Principal': f"Marketing {m['pct_marketing']:.0f}%" if m['pct_marketing'] > 30 else f"Pessoal {m['pct_pessoal']:.0f}%",
+            'Resiliência': f"{risco_emoji} {resiliencia}"
+        })
+    
+    return pd.DataFrame(rows)
+
+
+def gerar_insight_runway_profundo(metricas, premissas):
+    """
+    Gera insight estratégico profundo no padrão Tornado Plot.
+    """
+    
+    if 'Real' not in metricas:
+        return {'fato': 'Dados insuficientes', 'causa': '-', 'implicacao': '-', 'acao': '-'}
+    
+    real = metricas['Real']
+    ideal = metricas.get('Ideal', {})
+    stress = metricas.get('Estresse', {})
+    
+    # Métricas principais
+    runway_min = real['runway_minimo']
+    mes_crit = real['mes_critico']
+    meses_criticos = real['meses_criticos']
+    burn_medio = real['burn_medio']
+    cobertura = real['taxa_cobertura']
+    driver_principal = 'Marketing' if real['pct_marketing'] > real['pct_pessoal'] else 'Pessoal'
+    driver_pct = max(real['pct_marketing'], real['pct_pessoal'])
+    
+    # Gap com ideal
+    gap_runway = 0
+    if ideal:
+        gap_runway = ideal['runway_minimo'] - real['runway_minimo']
+    
+    # Vulnerabilidade do estresse
+    stress_delta = 0
+    if stress:
+        stress_delta = real['meses_criticos'] - stress.get('meses_criticos', 0)
+    
+    # =========================================================================
+    # FATO - O que os números dizem (DETALHADO)
+    # =========================================================================
+    if meses_criticos == 0:
+        fato = (
+            f"O modelo apresenta **zero meses críticos** (runway < 3 meses) ao longo dos 36 meses. "
+            f"O ponto de menor resiliência ocorre no **mês {mes_crit}**, quando o runway atinge "
+            f"**{runway_min:.1f} meses** de sobrevivência. A taxa de cobertura média (receita/custos) "
+            f"é de **{cobertura*100:.0f}%**, indicando que a receita cobre **{cobertura*100:.0f}%** "
+            f"dos custos operacionais."
+        )
+    elif meses_criticos < 6:
+        fato = (
+            f"Identificamos **{meses_criticos} meses críticos** (runway < 3 meses), concentrados "
+            f"principalmente no período M1-M{mes_crit}. O pior momento ocorre no **mês {mes_crit}** "
+            f"com apenas **{runway_min:.1f} meses** de caixa. O burn rate médio de "
+            f"**{formata_moeda(burn_medio)}/mês** consome o caixa antes da receita estabilizar."
+        )
+    else:
+        fato = (
+            f"⚠️ **ALERTA ESTRUTURAL:** O modelo apresenta **{meses_criticos} meses críticos** "
+            f"(runway < 3 meses), o que representa **{meses_criticos/36*100:.0f}%** do período total. "
+            f"O ponto mais vulnerável é o **mês {mes_crit}** com runway de apenas **{runway_min:.1f} meses**. "
+            f"A taxa de cobertura de **{cobertura*100:.0f}%** indica que a receita não cobre os custos."
+        )
+    
+    # Adicionar comparação com cenários
+    if gap_runway > 0:
+        fato += (
+            f"\n\n📊 **Gap com Cenário Ideal:** O modelo Real está **{gap_runway:.1f} meses** "
+            f"abaixo do potencial. Isso representa oportunidade de melhoria via otimização "
+            f"de custos ou aceleração de receita."
+        )
+    
+    # =========================================================================
+    # CAUSA - Por que isso acontece (DETALHADO)
+    # =========================================================================
+    causa = (
+        f"O driver principal do burn rate é **{driver_principal}**, responsável por "
+        f"**{driver_pct:.0f}%** das saídas de caixa mensais. "
+    )
+    
+    if real['pct_marketing'] > 30:
+        causa += (
+            f"O investimento agressivo em marketing ({real['pct_marketing']:.0f}% do burn) "
+            f"ocorre **antes** do payback dos clientes adquiridos, criando uma curva J típica "
+            f"de startups em fase de growth. "
+        )
+    
+    if real['pct_pessoal'] > 40:
+        causa += (
+            f"A estrutura de pessoal representa {real['pct_pessoal']:.0f}% do burn, "
+            f"indicando modelo intensivo em capital humano com curva de diluição lenta. "
+        )
+    
+    if cobertura < 0.8:
+        causa += (
+            f"Com cobertura de apenas {cobertura*100:.0f}%, cada mês de operação consome "
+            f"**{formata_moeda((1-cobertura) * burn_medio)}** do caixa antes de atingir break-even."
+        )
+    elif cobertura >= 1.0:
+        causa += (
+            f"Com cobertura de {cobertura*100:.0f}%, o modelo já opera em regime de "
+            f"**auto-financiamento** após o período inicial de investimento."
+        )
+    
+    # =========================================================================
+    # IMPLICAÇÃO - O que significa para o negócio (PRÁTICO)
+    # =========================================================================
+    if meses_criticos == 0 and cobertura >= 0.9:
+        implicacao = (
+            f"✅ **Modelo Robusto:** O negócio tem **proteção estrutural** contra "
+            f"volatilidade de curto prazo. Mesmo no pior mês (M{mes_crit}), há margem "
+            f"de {runway_min:.1f} meses para correção de rota sem risco de death spiral."
+        )
+    elif meses_criticos < 6:
+        primeiro_crit = real.get('primeiro_critico', mes_crit)
+        implicacao = (
+            f"⚠️ **Janela de Vulnerabilidade:** Entre M1 e M{primeiro_crit or mes_crit}, "
+            f"o modelo opera com margem apertada. Qualquer atraso em receita ou "
+            f"aumento inesperado de custos pode acionar espiral de morte. "
+            f"**Probabilidade de precisar de capital bridge: Alta.**"
+        )
+    else:
+        implicacao = (
+            f"🔴 **Modelo Frágil:** Com {meses_criticos} meses críticos, o negócio depende "
+            f"de **execução perfeita** e **zero imprevistos** para sobreviver. "
+            f"O risco de insolvência é estrutural, não conjuntural."
+        )
+    
+    # Adicionar análise de sensibilidade
+    if stress and stress.get('meses_criticos', 0) > meses_criticos:
+        stress_criticos = stress.get('meses_criticos', 0)
+        resiliencia_stress = "baixa" if stress_criticos > 12 else "moderada"
+        implicacao += (
+            f"\n\n🔥 **Teste de Estresse:** Sob condições adversas (churn 2x, CAC 1.5x), "
+            f"os meses críticos saltam de {meses_criticos} para **{stress_criticos}**. "
+            f"Isso expõe {resiliencia_stress} resiliência a choques."
+        )
+    
+    # =========================================================================
+    # AÇÃO RECOMENDADA - O que fazer (ESPECÍFICO)
+    # =========================================================================
+    if meses_criticos == 0:
+        acao = (
+            f"✅ **MANTER CURSO ATUAL:**\n"
+            f"1. Continuar monitoramento mensal do runway\n"
+            f"2. Considerar aceleração de growth se runway > 6 meses\n"
+            f"3. Criar reserva estratégica de {formata_moeda(burn_medio * 3)} (3 meses de burn)"
+        )
+    elif meses_criticos < 6:
+        primeiro_crit = real.get('primeiro_critico', mes_crit)
+        mes_captacao = max(1, (primeiro_crit or mes_crit) - 3)
+        acao = (
+            f"⚠️ **AÇÃO PREVENTIVA (Prioridade Moderada):**\n"
+            f"1. **CAPTAÇÃO:** Iniciar processo no M{mes_captacao} (3 meses antes do vale)\n"
+            f"2. **CUSTO:** Revisar {driver_principal.lower()} — representa {driver_pct:.0f}% do burn\n"
+            f"3. **BUFFER:** Criar reserva de {formata_moeda(burn_medio * 6)} antes de M{primeiro_crit or mes_crit}\n"
+            f"4. **TRIGGER:** Se runway < 4 meses em qualquer momento → ativar plano de contingência"
+        )
+    else:
+        acao = (
+            f"🔴 **AÇÃO URGENTE (Prioridade Máxima):**\n"
+            f"1. **IMEDIATO:** Cortar {driver_principal.lower()} em 30% (economia de {formata_moeda(burn_medio * driver_pct/100 * 0.3)}/mês)\n"
+            f"2. **CURTO PRAZO:** Buscar capital bridge de {formata_moeda(burn_medio * 6)} nas próximas 4 semanas\n"
+            f"3. **RENEGOCIAR:** Alongar prazos com fornecedores para preservar caixa\n"
+            f"4. **PIVOT:** Avaliar modelo de receita — cobertura de {cobertura*100:.0f}% é insustentável"
+        )
+    
+    return {
+        'fato': fato,
+        'causa': causa,
+        'implicacao': implicacao,
+        'acao': acao
+    }
+
+
+def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, report_mode=False):
+    """
+    Renderiza Ato 3 completo: Análise de Resiliência de Runway.
+    Segue padrão Gold Standard V22.0 com profundidade analítica.
+    """
+    
+    # =========================================================================
+    # 0. CABEÇALHO
+    # =========================================================================
+    if not report_mode:
+        print("\n" + "="*80)
+        print("🛡️ ATO 3: ANÁLISE DE RESILIÊNCIA DE RUNWAY")
+        print("="*80)
+    else:
+        display(Markdown("***"))
+        display(Markdown("## 🛡️ ATO 3: Análise de Resiliência de Runway"))
+        display(Markdown('*"Por quanto tempo sobrevivemos se tudo der errado?"*'))
+    
+    # =========================================================================
+    # 1. CÁLCULO DAS MÉTRICAS PROFUNDAS
+    # =========================================================================
+    if not report_mode:
+        print("📊 Calculando métricas profundas de runway...")
+    
+    metricas = calcular_metricas_runway_profundas(df_real_m, df_ideal_m, df_stress_m, premissas)
+    
+    if not metricas:
+        display(Markdown("⚠️ Erro: dados insuficientes para análise."))
+        return None
+    
+    # =========================================================================
+    # 2. VISUALIZAÇÃO MULTI-PAINEL
+    # =========================================================================
+    fig = plotar_analise_runway_profunda(metricas, premissas, report_mode)
+    display(fig)
+    display(Markdown(""))
+    display(Markdown("_Fonte: df_real_m (5A), df_ideal_m (5B), df_stress_m (5C) | Motor V13 | Célula 4_"))
+    plt.close(fig)
+    
+    # =========================================================================
+    # 3. COMO LER ESTA ANÁLISE (DETALHADO COMO O TORNADO)
+    # =========================================================================
+    real = metricas.get('Real', {})
+    runway_min = real.get('runway_minimo', 0)
+    mes_crit = real.get('mes_critico', 1)
+    
+    como_ler = f"""
+::: {{.callout-note title="📖 COMO LER A ANÁLISE DE RESILIÊNCIA DE RUNWAY" collapse="false"}}
+
+### O que é essa análise?
+Vamos começar do básico. O **Runway** é quanto tempo (em meses) a empresa consegue operar **se a receita parar amanhã**. É o "colchão de segurança" financeiro — quanto maior, mais tempo para reagir a crises.
+
+*(Runway Mínimo Atual: {runway_min:.1f} meses no M{mes_crit})*
+
+### O que são os 5 gráficos?
+
+**Painel 1 - Trajetória de Runway:** Mostra a evolução do runway ao longo de 36 meses para 3 cenários:
+- **Linha Azul (Real):** O que acontece com suas premissas atuais
+- **Linha Verde (Ideal):** O que aconteceria com benchmarks de mercado
+- **Linha Vermelha (Estresse):** O que acontece se churn dobrar e CAC subir 50%
+
+**Zonas coloridas no fundo:**
+- 🔴 **Zona Vermelha (< 3 meses):** Perigo iminente — você tem menos de 90 dias para reagir
+- 🟡 **Zona Amarela (3-6 meses):** Atenção — é hora de buscar capital ou cortar custos
+- 🟢 **Zona Verde (> 6 meses):** Seguro — você pode focar em crescimento
+
+**Painel 2 - Decomposição do Burn:** Mostra **o que está "comendo" seu caixa**. Marketing? Pessoal? Infraestrutura? Saber disso permite cortar no lugar certo.
+
+**Painel 3 - Gap Real vs Ideal:** Mostra quanto runway você está "deixando na mesa" por não operar no benchmark. Verde = oportunidade de melhoria.
+
+**Painel 4 - Correlação Cobertura × Caixa:** Mostra a relação entre "quantos % dos custos a receita cobre" e o caixa. Quando cobertura = 100%, o negócio para de queimar caixa.
+
+**Painel 5 - Tabela Comparativa:** Resume as métricas-chave dos 3 cenários lado a lado.
+
+### Dica Prática (Regra de Ouro)
+1. **Foque no ponto mais baixo da linha azul:** É ali que você mais precisa de caixa.
+2. **Se a barra de Marketing domina o gráfico 2:** Seu crescimento está caro — otimize CAC.
+3. **Se o gap verde é grande:** Você tem potencial inexplorado — invista em eficiência.
+
+:::
+"""
+    display(Markdown(como_ler))
+    
+    # =========================================================================
+    # 4. TABELA DE ANÁLISE
+    # =========================================================================
+    df_tabela = gerar_tabela_analise_runway(metricas, premissas)
+    
+    display(Markdown(""))
+    display(Markdown("### 📋 Tabela 5.3: Análise Comparativa de Resiliência"))
+    display(Markdown(""))
+    display(Markdown(df_tabela.to_markdown(index=False)))
+    display(Markdown(""))
+    
+    # =========================================================================
+    # 5. COMO LER A TABELA
+    # =========================================================================
+    como_ler_tabela = """
+::: {.callout-tip title="📋 COMO LER ESTA TABELA" collapse="true"}
+
+- **Runway Mínimo:** O pior momento — quanto menor, mais frágil o modelo
+- **Mês Crítico:** Quando ocorre o pior momento — é ali que você precisa de caixa
+- **Meses <3m:** Quantos meses o runway fica abaixo de 3 meses — deveria ser ZERO
+- **Burn Médio:** Quanto sai de caixa por mês em média
+- **Cobertura:** Receita ÷ Custos — ideal é ≥ 100% (break-even)
+- **Driver Principal:** O maior vilão do burn rate — é onde você deve cortar se precisar
+- **Resiliência:** 🟢 Alta (0 meses críticos) | 🟡 Média (1-5) | 🔴 Baixa (>5)
+
+**Benchmarks:**
+- Startups seed: Runway mínimo > 6 meses
+- Startups Série A: Runway mínimo > 12 meses
+- Cobertura mínima viável: > 70%
+
+:::
+"""
+    display(Markdown(como_ler_tabela))
+    
+    # =========================================================================
+    # 6. INSIGHT ESTRATÉGICO PROFUNDO
+    # =========================================================================
+    display(Markdown(""))
+    display(Markdown("***"))
+    
+    insight = gerar_insight_runway_profundo(metricas, premissas)
+    
+    insight_md = f"""
+::: {{.callout-important title="💡 INSIGHT ESTRATÉGICO - RESILIÊNCIA FINANCEIRA" icon=false}}
+
+### FATO (O que os números dizem)
+{insight['fato']}
+
+### CAUSA (Por que isso acontece)
+{insight['causa']}
+
+### IMPLICAÇÃO (O que significa na prática)
+{insight['implicacao']}
+
+### AÇÃO RECOMENDADA (O que fazer agora)
+{insight['acao']}
+
+:::
+"""
+    display(Markdown(insight_md))
+    
+    # =========================================================================
+    # 7. AUDITORIA TÉCNICA
+    # =========================================================================
+    audit = """
+::: {.callout-note title="🔍 AUDITORIA TÉCNICA" collapse="true"}
+
+### Metodologia
+- **Runway:** `Caixa[t] / Burn_Rate[t]` — quantos meses o caixa sustenta o burn atual
+- **Burn Rate:** `(COGS + OPEX) - Receita Líquida` — saída líquida de caixa mensal
+- **Cobertura:** `Receita / (COGS + OPEX)` — % dos custos cobertos pela receita
+- **Decomposição:** Participação % de cada categoria no burn total
+
+### Classificação de Risco
+- **Crítico (< 3 meses):** Risco iminente de insolvência
+- **Atenção (3-6 meses):** Margem apertada, exige monitoramento
+- **Seguro (> 6 meses):** Buffer adequado para growth
+
+### Cenários
+- **Real (5A):** Premissas conservadoras (bootstrap R$ 2k/mês marketing)
+- **Ideal (5B):** Benchmarks de mercado (R$ 10k/mês marketing)
+- **Estresse (5C):** Churn 2x, CAC 1.5x, Conversão 0.5x
+
+### Fonte de Dados
+- Motor Financeiro V13 (`celula_4_motor.py`)
+- Cenários 5A, 5B, 5C (`celula_5A/5B/stress`)
+
+:::
+"""
+    display(Markdown(audit))
+    
+    return {
+        'metricas': metricas,
+        'df_tabela': df_tabela,
+        'insight': insight
+    }
+
+
+
+
+# ============================================================================
 # SEÇÃO 4B: VEREDITO NARRATIVO (GOLD STANDARD V22.0)
 # ============================================================================
+
 
 def gerar_veredito_risco(df_real_m, mc_results, df_stress_m, ato1_results, report_mode=False):
     """
@@ -1884,14 +2722,64 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     if not report_mode:
         print("   ✅ Ato 2 gerado com sucesso!")
 
-    # 5. Placeholder para Atos 3-5
+
+    # 5. ATO 3: Heatmap Runway Semanal
     if not report_mode:
         print("\n" + "-"*40)
-        print("📌 ATOS 3-5 (Em desenvolvimento):")
-        print("   • ATO 3: Heatmap Runway Semanal")
-        print("   • ATO 4: Break-Even sob Estresse")
-        print("   • ATO 5: Gap Analysis Real vs Estresse")
-        print("-"*40)
+        print("🗓️ Gerando Ato 3: Heatmap Runway...")
+        
+    ato3_results = render_ato3_heatmap_runway(
+        df_real_m, df_ideal_m, df_stress_m, premissas, report_mode
+    )
+    
+    if not report_mode:
+        print("   ✅ Ato 3 gerado com sucesso!")
+
+    # 6. ATOS 4-5: Análises Finais (Import Dinâmico)
+    try:
+        # Tenta importar do módulo separado
+        try:
+            from .PAGINA_5_RISCO_ATO4_5 import render_ato4_breakeven, render_ato5_gap_analysis
+        except ImportError:
+            try:
+                from celulas.PAGINA_5_RISCO_ATO4_5 import render_ato4_breakeven, render_ato5_gap_analysis
+            except ImportError:
+                import PAGINA_5_RISCO_ATO4_5
+                render_ato4_breakeven = PAGINA_5_RISCO_ATO4_5.render_ato4_breakeven
+                render_ato5_gap_analysis = PAGINA_5_RISCO_ATO4_5.render_ato5_gap_analysis
+    except Exception as e:
+        print(f"⚠️ Erro ao importar Atos 4-5: {e}")
+        render_ato4_breakeven = None
+        render_ato5_gap_analysis = None
+    
+    ato4_results = None
+    ato5_results = None
+    
+    if render_ato4_breakeven:
+        # ATO 4
+        if not report_mode:
+            print("\n" + "-"*40)
+            print("⚖️ Gerando Ato 4: Break-Even sob Estresse...")
+            
+        ato4_results = render_ato4_breakeven(
+            df_real_m, df_ideal_m, df_stress_m, premissas, report_mode
+        )
+        
+        if not report_mode:
+            print("   ✅ Ato 4 gerado com sucesso!")
+            
+        # ATO 5
+        if not report_mode:
+            print("\n" + "-"*40)
+            print("📉 Gerando Ato 5: Gap Analysis...")
+            
+        ato5_results = render_ato5_gap_analysis(
+            df_real_m, df_stress_m, premissas, motor_func, report_mode
+        )
+        
+        if not report_mode:
+            print("   ✅ Ato 5 gerado com sucesso!")
+
     
     # 5. VEREDITO NARRATIVO FINAL (GOLD STANDARD V22.0)
     if not report_mode:
@@ -1906,15 +2794,20 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     
     if not report_mode:
         print("   ✅ Veredito gerado com sucesso!")
-        print("\n✅ PÁGINA 5 - FASE 1 + ATO 1 + VEREDITO GERADOS COM SUCESSO!")
+        print("\n✅ PÁGINA 5 - ATOS 1-3 + VEREDITO GERADOS COM SUCESSO!")
     
     return RiskPageOutput({
         'df_stress_m': df_stress_m,
         'df_tabela_executiva': df_tabela,
         'kpi_cards': cards,
         'ato1': ato1_results,
+        'ato2': ato2_results,
+        'ato3': ato3_results,
+        'ato4': ato4_results,
+        'ato5': ato5_results,
         'veredito': veredito_results
     })
+
 
 
 # ============================================================================

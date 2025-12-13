@@ -39,7 +39,7 @@ def obter_premissas_ideal():
         # ====================================================================
         # 3. AQUISIÇÃO & GROWTH (BENCHMARK OTIMISTA)
         # ====================================================================
-        'usuarios_pagos_iniciais': 7,          # 2x do Real (benchmark)
+        'usuarios_pagos_iniciais': 5,          # 2x do Real (benchmark)
         'trafego_inicial': 250,                 # 3x do Real (benchmark)
         
         # Metas de crescimento AGRESSIVAS (benchmark de mercado)
