@@ -218,9 +218,8 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
             v12_str = f'{v12:.2f}x'
             v36_str = f'{v36:.2f}x'
             bench_str = f'{benchmark:.1f}x'
-        elif coluna in ['runway_meses', 'payback_meses']:
+        elif coluna == 'runway_meses':
             # RUNWAY REAL: sempre mostra caixa/despesas, NUNCA infinito
-            # (infinito só se não houver despesas, o que é impossível)
             v1_str = f'{v1:.1f}m'
             v6_str = f'{v6:.1f}m'
             v12_str = f'{v12:.1f}m'
@@ -231,8 +230,16 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
                 runway_real = caixa_m36 / despesas_m36
                 v36_str = f'{runway_real:.1f}m'
             else:
-                v36_str = f'{v36:.1f}m'  # Usa valor do motor se não conseguir calcular
+                v36_str = f'{v36:.1f}m'
             bench_str = f'>{benchmark:.0f}m'
+
+        elif coluna == 'payback_meses':
+            # PAYBACK: Apenas formatação simples
+            v1_str = f'{v1:.1f}m'
+            v6_str = f'{v6:.1f}m'
+            v12_str = f'{v12:.1f}m'
+            v36_str = f'{v36:.1f}m'
+            bench_str = f'<{benchmark:.0f}m'
         else:
             v1_str = f'{v1:,.0f}'
             v6_str = f'{v6:,.0f}'

@@ -39,11 +39,11 @@ def obter_premissas_ideal():
         # ====================================================================
         # 3. AQUISIÇÃO & GROWTH (BENCHMARK OTIMISTA)
         # ====================================================================
-        'usuarios_pagos_iniciais': 10,          # 2x do Real (benchmark)
-        'trafego_inicial': 500,                 # 3x do Real (benchmark)
+        'usuarios_pagos_iniciais': 7,          # 2x do Real (benchmark)
+        'trafego_inicial': 250,                 # 3x do Real (benchmark)
         
         # Metas de crescimento AGRESSIVAS (benchmark de mercado)
-        'crescimento_trafego_mes_1_6': 0.12,    # 12% ao mês (vs 5% Real)
+        'crescimento_trafego_mes_1_6': 0.20,    # 20% ao mês (vs 12% Real)
         'crescimento_trafego_mes_7_12': 0.10,   # 10% ao mês (vs 7% Real)
         'crescimento_trafego_mes_13_plus': 0.06,# 6% ao mês (vs 4% Real)
 
@@ -51,15 +51,15 @@ def obter_premissas_ideal():
         'semanas_validacao_m0_m6': 26,
 
         # Funil OTIMIZADO (benchmark)
-        'taxa_visitante_para_trial': 0.08,      # 8% (vs 5% Real)
-        'taxa_trial_para_pagante': 0.15,        # 15% (vs 12% Real)
+        'taxa_visitante_para_trial': 0.07,      # 7% (vs 5% Real)
+        'taxa_trial_para_pagante': 0.14,        # 14% (vs 12% Real)
         
         # Eficiência (time já treinado no benchmark)
-        'ramp_up_inicial': 0.60,                # 60% (vs 50% Real)
+        'ramp_up_inicial': 0.50,                # 60% (vs 50% Real)
         'ramp_up_incremento': 0.08,
         
         # Crescimento orgânico mais forte
-        'fator_visitas_organicas_por_pagante': 3.0,  # 5 (vs 2.5 Real)
+        'fator_visitas_organicas_por_pagante': 3.0,  #  (vs 2.5 Real)
         'taxa_crescimento_organico_base': 0.03,
         'elasticidade_organico': 0.70,
         'alerta_dependencia_organica_pct': 50.0,
@@ -67,9 +67,9 @@ def obter_premissas_ideal():
         # ====================================================================
         # 4. CHURN & RETENÇÃO (BENCHMARK)
         # ====================================================================
-        'churn_inicial': 0.11,                  # 11% (vs 12% Real)
+        'churn_inicial': 0.12,                  # 12% (vs 12% Real)
         'churn_maturidade': 0.05,               # 5% (vs 6% Real)
-        'churn_base': 0.05,
+        'churn_base': 0.06,
         'churn_decaimento_mensal': 0.002,
         'taxa_reativacao_base_cancelada': 0.02, # 2% (vs 1% Real)
 
@@ -92,10 +92,10 @@ def obter_premissas_ideal():
         'taxa_processamento_cartao': 0.045,
         'taxa_processamento_pix': 0.01,
         'taxa_processamento_boleto': 0.035,
-        'taxa_chargeback': 0.003,               # Menor chargeback
+        'taxa_chargeback': 0.004,               # Menor chargeback
         
-        'taxa_inadimplencia_cartao': 0.03,      # Menor inadimplência
-        'taxa_inadimplencia_pix': 0.05,
+        'taxa_inadimplencia_cartao': 0.04,      # Menor inadimplência
+        'taxa_inadimplencia_pix': 0.07,
         'taxa_inadimplencia_boleto': 0.02,
         
         'imposto_simples_inicial': 0.06,
@@ -159,7 +159,7 @@ def obter_premissas_ideal():
         # 7. MARKETING (BENCHMARK - COM BUDGET)
         # ====================================================================
         'marketing_habilitado': True,
-        'marketing_fixo_mensal': 5000.00,       # R$5k fixo (benchmark tem budget)
+        'marketing_fixo_mensal': 3500.00,       # R$5k fixo (benchmark tem budget)
         'marketing_perc_receita': 0.30,         # 30% reinvestimento
         'marketing_teto': 30000.00,
 
@@ -174,7 +174,7 @@ def obter_premissas_ideal():
         # ====================================================================
         # 8. PROGRAMA DE AFILIADOS
         # ====================================================================
-        'modelo_afiliado_habilitado': True,
+        'modelo_afiliado_habilitado': False,
         'pct_usuarios_via_afiliado': 0.20,
         'comissao_afiliado_tipo': 'primeira_mensalidade',
         'comissao_afiliado_fixo': 50.00, 
@@ -184,9 +184,9 @@ def obter_premissas_ideal():
         # ====================================================================
         # 9. RH & EQUIPE (TRIGGERS MAIS CEDO)
         # ====================================================================
-        'salario_fundador': 6000.00, 'trigger_fundador': 25000.00,  # Mais cedo
-        'salario_dev_senior': 10000.00, 'trigger_dev': 500,          # Mais cedo
-        'salario_cs': 4000.00, 'trigger_cs': 750,                   # Mais cedo
+        'salario_fundador': 6000.00, 'trigger_fundador': 35000.00,  # Mais cedo
+        'salario_dev_senior': 10000.00, 'trigger_dev': 650,          # Mais cedo
+        'salario_cs': 4000.00, 'trigger_cs': 850,                   # Mais cedo
         'encargos_trabalhistas': 0.70,
 
         # ====================================================================
@@ -210,7 +210,7 @@ def obter_premissas_ideal():
         'trigger_freelancer_receita': 20000.00,
         
         'beneficios_executivos': 5000.00, 
-        'trigger_beneficios_lucro': 50000.00,
+        'trigger_beneficios_lucro': 65000.00,
         
         'b2b_probabilidade_anual': 0.15,        # 15% (vs 10% Real)
         'b2b_setup_fee': 15000.00,
@@ -219,14 +219,14 @@ def obter_premissas_ideal():
         # ====================================================================
         # 11. CAPITAL (BENCHMARK COM MAIS CAIXA)
         # ====================================================================
-        'caixa_inicial': 50000.00,              # R$50k (benchmark tem capital)
-        'aporte_mensal': 5000.00,               # R$5k/mês
-        'meses_aporte': 12,                     # 12 meses garantidos
+        'caixa_inicial': 35000.00,              # R$35k (benchmark tem capital)
+        'aporte_mensal': 3500.00,               # R$3.5k/mês
+        'meses_aporte': 10,                     # 10 meses garantidos
 
         'threshold_caixa_quebra': -10000.0,
         'caixa_reserva_operacional': 5000.0,
         
-        'capex_inicial': 5000.00,
+        'capex_inicial': 1000.00,
         'capex_recorrente_24m': 12000.00,     
         'tempo_depreciacao_equipamento_meses': 24,
 

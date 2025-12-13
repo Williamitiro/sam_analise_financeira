@@ -103,6 +103,19 @@ def salvar(path, conteudo):
             pass
     raise PermissionError()
 
+def get_format_type(key: str) -> str:
+    k = key.lower()
+    # Percentuais
+    if any(x in k for x in ['taxa', 'pct', 'churn', 'crescimento', 'mix', 'margem', 'retention', 'imposto', 'elasticidade', 'fator', 'ramp_up', 'conv_', 'depreciacao', 'probabilidade']):
+        return 'PCT'
+    # Dinheiro
+    if any(x in k for x in ['preco', 'custo', 'salario', 'trigger', 'caixa', 'limit', 'marketing', 't1_', 't2_', 't3_', 't4_', 'valor', 'arpu', 'ltv', 'cac', 'ticket', 'verba', 'jeton', 'beneficio', 'encargos', 'budget', 'gasto', 'receita', 'lucro', 'ebitda', 'net_new_mrr', 'comissao']):
+        return 'MONEY'
+    # Inteiros
+    if any(x in k for x in ['meses', 'usuarios', 'trafego', 'trials', 'novos', 'headcount', 'simulacoes', 'dias', 'semanas']):
+        return 'INT'
+    return 'RAW'
+
 # ==============================================================================
 # 4. EXECUÇÃO
 # ==============================================================================
@@ -201,12 +214,19 @@ def run():
     for cat, keys in categorias.items():
         for k in keys:
             v = PREMISSAS.get(k, 'N/A')
-            if isinstance(v, float):
-                if v < 1 and v > 0:
-                    v = fmt_p(v)
+            if isinstance(v, (int, float)):
+                fmt_type = get_format_type(k)
+                if fmt_type == 'PCT':
+                    v_str = fmt_p(v, ja_em_pct=False)
+                elif fmt_type == 'MONEY':
+                    v_str = fmt_m(v)
+                elif fmt_type == 'INT':
+                    v_str = f"{int(v)}"
                 else:
-                    v = fmt_m(v) if v > 10 else f"{v:.4f}"
-            buf.append(f"| {cat} | `{k}` | {v} |")
+                    v_str = f"{v}"
+            else:
+                v_str = str(v)
+            buf.append(f"| {cat} | `{k}` | {v_str} |")
     
     buf.append("")
     buf.append("---")

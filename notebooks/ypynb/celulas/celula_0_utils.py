@@ -42,7 +42,14 @@ def setup_plot_style():
 def formata_moeda(valor):
     """Formata float para string de moeda (R$ 1.234,56)."""
     if pd.isna(valor):
-        return "N/A"
+        return "R$ 0,00"
+    
+    # Garantir que é float
+    try:
+        valor = float(valor)
+    except (ValueError, TypeError):
+        return "R$ -,--"
+
     s = f"{valor:,.2f}"
     s = s.replace(',', 'X').replace('.', ',').replace('X', '.')
     return f"R$ {s}"

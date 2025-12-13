@@ -35,7 +35,9 @@ except ImportError:
         'receita': '#2196F3', 'despesa': '#F44336', 'neutro': '#9E9E9E'
     }
     def setup_plot_style(): pass
-    def formata_moeda(v): return f"R$ {v:,.0f}" if v >= 1000 else f"R$ {v:.2f}"
+    def formata_moeda(v): 
+        s = f"{float(v):,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        return f"R$ {s}"
     def formata_pct(v): return f"{v:.1f}%"
     def render_atomic_block(**kwargs): display(Markdown(f"## {kwargs.get('title_colloquial', '')}"))
     def salvar_figura_silencioso(fig, path): fig.savefig(path, dpi=300, bbox_inches='tight')
@@ -230,13 +232,27 @@ Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, compar
     caixa_ideal_final = caixa_ideal[-1]
     burn_m1 = burn_rate[0]
     burn_m36 = burn_rate[-1]
-    reducao_burn = ((burn_m1 - burn_m36) / max(burn_m1, 1)) * 100 if burn_m1 > 0 else 0
+    # Lógica Textual de Burn Rate (Correção V1.1)
+    if burn_m1 > burn_m36:
+        reducao_burn = ((burn_m1 - burn_m36) / max(burn_m1, 1)) * 100
+        texto_burn = f"cai de {formata_moeda(burn_m1)} para {formata_moeda(burn_m36)} (-{reducao_burn:.0f}% de redução)"
+    else:
+        aumento_burn = ((burn_m36 - burn_m1) / max(burn_m1, 1)) * 100
+        texto_burn = f"sobe de {formata_moeda(burn_m1)} para {formata_moeda(burn_m36)} (+{aumento_burn:.0f}% de aumento)"
     
+    # Ação Dinâmica
+    if gap_meses > 0:
+        acao_txt = "Acelerar receita para antecipar break-even ou reduzir OPEX em 15%."
+    elif caixa_final < 0:
+        acao_txt = "Injeção de capital urgente necessária para cobrir burn rate."
+    else:
+        acao_txt = "Manter estratégia atual e reinvestir excedente em growth."
+
     insight = {
-        "fato": f"Break-even no M{mes_breakeven_real or 'N/A'} (Real) vs M{mes_breakeven_ideal or 'N/A'} (Ideal). Gap de {abs(gap_meses)} meses.",
-        "causa": f"Burn Rate cai de {formata_moeda(burn_m1)}/mês para {formata_moeda(burn_m36)}/mês ({reducao_burn:.0f}% de redução).",
+        "fato": f"Break-even no M{mes_breakeven_real if mes_breakeven_real else 'N/A'} (Real) vs M{mes_breakeven_ideal if mes_breakeven_ideal else 'N/A'} (Ideal). Gap de {abs(gap_meses)} meses.",
+        "causa": f"Burn Rate mensal {texto_burn}.",
         "implicacao": f"Caixa final de {formata_moeda(caixa_final)} (Real) vs {formata_moeda(caixa_ideal_final)} (Ideal).",
-        "acao": "Acelerar receita para antecipar break-even ou reduzir OPEX em 15%."
+        "acao": acao_txt
     }
     
     if report_mode:
@@ -783,11 +799,21 @@ Este grafico mostra a saude do caixa SEMANA A SEMANA nos primeiros 6 meses - per
     # Insight Dinâmico
     reserva_seguranca = np.mean(saidas) * 4  # 4 semanas
     
+    # Lógica Dinâmica VIZ 3.3
+    if caixa_min < limite_critico:
+        causa_txt = "Descompasso entre CAC pago adiantado e MRR recorrente no ramp-up."
+        acao_txt = "Manter sempre 4 semanas de runway. Renegociar prazos com fornecedores."
+        implicacao_txt = f"Precisamos de reserva mínima de {formata_moeda(reserva_seguranca)} para absorver vales."
+    else:
+        causa_txt = "Gestão de caixa eficiente absorvendo o custo de aquisição inicial."
+        acao_txt = "Monitorar runway para aprovar novos investimentos em marketing."
+        implicacao_txt = "Liquidez saudável suporta o crescimento planejado."
+
     insight = {
         "fato": f"Vale de caixa na semana {semana_crise} com {formata_moeda(caixa_min)} (runway de {runway_min:.1f} semanas).",
-        "causa": "Descompasso entre CAC pago adiantado e MRR recorrente no ramp-up.",
-        "implicacao": f"Precisamos de reserva mínima de {formata_moeda(reserva_seguranca)} para absorver vales.",
-        "acao": "Manter sempre 4 semanas de runway. Renegociar prazos com fornecedores."
+        "causa": causa_txt,
+        "implicacao": implicacao_txt,
+        "acao": acao_txt
     }
     
     if report_mode:
@@ -949,11 +975,22 @@ Este grafico responde: "Quando a receita cresce, o lucro cresce mais rapido, igu
     fixos = custo_pessoal + custo_infra
     fixos_pct = (fixos / m36['receita_bruta']) * 100 if m36['receita_bruta'] > 0 else 0
     
+    # Insight Dinâmico de Alavancagem (Correção V1.1)
+    if alavancagem > 1.2:
+        analise_escala = "Modelo altamente escalável: cada R$ adicional de receita gera mais lucro marginal."
+        acao_escala = "Priorizar crescimento de receita sobre corte de custos."
+    elif alavancagem > 0:
+        analise_escala = "Escalabilidade moderada: custos crescem quase na mesma proporção da receita."
+        acao_escala = "Revisar estrutura de custos fixos para melhorar alavancagem."
+    else:
+        analise_escala = "Desalavancagem operacional: custos estão crescendo mais rápido que a receita (ou margens piorando)."
+        acao_escala = "ALERTA: Focar urgentemente em eficiência operacional e margem bruta."
+
     insight = {
         "fato": f"Alavancagem operacional de {alavancagem:.2f}x (Receita +{delta_receita:.0f}% → EBITDA +{delta_ebitda:.0f}%).",
-        "causa": f"Custos fixos de {formata_moeda(fixos)} se diluem com escala (agora {fixos_pct:.1f}% da receita).",
-        "implicacao": "Modelo altamente escalável: cada R$ adicional de receita gera mais lucro marginal.",
-        "acao": "Priorizar crescimento de receita sobre corte de custos."
+        "causa": f"Custos fixos de {formata_moeda(fixos)} representam {fixos_pct:.1f}% da receita no M36.",
+        "implicacao": analise_escala,
+        "acao": acao_escala
     }
     
     if report_mode:
@@ -1047,7 +1084,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
         ])
     
     # Figura
-    figsize = (12, 5) if report_mode else (14, 6)
+    figsize = (10, 5) if report_mode else (14, 6)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, dpi=150)
     
     # Heatmap Delta
@@ -1147,11 +1184,26 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     }
     maior_gap = max(gaps.items(), key=lambda x: abs(x[1]))
     
+    # Lógica Dinâmica de Insight (Gap Positivo vs Negativo)
+    gap_val = maior_gap[1]
+    gap_nome = maior_gap[0]
+    
+    if gap_val > 0:
+        # Real superou Ideal
+        causa_txt = f"Performance real de {gap_nome} superando projeções otimistas."
+        implicacao_txt = "O modelo mostra tração superior ao benchmark."
+        acao_txt = "Revisar metas para cima e aumentar investimento em growth."
+    else:
+        # Real abaixo do Ideal
+        causa_txt = "Gap acumulado por conservadorismo ou fricção na execução."
+        implicacao_txt = "Potencial de crescimento não capturado plenamente."
+        acao_txt = "Ajustar premissas ou investigar gargalos de conversão."
+
     insight = {
-        "fato": f"Maior gap no M36: {maior_gap[0]} com {maior_gap[1]:+.1f}% vs Ideal.",
-        "causa": "Gap acumulado por conservadorismo nas premissas de crescimento.",
-        "implicacao": f"Potencial não capturado no cenário conservador.",
-        "acao": "Se premissas otimistas se confirmarem, ajustar projeção."
+        "fato": f"Maior desvio no M36: {gap_nome} ({gap_val:+.1f}% vs Ideal).",
+        "causa": causa_txt,
+        "implicacao": implicacao_txt,
+        "acao": acao_txt
     }
     
     if report_mode:
@@ -1227,17 +1279,55 @@ def gerar_veredito_financeiro(resultados, report_mode=False):
         status_geral = "ATENÇÃO REQUERIDA"
         cor = "#D32F2F"
     
+    
+    
+    # Lógica trinitária de escala
+    if alavancagem > 1.5:
+        escala_str = "altamente escalável"
+        escala_status = "POSITIVO"
+    elif alavancagem > 0:
+        escala_str = "moderada"
+        escala_status = "ALERTA"
+    else:
+        escala_str = "crítica (desalavancagem)"
+        escala_status = "NEGATIVO"
+
+    # Construção da NARRATIVA (Diagnóstico -> Prognóstico -> Prescrição)
+    
+    # Parágrafo 1: Diagnóstico (Passado/Presente)
+    if status_geral == "APROVADO":
+        diagnostico = f"A operação demonstra solidez financeira com margem bruta de {margem_bruta:.0f}% e EBITDA positivo de {ebitda_pct:.0f}%. A alavancagem é {escala_str}, provando que a receita cresce com eficiência de custos."
+    elif status_geral == "APROVADO COM RESSALVAS":
+        diagnostico = f"A operação é viável, mas opera com margens abaixo do potencial máximo. Com {margem_bruta:.0f}% de margem bruta e {ebitda_pct:.0f}% de EBITDA, o modelo para em pé, mas deixa dinheiro na mesa devido a ineficiências pontuais ou escala {escala_str}."
+    else:
+        diagnostico = f"A operação enfrenta desafios estruturais severos. Com margem bruta de {margem_bruta:.0f}% (abaixo do benchmark) e alavancagem {escala_str}, a estrutura de custos atual consome mais recursos do que a receita é capaz de gerar."
+
+    # Parágrafo 2: Prognóstico (Futuro)
+    # Validação de tipo segura para semana_crise
+    tem_crise_liquidez = isinstance(semana_crise, (int, float)) and semana_crise <= 24
+    
+    if tem_crise_liquidez:
+        prognostico = f"O ponto crítico é a liquidez: o modelo projeta um **vale de caixa na semana {semana_crise}**. Se a queima de caixa atual persistir sem injeção de capital ou aumento de receita, o risco de insolvência no curto prazo é iminente."
+    else:
+        gap_medio = np.mean(list(gaps.values())) if gaps else 0
+        prognostico = f"A liquidez está controlada no curto prazo, permitindo focar na convergência para o cenário ideal (gap médio de {gap_medio:.1f}%). A solvência não é um risco imediato, mas a eficiência sim."
+
+    # Parágrafo 3: Prescrição (Ação Única)
+    if tem_crise_liquidez and semana_crise <= 12:
+        prescricao = f"Ataque imediato à **Liquidez**. Renegociar prazos com fornecedores e antecipar recebíveis para sobreviver ao vale da semana {semana_crise}."
+    elif escala_status == "NEGATIVO":
+         prescricao = "A prioridade absoluta é **Estancar a Desalavancagem**. Não escalonar marketing antes de sanear a margem bruta (cortar custos fixos ou aumentar pricing)."
+    else:
+        prescricao = "Foco total em **Growth e Otimização**. O modelo está validado e solvente; a prioridade agora é melhorar as margens via CAC mais baixo ou LTV mais alto."
+    
     veredito = f"""
 **🔍 VEREDITO FINANCEIRO: {status_geral}**
 
-1. **Viabilidade (3.1):** Break-even no M{mes_be}. {"✅ Dentro do esperado." if mes_be and mes_be <= 24 else "⚠️ Revisar timeline."}
-2. **Margens (3.2):** Margem Bruta {margem_bruta:.0f}% e EBITDA {ebitda_pct:.0f}% — {"ACIMA" if margem_bruta > 80 else "ABAIXO"} do benchmark.
-3. **Liquidez (3.3):** Vale de caixa na semana {semana_crise}. {"✅ Controlado." if semana_crise and semana_crise <= 12 else "⚠️ Monitorar."}
-4. **Escala (3.4):** Alavancagem de {alavancagem:.1f}x — {"altamente escalável ✅" if alavancagem > 1.5 else "moderada ⚠️"}.
-5. **Convergência (3.5):** Gap médio de {np.mean(list(gaps.values())):.1f}% vs Ideal.
+**1. DIAGNÓSTICO:** {diagnostico}
 
-**Maior Risco:** {"Liquidez no ramp-up" if semana_crise and semana_crise <= 8 else "Crescimento abaixo do esperado"}
-**Recomendação:** {"Priorizar crescimento de receita" if alavancagem > 1.5 else "Otimizar custos operacionais"}
+**2. PROGNÓSTICO:** {prognostico}
+
+**3. PRESCRIÇÃO:** {prescricao}
 """
     
     if report_mode:

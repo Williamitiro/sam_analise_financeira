@@ -2,14 +2,14 @@
   "chart_id": "pg2_viz2_2",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T12:36:06.605632",
+  "timestamp": "2025-12-13T16:04:36.461405",
   "title_simple": "VIZ 2.2: Evolução LTV/CAC vs Zonas de Risco",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "LTV/CAC final de 0.0x está abaixo do benchmark de 3.0x.",
-    "causa": "Provável CAC alto demais ou Churn impactando o LTV.",
-    "implicacao": "Queima de caixa ineficiente; risco de solvência na escala.",
-    "acao": "Suspender aumento de mídia e focar em reduzir CAC."
+    "fato": "LTV/CAC encerra o período em 5.3x, dentro da zona de excelência (Verde).",
+    "causa": "CAC controlado e expansão de LTV via retenção.",
+    "implicacao": "Modelo financeiro altamente atrativo para investidores.",
+    "acao": "Seguro para escalar o marketing agressivamente."
   },
   "files": {
     "png": "outputs/figs/pg2_viz2_2.png",

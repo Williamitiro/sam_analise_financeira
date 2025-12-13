@@ -42,11 +42,11 @@ PREMISSAS = {
     # 3. AQUISIÇÃO, GROWTH & METAS
     # ========================================================================
     'usuarios_pagos_iniciais': 5,  # Começamos pequenos
-    'trafego_inicial': 100,        # Visitas no site/app
+    'trafego_inicial': 250,        # Visitas no site/app
     
     # --- METAS DE CRESCIMENTO MENSAL (DRIVERS) ---
     # A meta semanal será calculada baseada nestes números no final do script.
-    'crescimento_trafego_mes_1_6': 0.05,      # 25% ao mês (Fase Validação)
+    'crescimento_trafego_mes_1_6': 0.25,      # 25% ao mês (Fase Validação)
     'crescimento_trafego_mes_7_12': 0.07,     # 7% ao mês (Fase Consolidação)
     'crescimento_trafego_mes_13_plus': 0.04,  # 4% ao mês (Fase Escala)
 
@@ -77,8 +77,8 @@ PREMISSAS = {
     'churn_inicial': 0.12,                    # 12% ao mês (Mês 1)
     'churn_maturidade': 0.06,                 # 6% ao mês (Meta Longo Prazo)
     'churn_base': 0.07,                       # Média para cálculos simples
-    'churn_decaimento_mensal': 0.0015,        # Melhora 0.15% a cada mês
-    'taxa_reativacao_base_cancelada': 0.01,   # 1% dos cancelados voltam
+    'churn_decaimento_mensal': 0.002,        # Melhora 0.15% a cada mês
+    'taxa_reativacao_base_cancelada': 0.02,   # 1% dos cancelados voltam
 
     # ========================================================================
     # 5. PRICING & MIX DE PRODUTOS
@@ -119,9 +119,9 @@ PREMISSAS = {
     # 6. INFRAESTRUTURA & CUSTOS VARIÁVEIS (TIERS)
     # ========================================================================
     # Custo Variável por Usuário (IA Tokens + Server Load)
-    'custo_ia_lite': 200, 
-    'custo_ia_trader': 600, 
-    'custo_ia_pro': 2000,
+    'custo_ia_lite': 3.00, 
+    'custo_ia_trader': 5.00, 
+    'custo_ia_pro': 13.00,
     
     'custo_ferramentas_base': 1.00,         # Ferramentas fixas (Jira, etc), já está nos custos de ferramentas do tier 1!!!
     'custo_suporte_por_1000_users': 1.00,   # Zendesk variável - não tem agoagora eu o fundador vou dar suporte e vou automatizar!!!
@@ -179,7 +179,7 @@ PREMISSAS = {
     # ========================================================================
     # R$ 2.000 é o teto máximo.
     # O script de validação vai checar se isso paga o CAC.
-    'marketing_fixo_mensal': 0.00,
+    'marketing_fixo_mensal': 1.00,
     'marketing_perc_receita': 0.40,           # Reinveste 40% da receita em ads
     'marketing_teto': 25000.00,               # Teto futuro
 
@@ -207,8 +207,8 @@ PREMISSAS = {
     # 9. RH & EQUIPE (GATILHOS DE CONTRATAÇÃO)
     # ========================================================================
     # Só contrata se atingir gatilhos de Receita ou Usuários
-    'salario_fundador': 5000.00,    'trigger_fundador': 25000.00, # MRR > 25k
-    'salario_dev_senior': 30000.00, 'trigger_dev': 15,           # Users > 750
+    'salario_fundador': 5000.00,    'trigger_fundador': 50000.00, # MRR > 25k
+    'salario_dev_senior': 10000.00, 'trigger_dev': 750,           # Users > 750
     'salario_cs': 4500.00,          'trigger_cs': 1000,           # Users > 1000
     'encargos_trabalhistas': 0.70,  # CLT + Benefícios
 
@@ -245,7 +245,7 @@ PREMISSAS = {
     # ========================================================================
     # 11. CAPITAL & CONTABILIDADE (REALIDADE DO CLIENTE)
     # ========================================================================
-    'caixa_inicial': 4000.00,       # Dinheiro na conta hoje
+    'caixa_inicial': 3500.00,       # Dinheiro na conta hoje
     'aporte_mensal': 2000.00,       # Quanto entra por mês
     'meses_aporte': 10,             # Garantia de aporte por 6 meses, não mexe nisso!!!
 

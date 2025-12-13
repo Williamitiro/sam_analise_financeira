@@ -2,11 +2,11 @@
   "chart_id": "pg2_viz2_1",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T12:33:39.028575",
+  "timestamp": "2025-12-13T16:03:29.198668",
   "title_simple": "VIZ 2.1: Funil de Aquisição (Conservador vs Benchmark)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "No M36, a conversão global está 0.52 p.p. abaixo da meta.",
+    "fato": "No M36, a conversão global está 0.29 p.p. abaixo da meta.",
     "causa": "Gargalo identificado na etapa de Trial -> Pagante.",
     "implicacao": "Custo de aquisição (CAC) está pressionado.",
     "acao": "Revisar onboarding e réguas de email marketing (P1)."

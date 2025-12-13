@@ -2,14 +2,14 @@
   "chart_id": "pg4_viz1_ltv_cac",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T12:36:26.813849",
+  "timestamp": "2025-12-13T16:04:53.779613",
   "title_simple": "VIZ 4.1: LTV vs CAC (A 'Regua de Ouro')",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Múltiplo LTV/CAC atinge ∞ no M36.",
-    "causa": "Resultado combinado de contração do LTV e CAC estável.",
-    "implicacao": "Cada R$ 1 investido retorna apenas R$ 0.00. Eficiência baixa.",
-    "acao": "Focar em Retenção/Pricing antes de escalar."
+    "fato": "Múltiplo LTV/CAC atinge 5.3x no M36.",
+    "causa": "Resultado combinado de expansão do LTV e CAC estável.",
+    "implicacao": "Cada R$ 1 investido em marketing retorna R$ 5.29 de margem bruta.",
+    "acao": "Acelerar investimento em aquisição (Growth) pois a unidade é lucrativa."
   },
   "files": {
     "png": "outputs/figs/pg4_viz1_ltv_cac.png",
