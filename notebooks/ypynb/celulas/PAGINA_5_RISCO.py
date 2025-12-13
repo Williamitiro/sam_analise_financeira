@@ -46,6 +46,13 @@ except ImportError:
     def formata_pct(valor):
         return f"{valor*100:.1f}%"
 
+# Import Motor (Fallback Robusto para Ato 2)
+try:
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from celula_4_motor import executar_motor_fintech_v10_production_ready
+except ImportError:
+    executar_motor_fintech_v10_production_ready = None
+
 try:
     setup_plot_style()
 except:
@@ -611,6 +618,283 @@ def plotar_grafico_mes6(mc_results, df_real_m, df_ideal_m, premissas, report_mod
         'caixa_real_m6': caixa_real_m6,
         'caixa_ideal_m6': caixa_ideal_m6
     }
+    
+    
+# ============================================================================
+# SEÇÃO 4.5: ATO 2 - TORNADO PLOT (SENSIBILIDADE)
+# ============================================================================
+
+
+
+# ============================================================================
+# SEÇÃO 4.5: ATO 2 - TORNADO PLOT (SENSIBILIDADE)
+# ============================================================================
+
+def calcular_sensibilidade_ltv_cac(PREMISSAS, premissas_sensiveis, variacao=0.20, motor_func=None, ltv_cac_base_real=None):
+    """
+    Calcula o impacto de cada premissa no LTV/CAC (V3 - GOLD STANDARD).
+    
+    Diferenciais da V3:
+    1. ZERO HARDCODED: Aceita lista de premissas dinâmica.
+    2. MOTOR ROBUSTO: Se motor_func não for passado, tenta usar o import global.
+    3. FAIL-SAFE: Se motor falhar, captura erro mas não quebra tudo.
+    4. BASE REAL: Usa o LTV/CAC do cenário atual se passado (evita re-simulação e divergência).
+    """
+
+    # --- SANITIZAÇÃO DE MARKETING ---
+    # Se o budget fixo for zero, assumimos que a estratégia é orgânica pura.
+    # Forçamos as variáveis percentuais a zero para impedir que o motor gaste dinheiro automaticamente.
+    if PREMISSAS.get('marketing_fixo_mensal', 0) == 0:
+        PREMISSAS['marketing_perc_receita'] = 0.0
+        PREMISSAS['marketing_teto'] = 0.0
+    # --------------------------------
+    
+    # Validação do Motor
+    motor_para_usar = motor_func
+    if motor_para_usar is None:
+        if 'executar_motor_fintech_v10_production_ready' in globals() and executar_motor_fintech_v10_production_ready is not None:
+             motor_para_usar = executar_motor_fintech_v10_production_ready
+        else:
+            print("⚠️ ERRO CRÍTICO: Motor Financeiro não disponível para análise de sensibilidade.")
+            print("   Verifique se 'celula_4_motor.py' está no path ou passe motor_func.")
+            return pd.DataFrame()
+
+    def get_ltv_cac(p):
+        """Executa o motor e extrai LTV/CAC final com 'Virtual Floor' para evitar paradoxo do infinito."""
+        try:
+            # Rodar motor
+            df_m, _, metricas, _ = motor_para_usar(p)
+            
+            if len(df_m) > 0:
+                last = df_m.iloc[-1]
+                ltv = last.get('ltv', 0)
+                cac = last.get('cac_blended', 0)
+                
+                # TRUQUE MATEMÁTICO PARA O TORNADO:
+                # Se CAC for zero (orgânico puro), usamos R$ 1.00 como divisor (Virtual Floor).
+                # Isso faz o LTV/CAC flutuar proporcionalmente ao LTV, permitindo ver o impacto de Churn/Price.
+                # Se não fizesse isso, seria sempre "Infinito" (10.000) e o gráfico ficaria vazio.
+                divisor_cac = max(cac, 1.00) 
+                
+                return ltv / divisor_cac
+            
+            return 0.0
+            
+        except Exception as e:
+            return 0.0
+            
+        except Exception as e:
+            # print(f"Erro silencioso no motor durante sensibilidade: {e}") # Debug only
+            return 0.0
+
+    # LTV/CAC Base
+    # Se valor real foi passado, usa ele. Senão, calcula.
+    if ltv_cac_base_real is not None and ltv_cac_base_real > 0:
+        ltv_cac_base = ltv_cac_base_real
+    else:
+        ltv_cac_base = get_ltv_cac(PREMISSAS)
+    
+    # Se base for 0, algo está muito errado
+    if ltv_cac_base == 0:
+        print("⚠️ AVISO: LTV/CAC Base calculado é 0.0. Verifique suas premissas base ou o motor.")
+        # Podemos retornar vazio ou tentar continuar (vai dar tudo 0)
+    
+    resultados = []
+    
+    # Dicionário de labels amigáveis (apenas para display, não afeta lógica)
+    nomes_display_map = {
+        'marketing_fixo_mensal': 'Budget Marketing',
+        'churn_inicial': 'Churn Base (%)',
+        'taxa_trial_para_pagante': 'Conv. Trial -> Pago',
+        'cpc_instagram': 'CPC Instagram',
+        'cpc_google': 'CPC Google',
+        'preco_trader': 'Preço Trader',
+        'custo_ia_trader': 'Custo IA Trader',
+        'salario_dev_senior': 'Salário Dev Sr',
+        'trafego_inicial': 'Tráfego Inicial',
+        'mix_trader': 'Mix Plano Trader',
+        'b2b_probabilidade_anual': 'Prob. Venda B2B',
+        'imposto_simples_inicial': 'Imposto Inicial'
+    }
+    
+    for chave in premissas_sensiveis:
+        # A chave deve existir em PREMISSAS
+        if chave not in PREMISSAS:
+            # Tenta verificar se está aninhada (caso raro, mas possível)
+            # Por simplicidade/performance, assumimos flat ou tratamos 'monte_carlo' fora.
+            continue
+            
+        valor_base = PREMISSAS[chave]
+        
+        # Só varia se for numérico
+        if not isinstance(valor_base, (int, float)):
+            continue
+            
+        # Cenário -20%
+        p_min = PREMISSAS.copy()
+        p_min[chave] = valor_base * (1 - variacao)
+        ltv_cac_min = get_ltv_cac(p_min)
+        
+        # Cenário +20%
+        p_max = PREMISSAS.copy()
+        p_max[chave] = valor_base * (1 + variacao)
+        ltv_cac_max = get_ltv_cac(p_max)
+        
+        # Impacto
+        impacto_abs = abs(ltv_cac_max - ltv_cac_min)
+        
+        # Se impacto for zero absoluto ou muito pequeno, ignoramos para limpar gráfico
+        if impacto_abs < 0.01:
+            continue
+            
+        impacto_rel = impacto_abs / ltv_cac_base if ltv_cac_base > 0 else 0
+        
+        resultados.append({
+            'premissa': chave,
+            'nome_display': nomes_display_map.get(chave, chave),
+            'valor_base': valor_base,
+            'valor_min': valor_base * (1 - variacao),
+            'valor_max': valor_base * (1 + variacao),
+            'valor_max': valor_base * (1 + variacao),
+            # FORCE BASE REAL: Garante que o valor central é o mesmo do relatório
+            'ltv_cac_base': ltv_cac_base, 
+            'ltv_cac_min': ltv_cac_min,
+            'ltv_cac_max': ltv_cac_max,
+            'impacto_absoluto': impacto_abs,
+            'impacto_relativo': impacto_rel
+        })
+    
+    df_tornado = pd.DataFrame(resultados)
+    if not df_tornado.empty:
+        df_tornado = df_tornado.sort_values('impacto_absoluto', ascending=False)
+        df_tornado['ranking'] = range(1, len(df_tornado) + 1)
+        
+    return df_tornado
+    if not df_tornado.empty:
+        df_tornado = df_tornado.sort_values('impacto_absoluto', ascending=False)
+        df_tornado['ranking'] = range(1, len(df_tornado) + 1)
+        
+    return df_tornado
+
+
+
+def plotar_tornado_plot(df_tornado, variacao_input=0.20, report_mode=False):
+    """
+    Gera o Tornado Plot (Gráfico de Sensibilidade) - V3 Gold Standard.
+    
+    Melhorias V3:
+    1. Legenda: Usa Patches reais (quadrados coloridos) em vez de texto unicode que falha.
+    2. Layout: Título ajustado para não sobrepor.
+    3. Didática: Eixo X explicado como "Múltiplo LTV/CAC".
+    4. Dinâmico: Texto de rodapé reflete a variação real (ex: ±15% se mudar na config).
+    """
+    
+    # Setup de estilo
+    plt.style.use('seaborn-v0_8-whitegrid')
+    
+    # Ajuste de tamanho para PDF vs Notebook (Gold Standard)
+    figsize = (10, 6) if report_mode else (12, 7)
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    if df_tornado.empty:
+        return fig
+    
+    # Ordenação (Apenas top 10 para não poluir)
+    df_plot = df_tornado.sort_values('impacto_absoluto', ascending=True).tail(10)
+    
+    # Cores (Paleta Semântica)
+    # Vermelho = Risco (Reduz LTV/CAC), Verde = Oportunidade (Aumenta LTV/CAC)
+    cor_pos = '#4CAF50' # Verde Material Design
+    cor_neg = '#E53935' # Vermelho Material Design
+    cor_base_line = '#333333'
+    
+    y = np.arange(len(df_plot))
+    base_val = df_plot['ltv_cac_base'].iloc[0] if len(df_plot) > 0 else 0
+    
+    # Barras (Hbar)
+    for i, row in enumerate(df_plot.itertuples()):
+        # Lógica de cor: 
+        # Esquerda: desenha de (Base - Delta) até Base. Cor depende se reduz LTV.
+        # Direita: desenha de Base até (Base + Delta). Cor depende se aumenta LTV.
+        
+        # Barra ESQUERDA (Efeito negativo, abaixo da base)
+        # Queremos mostrar a amplitude da variação MINIMA
+        val_min = min(row.ltv_cac_min, row.ltv_cac_max)
+        width_left = base_val - val_min
+        
+        # Se o valor minimo é MENOR que a base (normal), desenha pra esquerda
+        if width_left > 0:
+            ax.barh(i, -width_left, left=base_val, height=0.6, color=cor_neg, alpha=0.9)
+            ax.text(base_val - width_left - 0.05, i, f"{val_min:.1f}x", 
+                    va='center', ha='right', fontsize=9, color='#C62828', fontweight='bold')
+            
+        # Barra DIREITA (Efeito positivo, acima da base)
+        val_max = max(row.ltv_cac_min, row.ltv_cac_max)
+        width_right = val_max - base_val
+        
+        # Se o valor máximo é MAIOR que a base (normal), desenha pra direita
+        if width_right > 0:
+            ax.barh(i, width_right, left=base_val, height=0.6, color=cor_pos, alpha=0.9)
+            ax.text(base_val + width_right + 0.05, i, f"{val_max:.1f}x", 
+                    va='center', ha='left', fontsize=9, color='#2E7D32', fontweight='bold')
+
+    # Linha de Base Vertical
+    ax.axvline(base_val, color=cor_base_line, linewidth=2, linestyle='-')
+    ax.text(base_val, len(df_plot) + 0.2, f'Base: {base_val:.1f}x', 
+            ha='center', va='bottom', fontsize=11, fontweight='bold', color=cor_base_line)
+    
+    # Eixos e Títulos
+    ax.set_yticks(y)
+    # Limpa nomes (remove underscores)
+    labels = [str(x).replace('_', ' ').title() for x in df_plot['nome_display']]
+    ax.set_yticklabels(labels, fontsize=11)
+    
+    # Título Principal e Subtítulo (Com padding para evitar sobreposição)
+    pct_txt = int(variacao_input * 100)
+    ax.set_title(f"Análise de Sensibilidade - Tornado Plot LTV/CAC\nVariação de ±{pct_txt}% nas Premissas | Impacto no Unit Economics", 
+                 fontsize=14, fontweight='bold', pad=40)
+    
+    ax.set_xlabel("Índice LTV/CAC (x) - Quanto maior, melhor", fontsize=11, fontweight='bold')
+    
+    # Remover grid desnecessário e bordas
+    ax.grid(axis='y', alpha=0)
+    ax.grid(axis='x', alpha=0.3, linestyle='--')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False) # Clean look
+    
+    # --- CONFECÇÃO DA LEGENDA (CORREÇÃO V3) ---
+    from matplotlib.lines import Line2D
+    import matplotlib.patches as mpatches
+    
+    legend_patches = [
+        mpatches.Patch(color=cor_neg, label='Risco (Reduz LTV/CAC)'),
+        mpatches.Patch(color=cor_pos, label='Oportunidade (Aumenta LTV/CAC)'),
+        Line2D([0], [0], color='black', lw=2, label=f'Cenário Base ({base_val:.1f}x)')
+    ]
+    ax.legend(handles=legend_patches, loc='lower right', frameon=True, fontsize=10)
+    
+    # Rodapé Dinâmico
+    fig.text(0.02, 0.02, f"Fonte: Simulação Paramétrica (Variação de ±{pct_txt}% ceteris paribus).", 
+             fontsize=9, color='gray', style='italic')
+
+    # Ajuste de Limites para evitar sobreposição de texto
+    # Calcula os extremos dos dados
+    min_x = df_plot[['ltv_cac_min', 'ltv_cac_max']].min().min()
+    max_x = df_plot[['ltv_cac_min', 'ltv_cac_max']].max().max()
+    
+    # Adiciona margem de 10% nas laterais
+    amplitude = max_x - min_x
+    ax.set_xlim(min_x - (amplitude * 0.15), max_x + (amplitude * 0.15))
+
+    plt.tight_layout()
+    # Ajuste fino extra pro título não cortar
+    plt.subplots_adjust(top=0.88, bottom=0.15) 
+    
+    return fig
+
+
+
 
 
 def gerar_tabela_probabilidades_mc(mc_results):
@@ -1032,6 +1316,224 @@ P(Quebra) = Count(caixa < 0) / n_simulações
     }
 
 
+
+def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met_real=None, df_real_m=None):
+    """
+    Renderiza o Ato 2 completo: Tornado Plot Sensibilidade.
+    Segue padrão Gold Standard V22.0.
+    """
+    
+    if not report_mode:
+        print("\n" + "="*80)
+        print("🌪️ ATO 2: TORNADO PLOT - ANÁLISE DE SENSIBILIDADE (UNIT ECONOMICS)")
+        print("="*80)
+    else:
+        display(Markdown("***"))
+        display(Markdown("## 🌪️ ATO 2: Tornado Plot (Sensibilidade)"))
+        display(Markdown('**Pergunta Central:** *"Qual premissa, se errarmos, mata o negócio?"*'))
+        
+    # =========================================================================
+    # 1. PREPARAÇÃO DOS DADOS
+    # =========================================================================
+    
+    # 3.1: Lista Dinâmica de Premissas (Zero Hardcode)
+    # Extrai as chaves do dicionário de Monte Carlo (Célula 2B)
+    try:
+        dict_mc = premissas.get('monte_carlo', {})
+        dict_vars = dict_mc.get('variaveis', {})
+        premissas_sensiveis = list(dict_vars.keys())
+        
+        # Adiciona algumas chaves estruturais extras se não estiverem lá
+        extras = ['trafego_inicial', 'preco_trader'] 
+        for e in extras:
+            if e not in premissas_sensiveis and e in premissas:
+                premissas_sensiveis.append(e)
+                
+    except Exception as e:
+        print(f"⚠️ Erro ao carregar variáveis do Monte Carlo: {e}")
+        # Fallback de segurança (apenas se config estiver corrompida)
+        premissas_sensiveis = ['churn_inicial', 'marketing_fixo_mensal', 'taxa_trial_para_pagante']
+
+    if not report_mode:
+        print(f"🔍 Analisando sensibilidade para {len(premissas_sensiveis)} variáveis dinâmicas...")
+    
+    # Extrai LTV/CAC real se disponível
+    # Extrai LTV/CAC real se disponível (SNAPSHOT FINAL)
+    ltv_cac_real_val = 0
+    if df_real_m is not None:
+        if 'ltv_cac' in df_real_m.columns:
+            ltv_cac_real_val = df_real_m['ltv_cac'].iloc[-1]
+        elif 'ltv_cac_final' in df_real_m.columns:
+            ltv_cac_real_val = df_real_m['ltv_cac_final'].iloc[-1]
+    
+    # Se falhou no df, usa metricas (fallback) ou 0
+    if ltv_cac_real_val == 0 and met_real:
+        ltv_cac_real_val = met_real.get('ltv_cac_medio', 0)
+    
+    df_tornado = calcular_sensibilidade_ltv_cac(
+        premissas, 
+        premissas_sensiveis, 
+        variacao=0.20, 
+        motor_func=motor_func,
+        ltv_cac_base_real=ltv_cac_real_val
+    )
+    
+    # Se falhar ou vazio, mostrar erro
+    if df_tornado.empty:
+        if report_mode: display(Markdown("⚠️ Não foi possível gerar dados de sensibilidade."))
+        else: print("⚠️ Erro dados sensibilidade.")
+        return None
+        
+    # =========================================================================
+    # 2. GRÁFICO TORNADO PLOT
+    # =========================================================================
+    # Passamos variacao=0.20 explicitamente
+    fig2 = plotar_tornado_plot(df_tornado, variacao_input=0.20, report_mode=report_mode)
+    
+    # =========================================
+    # RENDERIZAÇÃO ATÔMICA (V7.0)
+    # =========================================
+    render_atomic_block(
+        chart_id="pg5_viz2_tornado",
+        title_technical="VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
+        title_colloquial="O que pode matar o negócio?",
+        fig=fig2,
+        legend_md="Barras mostram o impacto no LTV/CAC ao variar cada premissa em ±20%.",
+        df_tabela=df_tornado,
+        insight_dict={
+            "fato": "Sensibilidade mapeada para top 10 variáveis.",
+            "causa": "Variação de +/- 20% nas premissas base.",
+            "implicacao": "Identificação dos drivers críticos de risco.",
+            "acao": "Monitorar de perto as variáveis do topo do gráfico."
+        },
+        report_mode=report_mode,
+        data_source_text="Fonte: Monte Carlo Sensitivity"
+    )
+    plt.close(fig2)
+
+    
+    # =========================================================================
+    # 3. COMO LER & GLOSSÁRIO (DIDÁTICO V4 - TEXTO DO USUÁRIO)
+    # =========================================================================
+    como_ler = f"""
+::: {{.callout-note title="📖 COMO LER A ANÁLISE DE SENSIBILIDADE (TORNADO PLOT)" collapse="false"}}
+
+### O que é essa análise de sensibilidade?
+Vamos começar do básico. Essa é uma **análise de sensibilidade**, que é uma forma de testar um modelo financeiro. O objetivo é ver o que acontece com um número importante (nesse caso, o **LTV/CAC**) se você mudar algumas suposições (chamadas de "premissas") um pouquinho.
+
+*(LTV/CAC Base Atual: {df_tornado['ltv_cac_base'].iloc[0]:.1f}x)*
+
+### O que é um "Tornado Plot"?
+É um gráfico em forma de "tornado" que mostra o **impacto** de mudar cada premissa. Eles mudaram cada uma em **±20%**, uma de cada vez. Isso revela quais variáveis são "críticas" e quais são "meh".
+
+### Cores e barras: O que significam?
+*   **Barra vermelha (esquerda, "Risco"):** Mostra o que acontece se a variável mudar de um jeito RUIM (reduz o LTV/CAC).
+*   **Barra verde (direita, "Oportunidade"):** Mostra o que acontece se a variável mudar de um jeito BOM (aumenta o LTV/CAC).
+*   **Largura da barra:** Quanto mais larga, mais sensível é o LTV/CAC a essa variável.
+*   **Números nas barras (ex: 3.8x):** É o novo LTV/CAC após a mudança.
+
+### Dica prática (Regra de Ouro)
+*   Foque nas barras largas (topo do tornado): Elas são as que importam!
+*   Ignore as barras curtas (base): Mudar "Budget Marketing" ou "Imposto" não faz muita diferença.
+:::
+
+::: {{.callout-tip title="📚 GLOSSÁRIO TÉCNICO (ENTENDA OS TERMOS)" collapse="true"}}
+Aqui está a tradução dos termos técnicos usados no gráfico:
+
+*   **LTV/CAC:** Nota de eficiência do negócio. Quanto dinheiro o cliente traz (LTV) dividido pelo custo para atraí-lo (CAC). **Ideal > 3.0x**.
+*   **Churn Base (%):** Taxa de cancelamento. Quantos clientes desistem do produto todo mês. Quanto menor, melhor.
+*   **Conv. Trial -> Pago:** Taxa de conversão. De cada 100 pessoas que testam de graça (Trial), quantas viram pagantes de verdade.
+*   **CPC (Custo por Clique):** Valor pago a plataformas (Google, YouTube) por cada clique no seu anúncio. "cpc_youtube" é específico para vídeos.
+*   **Taxa Visitante -> Trial:** Eficiência do site/landing page. De cada 100 visitantes, quantos criam uma conta de teste.
+*   **ARPU / Preço Trader:** Receita média por usuário ou preço da assinatura principal.
+:::
+"""
+    if report_mode:
+        display(Markdown(como_ler))
+    else:
+        print("\n📖 LEITURA RÁPIDA: As variáveis no topo são as mais perigosas. Foque nelas.")
+        
+    # =========================================================================
+    # 4. TABELA RANKING (Top 5)
+    # =========================================================================
+    top5 = df_tornado.head(5)[['ranking', 'nome_display', 'valor_base', 'impacto_relativo', 'ltv_cac_min', 'ltv_cac_max']].copy()
+    
+    # Formatação Tabela
+    tabela_data = []
+    for _, row in top5.iterrows():
+        tabela_data.append({
+            '#': row['ranking'],
+            'Premissa Crítica': row['nome_display'],
+            'Base': f"{row['valor_base']:.2f}" if row['valor_base'] < 100 else f"{row['valor_base']:.0f}",
+            'Impacto Relativo': f"{row['impacto_relativo']:.0%}",
+            'Range LTV/CAC': f"{row['ltv_cac_min']:.1f}x ↔ {row['ltv_cac_max']:.1f}x"
+        })
+    df_tabela_top5 = pd.DataFrame(tabela_data)
+        
+    if report_mode:
+        display(Markdown(f"**Tabela 5.2: Top 5 Variáveis de Maior Sensibilidade (Ranking de Risco)**"))
+        display(Markdown(df_tabela_top5.to_markdown(index=False)))
+    
+    msg_tabela = """
+::: {.callout-tip title="📋 COMO LER ESTA TABELA" collapse="true"}
+*   **Premissa Crítica:** O nome da variável de negócio.
+*   **Base:** Valor atual utilizado no modelo.
+*   **Impacto Relativo:** Quanto o LTV/CAC muda em relação à base. 43% significa que esta variável sozinha controla quase metade da eficiência do modelo.
+*   **Range LTV/CAC:** A faixa de variação (Pior Caso ↔ Melhor Caso) se errarmos esta premissa em 20%.
+:::
+"""
+    if report_mode:
+        display(Markdown(msg_tabela))
+    else:
+        print("\n📋 TOP 5 VARIÁVEIS CRÍTICAS:")
+        print(df_tabela_top5.to_string(index=False))
+
+    # =========================================================================
+    # 5. INSIGHT ESTRATÉGICO (100% DINÂMICO)
+    # =========================================================================
+    # Analisar Top 1 vs Top 3
+    top1 = df_tornado.iloc[0]
+    top3 = df_tornado.iloc[:3]
+    top3_impacto_total = top3['impacto_relativo'].sum()
+    resto_impacto_total = df_tornado.iloc[3:]['impacto_relativo'].sum()
+    
+    insight_md = f"""
+::: {{.callout-important title="💡 INSIGHT ESTRATÉGICO - ONDE FOCAR A ATENÇÃO" icon=false}}
+
+#### FATO
+A premissa **{top1['nome_display']}** é o maior vetor de risco, com **{top1['impacto_relativo']:.0%} de impacto** no LTV/CAC. 
+ sozinha, ela afeta o resultado mais do que as {len(df_tornado)-3} últimas variáveis somadas.
+
+#### CAUSA
+As **3 variáveis do topo** ({', '.join(top3['nome_display'].tolist())}) explicam **{top3_impacto_total/(top3_impacto_total+resto_impacto_total):.0%}** de toda a variabilidade do modelo. Isso ocorre pela natureza multiplicativa da fórmula do Unit Economics.
+
+#### IMPLICAÇÃO PRÁTICA
+Otimizar **{top1['nome_display']}** em 10% trará **{top1['impacto_relativo']/2:.1f}x mais retorno** do que qualquer esforço nas variáveis da base. 
+**Ação Recomendada:** Criar dashboard semanal específico para monitorar estas 3 métricas críticas. Errar aqui custa caro.
+
+:::
+"""
+    if report_mode:
+        display(Markdown(insight_md))
+    else:
+        print(f"\n💡 INSIGHT: Foco total em {top1['nome_display']}. É o maior risco do negócio.")
+        
+    # =========================================================================
+    # 6. AUDITORIA
+    # =========================================================================
+    audit_md = """
+::: {.callout-note title="🔍 AUDITORIA TÉCNICA" collapse="true"}
+**Metodologia:** Análise One-at-a-Time (OAT). Variamos cada premissa individualmente em ±20% enquanto mantemos as outras constantes (Ceteris Paribus).
+**Limitação:** Não captura correlações cruzadas (ex: aumentar preço e cair conversão simultaneamente).
+**Fórmula:** Impacto = |LTV/CAC(+20%) - LTV/CAC(-20%)|
+:::
+"""
+    if report_mode:
+        display(Markdown(audit_md))
+
+    return df_tornado
+
+
 # ============================================================================
 # SEÇÃO 4B: VEREDITO NARRATIVO (GOLD STANDARD V22.0)
 # ============================================================================
@@ -1372,11 +1874,20 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     if not report_mode:
         print("   ✅ Ato 1 gerado com sucesso!")
     
-    # 4. Placeholder para Atos 2-5
+    # 4. ATO 2: Tornado Plot (Sensibilidade)
     if not report_mode:
         print("\n" + "-"*40)
-        print("📌 ATOS 2-5 (Em desenvolvimento):")
-        print("   • ATO 2: Tornado Plot Sensibilidade")
+        print("🌪️ Gerando Ato 2: Tornado Plot...")
+        
+    ato2_results = render_ato2_sensibilidade(premissas, report_mode, motor_func, met_real=None, df_real_m=df_real_m)
+    
+    if not report_mode:
+        print("   ✅ Ato 2 gerado com sucesso!")
+
+    # 5. Placeholder para Atos 3-5
+    if not report_mode:
+        print("\n" + "-"*40)
+        print("📌 ATOS 3-5 (Em desenvolvimento):")
         print("   • ATO 3: Heatmap Runway Semanal")
         print("   • ATO 4: Break-Even sob Estresse")
         print("   • ATO 5: Gap Analysis Real vs Estresse")

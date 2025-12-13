@@ -6,6 +6,7 @@
 import pandas as pd
 import numpy as np
 import textwrap
+print("DEBUG: LOADED celula_0_utils V7.5 (If fig check applied)")
 import matplotlib.pyplot as plt
 import json
 import os
@@ -159,7 +160,7 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
       - Usa HTML/CSS rico.
     """
     # 0. AJUSTE DE FIGURA PARA PDF (CRÍTICO)
-    if report_mode:
+    if report_mode and fig:
         # Força redimensionamento para evitar overflow no A4 (Widescreen Compacto)
         fig.set_size_inches(10, 4.5) 
     
@@ -167,27 +168,33 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     display(Markdown(f"## {title_colloquial}"))
     display(Markdown(f"### 📉 {title_technical}"))
     
-    # 2. BLOCO B: GRÁFICO
-    display(fig)
-    if data_source_text:
-        display(Markdown(f"*{data_source_text}*"))
-    plt.close(fig) 
-    
-    # 3. BLOCO C: LEGENDA "COMO LER"
-    display(Markdown("***")) 
-    
-    if report_mode:
-        # Modo PDF/Quarto: Callout Note Simple (Igual Tier 1)
-        como_ler_block = f"""
+    # 2. BLOCO B: GRÁFICO (Opcional)
+    if fig:
+        display(fig)
+        if data_source_text:
+            display(Markdown(f"*{data_source_text}*"))
+        plt.close(fig) 
+    else:
+        # Se não tem figura, apenas exibe a fonte se houver
+        if data_source_text:
+            display(Markdown(f"*{data_source_text}*"))
+
+    # 3. BLOCO C: LEGENDA "COMO LER" (Opcional)
+    if legend_md:
+        display(Markdown("***")) 
+        
+        if report_mode:
+            # Modo PDF/Quarto: Callout Note Simple (Igual Tier 1)
+            como_ler_block = f"""
 ::: {{.callout-note appearance="simple"}}
 ### 📖 COMO LER ESTE GRÁFICO
 {legend_md}
 :::
 """
-        display(Markdown(como_ler_block))
-    else:
-        # Modo Notebook HTML
-        display(Markdown(f"#### 📖 COMO LER ESTE GRÁFICO:\n{legend_md}"))
+            display(Markdown(como_ler_block))
+        else:
+            # Modo Notebook HTML
+            display(Markdown(f"#### 📖 COMO LER ESTE GRÁFICO:\n{legend_md}"))
     
     # 4. BLOCO D: TABELA AUXILIAR
     # Título Customizado ou Default
@@ -317,7 +324,8 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
         display(Markdown("\\newpage"))
     
     # 6. Salvar arquivos
-    salvar_figura_silencioso(fig, f"{chart_id}.png")
+    if fig:
+        salvar_figura_silencioso(fig, f"{chart_id}.png")
     if not isinstance(df_tabela, str):
         salvar_tabela_html_silencioso(df_tabela, f"{chart_id}")
     salvar_metadados_json(chart_id, title_technical, "df_real vs df_ideal", insight_dict, chart_id)

@@ -2,11 +2,11 @@
   "chart_id": "pg4_viz4_escala",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-10T16:11:30.413574",
+  "timestamp": "2025-12-13T06:01:28.353568",
   "title_simple": "VIZ 4.4: Qualidade Marginal na Escala (LTV/CAC vs Volume)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "A inclinação da curva é 1.0326.",
+    "fato": "A inclinação da curva é 0.9676.",
     "causa": "Comportamento dos custos marginais e retenção em escala.",
     "implicacao": "Viabilidade de escalar agressivamente.",
     "acao": "Acelerar."

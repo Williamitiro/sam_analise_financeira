@@ -129,7 +129,7 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
     """
     if not report_mode:
         print("\n" + "="*80)
-        print("📊 1.1 TABELA EXECUTIVA MASTER - PROJEÇÃO 36 MESES")
+        print("📊 1.1 TABELA EXECUTIVA MASTER - PROJEÇÃO 36 MESES (V7.2)")
         print("="*80)
     else:
         display(Markdown("## 📊 1.1 TABELA EXECUTIVA MASTER"))
@@ -246,20 +246,31 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
         # Adiciona dados para tabela Markdown
         tabela_dados.append([nome.strip(), v1_str, v6_str, v12_str, v36_str, bench_str, emoji])
 
-    if not report_mode:
-        print("\n" + "-" * 105)
-        print("🟢 = Excelente | ✅ = Saudável | ⚠️ = Atenção | 🔴 = Crítico")
-        print("Nota: Benchmark = Cenário Ideal (df_ideal) - atualiza automaticamente se premissas mudarem")
-    else:
-        # Render markdown table
-        cols = ['Métrica', 'M1', 'M6', 'M12', 'M36', 'Benchmark', 'Status']
-        df_tab = pd.DataFrame(tabela_dados, columns=cols)
-        # Substitui NaNs por vazio
-        df_tab = df_tab.fillna("")
-        display(Markdown(df_tab.to_markdown(index=False)))
-        display(Markdown("**Nota:** Benchmark = Cenário Ideal."))
-        display(Markdown("*Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)*"))
-        display(Markdown("\\newpage"))
+    cols = ['Métrica', 'M1', 'M6', 'M12', 'M36', 'Benchmark', 'Status']
+    df_tab = pd.DataFrame(tabela_dados, columns=cols).fillna("")
+    
+    # =========================================
+    # RENDERIZAÇÃO ATÔMICA (V7.0)
+    # =========================================
+    insight_dummy = {
+        "fato": "Visão consolidada dos KPIs.",
+        "causa": "Performance agregada.",
+        "implicacao": "Diagnóstico rápido da saúde do negócio.",
+        "acao": "Verificar métricas em vermelho (Críticas)."
+    }
+
+    render_atomic_block(
+        chart_id="pg1_viz1_exec_table",
+        title_colloquial="Visão Geral do Negócio",
+        title_technical="VIZ 1.1: Tabela Executiva Master",
+        fig=None,                   # Sem gráfico
+        legend_md=None,             # Sem legenda
+        table_title="📊 DADOS TABULADOS:", # Título customizado
+        df_tabela=df_tab,
+        insight_dict=insight_dummy,
+        report_mode=report_mode,
+        data_source_text="Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)"
+    )
     
     return True
 
@@ -625,11 +636,22 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
     bars_mrr = ax.bar(x + largura/2, mrr, largura, label='MRR Gerado (R$)', 
                        color=CORES['sucesso'], alpha=0.8)
     
+    # DATA DINÂMICA (Baseada em datas reais)
+    import pandas as pd
+    try:
+        from celula_2_premissas import PREMISSAS
+        data_inicio = PREMISSAS.get('data_inicio', '2025-01-01')
+    except:
+        data_inicio = '2025-01-01'
+        
+    datas = pd.date_range(start=data_inicio, periods=len(meses), freq='MS')
+    labels_datas = [d.strftime('%b/%y') for d in datas]
+    
     # Configurações do eixo
-    ax.set_xlabel('Mês', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Período', fontsize=12, fontweight='bold')
     ax.set_ylabel('Valor em R$', fontsize=12)
     ax.set_xticks(x[::3])  # Mostrar a cada 3 meses
-    ax.set_xticklabels([f'M{m}' for m in meses[::3]], fontsize=10)
+    ax.set_xticklabels([labels_datas[i] for i in range(0, len(meses), 3)], fontsize=10, rotation=45)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda x, p: formatar_moeda(x)))
     
     # Grid visível
@@ -742,8 +764,21 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     
     # =========================================================================
     # INSIGHT 1: LTV/CAC
+    # INSIGHT 1: LTV/CAC (Usando Valor Final - "Snapshot Atua")
     # =========================================================================
-    ltv_cac = met_real.get('ltv_cac_medio', 0)
+    if 'ltv_cac' in df_real.columns:
+        ltv_cac = df_real['ltv_cac'].iloc[-1]
+        # Se for NaN (ex: CAC=0), considera infinito/alto
+        if pd.isna(ltv_cac): 
+            # Se CAC=0, teoricamente é infinito. Se não tem pagantes, é 0.
+            # Vamos assumir 0 se não tiver dados, ou um valor alto se tiver LTV.
+            if df_real['cac_blended'].iloc[-1] == 0 and df_real['ltv'].iloc[-1] > 0:
+                ltv_cac = 999.0 # Simbólico para "Infinito"
+            else:
+                ltv_cac = 0.0
+    else:
+        ltv_cac = met_real.get('ltv_cac_medio', 0)
+
     ltv_cac_ideal = met_ideal.get('ltv_cac_medio', 3.0)
     
     if ltv_cac >= 5.0:

@@ -196,9 +196,17 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
             taxa_crescimento_meta = p_run['crescimento_trafego_mes_13_plus']
         
         # Budget de Marketing com verificação de caixa
-        if mes == 0:
+        # CLÁUSULA DE RESCISÃO: Se marketing estiver desabilitado, zera tudo ignorando regras.
+        if not p_run.get('marketing_habilitado', True):
+            budget_mkt_desejado = 0.0
+        elif mes == 0:
             budget_mkt_desejado = p_run['marketing_fixo_mensal']
         else:
+            # LÓGICA HÍBRIDA:
+            # 1. Calcula % da Receita do mês anterior
+            # 2. Aplica piso (Fixo Mensal) e teto (Marketing Teto)
+            # NOTA: Se você quer gastar ZERO, precisa zerar 'marketing_fixo_mensal' E 'marketing_perc_receita',
+            #       ou setar 'marketing_habilitado': False nas premissas.
             budget_calc = dados['receita_bruta'][mes - 1] * p_run['marketing_perc_receita']
             budget_mkt_desejado = np.clip(budget_calc, p_run['marketing_fixo_mensal'], p_run['marketing_teto'])
         

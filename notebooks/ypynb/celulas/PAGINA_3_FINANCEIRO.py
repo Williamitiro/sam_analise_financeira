@@ -150,18 +150,26 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     ax2.set_ylabel('EBITDA (R$)', fontsize=12, color='#388E3C')
     ax2.tick_params(axis='y', labelcolor='#388E3C')
     
-    # Encontrar break-even
+    # BUSCA INTELIGENTE DE BREAK-EVEN (Consistência Financeira)
+    # Break-even Operacional = EBITDA > 0 com sustentação
     mes_breakeven_real = None
-    for i, e in enumerate(ebitda_real):
-        if e > 0:
-            mes_breakeven_real = i + 1
-            break
-    
+    for i in range(len(ebitda_real)):
+        if ebitda_real[i] > 0:
+            # Verifica consistência: precisa ser positivo pelos próximos 3 meses (se existirem)
+            futuro = ebitda_real[i:i+3]
+            if all(val > 0 for val in futuro):
+                mes_breakeven_real = i + 1
+                break
+
     mes_breakeven_ideal = None
-    for i, e in enumerate(ebitda_ideal):
-        if e > 0:
-            mes_breakeven_ideal = i + 1
-            break
+    if len(ebitda_ideal) > 0:
+        for i in range(len(ebitda_ideal)):
+            if ebitda_ideal[i] > 0:
+                # Verifica consistência ideal também
+                futuro = ebitda_ideal[i:i+3]
+                if all(val > 0 for val in futuro):
+                    mes_breakeven_ideal = i + 1
+                    break
     
     if mes_breakeven_real:
         ax2.axvline(x=mes_breakeven_real, color='#388E3C', linestyle=':', alpha=0.7)
@@ -353,13 +361,25 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     ]
     df_tabela_geral = pd.DataFrame(tabela_geral)
     
-    if report_mode:
-        display(Markdown("### 📊 DECOMPOSIÇÃO DA DRE (M36)"))
-        display(Markdown(df_tabela_geral.to_markdown(index=False)))
-        display(Markdown(""))
-    else:
-        display(HTML("<h3>📊 DECOMPOSIÇÃO DA DRE (M36)</h3>"))
-        display(HTML(df_tabela_geral.to_html(index=False, escape=False)))
+    # =========================================
+    # RENDERIZAÇÃO ATÔMICA (V7.0)
+    # =========================================
+    render_atomic_block(
+        chart_id="pg3_viz1_dre_breakdown",
+        title_colloquial="De onde vem e para onde vai o dinheiro?",
+        title_technical="VIZ 3.0: Decomposição da DRE (M36)",
+        fig=None,
+        legend_md=None,
+        table_title="📊 DADOS TABULADOS:",
+        df_tabela=df_tabela_geral,
+        insight_dict={
+            "fato": "Estrutura de custos analisada.", 
+            "causa": "Breakdown de M36.", 
+            "implicacao": "Entendimento da eficiência.", 
+            "acao": "Otimizar linha a linha."
+        },
+        report_mode=report_mode
+    )
     
     # =========================================
     # GRÁFICO 1: WATERFALL DRE
@@ -424,12 +444,17 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Afiliados', 'Valor': formata_moeda(comissao_afiliados), '% Receita': f'{(comissao_afiliados/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Suporte', 'Valor': formata_moeda(custo_suporte), '% Receita': f'{(custo_suporte/receita_bruta*100):.1f}%'})
     
-    # OPEX - Marketing
-    tabela_breakdown.append({'Categoria': '📢 Marketing', 'Subcategoria': 'TOTAL', 'Valor': formata_moeda(gasto_marketing), '% Receita': f'{(gasto_marketing/receita_bruta*100):.1f}%'})
-    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Instagram', 'Valor': formata_moeda(gasto_instagram), '% Receita': f'{(gasto_instagram/receita_bruta*100):.1f}%'})
-    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Facebook', 'Valor': formata_moeda(gasto_facebook), '% Receita': f'{(gasto_facebook/receita_bruta*100):.1f}%'})
-    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  YouTube', 'Valor': formata_moeda(gasto_youtube), '% Receita': f'{(gasto_youtube/receita_bruta*100):.1f}%'})
-    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Google', 'Valor': formata_moeda(gasto_google), '% Receita': f'{(gasto_google/receita_bruta*100):.1f}%'})
+    # OPEX - Marketing (Correção de Display: Converte explícito para float)
+    gasto_mkt_val = float(gasto_marketing) if gasto_marketing is not None else 0.0
+    val_mkt_str = formata_moeda(gasto_mkt_val)
+    
+    tabela_breakdown.append({'Categoria': '📢 Marketing', 'Subcategoria': 'TOTAL', 'Valor': val_mkt_str, '% Receita': f'{(gasto_mkt_val/receita_bruta*100):.1f}%'})
+    
+    # Canais (mesma lógica)
+    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Instagram', 'Valor': formata_moeda(float(gasto_instagram or 0)), '% Receita': f'{(float(gasto_instagram or 0)/receita_bruta*100):.1f}%'})
+    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Facebook', 'Valor': formata_moeda(float(gasto_facebook or 0)), '% Receita': f'{(float(gasto_facebook or 0)/receita_bruta*100):.1f}%'})
+    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  YouTube', 'Valor': formata_moeda(float(gasto_youtube or 0)), '% Receita': f'{(float(gasto_youtube or 0)/receita_bruta*100):.1f}%'})
+    tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Google', 'Valor': formata_moeda(float(gasto_google or 0)), '% Receita': f'{(float(gasto_google or 0)/receita_bruta*100):.1f}%'})
     
     # OPEX - Operacional
     tabela_breakdown.append({'Categoria': '🏢 Operacional', 'Subcategoria': 'Pessoal (RH)', 'Valor': formata_moeda(custo_pessoal), '% Receita': f'{(custo_pessoal/receita_bruta*100):.1f}%'})

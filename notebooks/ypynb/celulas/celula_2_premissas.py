@@ -18,7 +18,7 @@ PREMISSAS = {
     'meta_version': '9.0-full-documented',
     'meta_updated_at': '2025-12-01',
     
-    'data_inicio': '2025-11-01',
+    'data_inicio': '2026-06-01',
     'meses_projecao': 36,       # 3 anos de visão
     'seed_fixa': 42,            # Para reprodutibilidade (Monte Carlo)
     
@@ -42,11 +42,11 @@ PREMISSAS = {
     # 3. AQUISIÇÃO, GROWTH & METAS
     # ========================================================================
     'usuarios_pagos_iniciais': 5,  # Começamos pequenos
-    'trafego_inicial': 300,        # Visitas no site/app
+    'trafego_inicial': 500,        # Visitas no site/app
     
     # --- METAS DE CRESCIMENTO MENSAL (DRIVERS) ---
     # A meta semanal será calculada baseada nestes números no final do script.
-    'crescimento_trafego_mes_1_6': 0.25,      # 25% ao mês (Fase Validação)
+    'crescimento_trafego_mes_1_6': 0.05,      # 25% ao mês (Fase Validação)
     'crescimento_trafego_mes_7_12': 0.07,     # 7% ao mês (Fase Consolidação)
     'crescimento_trafego_mes_13_plus': 0.04,  # 4% ao mês (Fase Escala)
 
@@ -119,8 +119,8 @@ PREMISSAS = {
     # 6. INFRAESTRUTURA & CUSTOS VARIÁVEIS (TIERS)
     # ========================================================================
     # Custo Variável por Usuário (IA Tokens + Server Load)
-    'custo_ia_lite': 2.50, 
-    'custo_ia_trader': 4.50, 
+    'custo_ia_lite': 3.00, 
+    'custo_ia_trader': 5.00, 
     'custo_ia_pro': 13.00,
     
     'custo_ferramentas_base': 1.00,         # Ferramentas fixas (Jira, etc), já está nos custos de ferramentas do tier 1!!!

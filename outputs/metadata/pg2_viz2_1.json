@@ -2,11 +2,11 @@
   "chart_id": "pg2_viz2_1",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-10T11:13:48.626908",
+  "timestamp": "2025-12-12T16:00:36.557458",
   "title_simple": "VIZ 2.1: Funil de Aquisição (Conservador vs Benchmark)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "No M36, a conversão global de 0.67% supera a meta.",
+    "fato": "No M36, a conversão global de 0.55% supera a meta.",
     "causa": "Otimização contínua do funil e qualificação do tráfego pago.",
     "implicacao": "Maior eficiência de capital: CAC menor que o planejado.",
     "acao": "Acelerar investimento em Topo de Funil para escalar."

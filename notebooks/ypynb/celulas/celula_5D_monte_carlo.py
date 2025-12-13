@@ -166,6 +166,16 @@ def run_single_simulation(sim_index, premissas_base, mc_config, scenario='base',
             premissas_base, sim_index, mc_config, scenario
         )
         
+        # SANITIZAÇÃO DE MARKETING (CRÍTICO: Evita "Ghost Spending")
+        # Se o budget fixo for zero (ou desligado), NÃO pode gastar % de receita.
+        mkt_fixo = p_var.get('marketing_fixo_mensal', 0)
+        mkt_hab = p_var.get('marketing_habilitado', True)
+        
+        if mkt_fixo <= 1.0 or not mkt_hab: # Tolerancia para floating point
+            p_var['marketing_perc_receita'] = 0.0
+            p_var['marketing_teto'] = 0.0
+            p_var['marketing_habilitado'] = False # Força flag para o motor saber
+        
         df_m, df_a, metrics, alerts = motor_func(
             p_var,
             seed=seed_used,
@@ -201,8 +211,18 @@ def run_single_simulation(sim_index, premissas_base, mc_config, scenario='base',
         }
         
         ltv_cac_motor = safe_extract(metrics, ['ltv_cac_medio', 'ltv_cac'], np.nan)
-        if np.isnan(ltv_cac_motor) and result['cac_medio'] > 0:
-            result['ltv_cac'] = result['ltv_medio'] / result['cac_medio']
+        
+        # Correção para CAC=0 (Marketing=0 ou muito eficiente)
+        if result['cac_medio'] == 0:
+            if result['ltv_medio'] > 0:
+                result['ltv_cac'] = 10000.0 # Valor simbólico para "Infinito"
+            else:
+                 result['ltv_cac'] = 0.0
+        elif np.isnan(ltv_cac_motor):
+            try:
+                result['ltv_cac'] = result['ltv_medio'] / result['cac_medio']
+            except:
+                 result['ltv_cac'] = 0.0
         else:
             result['ltv_cac'] = ltv_cac_motor
             

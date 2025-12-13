@@ -2,14 +2,14 @@
   "chart_id": "pg4_viz3_churn_spc",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-10T16:11:29.174980",
+  "timestamp": "2025-12-13T06:01:27.213241",
   "title_simple": "VIZ 4.3: Churn Volatility Control (SPC)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Média semanal de 11.67% com 1 surtos recentes.",
+    "fato": "Média semanal de 11.86% com 0 surtos recentes.",
     "causa": "Volatilidade natural vs Eventos de Cauda.",
     "implicacao": "Previsibilidade da base de clientes.",
-    "acao": "Investigar surtos."
+    "acao": "Manter monitoramento."
   },
   "files": {
     "png": "outputs/figs/pg4_viz3_churn_spc.png",

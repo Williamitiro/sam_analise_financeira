@@ -1,8 +1,12 @@
-# 2-B. MONTE CARLO - CONFIGURAÇÃO COMPLETA (ENTERPRISE GRADE)
-# ============================================================================
-# Esta seção define TODOS os parâmetros da simulação Monte Carlo.
-# ZERO valores hardcoded no código da Célula 05C.
-# ============================================================================
+
+try:
+    # Tenta usar a variavel global se existir (Notebook)
+    if 'PREMISSAS' not in globals():
+        from celula_2_premissas import PREMISSAS
+except ImportError:
+    # Fallback se não conseguir importar (cria dict vazio para nao quebrar)
+    PREMISSAS = {}
+
 
 PREMISSAS['monte_carlo'] = {
     # ------------------------------------------------------------------------
@@ -71,7 +75,7 @@ PREMISSAS['monte_carlo'] = {
         # GROWTH
         'marketing_fixo_mensal': {
             'std': 0.15,          # ±15% variação
-            'min': 500,           # Mínimo R$ 500
+            'min': 0,             # Mínimo R$ 0 (Corrigido: Permite Zero)
             'max': 10000,         # Máximo R$ 10k (fase bootstrap)
             'dist': 'normal'
         },
@@ -91,7 +95,7 @@ PREMISSAS['monte_carlo'] = {
         # RETENÇÃO
         'churn_inicial': {
             'std': 0.20,          # ±20% variação (corrigido de 30%)
-            'min': 0.005,         # 0.5% mínimo (mundo perfeito)
+            'min': 0.05,         # 0.5% mínimo (mundo perfeito)
             'max': 0.35,          # 50% máximo (desastre)
             'dist': 'normal'
         },
