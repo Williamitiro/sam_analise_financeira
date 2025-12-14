@@ -205,63 +205,45 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     
     # 4. BLOCO D: TABELA AUXILIAR
     # Título Customizado ou Default
-    titulo_tabela = table_title if table_title else "📋 A PROVA NUMÉRICA:"
+    # Título Customizado ou Default
+    titulo_tabela = table_title if table_title else "📋 TABELA DE DADOS:"
     display(Markdown(f"#### {titulo_tabela}"))
     
+    # ----------------------------------------------
+    # RENDERIZAÇÃO DE TABELA (HTML UNIFICADO V8.0)
+    # ----------------------------------------------
     if isinstance(df_tabela, str):
-        # CASO ESPECIAL: Tabela passada como String Markdown pura (Manual)
-        # Útil para casos onde pandas.to_markdown quebra a formatação
+        # Caso Especial: Tabela já passada como string Markdown
         display(Markdown(f"\n\n{df_tabela}\n\n"))
-        
-        # Em modo notebook, se quisermos salvar HTML, precisaríamos parsear ou ignorar.
-        # Aqui vamos salvar apenas o arquivo texto se for string.
-        if not report_mode:
-            pass # Não salva HTML se for string manual
-        
-        # CORREÇÃO V7.6: Espaçamento após tabela string
         display(Markdown(""))
             
-    elif report_mode:
-        # Modo Relatório: Markdown Puro e Limpo via Pandas
-        df_clean = df_tabela.fillna('')
-        
-        # 1. Remove tags HTML de colunas de texto (mas mantém conteúdo)
-        # Ex: <span class='status-green'>SUPEROU</span> -> SUPEROU
-        df_clean = df_clean.replace(to_replace=r'<[^>]+>', value='', regex=True)
-        
-        # 2. Converte para Markdown (Força formato pipe padrão e sanitiza)
-        # remove_index=False se quiser index, mas aqui é False
-        markdown_table = df_clean.to_markdown(index=False, tablefmt="pipe")
-        
-        # Correção ROBUSTA de caracteres de separação (long-dashes e em-dashes)
-        # Substitui travessões longos que o tabulate ou copy-paste podem ter gerado
-        markdown_table = markdown_table.replace('—', '-').replace('–', '-')
-        
-        # Garante quebras de linha para o processador Markdown do Quarto
-        markdown_table = f"\n\n{markdown_table}\n\n"
-        
-        display(Markdown(markdown_table))
-    else:
-        # Modo Notebook: HTML Rico com CSS
-        if df_tabela is not None and not df_tabela.empty:
+    elif isinstance(df_tabela, pd.DataFrame):
+        if not df_tabela.empty:
+            # Estilo CSS Gold Standard (Funciona no Notebook e na maioria dos exports HTML)
             style = """
             <style>
-                .dataframe { font-family: Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 5px; }
-                .dataframe th { background-color: #f0f0f0; color: #333; font-weight: bold; border-bottom: 2px solid #ccc; padding: 10px; text-align: left; }
-                .dataframe td { padding: 10px; border-bottom: 1px solid #eee; }
-                .dataframe tr:hover { background-color: #f9f9f9; }
-                .status-red { color: #D32F2F; font-weight: bold; background-color: #FFEBEE; padding: 2px 6px; border-radius: 4px; }
-                .status-yellow { color: #FBC02D; font-weight: bold; background-color: #FFFDE7; padding: 2px 6px; border-radius: 4px; }
-                .status-green { color: #388E3C; font-weight: bold; background-color: #E8F5E9; padding: 2px 6px; border-radius: 4px; }
+                .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
+                .dataframe th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: left; }
+                .dataframe td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; color: #212529; }
+                .dataframe tr:hover { background-color: #f1f3f5; }
+                .status-red { color: #c0392b; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-yellow { color: #d4ac0d; font-weight: bold; background-color: #fcf3cf; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-green { color: #27ae60; font-weight: bold; background-color: #d5f5e3; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
             </style>
             """
-            html_table = style + df_tabela.to_html(index=False, escape=False, classes='dataframe')
-            display(HTML(html_table))
             
-            # CORREÇÃO V7.6: Espaçamento após tabela HTML
-            display(Markdown(""))
+            # Converter para HTML (mantendo tags internas como badges)
+            html_table = df_tabela.to_html(index=False, escape=False, classes='dataframe')
+            
+            # Exibir
+            display(HTML(style + html_table))
+            display(Markdown("")) # Espaço de respiro
         else:
             display(Markdown("_Sem dados tabulares para exibir._"))
+            
+    else:
+        # Fallback para outros tipos (None, etc)
+        pass
     
     # 5. BLOCO E: INSIGHT ESTRATÉGICO
     # CORREÇÃO V7.6: Separador visual antes do insight

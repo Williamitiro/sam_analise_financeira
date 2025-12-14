@@ -190,18 +190,32 @@ def render_ato4_breakeven(df_real_m, df_ideal_m, df_stress_m, premissas, report_
     ])
     
     # 4. Renderizar via Atomic Block
+
+    # Texto Explicativo Detalhado (Gold Enterprise)
+    texto_como_ler_be = """
+**O QUE ESTAMOS MEDINDO?**
+A "Autossuficiência" (Break-Even) é o marco zero da sobrevivência. 
+*   **Linha Azul (Real):** Caminho provável. Se cruzar a linha zero antes do M12 (trajetória atual), o modelo é saudável.
+*   **Linha Vermelha (Estresse):** Caminho de dor. Mostra quanto tempo (meses de atraso) e quanto dinheiro (R$) extra você precisará se a "Tempestade Perfeita" ocorrer.
+
+**CAPITAL DE RISCO (GRÁFICO DA DIREITA):**
+A diferença de altura entre a barra Azul e Vermelha é o seu **"Seguro Desastre"**. Se o Estresse pede R$ 50k a mais, esse dinheiro precisa estar no banco HOJE, não quando a crise estourar.
+    """
+
+    # 4. Renderizar via Atomic Block
     render_atomic_block(
         chart_id="pg5_viz4_breakeven",
         title_technical="VIZ 5.4: Análise de Break-Even sob Estresse",
         title_colloquial="Quando o negócio atinge autossuficiência?",
         fig=fig,
-        legend_md=f"Gráfico mostra quando a operação se paga. **Real: M{lbl_real}** | **Estresse: {lbl_stress}**.",
+        legend_md=texto_como_ler_be,
         df_tabela=df_be, 
         insight_dict=insight,
         report_mode=report_mode,
         data_source_text="Fonte: Projeção Financeira Real/Ideal/Estresse"
     )
     plt.close(fig)
+
     return {'be_real': be_real_mes, 'consumo_real': consumo_real}
 
 # ==============================================================================
@@ -319,7 +333,17 @@ def render_ato5_gap_analysis(df_real_m, df_stress_m, premissas, motor_func, repo
     
     # Ordenar por impacto
     df_decomp = pd.DataFrame(list(decomposicao.items()), columns=['Fator', 'Impacto'])
-    df_decomp = df_decomp.sort_values('Impacto', ascending=True) # Para waterfall funcionar bem
+    df_decomp = df_decomp.sort_values('Impacto', ascending=True) # Para waterfall funcionar bem (crescente)
+    
+    # Tabela Enriquecida para Display
+    df_decomp_enriched = df_decomp.copy().sort_values('Impacto', ascending=False)
+    df_decomp_enriched.columns = ['Fator de Risco', 'Impacto Financeiro (R$)']
+    if gap_final > 0:
+        df_decomp_enriched['% do Gap Total'] = (df_decomp_enriched['Impacto Financeiro (R$)'] / gap_final) * 100
+    else:
+        df_decomp_enriched['% do Gap Total'] = 0
+    df_decomp_enriched['% do Gap Total'] = df_decomp_enriched['% do Gap Total'].apply(lambda x: f"{x:.1f}%")
+    df_decomp_enriched['Impacto Financeiro (R$)'] = df_decomp_enriched['Impacto Financeiro (R$)'].apply(formata_moeda)
     
     # 3. Plotar (2 Paineis)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
@@ -367,22 +391,39 @@ def render_ato5_gap_analysis(df_real_m, df_stress_m, premissas, motor_func, repo
     top_fator = df_decomp.iloc[-1]['Fator'] if not df_decomp.empty else "N/A"
     
     insight = {
-        "fato": f"Sob estresse máximo, a empresa perde {formata_moeda(gap_final)} de caixa ({gap_pct:.0f}% do valor real).",
-        "causa": f"O principal ofensor 'vazando' valor é: **{top_fator}**.",
-        "implicacao": "Isso indica alta sensibilidade a este fator específico, exigindo hedge ou mitigação.",
-        "acao": f"Criar plano de contingência focado em controlar {top_fator}."
+        "fato": f"O Gap de Caixa totaliza {formata_moeda(gap_final)}. O fator **{top_fator}** responde sozinho por {(df_decomp.iloc[-1]['Impacto'] / gap_final * 100):.0f}% dessa perda.",
+        "causa": f"A alta sensibilidade ao {top_fator} indica que o modelo de negócios depende excessivamente da eficiência desta métrica no pior cenário.",
+        "implicacao": f"Uma deterioração isolada em {top_fator} é suficiente para consumir {formata_moeda(df_decomp.iloc[-1]['Impacto'])} do caixa projetado.",
+        "acao": f"Hedge Operacional: Diversificar fontes e otimizar {top_fator} para reduzir sua volatilidade."
     }
     
+
+    # Texto Explicativo Detalhado (Gold Enterprise)
+    texto_como_ler_gap = """
+**1. O CONCEITO DE "VAZAMENTO" (LEAKAGE):**
+Em finanças, o risco não é apenas "perder dinheiro", mas sim **deixar de ganhar** o que estava projetado. A área cinza no gráfico mostra essa diferença acumulada mês a mês. É o custo de oportunidade da fragilidade do modelo.
+
+**2. SHAPLEY VALUE PROXY (O GRÁFICO DA DIREITA):**
+Usamos um algoritmo para isolar matematicamente a "culpa" de cada variável.
+*   Se o **Churn** é o maior ofensor: Sua empresa sangra clientes mais rápido do que consegue repor. A prioridade é Retenção (CS), não Vendas.
+*   Se o **CAC** é o maior ofensor: Sua aquisição é ineficiente. Escalar agora só vai acelerar a queima de caixa.
+*   Se **Outros** é alto: Verifique custos fixos ou impostos.
+
+**3. AÇÃO RECOMENDADA:**
+Resolva o problema da barra maior primeiro. Pela Lei de Pareto, mitigar este único risco pode reduzir o Gap Total em mais de 50%.
+    """
+
     render_atomic_block(
         chart_id="pg5_viz5_gap",
         title_technical="VIZ 5.5: Decomposição de Gap (Real vs Estresse)",
-        title_colloquial="Onde o dinheiro vaza na crise?",
+        title_colloquial="Diagnóstico de Vulnerabilidade Financeira",
         fig=fig,
-        legend_md="Gráfico da esquerda mostra a diferença acumulada de caixa. Direita mostra quais fatores causam essa perda.",
-        df_tabela=df_decomp,
+        legend_md=texto_como_ler_gap,
+        df_tabela=df_decomp_enriched,
         insight_dict=insight,
         report_mode=report_mode,
         data_source_text="Fonte: Monte Carlo Shapley Decomposition"
     )
     plt.close(fig)
+
     return {'gap_final': gap_final, 'top_fator': top_fator}

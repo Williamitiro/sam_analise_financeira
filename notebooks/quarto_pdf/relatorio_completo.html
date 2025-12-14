@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="relatorio_completo_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="relatorio_completo_files/libs/clipboard/clipboard.min.js"></script>
 <script src="relatorio_completo_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="relatorio_completo_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="relatorio_completo_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -36,6 +36,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="relatorio_completo_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="relatorio_completo_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="relatorio_completo_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -256,199 +259,192 @@ Note
 <h4 class="anchored" data-anchor-id="dados-tabulados">📊 DADOS TABULADOS:</h4>
 </section>
 </div>
-<div id="tier1-6" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 34%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 10%">
-</colgroup>
+<div id="tier1-6" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Métrica</th>
-<th style="text-align: left;">M1</th>
-<th style="text-align: left;">M6</th>
-<th style="text-align: left;">M12</th>
-<th style="text-align: left;">M36</th>
-<th style="text-align: left;">Benchmark</th>
-<th style="text-align: left;">Status</th>
+<th data-quarto-table-cell-role="th">Métrica</th>
+<th data-quarto-table-cell-role="th">M1</th>
+<th data-quarto-table-cell-role="th">M6</th>
+<th data-quarto-table-cell-role="th">M12</th>
+<th data-quarto-table-cell-role="th">M36</th>
+<th data-quarto-table-cell-role="th">Benchmark</th>
+<th data-quarto-table-cell-role="th">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>💰 RECEITA</strong></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>**💰 RECEITA**</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MRR</td>
-<td style="text-align: left;">R$ 749</td>
-<td style="text-align: left;">R$ 2.5k</td>
-<td style="text-align: left;">R$ 5.6k</td>
-<td style="text-align: left;">R$ 66.3k</td>
-<td style="text-align: left;">R$ 225.6k</td>
-<td style="text-align: left;">🔴</td>
+<td>MRR</td>
+<td>R$ 749</td>
+<td>R$ 2.5k</td>
+<td>R$ 5.6k</td>
+<td>R$ 66.3k</td>
+<td>R$ 225.6k</td>
+<td>🔴</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ARR (Anual)</td>
-<td style="text-align: left;">R$ 9.0k</td>
-<td style="text-align: left;">R$ 29.8k</td>
-<td style="text-align: left;">R$ 66.7k</td>
-<td style="text-align: left;">R$ 795.7k</td>
-<td style="text-align: left;">R$ 2.7M</td>
-<td style="text-align: left;">🔴</td>
+<td>ARR (Anual)</td>
+<td>R$ 9.0k</td>
+<td>R$ 29.8k</td>
+<td>R$ 66.7k</td>
+<td>R$ 795.7k</td>
+<td>R$ 2.7M</td>
+<td>🔴</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Usuários Ativos</td>
-<td style="text-align: left;">8</td>
-<td style="text-align: left;">26</td>
-<td style="text-align: left;">58</td>
-<td style="text-align: left;">693</td>
-<td style="text-align: left;">2,320</td>
-<td style="text-align: left;">🔴</td>
+<td>Usuários Ativos</td>
+<td>8</td>
+<td>26</td>
+<td>58</td>
+<td>693</td>
+<td>2,320</td>
+<td>🔴</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">****</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>****</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>📊 UNIT ECONOMICS</strong></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>**📊 UNIT ECONOMICS**</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">LTV/CAC (Índice de Retorno)</td>
-<td style="text-align: left;">1.07x</td>
-<td style="text-align: left;">2.38x</td>
-<td style="text-align: left;">3.83x</td>
-<td style="text-align: left;">5.14x</td>
-<td style="text-align: left;">3.0x</td>
-<td style="text-align: left;">✅</td>
+<td>LTV/CAC (Índice de Retorno)</td>
+<td>1.07x</td>
+<td>2.38x</td>
+<td>3.83x</td>
+<td>5.14x</td>
+<td>3.0x</td>
+<td>✅</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CAC (Custo Aquisição Cliente)</td>
-<td style="text-align: left;">R$ 583</td>
-<td style="text-align: left;">R$ 292</td>
-<td style="text-align: left;">R$ 203</td>
-<td style="text-align: left;">R$ 247</td>
-<td style="text-align: left;">R$ 250</td>
-<td style="text-align: left;">✅</td>
+<td>CAC (Custo Aquisição Cliente)</td>
+<td>R$ 583</td>
+<td>R$ 292</td>
+<td>R$ 203</td>
+<td>R$ 247</td>
+<td>R$ 250</td>
+<td>✅</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Churn (Taxa Cancelamento %)</td>
-<td style="text-align: left;">12.0%</td>
-<td style="text-align: left;">11.0%</td>
-<td style="text-align: left;">9.8%</td>
-<td style="text-align: left;">6.0%</td>
-<td style="text-align: left;">5.0%</td>
-<td style="text-align: left;">⚠️</td>
+<td>Churn (Taxa Cancelamento %)</td>
+<td>12.0%</td>
+<td>11.0%</td>
+<td>9.8%</td>
+<td>6.0%</td>
+<td>5.0%</td>
+<td>⚠️</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Payback (Meses p/ Recuperar CAC)</td>
-<td style="text-align: left;">7.8m</td>
-<td style="text-align: left;">3.8m</td>
-<td style="text-align: left;">2.7m</td>
-<td style="text-align: left;">3.2m</td>
-<td style="text-align: left;">&lt;12m</td>
-<td style="text-align: left;">✅</td>
+<td>Payback (Meses p/ Recuperar CAC)</td>
+<td>7.8m</td>
+<td>3.8m</td>
+<td>2.7m</td>
+<td>3.2m</td>
+<td>&lt;12m</td>
+<td>✅</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">****</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>****</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>💵 CAIXA &amp; RUNWAY</strong></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>**💵 CAIXA &amp; RUNWAY**</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Caixa Disponível</td>
-<td style="text-align: left;">R$ 2.0k</td>
-<td style="text-align: left;">R$ 5.9k</td>
-<td style="text-align: left;">R$ 18.1k</td>
-<td style="text-align: left;">R$ 203.6k</td>
-<td style="text-align: left;">R$ 50.0k</td>
-<td style="text-align: left;">✅</td>
+<td>Caixa Disponível</td>
+<td>R$ 2.0k</td>
+<td>R$ 5.9k</td>
+<td>R$ 18.1k</td>
+<td>R$ 203.6k</td>
+<td>R$ 50.0k</td>
+<td>✅</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Runway (Meses de Sobrevivência)</td>
-<td style="text-align: left;">1.5m</td>
-<td style="text-align: left;">2.1m</td>
-<td style="text-align: left;">5.7m</td>
-<td style="text-align: left;">4.7m</td>
-<td style="text-align: left;">&gt;12m</td>
-<td style="text-align: left;">🔴</td>
+<td>Runway (Meses de Sobrevivência)</td>
+<td>1.5m</td>
+<td>2.1m</td>
+<td>5.7m</td>
+<td>4.7m</td>
+<td>&gt;12m</td>
+<td>🔴</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Burn Rate (Queima Mensal)</td>
-<td style="text-align: left;">R$ 2.0k</td>
-<td style="text-align: left;">R$ 629</td>
-<td style="text-align: left;">R$ 0</td>
-<td style="text-align: left;">R$ 0</td>
-<td style="text-align: left;">R$ 0</td>
-<td style="text-align: left;">✅</td>
+<td>Burn Rate (Queima Mensal)</td>
+<td>R$ 2.0k</td>
+<td>R$ 629</td>
+<td>R$ 0</td>
+<td>R$ 0</td>
+<td>R$ 0</td>
+<td>✅</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">****</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>****</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>📈 MARGENS</strong></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td>**📈 MARGENS**</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Margem Bruta %</td>
-<td style="text-align: left;">79.8%</td>
-<td style="text-align: left;">79.7%</td>
-<td style="text-align: left;">79.6%</td>
-<td style="text-align: left;">79.7%</td>
-<td style="text-align: left;">70.0%</td>
-<td style="text-align: left;">✅</td>
+<td>Margem Bruta %</td>
+<td>79.8%</td>
+<td>79.7%</td>
+<td>79.6%</td>
+<td>79.7%</td>
+<td>70.0%</td>
+<td>✅</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">EBITDA (Lucro Operacional)</td>
-<td style="text-align: left;">R$ -2.0k</td>
-<td style="text-align: left;">R$ -629</td>
-<td style="text-align: left;">R$ 1.5k</td>
-<td style="text-align: left;">R$ 13.1k</td>
-<td style="text-align: left;">R$ 0</td>
-<td style="text-align: left;">✅</td>
+<td>EBITDA (Lucro Operacional)</td>
+<td>R$ -2.0k</td>
+<td>R$ -629</td>
+<td>R$ 1.5k</td>
+<td>R$ 13.1k</td>
+<td>R$ 0</td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
@@ -457,9 +453,12 @@ Note
 
 </div>
 <div id="tier1-8" class="cell-output cell-output-display cell-output-markdown">
-<hr>
+
 </div>
 <div id="tier1-9" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier1-10" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -479,18 +478,18 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-10" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-11" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier1-11" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-12" class="cell-output cell-output-display cell-output-markdown">
 <section id="painel-de-controle-kpis" class="level2">
 <h2 class="anchored" data-anchor-id="painel-de-controle-kpis">📊 1.0 PAINEL DE CONTROLE (KPIs)</h2>
 </section>
 </div>
-<div id="tier1-12" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-13" class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Visão Geral:</strong> Indicadores chave de performance no final do período (M36).</p>
 </div>
-<div id="tier1-13" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-14" class="cell-output cell-output-display cell-output-markdown">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outputs/figs/pg1_kpi_cards.png" class="img-fluid figure-img"></p>
@@ -498,21 +497,21 @@ Note
 </figure>
 </div>
 </div>
-<div id="tier1-14" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-15" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m (Simulacao Real) - Snapshot M36</em></p>
 </div>
-<div id="tier1-15" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-16" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier1-16" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-17" class="cell-output cell-output-display cell-output-markdown">
 <section id="evolução-mrr-vs-usuários" class="level3">
 <h3 class="anchored" data-anchor-id="evolução-mrr-vs-usuários">📈 EVOLUÇÃO MRR vs USUÁRIOS</h3>
 </section>
 </div>
-<div id="tier1-17" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-18" class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Pergunta:</strong> O crescimento de usuarios esta se convertendo em receita proporcional?</p>
 </div>
-<div id="tier1-18" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-19" class="cell-output cell-output-display cell-output-markdown">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outputs/figs/pg1_temporal_correlacao.png" class="img-fluid figure-img"></p>
@@ -520,10 +519,10 @@ Note
 </figure>
 </div>
 </div>
-<div id="tier1-19" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-20" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m vs df_ideal_m | Projecao 36 meses</em></p>
 </div>
-<div id="tier1-20" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-21" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -540,15 +539,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-21" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-22" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier1-22" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-23" class="cell-output cell-output-display cell-output-markdown">
 <section id="tabela-de-referência" class="level4">
 <h4 class="anchored" data-anchor-id="tabela-de-referência">📋 TABELA DE REFERÊNCIA</h4>
 </section>
 </div>
-<div id="tier1-23" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-24" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -605,21 +604,21 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier1-24" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-25" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m vs df_ideal_m - Projecao 36 meses</em></p>
 </div>
-<div id="tier1-25" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-26" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier1-26" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-27" class="cell-output cell-output-display cell-output-markdown">
 <section id="tabela-de-milestones-real-vs-ideal" class="level4">
 <h4 class="anchored" data-anchor-id="tabela-de-milestones-real-vs-ideal">🏁 TABELA DE MILESTONES (REAL VS IDEAL)</h4>
 </section>
 </div>
-<div id="tier1-27" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-28" class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Objetivo:</strong> Verificar se estamos atingindo os marcos de crescimento no tempo previsto pelo benchmark.</p>
 </div>
-<div id="tier1-28" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-29" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -699,21 +698,21 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier1-29" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-30" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m vs df_ideal_m (Metas do Benchmark)</em></p>
 </div>
-<div id="tier1-30" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-31" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier1-31" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-32" class="cell-output cell-output-display cell-output-markdown">
 <section id="eficiência-de-marketing-roi" class="level3">
 <h3 class="anchored" data-anchor-id="eficiência-de-marketing-roi">💰 EFICIÊNCIA DE MARKETING (ROI)</h3>
 </section>
 </div>
-<div id="tier1-32" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-33" class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Pergunta:</strong> O dinheiro investido em marketing esta retornando como receita recorrente?</p>
 </div>
-<div id="tier1-33" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-34" class="cell-output cell-output-display cell-output-markdown">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outputs/figs/pg1_eficiencia_marketing.png" class="img-fluid figure-img"></p>
@@ -721,10 +720,10 @@ Note
 </figure>
 </div>
 </div>
-<div id="tier1-34" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-35" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m | gasto_marketing vs mrr</em></p>
 </div>
-<div id="tier1-35" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-36" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -741,18 +740,18 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-36" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-37" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m vs df_ideal_m - Projecao 36 meses</em></p>
 </div>
-<div id="tier1-37" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-38" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier1-38" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-39" class="cell-output cell-output-display cell-output-markdown">
 <section id="insights-estratégicos-do-cockpit" class="level2">
 <h2 class="anchored" data-anchor-id="insights-estratégicos-do-cockpit">🧠 INSIGHTS ESTRATÉGICOS DO COCKPIT</h2>
 </section>
 </div>
-<div id="tier1-39" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-40" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -772,7 +771,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-40" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-41" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -792,7 +791,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-41" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-42" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -812,7 +811,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-42" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-43" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -836,7 +835,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier1-43" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier1-44" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
 </div>
@@ -904,58 +903,52 @@ Note
 <h4 class="anchored" data-anchor-id="detalhamento-do-funil-real-vs-meta">Detalhamento do Funil (Real vs Meta)</h4>
 </section>
 </div>
-<div id="tier2-8" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 21%">
-<col style="width: 21%">
-<col style="width: 22%">
-<col style="width: 13%">
-<col style="width: 10%">
-</colgroup>
+<div id="tier2-8" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Período</th>
-<th style="text-align: right;">Visitantes (Real)</th>
-<th style="text-align: left;">Conv. Global Real</th>
-<th style="text-align: left;">Conv. Meta (Ideal)</th>
-<th style="text-align: left;">Δ (Delta)</th>
-<th style="text-align: left;">Status</th>
+<th data-quarto-table-cell-role="th">Período</th>
+<th data-quarto-table-cell-role="th">Visitantes (Real)</th>
+<th data-quarto-table-cell-role="th">Conv. Global Real</th>
+<th data-quarto-table-cell-role="th">Conv. Meta (Ideal)</th>
+<th data-quarto-table-cell-role="th">Δ (Delta)</th>
+<th data-quarto-table-cell-role="th">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">M1</td>
-<td style="text-align: right;">1123</td>
-<td style="text-align: left;">0.27%</td>
-<td style="text-align: left;">0.43%</td>
-<td style="text-align: left;">-0.16 p.p.</td>
-<td style="text-align: left;">PRÓXIMO</td>
+<td>M1</td>
+<td>1123</td>
+<td>0.27%</td>
+<td>0.43%</td>
+<td>-0.16 p.p.</td>
+<td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M6</td>
-<td style="text-align: right;">1402</td>
-<td style="text-align: left;">0.43%</td>
-<td style="text-align: left;">0.81%</td>
-<td style="text-align: left;">-0.39 p.p.</td>
-<td style="text-align: left;">PRÓXIMO</td>
+<td>M6</td>
+<td>1402</td>
+<td>0.43%</td>
+<td>0.81%</td>
+<td>-0.39 p.p.</td>
+<td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">M12</td>
-<td style="text-align: right;">1759</td>
-<td style="text-align: left;">0.57%</td>
-<td style="text-align: left;">0.92%</td>
-<td style="text-align: left;">-0.35 p.p.</td>
-<td style="text-align: left;">PRÓXIMO</td>
+<td>M12</td>
+<td>1759</td>
+<td>0.57%</td>
+<td>0.92%</td>
+<td>-0.35 p.p.</td>
+<td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M36</td>
-<td style="text-align: right;">14535</td>
-<td style="text-align: left;">0.67%</td>
-<td style="text-align: left;">0.95%</td>
-<td style="text-align: left;">-0.28 p.p.</td>
-<td style="text-align: left;">PRÓXIMO</td>
+<td>M36</td>
+<td>14535</td>
+<td>0.67%</td>
+<td>0.95%</td>
+<td>-0.28 p.p.</td>
+<td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 </tbody>
 </table>
@@ -964,9 +957,12 @@ Note
 
 </div>
 <div id="tier2-10" class="cell-output cell-output-display cell-output-markdown">
-<hr>
+
 </div>
 <div id="tier2-11" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier2-12" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -986,7 +982,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-12" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-13" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1013,15 +1009,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-13" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-14" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-14" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-15" class="cell-output cell-output-display cell-output-markdown">
 <section id="o-negócio-para-em-pé-saúde-unitária" class="level2">
 <h2 class="anchored" data-anchor-id="o-negócio-para-em-pé-saúde-unitária">O negócio para em pé? (Saúde Unitária)</h2>
 </section>
 </div>
-<div id="tier2-15" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-16" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-2.2-evolução-ltvcac-vs-zonas-de-risco" class="level3">
 <h3 class="anchored" data-anchor-id="viz-2.2-evolução-ltvcac-vs-zonas-de-risco">📉 VIZ 2.2: Evolução LTV/CAC vs Zonas de Risco</h3>
 </section>
@@ -1029,17 +1025,17 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-16.png" id="tier2-16" width="843" height="409" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-17.png" id="tier2-17" width="843" height="409" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-17" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-18" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m (LTV/CAC) | Benchmark: 3.0x</em></p>
 </div>
-<div id="tier2-18" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-19" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-19" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-20" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1056,68 +1052,66 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-20" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-21" class="cell-output cell-output-display cell-output-markdown">
 <section id="evolução-da-eficiência-ltvcac" class="level4">
 <h4 class="anchored" data-anchor-id="evolução-da-eficiência-ltvcac">Evolução da Eficiência LTV/CAC</h4>
 </section>
 </div>
-<div id="tier2-21" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 20%">
-<col style="width: 22%">
-<col style="width: 16%">
-<col style="width: 25%">
-</colgroup>
+<div id="tier2-22" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Período</th>
-<th style="text-align: left;">LTV/CAC Real</th>
-<th style="text-align: left;">Target Mínimo</th>
-<th style="text-align: left;">Distância</th>
-<th style="text-align: left;">Saúde Financeira</th>
+<th data-quarto-table-cell-role="th">Período</th>
+<th data-quarto-table-cell-role="th">LTV/CAC Real</th>
+<th data-quarto-table-cell-role="th">Target Mínimo</th>
+<th data-quarto-table-cell-role="th">Distância</th>
+<th data-quarto-table-cell-role="th">Saúde Financeira</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">M6</td>
-<td style="text-align: left;">2.38x</td>
-<td style="text-align: left;">3.0x</td>
-<td style="text-align: left;">-0.62x</td>
-<td style="text-align: left;">ATENÇÃO</td>
+<td>M6</td>
+<td>2.38x</td>
+<td>3.0x</td>
+<td>-0.62x</td>
+<td><span class="status-yellow">ATENÇÃO</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M12</td>
-<td style="text-align: left;">3.83x</td>
-<td style="text-align: left;">3.0x</td>
-<td style="text-align: left;">+0.83x</td>
-<td style="text-align: left;">EXCELENTE</td>
+<td>M12</td>
+<td>3.83x</td>
+<td>3.0x</td>
+<td>+0.83x</td>
+<td><span class="status-green">EXCELENTE</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">M24</td>
-<td style="text-align: left;">4.63x</td>
-<td style="text-align: left;">3.0x</td>
-<td style="text-align: left;">+1.63x</td>
-<td style="text-align: left;">EXCELENTE</td>
+<td>M24</td>
+<td>4.63x</td>
+<td>3.0x</td>
+<td>+1.63x</td>
+<td><span class="status-green">EXCELENTE</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M36</td>
-<td style="text-align: left;">5.14x</td>
-<td style="text-align: left;">3.0x</td>
-<td style="text-align: left;">+2.14x</td>
-<td style="text-align: left;">EXCELENTE</td>
+<td>M36</td>
+<td>5.14x</td>
+<td>3.0x</td>
+<td>+2.14x</td>
+<td><span class="status-green">EXCELENTE</span></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tier2-22" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-23" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-23" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-24" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier2-25" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-24" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-26" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1137,7 +1131,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-25" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-27" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1165,15 +1159,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-26" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-28" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-27" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-29" class="cell-output cell-output-display cell-output-markdown">
 <section id="existe-descontrole-tático-de-custos" class="level2">
 <h2 class="anchored" data-anchor-id="existe-descontrole-tático-de-custos">Existe descontrole tático de custos?</h2>
 </section>
 </div>
-<div id="tier2-28" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-30" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-2.3-volatilidade-semanal-do-cac-spc" class="level3">
 <h3 class="anchored" data-anchor-id="viz-2.3-volatilidade-semanal-do-cac-spc">📉 VIZ 2.3: Volatilidade Semanal do CAC (SPC)</h3>
 </section>
@@ -1181,17 +1175,17 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-29.png" id="tier2-29" width="852" height="416" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-31.png" id="tier2-31" width="852" height="416" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-30" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-32" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_s (CAC Semanal) | Media: R$ 435</em></p>
 </div>
-<div id="tier2-31" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-33" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-32" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-34" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1208,75 +1202,73 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-33" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-35" class="cell-output cell-output-display cell-output-markdown">
 <section id="monitoramento-de-anomalias-semanal" class="level4">
 <h4 class="anchored" data-anchor-id="monitoramento-de-anomalias-semanal">Monitoramento de Anomalias (Semanal)</h4>
 </section>
 </div>
-<div id="tier2-34" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 16%">
-<col style="width: 24%">
-<col style="width: 21%">
-<col style="width: 23%">
-</colgroup>
+<div id="tier2-36" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Semana</th>
-<th style="text-align: left;">CAC Real</th>
-<th style="text-align: left;">Média (Centro)</th>
-<th style="text-align: left;">UCL (Limite)</th>
-<th style="text-align: left;">Status</th>
+<th data-quarto-table-cell-role="th">Semana</th>
+<th data-quarto-table-cell-role="th">CAC Real</th>
+<th data-quarto-table-cell-role="th">Média (Centro)</th>
+<th data-quarto-table-cell-role="th">UCL (Limite)</th>
+<th data-quarto-table-cell-role="th">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">S6</td>
-<td style="text-align: left;">R$ 582.75</td>
-<td style="text-align: left;">R$ 434.78</td>
-<td style="text-align: left;">R$ 663.62</td>
-<td style="text-align: left;">CONTROLADO</td>
+<td>S6</td>
+<td>R$ 582.75</td>
+<td>R$ 434.78</td>
+<td>R$ 663.62</td>
+<td><span class="status-green">CONTROLADO</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">S8</td>
-<td style="text-align: left;">R$ 653.72</td>
-<td style="text-align: left;">R$ 434.78</td>
-<td style="text-align: left;">R$ 663.62</td>
-<td style="text-align: left;">CONTROLADO</td>
+<td>S8</td>
+<td>R$ 653.72</td>
+<td>R$ 434.78</td>
+<td>R$ 663.62</td>
+<td><span class="status-green">CONTROLADO</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">S10</td>
-<td style="text-align: left;">R$ 677.87</td>
-<td style="text-align: left;">R$ 434.78</td>
-<td style="text-align: left;">R$ 663.62</td>
-<td style="text-align: left;">ANOMALIA (ALTA)</td>
+<td>S10</td>
+<td>R$ 677.87</td>
+<td>R$ 434.78</td>
+<td>R$ 663.62</td>
+<td><span class="status-red">ANOMALIA (ALTA)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">S22</td>
-<td style="text-align: left;">R$ 286.64</td>
-<td style="text-align: left;">R$ 434.78</td>
-<td style="text-align: left;">R$ 663.62</td>
-<td style="text-align: left;">CONTROLADO</td>
+<td>S22</td>
+<td>R$ 286.64</td>
+<td>R$ 434.78</td>
+<td>R$ 663.62</td>
+<td><span class="status-green">CONTROLADO</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">S24</td>
-<td style="text-align: left;">R$ 379.17</td>
-<td style="text-align: left;">R$ 434.78</td>
-<td style="text-align: left;">R$ 663.62</td>
-<td style="text-align: left;">CONTROLADO</td>
+<td>S24</td>
+<td>R$ 379.17</td>
+<td>R$ 434.78</td>
+<td>R$ 663.62</td>
+<td><span class="status-green">CONTROLADO</span></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tier2-35" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-37" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-36" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-38" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier2-39" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-37" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-40" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1296,7 +1288,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-38" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-41" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1323,15 +1315,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-39" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-42" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-40" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-43" class="cell-output cell-output-display cell-output-markdown">
 <section id="se-dobrar-o-marketing-dobra-a-venda" class="level2">
 <h2 class="anchored" data-anchor-id="se-dobrar-o-marketing-dobra-a-venda">Se dobrar o marketing, dobra a venda?</h2>
 </section>
 </div>
-<div id="tier2-41" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-44" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-2.4-curva-de-escala-e-elasticidade-de-canal" class="level3">
 <h3 class="anchored" data-anchor-id="viz-2.4-curva-de-escala-e-elasticidade-de-canal">📉 VIZ 2.4: Curva de Escala e Elasticidade de Canal</h3>
 </section>
@@ -1339,17 +1331,17 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-42.png" id="tier2-42" width="794" height="410" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-45.png" id="tier2-45" width="794" height="410" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-43" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-46" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m (Marketing vs Vendas) | Regressão Polinomial (Grau 2)</em></p>
 </div>
-<div id="tier2-44" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-47" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-45" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-48" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1366,12 +1358,12 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-46" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-49" class="cell-output cell-output-display cell-output-markdown">
 <section id="teste-de-elasticidade-de-canal" class="level4">
 <h4 class="anchored" data-anchor-id="teste-de-elasticidade-de-canal">Teste de Elasticidade de Canal</h4>
 </section>
 </div>
-<div id="tier2-47" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-50" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 20%">
@@ -1414,16 +1406,16 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-48" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-51" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-49" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-52" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-50" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-53" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-51" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-54" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1443,7 +1435,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-52" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-55" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1468,15 +1460,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-53" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-56" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-54" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-57" class="cell-output cell-output-display cell-output-markdown">
 <section id="quanto-economizamos-com-trafego-organico" class="level2">
 <h2 class="anchored" data-anchor-id="quanto-economizamos-com-trafego-organico">Quanto economizamos com trafego organico?</h2>
 </section>
 </div>
-<div id="tier2-55" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-58" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-2.5-impacto-do-mix-de-canais-cac-pago-vs-blended" class="level3">
 <h3 class="anchored" data-anchor-id="viz-2.5-impacto-do-mix-de-canais-cac-pago-vs-blended">📉 VIZ 2.5: Impacto do Mix de Canais (CAC Pago vs Blended)</h3>
 </section>
@@ -1484,17 +1476,17 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-56.png" id="tier2-56" width="1388" height="598" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-59.png" id="tier2-59" width="1388" height="598" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-57" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-60" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m | CAC Paid vs CAC Blended</em></p>
 </div>
-<div id="tier2-58" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-61" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-59" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-62" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1509,12 +1501,12 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-60" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-63" class="cell-output cell-output-display cell-output-markdown">
 <section id="economia-de-canal" class="level4">
 <h4 class="anchored" data-anchor-id="economia-de-canal">📋 ECONOMIA DE CANAL</h4>
 </section>
 </div>
-<div id="tier2-61" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-64" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 20%">
@@ -1564,16 +1556,16 @@ Note
 </tbody>
 </table>
 </div>
-<div id="tier2-62" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-65" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-63" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-66" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-64" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-67" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-65" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-68" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1593,7 +1585,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-66" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-69" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1615,15 +1607,15 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-67" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-70" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-68" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-71" class="cell-output cell-output-display cell-output-markdown">
 <section id="quanto-dinheiro-estamos-perdendo-pelo-ralo" class="level2">
 <h2 class="anchored" data-anchor-id="quanto-dinheiro-estamos-perdendo-pelo-ralo">Quanto dinheiro estamos perdendo pelo ralo?</h2>
 </section>
 </div>
-<div id="tier2-69" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-72" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-2.5-análise-de-vazamento-net-growth-churn" class="level3">
 <h3 class="anchored" data-anchor-id="viz-2.5-análise-de-vazamento-net-growth-churn">📉 VIZ 2.5: Análise de Vazamento (Net Growth &amp; Churn)</h3>
 </section>
@@ -1631,17 +1623,17 @@ Note
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier2-output-70.png" id="tier2-70" width="865" height="409" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier2-output-73.png" id="tier2-73" width="865" height="409" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier2-71" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-74" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m (Churn MRR) | Benchmark: 5%</em></p>
 </div>
-<div id="tier2-72" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-75" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-73" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-76" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1658,74 +1650,71 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-74" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-77" class="cell-output cell-output-display cell-output-markdown">
 <section id="impacto-financeiro-do-churn" class="level4">
 <h4 class="anchored" data-anchor-id="impacto-financeiro-do-churn">Impacto Financeiro do Churn</h4>
 </section>
 </div>
-<div id="tier2-75" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 15%">
-<col style="width: 15%">
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 12%">
-</colgroup>
+<div id="tier2-78" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Período</th>
-<th style="text-align: left;">Churn Rate</th>
-<th style="text-align: left;">Perda Real</th>
-<th style="text-align: left;">Limite Aceitável</th>
-<th style="text-align: left;">Dinheiro Rasgado</th>
-<th style="text-align: left;">Status</th>
+<th data-quarto-table-cell-role="th">Período</th>
+<th data-quarto-table-cell-role="th">Churn Rate</th>
+<th data-quarto-table-cell-role="th">Perda Real</th>
+<th data-quarto-table-cell-role="th">Limite Aceitável</th>
+<th data-quarto-table-cell-role="th">Dinheiro Rasgado</th>
+<th data-quarto-table-cell-role="th">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">M6</td>
-<td style="text-align: left;">11.0%</td>
-<td style="text-align: left;">R$ 188,89</td>
-<td style="text-align: left;">R$ 103,89</td>
-<td style="text-align: left;">-R$ 85,00</td>
-<td style="text-align: left;">VAZAMENTO</td>
+<td>M6</td>
+<td>11.0%</td>
+<td>R$ 188,89</td>
+<td>R$ 103,89</td>
+<td>-R$ 85,00</td>
+<td>VAZAMENTO</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M12</td>
-<td style="text-align: left;">9.8%</td>
-<td style="text-align: left;">R$ 478,75</td>
-<td style="text-align: left;">R$ 253,74</td>
-<td style="text-align: left;">-R$ 225,01</td>
-<td style="text-align: left;">VAZAMENTO</td>
+<td>M12</td>
+<td>9.8%</td>
+<td>R$ 478,75</td>
+<td>R$ 253,74</td>
+<td>-R$ 225,01</td>
+<td>VAZAMENTO</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">M24</td>
-<td style="text-align: left;">7.4%</td>
-<td style="text-align: left;">R$ 1.242,37</td>
-<td style="text-align: left;">R$ 860,10</td>
-<td style="text-align: left;">-R$ 382,27</td>
-<td style="text-align: left;">VAZAMENTO</td>
+<td>M24</td>
+<td>7.4%</td>
+<td>R$ 1.242,37</td>
+<td>R$ 860,10</td>
+<td>-R$ 382,27</td>
+<td>VAZAMENTO</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">M36</td>
-<td style="text-align: left;">6.0%</td>
-<td style="text-align: left;">R$ 3.537,56</td>
-<td style="text-align: left;">R$ 2.997,37</td>
-<td style="text-align: left;">-R$ 540,19</td>
-<td style="text-align: left;">VAZAMENTO</td>
+<td>M36</td>
+<td>6.0%</td>
+<td>R$ 3.537,56</td>
+<td>R$ 2.997,37</td>
+<td>-R$ 540,19</td>
+<td>VAZAMENTO</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tier2-76" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-79" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-77" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-80" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier2-81" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier2-78" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-82" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1745,7 +1734,7 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-79" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-83" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1771,10 +1760,10 @@ Note
 </div>
 </div>
 </div>
-<div id="tier2-80" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-84" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier2-81" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier2-85" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -3306,10 +3295,10 @@ Tip
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>96.7%</strong></td>
-<td style="text-align: center;"><strong>R$ 2.663,11</strong></td>
-<td style="text-align: center;"><strong>687%</strong></td>
-<td style="text-align: center;"><strong>7.9x</strong></td>
+<td style="text-align: center;"><strong>97.3%</strong></td>
+<td style="text-align: center;"><strong>R$ 4.157,08</strong></td>
+<td style="text-align: center;"><strong>756%</strong></td>
+<td style="text-align: center;"><strong>8.5x</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Prob. Caixa &gt; R$ 0</td>
@@ -3318,9 +3307,9 @@ Tip
 <td style="text-align: center;">Incerteza (P95-P5)/P50</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">+6.7% vs meta 90%</td>
-<td style="text-align: center;">3k vs limite -50k</td>
-<td style="text-align: center;">687% potencial acima mediana</td>
+<td style="text-align: center;">+7.3% vs meta 90%</td>
+<td style="text-align: center;">4k vs limite -50k</td>
+<td style="text-align: center;">756% potencial acima mediana</td>
 <td style="text-align: center;">Alta incerteza</td>
 </tr>
 <tr class="even">
@@ -3372,7 +3361,7 @@ Tip
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Quebra (Caixa &lt; R$ 0)</td>
-<td style="text-align: left;">3.3%</td>
+<td style="text-align: left;">2.7%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 10%</td>
@@ -3381,7 +3370,7 @@ Tip
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &lt; R$ 50k</td>
-<td style="text-align: left;">26.0%</td>
+<td style="text-align: left;">25.3%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 20%</td>
@@ -3390,7 +3379,7 @@ Tip
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &gt; R$ 100k</td>
-<td style="text-align: left;">65.3%</td>
+<td style="text-align: left;">62.7%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 50%</td>
@@ -3399,7 +3388,7 @@ Tip
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. ARR &gt; R$ 1M</td>
-<td style="text-align: left;">39.3%</td>
+<td style="text-align: left;">44.0%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 60%</td>
@@ -3408,7 +3397,7 @@ Tip
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. LTV/CAC &gt; 5x</td>
-<td style="text-align: left;">35.3%</td>
+<td style="text-align: left;">39.3%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 30%</td>
@@ -3525,7 +3514,7 @@ Tip
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">VaR 95% (Pior 5%)</td>
-<td style="text-align: left;">R$ 2.663,11</td>
+<td style="text-align: left;">R$ 4.157,08</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 50k</td>
@@ -3534,7 +3523,7 @@ Tip
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CVaR 95%</td>
-<td style="text-align: left;">R$ -5.703,80</td>
+<td style="text-align: left;">R$ -6.139,07</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 100k</td>
@@ -3543,7 +3532,7 @@ Tip
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">P50 (Mediana)</td>
-<td style="text-align: left;">R$ 176.867,29</td>
+<td style="text-align: left;">R$ 195.733,56</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 50k</td>
@@ -3552,7 +3541,7 @@ Tip
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Dispersão (P95-P5)</td>
-<td style="text-align: left;">R$ 1.389.097,85</td>
+<td style="text-align: left;">R$ 1.670.486,13</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; R$ 200k</td>
@@ -3576,7 +3565,7 @@ Tip
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>✅ <strong>Risco de quebra:</strong> 3.3% (&lt; 5% - Excelente)</li>
+<li>✅ <strong>Risco de quebra:</strong> 2.7% (&lt; 5% - Excelente)</li>
 <li>✅ <strong>Cenário Real:</strong> Atinge metas principais</li>
 <li>⚠️ <strong>Dispersão:</strong> Alta incerteza - revisar premissas</li>
 <li>🔴 <strong>Cenário Estresse:</strong> Modelo resiliente</li>
@@ -3749,7 +3738,7 @@ Tip
 <div id="callout-58" class="callout-58-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><strong>O QUE ESTOU VENDO?</strong> Histograma mostrando: <em>“Onde provavelmente estarei no mês 6?”</em></p>
-<p><strong>CORES DAS BARRAS:</strong> - 🔴 <strong>VERMELHO (esquerda):</strong> Cenários de QUEBRA (caixa &lt; R$ 0) - Probabilidade: <strong>1.3%</strong> das simulações</p>
+<p><strong>CORES DAS BARRAS:</strong> - 🔴 <strong>VERMELHO (esquerda):</strong> Cenários de QUEBRA (caixa &lt; R$ 0) - Probabilidade: <strong>2.0%</strong> das simulações</p>
 <ul>
 <li>🟠 <strong>LARANJA (centro-esquerda):</strong> Cenários de RISCO (R$ 0 a R$ 10k)
 <ul>
@@ -3758,7 +3747,7 @@ Tip
 </ul></li>
 <li>🟢 <strong>VERDE (direita):</strong> Cenários SEGUROS (&gt; R$ 10k)
 <ul>
-<li>Probabilidade: <strong>74.7%</strong> das simulações</li>
+<li>Probabilidade: <strong>74.0%</strong> das simulações</li>
 <li>Margem confortável para continuar</li>
 </ul></li>
 </ul>
@@ -3804,75 +3793,75 @@ Tip
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Caixa Final</td>
-<td style="text-align: left;">R$ 2.663,11</td>
-<td style="text-align: left;">R$ 9.246,14</td>
-<td style="text-align: left;">R$ 46.606,96</td>
-<td style="text-align: left;">R$ 176.867,29</td>
-<td style="text-align: left;">R$ 391.376,21</td>
-<td style="text-align: left;">R$ 1.045.072,25</td>
-<td style="text-align: left;">R$ 1.391.760,95</td>
-<td style="text-align: left;">R$ 353.669,41</td>
-<td style="text-align: left;">R$ 466.280,57</td>
+<td style="text-align: left;">R$ 4.157,08</td>
+<td style="text-align: left;">R$ 17.931,35</td>
+<td style="text-align: left;">R$ 48.953,78</td>
+<td style="text-align: left;">R$ 195.733,56</td>
+<td style="text-align: left;">R$ 479.974,10</td>
+<td style="text-align: left;">R$ 1.236.894,70</td>
+<td style="text-align: left;">R$ 1.674.643,21</td>
+<td style="text-align: left;">R$ 415.133,96</td>
+<td style="text-align: left;">R$ 568.644,79</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ARR Final</td>
-<td style="text-align: left;">R$ 45.408,78</td>
-<td style="text-align: left;">R$ 56.270,28</td>
-<td style="text-align: left;">R$ 160.903,50</td>
-<td style="text-align: left;">R$ 558.487,20</td>
-<td style="text-align: left;">R$ 1.680.636,30</td>
-<td style="text-align: left;">R$ 2.626.211,28</td>
-<td style="text-align: left;">R$ 3.041.947,56</td>
-<td style="text-align: left;">R$ 1.034.190,23</td>
-<td style="text-align: left;">R$ 1.038.586,45</td>
+<td style="text-align: left;">R$ 52.283,46</td>
+<td style="text-align: left;">R$ 89.808,48</td>
+<td style="text-align: left;">R$ 165.394,80</td>
+<td style="text-align: left;">R$ 618.439,20</td>
+<td style="text-align: left;">R$ 1.963.778,10</td>
+<td style="text-align: left;">R$ 2.916.886,80</td>
+<td style="text-align: left;">R$ 3.451.713,60</td>
+<td style="text-align: left;">R$ 1.154.043,49</td>
+<td style="text-align: left;">R$ 1.197.697,31</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">MRR Final</td>
-<td style="text-align: left;">R$ 3.784,07</td>
-<td style="text-align: left;">R$ 4.689,19</td>
-<td style="text-align: left;">R$ 13.408,63</td>
-<td style="text-align: left;">R$ 46.540,60</td>
-<td style="text-align: left;">R$ 140.053,02</td>
-<td style="text-align: left;">R$ 218.850,94</td>
-<td style="text-align: left;">R$ 253.495,63</td>
-<td style="text-align: left;">R$ 86.182,52</td>
-<td style="text-align: left;">R$ 86.548,87</td>
+<td style="text-align: left;">R$ 4.356,95</td>
+<td style="text-align: left;">R$ 7.484,04</td>
+<td style="text-align: left;">R$ 13.782,90</td>
+<td style="text-align: left;">R$ 51.536,60</td>
+<td style="text-align: left;">R$ 163.648,18</td>
+<td style="text-align: left;">R$ 243.073,90</td>
+<td style="text-align: left;">R$ 287.642,80</td>
+<td style="text-align: left;">R$ 96.170,29</td>
+<td style="text-align: left;">R$ 99.808,11</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Usuários Final</td>
-<td style="text-align: left;">39</td>
-<td style="text-align: left;">49</td>
-<td style="text-align: left;">138</td>
-<td style="text-align: left;">494</td>
-<td style="text-align: left;">1,470</td>
-<td style="text-align: left;">2,296</td>
-<td style="text-align: left;">2,634</td>
-<td style="text-align: left;">900</td>
-<td style="text-align: left;">902</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">79</td>
+<td style="text-align: left;">146</td>
+<td style="text-align: left;">534</td>
+<td style="text-align: left;">1,693</td>
+<td style="text-align: left;">2,526</td>
+<td style="text-align: left;">2,979</td>
+<td style="text-align: left;">1,006</td>
+<td style="text-align: left;">1,046</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LTV/CAC</td>
-<td style="text-align: left;">1.3x</td>
 <td style="text-align: left;">1.7x</td>
-<td style="text-align: left;">2.5x</td>
-<td style="text-align: left;">4.1x</td>
-<td style="text-align: left;">6.0x</td>
-<td style="text-align: left;">8.2x</td>
-<td style="text-align: left;">9.4x</td>
-<td style="text-align: left;">137.7x</td>
-<td style="text-align: left;">1150.3x</td>
+<td style="text-align: left;">1.9x</td>
+<td style="text-align: left;">2.7x</td>
+<td style="text-align: left;">4.0x</td>
+<td style="text-align: left;">6.6x</td>
+<td style="text-align: left;">9.0x</td>
+<td style="text-align: left;">10.3x</td>
+<td style="text-align: left;">204.6x</td>
+<td style="text-align: left;">1404.0x</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Churn Médio</td>
 <td style="text-align: left;">6.0%</td>
 <td style="text-align: left;">6.1%</td>
-<td style="text-align: left;">6.6%</td>
-<td style="text-align: left;">8.4%</td>
-<td style="text-align: left;">10.9%</td>
-<td style="text-align: left;">13.1%</td>
-<td style="text-align: left;">14.0%</td>
-<td style="text-align: left;">9.1%</td>
-<td style="text-align: left;">2.8%</td>
+<td style="text-align: left;">6.5%</td>
+<td style="text-align: left;">8.1%</td>
+<td style="text-align: left;">10.6%</td>
+<td style="text-align: left;">13.4%</td>
+<td style="text-align: left;">14.3%</td>
+<td style="text-align: left;">9.0%</td>
+<td style="text-align: left;">2.9%</td>
 </tr>
 </tbody>
 </table>
@@ -3970,31 +3959,31 @@ Tip
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Caixa &lt; R$ 0 (Quebra)</td>
-<td style="text-align: center;"><strong>3.3%</strong></td>
+<td style="text-align: center;"><strong>2.7%</strong></td>
 <td style="text-align: left;">Risco de morte da startup</td>
 <td style="text-align: center;">🟢 Baixo</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Caixa &gt; R$ 50k</td>
-<td style="text-align: center;"><strong>74.0%</strong></td>
+<td style="text-align: center;"><strong>74.7%</strong></td>
 <td style="text-align: left;">Caixa mínimo para emergências</td>
 <td style="text-align: center;">🟢 Bom</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Caixa &gt; R$ 100k</td>
-<td style="text-align: center;"><strong>65.3%</strong></td>
+<td style="text-align: center;"><strong>62.7%</strong></td>
 <td style="text-align: left;">Caixa confortável para growth</td>
 <td style="text-align: center;">🟢 Ótimo</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ARR &gt; R$ 1M</td>
-<td style="text-align: center;"><strong>39.3%</strong></td>
+<td style="text-align: center;"><strong>44.0%</strong></td>
 <td style="text-align: left;">Faturamento mínimo para Série A</td>
 <td style="text-align: center;">🟡 Desenvolver</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LTV/CAC &gt; 5x</td>
-<td style="text-align: center;"><strong>35.3%</strong></td>
+<td style="text-align: center;"><strong>39.3%</strong></td>
 <td style="text-align: left;">Unit Economics excelente</td>
 <td style="text-align: center;">🟢 Saudável</td>
 </tr>
@@ -4016,18 +4005,18 @@ Tip
 <section id="fato-o-que-os-números-dizem" class="level4">
 <h4 class="anchored" data-anchor-id="fato-o-que-os-números-dizem">FATO (O que os números dizem)</h4>
 <ul>
-<li><strong>Sobrevivência (M36):</strong> 96.7% de probabilidade de caixa positivo</li>
-<li><strong>Mediana do Caixa:</strong> R$ 176.867,29 - valor mais provável ao final</li>
-<li><strong>VaR 95%:</strong> R$ 2.663,11 - pior cenário nos 5% mais pessimistas</li>
-<li><strong>Dispersão:</strong> R$ 1.389.097,85 entre P5 e P95</li>
+<li><strong>Sobrevivência (M36):</strong> 97.3% de probabilidade de caixa positivo</li>
+<li><strong>Mediana do Caixa:</strong> R$ 195.733,56 - valor mais provável ao final</li>
+<li><strong>VaR 95%:</strong> R$ 4.157,08 - pior cenário nos 5% mais pessimistas</li>
+<li><strong>Dispersão:</strong> R$ 1.670.486,13 entre P5 e P95</li>
 </ul>
 </section>
 <section id="ponto-de-decisão-mês-6" class="level4">
 <h4 class="anchored" data-anchor-id="ponto-de-decisão-mês-6">PONTO DE DECISÃO MÊS 6</h4>
 <ul>
 <li><strong>Status:</strong> 🟢 Seguro</li>
-<li><strong>Caixa Mediana M6:</strong> R$ 31.175,69</li>
-<li><strong>Prob. Seguro (&gt;R$ 10k):</strong> 74.7%</li>
+<li><strong>Caixa Mediana M6:</strong> R$ 33.709,31</li>
+<li><strong>Prob. Seguro (&gt;R$ 10k):</strong> 74.0%</li>
 <li><strong>Recomendação M6:</strong> Continuar com confiança</li>
 </ul>
 </section>
@@ -4104,8 +4093,8 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <p><strong>Pergunta Central:</strong> <em>“Qual premissa, se errarmos, mata o negócio?”</em></p>
 </div>
 <div id="tier5-32" class="cell-output cell-output-display cell-output-markdown">
-<section id="o-que-pode-matar-o-negócio" class="level2">
-<h2 class="anchored" data-anchor-id="o-que-pode-matar-o-negócio">O que pode matar o negócio?</h2>
+<section id="quais-alavancas-realmente-movem-o-ponteiro" class="level2">
+<h2 class="anchored" data-anchor-id="quais-alavancas-realmente-movem-o-ponteiro">Quais alavancas realmente movem o ponteiro?</h2>
 </section>
 </div>
 <div id="tier5-33" class="cell-output cell-output-display cell-output-markdown">
@@ -4142,222 +4131,211 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 <div id="tier5-38" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica">📋 A PROVA NUMÉRICA:</h4>
+<section id="tabela-de-dados" class="level4">
+<h4 class="anchored" data-anchor-id="tabela-de-dados">📋 TABELA DE DADOS:</h4>
 </section>
 </div>
-<div id="tier5-39" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 8%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 5%">
-</colgroup>
+<div id="tier5-39" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">premissa</th>
-<th style="text-align: left;">nome_display</th>
-<th style="text-align: right;">valor_base</th>
-<th style="text-align: right;">valor_min</th>
-<th style="text-align: right;">valor_max</th>
-<th style="text-align: right;">ltv_cac_base</th>
-<th style="text-align: right;">ltv_cac_min</th>
-<th style="text-align: right;">ltv_cac_max</th>
-<th style="text-align: right;">impacto_absoluto</th>
-<th style="text-align: right;">impacto_relativo</th>
-<th style="text-align: right;">ranking</th>
+<th data-quarto-table-cell-role="th">premissa</th>
+<th data-quarto-table-cell-role="th">nome_display</th>
+<th data-quarto-table-cell-role="th">valor_base</th>
+<th data-quarto-table-cell-role="th">valor_min</th>
+<th data-quarto-table-cell-role="th">valor_max</th>
+<th data-quarto-table-cell-role="th">ltv_cac_base</th>
+<th data-quarto-table-cell-role="th">ltv_cac_min</th>
+<th data-quarto-table-cell-role="th">ltv_cac_max</th>
+<th data-quarto-table-cell-role="th">impacto_absoluto</th>
+<th data-quarto-table-cell-role="th">impacto_relativo</th>
+<th data-quarto-table-cell-role="th">ranking</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">taxa_trial_para_pagante</td>
-<td style="text-align: left;">Conv. Trial -&gt; Pago</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">0.094</td>
-<td style="text-align: right;">0.146</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">4.53014</td>
-<td style="text-align: right;">6.50104</td>
-<td style="text-align: right;">1.97091</td>
-<td style="text-align: right;">0.383502</td>
-<td style="text-align: right;">1</td>
+<td>taxa_trial_para_pagante</td>
+<td>Conv. Trial -&gt; Pago</td>
+<td>0.12</td>
+<td>0.094000</td>
+<td>0.146000</td>
+<td>5.139236</td>
+<td>4.530136</td>
+<td>6.501043</td>
+<td>1.970907</td>
+<td>0.383502</td>
+<td>1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">churn_inicial</td>
-<td style="text-align: left;">Churn Base (%)</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">0.094</td>
-<td style="text-align: right;">0.146</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.23197</td>
-<td style="text-align: right;">4.25104</td>
-<td style="text-align: right;">0.980928</td>
-<td style="text-align: right;">0.19087</td>
-<td style="text-align: right;">2</td>
+<td>churn_inicial</td>
+<td>Churn Base (%)</td>
+<td>0.12</td>
+<td>0.094000</td>
+<td>0.146000</td>
+<td>5.139236</td>
+<td>5.231967</td>
+<td>4.251039</td>
+<td>0.980928</td>
+<td>0.190870</td>
+<td>2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">cpc_youtube</td>
-<td style="text-align: left;">cpc_youtube</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.35</td>
-<td style="text-align: right;">3.65</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.79075</td>
-<td style="text-align: right;">4.85503</td>
-<td style="text-align: right;">0.935725</td>
-<td style="text-align: right;">0.182075</td>
-<td style="text-align: right;">3</td>
+<td>cpc_youtube</td>
+<td>cpc_youtube</td>
+<td>3.00</td>
+<td>2.350000</td>
+<td>3.650000</td>
+<td>5.139236</td>
+<td>5.790752</td>
+<td>4.855027</td>
+<td>0.935725</td>
+<td>0.182075</td>
+<td>3</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">preco_trader</td>
-<td style="text-align: left;">Preço Trader</td>
-<td style="text-align: right;">99.9</td>
-<td style="text-align: right;">78.255</td>
-<td style="text-align: right;">121.545</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">4.90855</td>
-<td style="text-align: right;">5.68783</td>
-<td style="text-align: right;">0.77928</td>
-<td style="text-align: right;">0.151633</td>
-<td style="text-align: right;">4</td>
+<td>preco_trader</td>
+<td>Preço Trader</td>
+<td>99.90</td>
+<td>78.255000</td>
+<td>121.545000</td>
+<td>5.139236</td>
+<td>4.908548</td>
+<td>5.687828</td>
+<td>0.779280</td>
+<td>0.151633</td>
+<td>4</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">cpc_google</td>
-<td style="text-align: left;">CPC Google</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">4.7</td>
-<td style="text-align: right;">7.3</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.53567</td>
-<td style="text-align: right;">4.98</td>
-<td style="text-align: right;">0.555672</td>
-<td style="text-align: right;">0.108123</td>
-<td style="text-align: right;">5</td>
+<td>cpc_google</td>
+<td>CPC Google</td>
+<td>6.00</td>
+<td>4.700000</td>
+<td>7.300000</td>
+<td>5.139236</td>
+<td>5.535670</td>
+<td>4.979998</td>
+<td>0.555672</td>
+<td>0.108123</td>
+<td>5</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">taxa_visitante_para_trial</td>
-<td style="text-align: left;">taxa_visitante_para_trial</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: right;">0.0391667</td>
-<td style="text-align: right;">0.0608333</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.07776</td>
-<td style="text-align: right;">5.38607</td>
-<td style="text-align: right;">0.308307</td>
-<td style="text-align: right;">0.0599907</td>
-<td style="text-align: right;">6</td>
+<td>taxa_visitante_para_trial</td>
+<td>taxa_visitante_para_trial</td>
+<td>0.05</td>
+<td>0.039167</td>
+<td>0.060833</td>
+<td>5.139236</td>
+<td>5.077760</td>
+<td>5.386067</td>
+<td>0.308307</td>
+<td>0.059991</td>
+<td>6</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">trafego_inicial</td>
-<td style="text-align: left;">Tráfego Inicial</td>
-<td style="text-align: right;">250</td>
-<td style="text-align: right;">195.833</td>
-<td style="text-align: right;">304.167</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.11015</td>
-<td style="text-align: right;">5.33529</td>
-<td style="text-align: right;">0.225149</td>
-<td style="text-align: right;">0.0438098</td>
-<td style="text-align: right;">7</td>
+<td>trafego_inicial</td>
+<td>Tráfego Inicial</td>
+<td>250.00</td>
+<td>195.833333</td>
+<td>304.166667</td>
+<td>5.139236</td>
+<td>5.110146</td>
+<td>5.335295</td>
+<td>0.225149</td>
+<td>0.043810</td>
+<td>7</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">cpc_instagram</td>
-<td style="text-align: left;">CPC Instagram</td>
-<td style="text-align: right;">0.6</td>
-<td style="text-align: right;">0.47</td>
-<td style="text-align: right;">0.73</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.28049</td>
-<td style="text-align: right;">5.08244</td>
-<td style="text-align: right;">0.19805</td>
-<td style="text-align: right;">0.0385369</td>
-<td style="text-align: right;">8</td>
+<td>cpc_instagram</td>
+<td>CPC Instagram</td>
+<td>0.60</td>
+<td>0.470000</td>
+<td>0.730000</td>
+<td>5.139236</td>
+<td>5.280489</td>
+<td>5.082439</td>
+<td>0.198050</td>
+<td>0.038537</td>
+<td>8</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">imposto_simples_inicial</td>
-<td style="text-align: left;">Imposto Inicial</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.047</td>
-<td style="text-align: right;">0.073</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.2231</td>
-<td style="text-align: right;">5.05537</td>
-<td style="text-align: right;">0.167731</td>
-<td style="text-align: right;">0.0326374</td>
-<td style="text-align: right;">9</td>
+<td>imposto_simples_inicial</td>
+<td>Imposto Inicial</td>
+<td>0.06</td>
+<td>0.047000</td>
+<td>0.073000</td>
+<td>5.139236</td>
+<td>5.223102</td>
+<td>5.055370</td>
+<td>0.167731</td>
+<td>0.032637</td>
+<td>9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">cpc_facebook</td>
-<td style="text-align: left;">cpc_facebook</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">0.626667</td>
-<td style="text-align: right;">0.973333</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.24764</td>
-<td style="text-align: right;">5.09305</td>
-<td style="text-align: right;">0.15459</td>
-<td style="text-align: right;">0.0300803</td>
-<td style="text-align: right;">10</td>
+<td>cpc_facebook</td>
+<td>cpc_facebook</td>
+<td>0.80</td>
+<td>0.626667</td>
+<td>0.973333</td>
+<td>5.139236</td>
+<td>5.247639</td>
+<td>5.093049</td>
+<td>0.154590</td>
+<td>0.030080</td>
+<td>10</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">crescimento_trafego_mes_1_6</td>
-<td style="text-align: left;">crescimento_trafego_mes_1_6</td>
-<td style="text-align: right;">0.2</td>
-<td style="text-align: right;">0.156667</td>
-<td style="text-align: right;">0.243333</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.12995</td>
-<td style="text-align: right;">5.23376</td>
-<td style="text-align: right;">0.103809</td>
-<td style="text-align: right;">0.0201993</td>
-<td style="text-align: right;">11</td>
+<td>crescimento_trafego_mes_1_6</td>
+<td>crescimento_trafego_mes_1_6</td>
+<td>0.20</td>
+<td>0.156667</td>
+<td>0.243333</td>
+<td>5.139236</td>
+<td>5.129952</td>
+<td>5.233760</td>
+<td>0.103809</td>
+<td>0.020199</td>
+<td>11</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">custo_ia_pro</td>
-<td style="text-align: left;">custo_ia_pro</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">10.1833</td>
-<td style="text-align: right;">15.8167</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.16774</td>
-<td style="text-align: right;">5.11074</td>
-<td style="text-align: right;">0.0569976</td>
-<td style="text-align: right;">0.0110907</td>
-<td style="text-align: right;">12</td>
+<td>custo_ia_pro</td>
+<td>custo_ia_pro</td>
+<td>13.00</td>
+<td>10.183333</td>
+<td>15.816667</td>
+<td>5.139236</td>
+<td>5.167735</td>
+<td>5.110737</td>
+<td>0.056998</td>
+<td>0.011091</td>
+<td>12</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">custo_ia_trader</td>
-<td style="text-align: left;">Custo IA Trader</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">3.91667</td>
-<td style="text-align: right;">6.08333</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.16548</td>
-<td style="text-align: right;">5.11299</td>
-<td style="text-align: right;">0.0524867</td>
-<td style="text-align: right;">0.0102129</td>
-<td style="text-align: right;">13</td>
+<td>custo_ia_trader</td>
+<td>Custo IA Trader</td>
+<td>5.00</td>
+<td>3.916667</td>
+<td>6.083333</td>
+<td>5.139236</td>
+<td>5.165480</td>
+<td>5.112993</td>
+<td>0.052487</td>
+<td>0.010213</td>
+<td>13</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">custo_ia_lite</td>
-<td style="text-align: left;">custo_ia_lite</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.35</td>
-<td style="text-align: right;">3.65</td>
-<td style="text-align: right;">5.13924</td>
-<td style="text-align: right;">5.16074</td>
-<td style="text-align: right;">5.11774</td>
-<td style="text-align: right;">0.0430011</td>
-<td style="text-align: right;">0.00836722</td>
-<td style="text-align: right;">14</td>
+<td>custo_ia_lite</td>
+<td>custo_ia_lite</td>
+<td>3.00</td>
+<td>2.350000</td>
+<td>3.650000</td>
+<td>5.139236</td>
+<td>5.160737</td>
+<td>5.117736</td>
+<td>0.043001</td>
+<td>0.008367</td>
+<td>14</td>
 </tr>
 </tbody>
 </table>
@@ -4366,9 +4344,12 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 
 </div>
 <div id="tier5-41" class="cell-output cell-output-display cell-output-markdown">
-<hr>
+
 </div>
 <div id="tier5-42" class="cell-output cell-output-display cell-output-markdown">
+<hr>
+</div>
+<div id="tier5-43" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4380,55 +4361,33 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>FATO:</strong> Sensibilidade mapeada para 17 variáveis do MC config.</li>
-<li><strong>CAUSA:</strong> Variação de ±22% (std médio do celula_2B_config_MC).</li>
-<li><strong>IMPLICAÇÃO:</strong> Top 3 variáveis explicam ~70% da sensibilidade do LTV/CAC.</li>
-<li><strong>AÇÃO RECOMENDADA:</strong> Monitorar: Conv. Trial -&gt; Pago, Churn Base (%), cpc_youtube.</li>
+<li><strong>FATO:</strong> A variável <strong>Conv. Trial -&gt; Pago</strong> é o maior vetor de volatilidade, com 30% do impacto total.</li>
+<li><strong>CAUSA:</strong> As top 3 variáveis (Conv. Trial -&gt; Pago, Churn Base (%), cpc_youtube) explicam 60% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.</li>
+<li><strong>IMPLICAÇÃO:</strong> Erros de estimativa nestes drivers custam desproporcionalmente caro. Otimizar <strong>Conv. Trial -&gt; Pago</strong> traz maior ROI que qualquer outra ação.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Criar dashboard semanal específico para monitorar: Conv. Trial -&gt; Pago, Churn Base (%), cpc_youtube.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="tier5-43" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-44" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-44" class="cell-output cell-output-display cell-output-markdown">
-<div class="callout callout-style-default callout-note callout-titled" title="📖 COMO LER A ANÁLISE DE SENSIBILIDADE (TORNADO PLOT)">
+<div id="tier5-45" class="cell-output cell-output-display cell-output-markdown">
+<div class="callout callout-style-default callout-note callout-titled" title="🧠 COMO INTERPRETAR A SENSIBILIDADE (TORNADO)">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-64-contents" aria-controls="callout-64" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📖 COMO LER A ANÁLISE DE SENSIBILIDADE (TORNADO PLOT)
+<span class="screen-reader-only">Note</span>🧠 COMO INTERPRETAR A SENSIBILIDADE (TORNADO)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-64" class="callout-64-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<section id="o-que-é-essa-análise-de-sensibilidade" class="level3">
-<h3 class="anchored" data-anchor-id="o-que-é-essa-análise-de-sensibilidade">O que é essa análise de sensibilidade?</h3>
-<p>Vamos começar do básico. Essa é uma <strong>análise de sensibilidade</strong>, que é uma forma de testar um modelo financeiro. O objetivo é ver o que acontece com um número importante (nesse caso, o <strong>LTV/CAC</strong>) se você mudar algumas suposições (chamadas de “premissas”) um pouquinho.</p>
-<p><em>(LTV/CAC Base Atual: 5.1x)</em></p>
-</section>
-<section id="o-que-é-um-tornado-plot" class="level3">
-<h3 class="anchored" data-anchor-id="o-que-é-um-tornado-plot">O que é um “Tornado Plot”?</h3>
-<p>É um gráfico em forma de “tornado” que mostra o <strong>impacto</strong> de mudar cada premissa. Eles mudaram cada uma em <strong>±20%</strong>, uma de cada vez. Isso revela quais variáveis são “críticas” e quais são “meh”.</p>
-</section>
-<section id="cores-e-barras-o-que-significam" class="level3">
-<h3 class="anchored" data-anchor-id="cores-e-barras-o-que-significam">Cores e barras: O que significam?</h3>
-<ul>
-<li><strong>Barra vermelha (esquerda, “Risco”):</strong> Mostra o que acontece se a variável mudar de um jeito RUIM (reduz o LTV/CAC).</li>
-<li><strong>Barra verde (direita, “Oportunidade”):</strong> Mostra o que acontece se a variável mudar de um jeito BOM (aumenta o LTV/CAC).</li>
-<li><strong>Largura da barra:</strong> Quanto mais larga, mais sensível é o LTV/CAC a essa variável.</li>
-<li><strong>Números nas barras (ex: 3.8x):</strong> É o novo LTV/CAC após a mudança.</li>
-</ul>
-</section>
-<section id="dica-prática-regra-de-ouro" class="level3">
-<h3 class="anchored" data-anchor-id="dica-prática-regra-de-ouro">Dica prática (Regra de Ouro)</h3>
-<ul>
-<li>Foque nas barras largas (topo do tornado): Elas são as que importam!</li>
-<li>Ignore as barras curtas (base): Mudar “Budget Marketing” ou “Imposto” não faz muita diferença.</li>
-</ul>
-</section>
+<p><strong>OBJETIVO ESTRATÉGICO:</strong> Identificar a <strong>elasticidade</strong> do modelo de negócios. O gráfico hierarquiza as premissas onde um erro de estimativa (ou sucesso na execução) tem maior alavancagem sobre o resultado final.</p>
+<p><strong>LEITURA TÉCNICA:</strong> * <strong>Eixo Central (5.1x):</strong> O LTV/CAC projetado no cenário base. * <strong>Largura das Barras:</strong> A volatilidade gerada ao oscilar cada premissa individualmente em <strong>±22%</strong> (Ceteris Paribus). * <strong>Assimetria:</strong> Observe se a barra cresce mais para a esquerda (Risco de Downside) ou direita (Oportunidade de Upside).</p>
+<p><strong>DECISÃO GERENCIAL (PARETO 80/20):</strong> As variáveis no <strong>topo do funil</strong> são os “Control Levers” do negócio. O CEO deve focar 80% do tempo em otimizar e controlar estas métricas críticas, pois elas ditam a viabilidade da empresa. Variáveis na base são ruído e não merecem microgerenciamento.</p>
 </div>
 </div>
 </div>
@@ -4446,21 +4405,21 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <div class="callout-body-container callout-body">
 <p>Aqui está a tradução dos termos técnicos usados no gráfico:</p>
 <ul>
-<li><strong>LTV/CAC:</strong> Nota de eficiência do negócio. Quanto dinheiro o cliente traz (LTV) dividido pelo custo para atraí-lo (CAC). <strong>Ideal &gt; 3.0x</strong>.</li>
-<li><strong>Churn Base (%):</strong> Taxa de cancelamento. Quantos clientes desistem do produto todo mês. Quanto menor, melhor.</li>
-<li><strong>Conv. Trial -&gt; Pago:</strong> Taxa de conversão. De cada 100 pessoas que testam de graça (Trial), quantas viram pagantes de verdade.</li>
-<li><strong>CPC (Custo por Clique):</strong> Valor pago a plataformas (Google, YouTube) por cada clique no seu anúncio. “cpc_youtube” é específico para vídeos.</li>
-<li><strong>Taxa Visitante -&gt; Trial:</strong> Eficiência do site/landing page. De cada 100 visitantes, quantos criam uma conta de teste.</li>
-<li><strong>ARPU / Preço Trader:</strong> Receita média por usuário ou preço da assinatura principal.</li>
+<li><strong>LTV/CAC:</strong> Relação entre o Valor Vitalício do Cliente e o Custo de Aquisição. Indica o retorno sobre o investimento em marketing. <strong>Benchmark Seguro: &gt; 3.0x</strong>.</li>
+<li><strong>Churn Base (%):</strong> Taxa de cancelamento mensal. Percentual da base de clientes que deixa de pagar o produto.</li>
+<li><strong>Conv. Trial -&gt; Pago:</strong> Taxa de conversão de usuários em teste (Trial) para assinantes pagantes.</li>
+<li><strong>CPC (Custo por Clique):</strong> Valor pago às plataformas de anúncios (Ads) por cada clique gerado.</li>
+<li><strong>Taxa Visitante -&gt; Trial:</strong> Eficiência da Landing Page em converter tráfego frio em cadastros (Leads/Trial).</li>
+<li><strong>ARPU:</strong> Receita Média por Usuário (Average Revenue Per User). Ticket médio mensal pago por cada cliente ativo.</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-<div id="tier5-45" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-46" class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Tabela 5.2: Top 5 Variáveis de Maior Sensibilidade (Ranking de Risco)</strong></p>
 </div>
-<div id="tier5-46" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-47" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 7%">
@@ -4517,7 +4476,7 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </tbody>
 </table>
 </div>
-<div id="tier5-47" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-48" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled" title="📋 COMO LER ESTA TABELA">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-66-contents" aria-controls="callout-66" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -4540,7 +4499,7 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-48" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-49" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-important no-icon callout-titled" title="💡 INSIGHT ESTRATÉGICO - ONDE FOCAR A ATENÇÃO">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4566,7 +4525,7 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-49" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-50" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled" title="🔍 AUDITORIA TÉCNICA">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-68-contents" aria-controls="callout-68" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -4584,31 +4543,31 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-50" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-51" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-51" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-52" class="cell-output cell-output-display cell-output-markdown">
 <section id="ato-3-análise-de-resiliência-de-runway" class="level2">
 <h2 class="anchored" data-anchor-id="ato-3-análise-de-resiliência-de-runway">🛡️ ATO 3: Análise de Resiliência de Runway</h2>
 </section>
 </div>
-<div id="tier5-52" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-53" class="cell-output cell-output-display cell-output-markdown">
 <p><em>“Por quanto tempo sobrevivemos se tudo der errado?”</em></p>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier5-output-53.png" id="tier5-53" width="1387" height="1542" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier5-output-54.png" id="tier5-54" width="1387" height="1542" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier5-54" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-55" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-55" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-56" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: df_real_m (5A), df_ideal_m (5B), df_stress_m (5C) | Motor V13 | Célula 4</em></p>
 </div>
-<div id="tier5-56" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-57" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled" title="📖 COMO LER A ANÁLISE DE RESILIÊNCIA DE RUNWAY">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-69-contents" aria-controls="callout-69" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -4635,8 +4594,8 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <p><strong>Painel 4 - Correlação Cobertura × Caixa:</strong> Mostra a relação entre “quantos % dos custos a receita cobre” e o caixa. Quando cobertura = 100%, o negócio para de queimar caixa.</p>
 <p><strong>Painel 5 - Tabela Comparativa:</strong> Resume as métricas-chave dos 3 cenários lado a lado.</p>
 </section>
-<section id="dica-prática-regra-de-ouro-1" class="level3">
-<h3 class="anchored" data-anchor-id="dica-prática-regra-de-ouro-1">Dica Prática (Regra de Ouro)</h3>
+<section id="dica-prática-regra-de-ouro" class="level3">
+<h3 class="anchored" data-anchor-id="dica-prática-regra-de-ouro">Dica Prática (Regra de Ouro)</h3>
 <ol type="1">
 <li><strong>Foque no ponto mais baixo da linha azul:</strong> É ali que você mais precisa de caixa.</li>
 <li><strong>Se a barra de Marketing domina o gráfico 2:</strong> Seu crescimento está caro — otimize CAC.</li>
@@ -4647,18 +4606,18 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-57" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-58" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-58" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-59" class="cell-output cell-output-display cell-output-markdown">
 <section id="tabela-5.3-análise-comparativa-de-resiliência" class="level3">
 <h3 class="anchored" data-anchor-id="tabela-5.3-análise-comparativa-de-resiliência">📋 Tabela 5.3: Análise Comparativa de Resiliência</h3>
 </section>
 </div>
-<div id="tier5-59" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-60" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-60" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-61" class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 9%">
@@ -4716,10 +4675,10 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </tbody>
 </table>
 </div>
-<div id="tier5-61" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-62" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-62" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-63" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled" title="📋 COMO LER ESTA TABELA">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-70-contents" aria-controls="callout-70" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -4746,13 +4705,13 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-63" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-64" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-64" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-65" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-65" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-66" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-important no-icon callout-titled" title="💡 INSIGHT ESTRATÉGICO - RESILIÊNCIA FINANCEIRA">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4784,7 +4743,7 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-66" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-67" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-note callout-titled" title="🔍 AUDITORIA TÉCNICA">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-72-contents" aria-controls="callout-72" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -4833,12 +4792,12 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 </div>
-<div id="tier5-67" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-68" class="cell-output cell-output-display cell-output-markdown">
 <section id="quando-o-negócio-atinge-autossuficiência" class="level2">
 <h2 class="anchored" data-anchor-id="quando-o-negócio-atinge-autossuficiência">Quando o negócio atinge autossuficiência?</h2>
 </section>
 </div>
-<div id="tier5-68" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-69" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-5.4-análise-de-break-even-sob-estresse" class="level3">
 <h3 class="anchored" data-anchor-id="viz-5.4-análise-de-break-even-sob-estresse">📉 VIZ 5.4: Análise de Break-Even sob Estresse</h3>
 </section>
@@ -4846,17 +4805,17 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier5-output-69.png" id="tier5-69" width="1063" height="449" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier5-output-70.png" id="tier5-70" width="1063" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier5-70" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-71" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: Projeção Financeira Real/Ideal/Estresse</em></p>
 </div>
-<div id="tier5-71" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-72" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-72" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-73" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4867,50 +4826,56 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Gráfico mostra quando a operação se paga. <strong>Real: MM8</strong> | <strong>Estresse: M21</strong>.</p>
+<p><strong>O QUE ESTAMOS MEDINDO?</strong> A “Autossuficiência” (Break-Even) é o marco zero da sobrevivência. * <strong>Linha Azul (Real):</strong> Caminho provável. Se cruzar a linha zero antes do M12 (trajetória atual), o modelo é saudável. * <strong>Linha Vermelha (Estresse):</strong> Caminho de dor. Mostra quanto tempo (meses de atraso) e quanto dinheiro (R$) extra você precisará se a “Tempestade Perfeita” ocorrer.</p>
+<p><strong>CAPITAL DE RISCO (GRÁFICO DA DIREITA):</strong> A diferença de altura entre a barra Azul e Vermelha é o seu <strong>“Seguro Desastre”</strong>. Se o Estresse pede R$ 50k a mais, esse dinheiro precisa estar no banco HOJE, não quando a crise estourar.</p>
 </div>
 </div>
-</div>
-<div id="tier5-73" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-1" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-1">📋 A PROVA NUMÉRICA:</h4>
-</section>
 </div>
 <div id="tier5-74" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
+<section id="tabela-de-dados-1" class="level4">
+<h4 class="anchored" data-anchor-id="tabela-de-dados-1">📋 TABELA DE DADOS:</h4>
+</section>
+</div>
+<div id="tier5-75" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Cenário</th>
-<th style="text-align: left;">Mês Break-Even</th>
-<th style="text-align: left;">Capital Consumido</th>
+<th data-quarto-table-cell-role="th">Cenário</th>
+<th data-quarto-table-cell-role="th">Mês Break-Even</th>
+<th data-quarto-table-cell-role="th">Capital Consumido</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Real</td>
-<td style="text-align: left;">M8</td>
-<td style="text-align: left;">R$ 8.340,66</td>
+<td>Real</td>
+<td>M8</td>
+<td>R$ 8.340,66</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Ideal</td>
-<td style="text-align: left;">M5</td>
-<td style="text-align: left;">R$ 7.762,70</td>
+<td>Ideal</td>
+<td>M5</td>
+<td>R$ 7.762,70</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Estresse</td>
-<td style="text-align: left;">M21</td>
-<td style="text-align: left;">R$ 8.340,66</td>
+<td>Estresse</td>
+<td>M21</td>
+<td>R$ 22.819,68</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tier5-75" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-76" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-76" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-77" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier5-78" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-77" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-79" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4924,21 +4889,21 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <ul>
 <li><strong>FATO:</strong> Break-Even Real esperado no Mês 8 (consumo de R$ 8.340,66).</li>
 <li><strong>CAUSA:</strong> Estrutura de custos vs Ramp-up de receita atual.</li>
-<li><strong>IMPLICAÇÃO:</strong> Em cenário de estresse, BE atrasa 13 meses e exige R$ 0,00 extra.</li>
+<li><strong>IMPLICAÇÃO:</strong> Em cenário de estresse, BE atrasa 13 meses e exige R$ 14.479,01 extra.</li>
 <li><strong>AÇÃO RECOMENDADA:</strong> Focar eficiência de aquisição (CAC) e retenção para antecipar BE em 3-6 meses.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="tier5-78" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-80" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-79" class="cell-output cell-output-display cell-output-markdown">
-<section id="onde-o-dinheiro-vaza-na-crise" class="level2">
-<h2 class="anchored" data-anchor-id="onde-o-dinheiro-vaza-na-crise">Onde o dinheiro vaza na crise?</h2>
+<div id="tier5-81" class="cell-output cell-output-display cell-output-markdown">
+<section id="diagnóstico-de-vulnerabilidade-financeira" class="level2">
+<h2 class="anchored" data-anchor-id="diagnóstico-de-vulnerabilidade-financeira">Diagnóstico de Vulnerabilidade Financeira</h2>
 </section>
 </div>
-<div id="tier5-80" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-82" class="cell-output cell-output-display cell-output-markdown">
 <section id="viz-5.5-decomposição-de-gap-real-vs-estresse" class="level3">
 <h3 class="anchored" data-anchor-id="viz-5.5-decomposição-de-gap-real-vs-estresse">📉 VIZ 5.5: Decomposição de Gap (Real vs Estresse)</h3>
 </section>
@@ -4946,17 +4911,17 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_completo_files/figure-html/tier5-output-81.png" id="tier5-81" width="1052" height="449" class="figure-img"></p>
+<p><img src="relatorio_completo_files/figure-html/tier5-output-83.png" id="tier5-83" width="1052" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div id="tier5-82" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-84" class="cell-output cell-output-display cell-output-markdown">
 <p><em>Fonte: Monte Carlo Shapley Decomposition</em></p>
 </div>
-<div id="tier5-83" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-85" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-84" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-86" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4967,46 +4932,57 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Gráfico da esquerda mostra a diferença acumulada de caixa. Direita mostra quais fatores causam essa perda.</p>
+<p><strong>1. O CONCEITO DE “VAZAMENTO” (LEAKAGE):</strong> Em finanças, o risco não é apenas “perder dinheiro”, mas sim <strong>deixar de ganhar</strong> o que estava projetado. A área cinza no gráfico mostra essa diferença acumulada mês a mês. É o custo de oportunidade da fragilidade do modelo.</p>
+<p><strong>2. SHAPLEY VALUE PROXY (O GRÁFICO DA DIREITA):</strong> Usamos um algoritmo para isolar matematicamente a “culpa” de cada variável. * Se o <strong>Churn</strong> é o maior ofensor: Sua empresa sangra clientes mais rápido do que consegue repor. A prioridade é Retenção (CS), não Vendas. * Se o <strong>CAC</strong> é o maior ofensor: Sua aquisição é ineficiente. Escalar agora só vai acelerar a queima de caixa. * Se <strong>Outros</strong> é alto: Verifique custos fixos ou impostos.</p>
+<p><strong>3. AÇÃO RECOMENDADA:</strong> Resolva o problema da barra maior primeiro. Pela Lei de Pareto, mitigar este único risco pode reduzir o Gap Total em mais de 50%.</p>
 </div>
 </div>
 </div>
-<div id="tier5-85" class="cell-output cell-output-display cell-output-markdown">
-<section id="a-prova-numérica-2" class="level4">
-<h4 class="anchored" data-anchor-id="a-prova-numérica-2">📋 A PROVA NUMÉRICA:</h4>
+<div id="tier5-87" class="cell-output cell-output-display cell-output-markdown">
+<section id="tabela-de-dados-2" class="level4">
+<h4 class="anchored" data-anchor-id="tabela-de-dados-2">📋 TABELA DE DADOS:</h4>
 </section>
 </div>
-<div id="tier5-86" class="cell-output cell-output-display cell-output-markdown">
-<table class="caption-top table table-sm table-striped small">
+<div id="tier5-88" class="cell-output cell-output-display">
+
+            
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Fator</th>
-<th style="text-align: right;">Impacto</th>
+<th data-quarto-table-cell-role="th">Fator de Risco</th>
+<th data-quarto-table-cell-role="th">Impacto Financeiro (R$)</th>
+<th data-quarto-table-cell-role="th">% do Gap Total</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Outros</td>
-<td style="text-align: right;">20361.6</td>
+<td>Churn (Retenção)</td>
+<td>R$ 50.904,07</td>
+<td>50.0%</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CAC (Aquisição)</td>
-<td style="text-align: right;">30542.4</td>
+<td>CAC (Aquisição)</td>
+<td>R$ 30.542,44</td>
+<td>30.0%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Churn (Retenção)</td>
-<td style="text-align: right;">50904.1</td>
+<td>Outros</td>
+<td>R$ 20.361,63</td>
+<td>20.0%</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tier5-87" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-89" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-88" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-90" class="cell-output cell-output-display cell-output-markdown">
+
+</div>
+<div id="tier5-91" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-89" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-92" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -5018,21 +4994,21 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>FATO:</strong> Sob estresse máximo, a empresa perde R$ 101.808,14 de caixa (50% do valor real).</li>
-<li><strong>CAUSA:</strong> O principal ofensor ‘vazando’ valor é: <strong>Churn (Retenção)</strong>.</li>
-<li><strong>IMPLICAÇÃO:</strong> Isso indica alta sensibilidade a este fator específico, exigindo hedge ou mitigação.</li>
-<li><strong>AÇÃO RECOMENDADA:</strong> Criar plano de contingência focado em controlar Churn (Retenção).</li>
+<li><strong>FATO:</strong> O Gap de Caixa totaliza R$ 101.808,14. O fator <strong>Churn (Retenção)</strong> responde sozinho por 50% dessa perda.</li>
+<li><strong>CAUSA:</strong> A alta sensibilidade ao Churn (Retenção) indica que o modelo de negócios depende excessivamente da eficiência desta métrica no pior cenário.</li>
+<li><strong>IMPLICAÇÃO:</strong> Uma deterioração isolada em Churn (Retenção) é suficiente para consumir R$ 50.904,07 do caixa projetado.</li>
+<li><strong>AÇÃO RECOMENDADA:</strong> Hedge Operacional: Diversificar fontes e otimizar Churn (Retenção) para reduzir sua volatilidade.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="tier5-90" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-93" class="cell-output cell-output-display cell-output-markdown">
 
 </div>
-<div id="tier5-91" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-94" class="cell-output cell-output-display cell-output-markdown">
 <hr>
 </div>
-<div id="tier5-92" class="cell-output cell-output-display cell-output-markdown">
+<div id="tier5-95" class="cell-output cell-output-display cell-output-markdown">
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -5044,10 +5020,10 @@ P(Quebra) = Count(caixa &lt; 0) / n_simulações</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <p>A análise probabilística desta seção confirma que o modelo é <strong>funcional mas com margem apertada</strong> para os próximos 36 meses.</p>
-<p>Começamos com a <strong>Simulação Monte Carlo</strong> (Ato 1), que revelou uma probabilidade de sobrevivência de <strong>96.7%</strong> — ou seja, em 97 de cada 100 futuros simulados, a startup termina com caixa positivo. O <strong>P50 (mediana)</strong> projeta um caixa final de <strong>R$ 176.867,29</strong>, enquanto o <strong>VaR 95%</strong> (pior cenário nos 5% mais pessimistas) indica risco máximo de <strong>R$ 2.663,11</strong>.</p>
-<p>O <strong>Ponto de Decisão no Mês 6</strong> mostrou-se <strong>seguro para continuar</strong>, com <strong>74.7%</strong> de probabilidade de caixa acima de R$ 10k. A recomendação tática para este marco é: <strong>manter o curso atual</strong>.</p>
+<p>Começamos com a <strong>Simulação Monte Carlo</strong> (Ato 1), que revelou uma probabilidade de sobrevivência de <strong>97.3%</strong> — ou seja, em 97 de cada 100 futuros simulados, a startup termina com caixa positivo. O <strong>P50 (mediana)</strong> projeta um caixa final de <strong>R$ 195.733,56</strong>, enquanto o <strong>VaR 95%</strong> (pior cenário nos 5% mais pessimistas) indica risco máximo de <strong>R$ 4.157,08</strong>.</p>
+<p>O <strong>Ponto de Decisão no Mês 6</strong> mostrou-se <strong>seguro para continuar</strong>, com <strong>74.0%</strong> de probabilidade de caixa acima de R$ 10k. A recomendação tática para este marco é: <strong>manter o curso atual</strong>.</p>
 <p>O <strong>Cenário de Estresse</strong> (Mundo C) aplicou multiplicadores adversos (churn 2x, CAC 1.5x, conversão 0.5x) e verificou que o modelo <strong>sobrevive ao estresse, terminando com R$ 101.808,14</strong>. Isso demonstra resiliência estrutural.</p>
-<p>A <strong>dispersão entre P5 e P95</strong> foi de <strong>R$ 1.389.097,85</strong> (7.9x a mediana), indicando alta incerteza que exige revisão de premissas.</p>
+<p>A <strong>dispersão entre P5 e P95</strong> foi de <strong>R$ 1.670.486,13</strong> (8.5x a mediana), indicando alta incerteza que exige revisão de premissas.</p>
 <p><strong>CONCLUSÃO ESTRATÉGICA:</strong></p>
 <p>O modelo passa no teste de risco com nota <strong>3/4</strong> nos critérios de robustez. A startup está pronta para acelerar com confiança. O gargalo principal identificado é a dispersão das premissas.</p>
 <p><strong>PRÓXIMOS PASSOS:</strong> 1. Criar buffer financeiro de R$ 30-50k antes do Mês 6 2. Monitorar métricas mensalmente 3. Focar em break-even antes de buscar investimento</p>

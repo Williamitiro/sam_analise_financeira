@@ -2,14 +2,14 @@
   "chart_id": "pg5_viz5_gap",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T19:47:07.034364",
+  "timestamp": "2025-12-13T21:13:26.299859",
   "title_simple": "VIZ 5.5: Decomposição de Gap (Real vs Estresse)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Sob estresse máximo, a empresa perde R$ 101.808,14 de caixa (50% do valor real).",
-    "causa": "O principal ofensor 'vazando' valor é: **Churn (Retenção)**.",
-    "implicacao": "Isso indica alta sensibilidade a este fator específico, exigindo hedge ou mitigação.",
-    "acao": "Criar plano de contingência focado em controlar Churn (Retenção)."
+    "fato": "O Gap de Caixa totaliza R$ 101.808,14. O fator **Churn (Retenção)** responde sozinho por 50% dessa perda.",
+    "causa": "A alta sensibilidade ao Churn (Retenção) indica que o modelo de negócios depende excessivamente da eficiência desta métrica no pior cenário.",
+    "implicacao": "Uma deterioração isolada em Churn (Retenção) é suficiente para consumir R$ 50.904,07 do caixa projetado.",
+    "acao": "Hedge Operacional: Diversificar fontes e otimizar Churn (Retenção) para reduzir sua volatilidade."
   },
   "files": {
     "png": "outputs/figs/pg5_viz5_gap.png",

@@ -224,7 +224,25 @@ def gerar_cenario_estresse(df_real_m, premissas, motor_func=None):
         # Runway diminui
         df_stress['runway_meses'] = df_stress['caixa'] / df_stress['burn_rate'].replace(0, 1)
         df_stress['runway_meses'] = df_stress['runway_meses'].clip(lower=0, upper=36)
-    
+        
+    # =========================================================================
+    # CORREÇÃO CRÍTICA (V7.7): RECALCULAR LUCROS
+    # =========================================================================
+    # Como alteramos Receita e Opex independentemente, precisamos forçar 
+    # a consistência contábil do Lucro Líquido e EBITDA.
+    if 'receita_liquida' in df_stress.columns and 'total_opex' in df_stress.columns:
+        df_stress['lucro_liquido'] = df_stress['receita_liquida'] - df_stress['total_opex']
+        
+    if 'receita_bruta' in df_stress.columns and 'custos_totais' in df_stress.columns:
+        # Se tiver CMV separado, use. Senão aproxima.
+        pass
+        
+    # Recalcula EBITDA se possível (ou ajusta proporcionalmente ao lucro)
+    if 'ebitda' in df_stress.columns and 'lucro_liquido' in df_stress.columns:
+        # Mantém o delta original entre EBITDA e Lucro (Impostos/Depreciação/Juros)
+        delta_fin = df_real_m['ebitda'] - df_real_m['lucro_liquido']
+        df_stress['ebitda'] = df_stress['lucro_liquido'] + delta_fin
+
     return df_stress
 
 
@@ -1474,56 +1492,49 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     render_atomic_block(
         chart_id="pg5_viz2_tornado",
         title_technical="VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
-        title_colloquial="O que pode matar o negócio?",
+        title_colloquial="Quais alavancas realmente movem o ponteiro?",
         fig=fig2,
         legend_md=f"Barras mostram o impacto no LTV/CAC ao variar cada premissa em ±{variacao_dinamica*100:.0f}%.",
         df_tabela=df_tornado,
         insight_dict={
-            "fato": f"Sensibilidade mapeada para {len(premissas_sensiveis)} variáveis do MC config.",
-            "causa": f"Variação de ±{variacao_dinamica*100:.0f}% (std médio do celula_2B_config_MC).",
-            "implicacao": f"Top 3 variáveis explicam ~70% da sensibilidade do LTV/CAC.",
-            "acao": f"Monitorar: {', '.join(df_tornado['nome_display'].head(3).tolist())}."
+            "fato": f"A variável **{df_tornado.iloc[0]['nome_display']}** é o maior vetor de volatilidade, com {(df_tornado.iloc[0]['impacto_absoluto']/df_tornado['impacto_absoluto'].sum()*100):.0f}% do impacto total.",
+            "causa": f"As top 3 variáveis ({', '.join(df_tornado['nome_display'].head(3))}) explicam {(df_tornado['impacto_absoluto'].head(3).sum()/df_tornado['impacto_absoluto'].sum()*100):.0f}% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.",
+            "implicacao": f"Erros de estimativa nestes drivers custam desproporcionalmente caro. Otimizar **{df_tornado.iloc[0]['nome_display']}** traz maior ROI que qualquer outra ação.",
+            "acao": f"Criar dashboard semanal específico para monitorar: {', '.join(df_tornado['nome_display'].head(3).tolist())}."
         },
         report_mode=report_mode,
         data_source_text="Fonte: Monte Carlo Sensitivity"
     )
     plt.close(fig2)
 
-    
     # =========================================================================
     # 3. COMO LER & GLOSSÁRIO (DIDÁTICO V4 - TEXTO DO USUÁRIO)
     # =========================================================================
+    ltv_base_val = df_tornado['ltv_cac_base'].iloc[0]
     como_ler = f"""
-::: {{.callout-note title="📖 COMO LER A ANÁLISE DE SENSIBILIDADE (TORNADO PLOT)" collapse="false"}}
+::: {{.callout-note title="🧠 COMO INTERPRETAR A SENSIBILIDADE (TORNADO)" collapse="false"}}
 
-### O que é essa análise de sensibilidade?
-Vamos começar do básico. Essa é uma **análise de sensibilidade**, que é uma forma de testar um modelo financeiro. O objetivo é ver o que acontece com um número importante (nesse caso, o **LTV/CAC**) se você mudar algumas suposições (chamadas de "premissas") um pouquinho.
+**OBJETIVO ESTRATÉGICO:**
+Identificar a **elasticidade** do modelo de negócios. O gráfico hierarquiza as premissas onde um erro de estimativa (ou sucesso na execução) tem maior alavancagem sobre o resultado final.
 
-*(LTV/CAC Base Atual: {df_tornado['ltv_cac_base'].iloc[0]:.1f}x)*
+**LEITURA TÉCNICA:**
+*   **Eixo Central ({ltv_base_val:.1f}x):** O LTV/CAC projetado no cenário base.
+*   **Largura das Barras:** A volatilidade gerada ao oscilar cada premissa individualmente em **±{variacao_dinamica*100:.0f}%** (Ceteris Paribus).
+*   **Assimetria:** Observe se a barra cresce mais para a esquerda (Risco de Downside) ou direita (Oportunidade de Upside).
 
-### O que é um "Tornado Plot"?
-É um gráfico em forma de "tornado" que mostra o **impacto** de mudar cada premissa. Eles mudaram cada uma em **±20%**, uma de cada vez. Isso revela quais variáveis são "críticas" e quais são "meh".
-
-### Cores e barras: O que significam?
-*   **Barra vermelha (esquerda, "Risco"):** Mostra o que acontece se a variável mudar de um jeito RUIM (reduz o LTV/CAC).
-*   **Barra verde (direita, "Oportunidade"):** Mostra o que acontece se a variável mudar de um jeito BOM (aumenta o LTV/CAC).
-*   **Largura da barra:** Quanto mais larga, mais sensível é o LTV/CAC a essa variável.
-*   **Números nas barras (ex: 3.8x):** É o novo LTV/CAC após a mudança.
-
-### Dica prática (Regra de Ouro)
-*   Foque nas barras largas (topo do tornado): Elas são as que importam!
-*   Ignore as barras curtas (base): Mudar "Budget Marketing" ou "Imposto" não faz muita diferença.
+**DECISÃO GERENCIAL (PARETO 80/20):**
+As variáveis no **topo do funil** são os "Control Levers" do negócio. O CEO deve focar 80% do tempo em otimizar e controlar estas métricas críticas, pois elas ditam a viabilidade da empresa. Variáveis na base são ruído e não merecem microgerenciamento.
 :::
 
 ::: {{.callout-tip title="📚 GLOSSÁRIO TÉCNICO (ENTENDA OS TERMOS)" collapse="true"}}
 Aqui está a tradução dos termos técnicos usados no gráfico:
 
-*   **LTV/CAC:** Nota de eficiência do negócio. Quanto dinheiro o cliente traz (LTV) dividido pelo custo para atraí-lo (CAC). **Ideal > 3.0x**.
-*   **Churn Base (%):** Taxa de cancelamento. Quantos clientes desistem do produto todo mês. Quanto menor, melhor.
-*   **Conv. Trial -> Pago:** Taxa de conversão. De cada 100 pessoas que testam de graça (Trial), quantas viram pagantes de verdade.
-*   **CPC (Custo por Clique):** Valor pago a plataformas (Google, YouTube) por cada clique no seu anúncio. "cpc_youtube" é específico para vídeos.
-*   **Taxa Visitante -> Trial:** Eficiência do site/landing page. De cada 100 visitantes, quantos criam uma conta de teste.
-*   **ARPU / Preço Trader:** Receita média por usuário ou preço da assinatura principal.
+*   **LTV/CAC:** Relação entre o Valor Vitalício do Cliente e o Custo de Aquisição. Indica o retorno sobre o investimento em marketing. **Benchmark Seguro: > 3.0x**.
+*   **Churn Base (%):** Taxa de cancelamento mensal. Percentual da base de clientes que deixa de pagar o produto.
+*   **Conv. Trial -> Pago:** Taxa de conversão de usuários em teste (Trial) para assinantes pagantes.
+*   **CPC (Custo por Clique):** Valor pago às plataformas de anúncios (Ads) por cada clique gerado.
+*   **Taxa Visitante -> Trial:** Eficiência da Landing Page em converter tráfego frio em cadastros (Leads/Trial).
+*   **ARPU:** Receita Média por Usuário (Average Revenue Per User). Ticket médio mensal pago por cada cliente ativo.
 :::
 """
     if report_mode:
