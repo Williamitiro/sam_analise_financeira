@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg3_viz1_evolucao",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-15T14:58:21.565288",
+  "title_simple": "VIZ 3.1: Evolução Financeira Correlacionada",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Break-even no MM8 (Real) vs MM6 (Ideal)",
+    "causa": "Burn Rate controlado e crescimento de receita recorrente.",
+    "implicacao": "Caixa suficiente para atingir sustentabilidade sem novos aportes.",
+    "acao": "Acelerar growth após M8 para maximizar valuation."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz1_evolucao.png",
+    "json": "outputs/metadata/pg3_viz1_evolucao.json",
+    "table": "outputs/tables/pg3_viz1_evolucao_tabela.html"
+  },
+  "validation_status": "ok"
+}

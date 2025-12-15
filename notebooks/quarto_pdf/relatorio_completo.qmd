@@ -138,6 +138,9 @@ from celula_5A_bootstrap_real import executar_analise_real
 from celula_5B_cenario_ideal import executar_analise_ideal
 from PAGINA_1_COCKPIT_V4 import executar_pagina_1
 from PAGINA_2_GROWTH import executar_pagina_2_growth_machine
+import PAGINA_3_FINANCEIRO
+import importlib
+importlib.reload(PAGINA_3_FINANCEIRO)
 from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
 from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
 from PAGINA_5_RISCO import executar_pagina_5_risco

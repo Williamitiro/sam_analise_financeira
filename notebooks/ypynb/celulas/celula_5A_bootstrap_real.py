@@ -49,7 +49,7 @@ def executar_analise_real(premissas, seed=None):
         df_real_s, df_real_d = expandir_granularidade_completa(
             df_real_m, 
             premissas, 
-            meses_expandir=6,
+            meses_expandir=12,
             seed=premissas.get('seed_fixa', 42)
         )
         print(f"   ✅ df_real_s: {len(df_real_s)} semanas geradas")

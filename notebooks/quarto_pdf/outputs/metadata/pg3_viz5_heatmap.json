@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg3_viz5_heatmap",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-15T14:24:47.309951",
+  "title_simple": "VIZ 3.5: Heatmap de Performance Relativa (Real vs Ideal)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "A Receita apresenta o maior desvio negativo (Vermelho), enquanto OPEX se mantém controlado (Verde/Amarelo).",
+    "causa": "Gap de conversão de vendas (Top Line) não acompanhou a eficiência de custos.",
+    "implicacao": "A empresa é eficiente em gastar, mas lenta em vender.",
+    "acao": "Focar esforços em Vendas/Marketing para preencher a capacidade ociosa."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz5_heatmap.png",
+    "json": "outputs/metadata/pg3_viz5_heatmap.json",
+    "table": "outputs/tables/pg3_viz5_heatmap_tabela.html"
+  },
+  "validation_status": "ok"
+}

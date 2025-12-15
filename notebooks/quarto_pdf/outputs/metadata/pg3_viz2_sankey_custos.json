@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg3_viz2_sankey_custos",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-15T14:24:42.278223",
+  "title_simple": "VIZ 3.2: Estrutura de Custos e Margens (Sankey Flow)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "A Margem Bruta é de 81.4%, mas o EBITDA final é 34.8%.",
+    "causa": "O maior ofensor do OPEX é Marketing, consumindo 36.4% da receita bruta.",
+    "implicacao": "Alta dependência de mídia paga pressiona a margem líquida.",
+    "acao": "Otimizar canais orgânicos para reduzir o peso do Marketing no OPEX."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz2_sankey_custos.png",
+    "json": "outputs/metadata/pg3_viz2_sankey_custos.json",
+    "table": "outputs/tables/pg3_viz2_sankey_custos_tabela.html"
+  },
+  "validation_status": "ok"
+}

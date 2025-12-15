@@ -35,7 +35,7 @@ except ImportError:
         'receita': '#2196F3', 'despesa': '#F44336', 'neutro': '#9E9E9E'
     }
     def setup_plot_style(): pass
-    def formata_moeda(v): 
+    def formata_moeda(v):
         s = f"{float(v):,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
         return f"R$ {s}"
     def formata_pct(v): return f"{v:.1f}%"
@@ -83,6 +83,17 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
         display(Markdown("## VIZ 3.1: Evolucao Financeira"))
         display(Markdown("**Pergunta:** A empresa caminha para o break-even? Quando o caixa fica positivo?"))
     
+    # BUSCA INTELIGENTE DE BREAK-EVEN (MOVIDO PARA O TOPO para ser usado na tabela)
+    ebitda_real = df_real['ebitda'].values
+    mes_breakeven_real = None
+    for i in range(len(ebitda_real)):
+        if ebitda_real[i] > 0:
+            # Verifica consistência: precisa ser positivo pelos próximos 3 meses (se existirem)
+            futuro = ebitda_real[i:i+3]
+            if all(val > 0 for val in futuro):
+                mes_breakeven_real = i + 1
+                break
+
     # =========================================
     # TABELA DRE DETALHADA (ANTES DO GRÁFICO!)
     # =========================================
@@ -118,6 +129,40 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
         display(Markdown("*Esta é a primeira tabela que mostra o LUCRO REAL da operação.*"))
         display(Markdown(df_tabela_dre.to_markdown(index=False)))
         display(Markdown(""))
+        
+        # --- NOVO: TABELA DE BREAK-EVEN (Posição Correta) ---
+        if mes_breakeven_real:
+            indices_be = [0, mes_breakeven_real-1, len(df_real)-1]
+            colunas_be = ['M1 (Início)', f'M{mes_breakeven_real} (Break-Even)', 'M36 (Maturidade)']
+            
+            dados_be = []
+            metricas_be = [
+                ('Receita Mensal (MRR)', 'receita_bruta', True),
+                ('EBITDA', 'ebitda', True),
+                ('Margem EBITDA %', 'ebitda_margin', False),
+                ('Saldo em Caixa', 'caixa', True),
+                ('Usuários Ativos', 'usuarios_ativos', False)
+            ]
+            
+            for nome, col, is_money in metricas_be:
+                linha = {'KPI': nome}
+                for i, idx in enumerate(indices_be):
+                    if idx >= len(df_real): idx = len(df_real) - 1
+                    val = df_real.iloc[idx][col]
+                    if col == 'usuarios_ativos':
+                        fmt = f"{int(val)}"
+                    elif col == 'ebitda_margin':
+                        fmt = f"{val:.1f}%"
+                    elif is_money:
+                        fmt = formata_moeda(val)
+                    else:
+                        fmt = str(val)
+                    linha[colunas_be[i]] = fmt
+                dados_be.append(linha)
+                
+            df_t_be = pd.DataFrame(dados_be)
+            display(Markdown(f"#### 🏆 MARCO DE BREAK-EVEN (O Ponto de Virada)\n{df_t_be.to_markdown(index=False)}\n"))
+        # -----------------------------------------------------
     else:
         display(HTML("<h3>📊 DRE - Demonstração de Resultado (Marcos Principais)</h3>"))
         display(HTML(df_tabela_dre.to_html(index=False, escape=False)))
@@ -128,7 +173,8 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     meses = range(1, len(df_real) + 1)
     caixa_real = df_real['caixa'].values
     caixa_ideal = df_ideal['caixa'].values if 'caixa' in df_ideal.columns else caixa_real * 1.2
-    ebitda_real = df_real['ebitda'].values
+    
+    # ebitda_real ja foi calculado acima
     ebitda_ideal = df_ideal['ebitda'].values if 'ebitda' in df_ideal.columns else ebitda_real * 1.3
     burn_rate = df_real['burn_rate'].values
     
@@ -152,17 +198,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     ax2.set_ylabel('EBITDA (R$)', fontsize=12, color='#388E3C')
     ax2.tick_params(axis='y', labelcolor='#388E3C')
     
-    # BUSCA INTELIGENTE DE BREAK-EVEN (Consistência Financeira)
-    # Break-even Operacional = EBITDA > 0 com sustentação
-    mes_breakeven_real = None
-    for i in range(len(ebitda_real)):
-        if ebitda_real[i] > 0:
-            # Verifica consistência: precisa ser positivo pelos próximos 3 meses (se existirem)
-            futuro = ebitda_real[i:i+3]
-            if all(val > 0 for val in futuro):
-                mes_breakeven_real = i + 1
-                break
-
+    # BUSCA INTELIGENTE DE BREAK-EVEN (IDEAL)
     mes_breakeven_ideal = None
     if len(ebitda_ideal) > 0:
         for i in range(len(ebitda_ideal)):
@@ -222,7 +258,7 @@ Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, compar
 - **Break-even:** Ponto onde receita = despesas, sem lucro nem prejuizo
 """
         display(Markdown(como_ler))
-        display(Markdown("\\newpage"))
+        display(Markdown("\newpage"))
     else:
         plt.show()
     
@@ -250,7 +286,7 @@ Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, compar
 
     insight = {
         "fato": f"Break-even no M{mes_breakeven_real if mes_breakeven_real else 'N/A'} (Real) vs M{mes_breakeven_ideal if mes_breakeven_ideal else 'N/A'} (Ideal). Gap de {abs(gap_meses)} meses.",
-        "causa": f"Burn Rate mensal {texto_burn}.",
+        "causa": f"Burn Rate mensal {texto_burn}",
         "implicacao": f"Caixa final de {formata_moeda(caixa_final)} (Real) vs {formata_moeda(caixa_ideal_final)} (Ideal).",
         "acao": acao_txt
     }
@@ -491,23 +527,14 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
         display(HTML(df_breakdown.to_html(index=False, escape=False)))
     
     # =========================================
-    # GRÁFICO 2: COMPOSIÇÃO DE CUSTOS (PIE + BARRAS)
+    # GRÁFICO 2: COMPOSIÇÃO DE CUSTOS (BARRAS)
     # =========================================
     # PADRONIZAÇÃO: Tamanho e Margens (Match Página 1)
     figsize = (10, 6) if report_mode else (14, 8)
-    fig2, (ax2a, ax2b) = plt.subplots(1, 2, figsize=figsize, dpi=150)
+    fig2, ax2b = plt.subplots(figsize=figsize, dpi=150)
     
     # Ajuste explícito de margens (GOLD STANDARD PÁGINA 1)
     plt.subplots_adjust(top=0.90, bottom=0.15, left=0.10, right=0.95)
-    
-    # Pie: Composição OPEX
-    opex_labels = ['Marketing', 'Pessoal', 'Infra', 'Outros']
-    outros_opex = total_opex - gasto_marketing - custo_pessoal - custo_infra
-    opex_sizes = [gasto_marketing, custo_pessoal, custo_infra, max(outros_opex, 0)]
-    opex_colors = ['#2196F3', '#4CAF50', '#FF9800', '#9E9E9E']
-    
-    ax2a.pie(opex_sizes, labels=opex_labels, autopct='%1.1f%%', colors=opex_colors, startangle=90)
-    ax2a.set_title('Composição OPEX', fontsize=12, fontweight='bold')
     
     # Barras: Real vs Benchmark
     metricas = ['Margem Bruta', 'OPEX %', 'EBITDA %']
@@ -565,7 +592,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     
     if report_mode:
         display(fig2)
-        display(Markdown("\\newpage"))
+        display(Markdown("\newpage"))
     else:
         plt.show()
     plt.close(fig2)
@@ -633,193 +660,200 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
 # ============================================================================
 #     VIZ 3.3: FLUXO DE CAIXA SEMANAL (Dual Y-Axis + Tabela)
 # ============================================================================
+# ============================================================================
+#     VIZ 3.3: FLUXO DE CAIXA SEMANAL (In/Out Bars + Users)
+# ============================================================================
+# ============================================================================
+#     VIZ 3.3: FLUXO DE CAIXA SEMANAL (In/Out Bars + Users)
+# ============================================================================
 def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     """
-    Gráfico semanal (0-24 semanas) mostrando:
-    - Eixo Esquerdo: Caixa + Entradas/Saídas
-    - Eixo Direito: Runway em semanas
-    
-    Identifica o vale de caixa (momento crítico).
+    Gráfico semanal (0-24 semanas) reconstruído:
+    - Barras: Entradas (+) e Saídas (-)
+    - Linha: Usuários Ativos
+    - Dados: Oriundos do motor estocástico (df_real_s) para realismo ("vida real").
     """
     if not report_mode:
         print("\n🔹 VIZ 3.3: Fluxo de Caixa Semanal")
     else:
         display(Markdown("***"))
         display(Markdown("## VIZ 3.3: Fluxo de Caixa Semanal"))
-        display(Markdown("**Pergunta:** O caixa sobrevive ao ramp-up? Qual o momento mais critico?"))
+        display(Markdown("**Pergunta:** Como se comportam as entradas e saidas no curto prazo?"))
     
-    # Se não tiver dados semanais, simular a partir do mensal
-    if 'semana' not in df_real_s.columns:
-        # Criar dados sintéticos semanais (aproximação)
-        semanas = range(1, 25)  # 24 semanas = 6 meses
-        n = len(semanas)
-        
-        # Usar primeiros 6 meses do mensal e interpolar
-        caixa_m6 = df_real_s.iloc[:6]['caixa'].values if len(df_real_s) >= 6 else df_real_s['caixa'].values
-        
-        # Interpolar para semanal
-        from scipy import interpolate
-        f = interpolate.interp1d(np.linspace(1, 24, len(caixa_m6)), caixa_m6, kind='linear', fill_value='extrapolate')
-        caixa = f(list(semanas))
-        
-        # Estimar entradas e saídas
-        receita_m6 = df_real_s.iloc[:6]['receita_bruta'].values if len(df_real_s) >= 6 else df_real_s['receita_bruta'].values
-        entradas = np.interp(list(semanas), np.linspace(1, 24, len(receita_m6)), receita_m6) / 4  # Semanal
-        
-        despesas_m6 = (df_real_s.iloc[:6]['total_cogs'].values + df_real_s.iloc[:6]['total_opex'].values) if len(df_real_s) >= 6 else df_real_s['total_cogs'].values + df_real_s['total_opex'].values
-        saidas = np.interp(list(semanas), np.linspace(1, 24, len(despesas_m6)), despesas_m6) / 4
-    else:
-        semanas = df_real_s['semana'].values[:24]
-        caixa = df_real_s['caixa'].values[:24]
-        entradas = df_real_s.get('entradas', df_real_s['receita_bruta'] / 4).values[:24]
-        saidas = df_real_s.get('saidas', (df_real_s['total_cogs'] + df_real_s['total_opex']) / 4).values[:24]
+    # ---------------------------------------------------------
+    # 1. PREPARAÇÃO DOS DADOS (STOCHASTIC SOURCE)
+    # ---------------------------------------------------------
+    # ---------------------------------------------------------
+    # 1. PREPARAÇÃO DOS DADOS (STOCHASTIC SOURCE)
+    # ---------------------------------------------------------
+    # Limitar a 40 semanas (aprox 10 meses) para capturar break-even
+    limit = 40
+    if len(df_real_s) < limit:
+        # Fallback se não tiver semanas suficientes (não deveria acontecer se motor rodou ok)
+        limit = len(df_real_s)
+
+    df_slice = df_real_s.iloc[:limit].copy()
+    semanas = df_slice['semana'].values
     
-    # Runway em semanas
-    runway_semanas = caixa / np.maximum(saidas, 1)
+    # Entradas: Receita Bruta Semanal (já calculada estocasticamente no motor)
+    entradas = df_slice['receita_bruta'].values
     
-    # Encontrar vale de caixa
-    idx_min = np.argmin(caixa)
-    semana_crise = semanas[idx_min] if hasattr(semanas, '__getitem__') else idx_min + 1
-    caixa_min = caixa[idx_min]
-    runway_min = runway_semanas[idx_min]
+    # Saídas: COGS + OPEX + Deduções
+    # Se 'total_deducoes' nao existir no semanal, assumimos proporcional ou 0
+    cogs = df_slice['total_cogs'].values
+    opex = df_slice['total_opex'].values
+    deducoes = df_slice['impostos'].values if 'impostos' in df_slice.columns else np.zeros(limit) # Motor usa 'impostos'
     
-    # Figura
+    saidas = cogs + opex + deducoes
+    
+    # Médias Móveis (Tendência - 12 semanas)
+    # Aumentando para 12 semanas (3 meses) para capturar tendência de longo prazo mais clara
+    window_ma = 12
+    entradas_ma = pd.Series(entradas).rolling(window=window_ma, min_periods=4).mean().values
+    saidas_ma = pd.Series(saidas).rolling(window=window_ma, min_periods=4).mean().values
+    
+    # Usuários (Interpolados no motor)
+    usuarios = df_slice['usuarios_ativos'].values
+    
+    # Caixa (Saldo final da semana)
+    caixa_saldo = df_slice['caixa'].values
+
+    # ---------------------------------------------------------
+    # 2. PLOTAGEM (BARRAS DIVERGENTES + LINHA USERS + TENDÊNCIA)
+    # ---------------------------------------------------------
     figsize = (10, 5) if report_mode else (14, 6)
     fig, ax1 = plt.subplots(figsize=figsize, dpi=150)
     ax2 = ax1.twinx()
     
-    # Eixo Esquerdo: Caixa + Barras
-    ax1.plot(semanas, caixa, color='#1976D2', linewidth=2.5, label='Saldo Caixa', zorder=3)
-    ax1.fill_between(semanas, 0, caixa, alpha=0.2, color='#1976D2')
+    # Barras Entradas (Verde - Acima)
+    ax1.bar(semanas, entradas, color=CORES['sucesso'], alpha=0.4, label='Entradas (Real)', width=0.6)
+    # Linha Tendência Entradas
+    ax1.plot(semanas, entradas_ma, color=CORES['sucesso'], linestyle='-', linewidth=2.5, label='Tendência Entradas (Média 12 sem)')
     
-    # Limite crítico
-    limite_critico = np.mean(saidas) * 2  # 2 semanas de despesas
-    ax1.axhline(y=limite_critico, color='#D32F2F', linestyle='--', linewidth=1.5, label='Limite Crítico')
+    # Barras Saídas (Vermelho - Abaixo) -> Plotar como negativo
+    ax1.bar(semanas, -saidas, color=CORES['critico'], alpha=0.4, label='Saídas (Real)', width=0.6)
+    # Linha Tendência Saídas
+    ax1.plot(semanas, -saidas_ma, color=CORES['critico'], linestyle='-', linewidth=2.5, label='Tendência Saídas (Média 12 sem)')
     
-    # Marcar vale
-    ax1.scatter([semana_crise], [caixa_min], color='#D32F2F', s=100, zorder=5)
-    ax1.annotate(f'Vale: S{semana_crise}\n{formata_moeda(caixa_min)}', 
-                 xy=(semana_crise, caixa_min), xytext=(semana_crise + 2, caixa_min + np.max(caixa) * 0.15),
-                 fontsize=10, color='#D32F2F',
-                 arrowprops=dict(arrowstyle='->', color='#D32F2F'))
+    # Linha Zero
+    ax1.axhline(0, color='black', linewidth=0.8)
     
-    ax1.set_xlabel('Semana', fontsize=12)
-    ax1.set_ylabel('Caixa (R$)', fontsize=12, color='#1976D2')
-    ax1.tick_params(axis='y', labelcolor='#1976D2')
+    # Eixo Esquerdo Formatado
+    ax1.set_xlabel('Semana', fontsize=11)
+    ax1.set_ylabel('Fluxo de Caixa (R$)', fontsize=11, color='#555')
     
-    # Eixo Direito: Runway
-    ax2.plot(semanas, runway_semanas, color='#388E3C', linewidth=2, linestyle=':', label='Runway (sem)')
-    ax2.set_ylabel('Runway (semanas)', fontsize=12, color='#388E3C')
-    ax2.tick_params(axis='y', labelcolor='#388E3C')
-    ax2.axhline(y=4, color='#FBC02D', linestyle=':', alpha=0.5)  # Meta mínima
+    # Eixo Direito: Usuários
+    ax2.plot(semanas, usuarios, color=CORES['receita'], linewidth=2.5, marker='o', markersize=4, label='Usuários Ativos')
+    ax2.set_ylabel('Usuários Ativos', fontsize=11, color=CORES['receita'])
+    ax2.tick_params(axis='y', labelcolor=CORES['receita'])
     
-    # Título
-    fig.suptitle('💸 FLUXO DE CAIXA SEMANAL (0-24 Semanas)', fontsize=14, fontweight='bold', y=1.02)
-    ax1.set_title('Caixa & Runway: Identificando Crises de Liquidez', fontsize=11, color='gray')
+    # Título e Legenda
+    fig.suptitle('💸 FLUXO DE CAIXA SEMANAL & TRAÇÃO (0-40 Semanas)', fontsize=14, fontweight='bold', y=1.02)
+    ax1.set_title('Entradas vs Saídas ("Viés de Realidade") e Usuários', fontsize=11, color='gray')
     
-    # Legenda
+    # Legenda Unificada
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right', fontsize=9)
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', fontsize=9, framealpha=0.9)
     
-    # Fonte dos dados
-    adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['caixa'] interpolado para semanal")
+    # Fonte
+    adicionar_fonte_dados(ax1, "Fonte: df_real_s (Motor Estocástico)")
     
+    # [Annotation removida conforme solicitação do usuário]
+
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz3_fluxo_caixa_semanal.png')
     
     if report_mode:
         display(fig)
         
-        # COMO LER (Legenda obrigatória)
-        como_ler = """
-**📖 COMO LER ESTE GRÁFICO:**
-
-1. **Linha Azul (Eixo Esquerdo):** Saldo de caixa semanal
-2. **Linha Vermelha Tracejada:** Limite crítico (2 semanas de despesas)
-3. **Linha Verde Pontilhada (Eixo Direito):** Runway em semanas
-4. **Ponto Vermelho:** Vale de caixa (momento mais crítico)
-5. **Linha Amarela Horizontal:** Meta mínima de 4 semanas de runway
-6. **Regra de Sucesso:** Manter caixa sempre acima da linha vermelha
-"""
+        como_ler = f"""
+::: {{.callout-note appearance="simple"}}
+### 📖 COMO LER ESTE GRÁFICO (SIMULAÇÃO ESTOCÁSTICA)
+1. **Barras Verdes (Cima):** Receita semanal (com variação natural de mercado).
+2. **Barras Vermelhas (Baixo):** Despesas semanais (concentradas em pagamentos).
+3. **Linhas Sólidas (Verde/Vermelha):** Tendência suavizada (Média Móvel de 12 semanas) para facilitar a visualização da direção.
+4. **Linha Azul (Eixo Direito):** Evolução da base de usuários ativos.
+5. **Nota:** A variação nos tamanhos das barras simula a volatilidade da vida real.
+:::
+        """
         display(Markdown(como_ler))
     else:
         plt.show()
+    plt.close(fig)
     
-    # Tabela Semanal
-    tabela_semanas = [4, 8, 12, 16, 20, 24]
+    # ---------------------------------------------------------
+    # 3. TABELA (MANTENDO ESTRUTURA NOVA)
+    # ---------------------------------------------------------
+    # Expandindo para 40 semanas
+    tabela_semanas = [4, 12, 20, 28, 36, 40]
     tabela_dados = []
-    for s in tabela_semanas:
-        idx = s - 1 if s <= len(caixa) else len(caixa) - 1
-        status = '🔴 CRÍTICO' if caixa[idx] < limite_critico else ('🟡 ATENÇÃO' if runway_semanas[idx] < 4 else '🟢 OK')
-        tabela_dados.append({
-            'Semana': f'S{s}',
-            'Caixa': formata_moeda(caixa[idx]),
-            'Entradas': formata_moeda(entradas[idx]),
-            'Saídas': formata_moeda(saidas[idx]),
-            'Runway': f'{runway_semanas[idx]:.1f} sem',
-            'Status': status
-        })
     
+    for s in tabela_semanas:
+        # Encontrar índice da semana S no dataframe (pode variar se limit < 40)
+        rows = df_slice[df_slice['semana'] == s]
+        if not rows.empty:
+            idx = rows.index[0] 
+            # Mas cuidado, idx do slice pode nao ser 0-based sequencial se o df original nao for
+            # Melhor usar iloc da linha encontrada ou valores diretos
+            
+            # Pegando valores diretos da linha
+            ent_val = rows['receita_bruta'].values[0]
+            # Saida = COGS + OPEX + Impostos
+            sai_val = rows['total_cogs'].values[0] + rows['total_opex'].values[0]
+            if 'impostos' in rows.columns:
+                sai_val += rows['impostos'].values[0]
+                
+            burn_liq = ent_val - sai_val
+            status = '🟢 Positivo' if burn_liq > 0 else '🔴 Queima'
+            usr_val = rows['usuarios_ativos'].values[0]
+            
+            tabela_dados.append({
+                'Semana': f'S{s}',
+                'Entradas': formata_moeda(ent_val),
+                'Saídas': formata_moeda(sai_val),
+                'Fluxo Líq.': formata_moeda(burn_liq),
+                'Usuários': f"{int(usr_val)}",
+                'Status': status
+            })
+        
     df_tabela = pd.DataFrame(tabela_dados)
     
     if report_mode:
+        display(Markdown("#### 📋 FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)"))
         display(Markdown(df_tabela.to_markdown(index=False)))
-        display(Markdown("*Fonte: Celulas 5A/5B | df_real_m interpolado para granularidade semanal*"))
-        # COMO LER VIZ 3.3
-        como_ler_33 = """
-**📖 COMO LER ESTE GRÁFICO (FLUXO DE CAIXA SEMANAL):**
-
-**O QUE ESTOU VENDO?**
-Este grafico mostra a saude do caixa SEMANA A SEMANA nos primeiros 6 meses - periodo mais critico para startups.
-
-**ELEMENTOS:**
-- **Linha Azul (Saldo Caixa):** Quanto dinheiro temos no banco a cada semana
-- **Linha Vermelha Tracejada (Limite Critico):** Se caixa cair abaixo disso, temos menos de 2 semanas de sobrevivencia
-- **Ponto Vermelho (Vale):** Semana mais perigosa - caixa no nivel mais baixo
-- **Linha Laranja (Runway):** Quantas semanas conseguimos sobreviver com o caixa atual
-
-**COMO INTERPRETAR:**
-- **Caixa NUNCA deve tocar a linha vermelha** - se tocar, risco de insolvencia
-- **Vale muito profundo** = precisamos de capital extra ou renegociar prazos
-- **Runway abaixo de 4 semanas** = ALERTA MAXIMO
-
-**TERMOS IMPORTANTES:**
-- **Runway:** "Pista de pouso" - quantas semanas/meses a empresa sobrevive sem receita nova
-- **Vale de Caixa:** Momento de menor liquidez, geralmente nos primeiros meses
-- **Limite Critico:** Reserva minima para emergencias (2 semanas de despesas)
-"""
-        display(Markdown(como_ler_33))
-        display(Markdown(""))  # Espaço para desconectar insight da tabela
-        display(Markdown("\\newpage"))
+        display(Markdown("*Nota: Valores incluem volatilidade estocástica (ruído) proposital.*"))
+        display(Markdown(""))
     else:
+        display(HTML("<h4>📋 FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)</h4>"))
         display(HTML(df_tabela.to_html(index=False, escape=False)))
-        display(HTML("<br/>"))  # Espaço para desconectar insight da tabela
     
-    # Insight Dinâmico
-    reserva_seguranca = np.mean(saidas) * 4  # 4 semanas
+    # ---------------------------------------------------------
+    # 4. INSIGHT
+    # ---------------------------------------------------------
+    # Recalcula breakeven na serie real
+    wk_breakeven = next((i+1 for i, (e, s) in enumerate(zip(entradas, saidas)) if e > s), None)
     
-    # Lógica Dinâmica VIZ 3.3
-    if caixa_min < limite_critico:
-        causa_txt = "Descompasso entre CAC pago adiantado e MRR recorrente no ramp-up."
-        acao_txt = "Manter sempre 4 semanas de runway. Renegociar prazos com fornecedores."
-        implicacao_txt = f"Precisamos de reserva mínima de {formata_moeda(reserva_seguranca)} para absorver vales."
+    if wk_breakeven:
+        fato_txt = f"Operação atinge fluxo positivo semanal na semana {wk_breakeven}."
+        acao_txt = "Acelerar aquisição pois a unidade econômica semanal já se paga."
     else:
-        causa_txt = "Gestão de caixa eficiente absorvendo o custo de aquisição inicial."
-        acao_txt = "Monitorar runway para aprovar novos investimentos em marketing."
-        implicacao_txt = "Liquidez saudável suporta o crescimento planejado."
-
+        fato_txt = f"Operação consome caixa em todas as {limit} primeiras semanas simuladas."
+        acao_txt = "Monitorar runway e focar em conversão para reduzir tempo de queima."
+        
+    users_final = int(usuarios[-1])
+    
     insight = {
-        "fato": f"Vale de caixa na semana {semana_crise} com {formata_moeda(caixa_min)} (runway de {runway_min:.1f} semanas).",
-        "causa": causa_txt,
-        "implicacao": implicacao_txt,
+        "fato": fato_txt,
+        "causa": f"Base de usuários cresceu para {users_final} (com volatilidade semanal).",
+        "implicacao": "Teste de estresse de liquidez realista.",
         "acao": acao_txt
     }
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-warning}}
-## 💡 INSIGHT: Liquidez no Ramp-up
+::: {{.callout-tip}}
+## 💡 INSIGHT: Tração Semanal (Cenário Estocástico)
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
 - **IMPLICAÇÃO:** {insight['implicacao']}
@@ -827,33 +861,26 @@ Este grafico mostra a saude do caixa SEMANA A SEMANA nos primeiros 6 meses - per
 :::
 """
         display(Markdown(insight_md))
-        # Auditoria VIZ 3.3
+        
         audit_md = f"""
 ::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.3
-**Fonte:** df_real_s (granularidade semanal, Celula 5A)
-
-**Formulas:**
-- Runway = Caixa / Despesas Semanais
-- Vale de Caixa = min(Caixa) nas 24 semanas
-- Reserva = Media Saidas x 4 semanas
+## Auditoria VIZ 3.3 (Motor V1.0)
+**Fonte:** df_real_s (Gerado por `celula_4A_motor_granularidade`).
+**Metodologia:** Distribuição Dirichlet (Alpha=3) para fluxos + Interpolação Spline para estoques.
+**Integridade:** Soma das semanas = Total mensal exato.
 :::
 """
         display(Markdown(audit_md))
-    else:
-        display(HTML(f"""
-<div style="background-color: #FFFDE7; border-left: 5px solid #FBC02D; padding: 15px; border-radius: 4px; margin: 15px 0;">
-    <h4 style="margin-top: 0; color: #F57F17;">💡 INSIGHT: Liquidez no Ramp-up</h4>
-    <ul>
-        <li><b>FATO:</b> {insight['fato']}</li>
-        <li><b>CAUSA:</b> {insight['causa']}</li>
-        <li><b>IMPLICAÇÃO:</b> {insight['implicacao']}</li>
-        <li><b>AÇÃO:</b> {insight['acao']}</li>
-    </ul>
-</div>
-"""))
+        display(Markdown("\\newpage"))
+        
+    # Retorna dados úteis para o veredito (semana_crise precisa ser recalculada se for usada)
+    # Mas como removemos runway do grafico, talvez veredito precise de ajuste?
+    # Veredito usa 'semana_crise' e 'caixa_min'.
+    # Vamos calcular rapidinho para manter compatibilidade
+    idx_min = np.argmin(caixa_saldo)
+    semana_crise = semanas[idx_min]
+    caixa_min = caixa_saldo[idx_min]
     
-    plt.close(fig)
     return {'semana_crise': semana_crise, 'caixa_min': caixa_min, 'insight': insight}
 
 
@@ -900,11 +927,31 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     # Scatter com gradiente de cor por mês
     scatter = ax.scatter(receita, ebitda_pct, c=list(meses), cmap='viridis', s=80, alpha=0.8, edgecolors='black', linewidth=0.5)
     
-    # Linha de tendência (regressão polinomial)
-    z = np.polyfit(receita, ebitda_pct, 2)
-    p = np.poly1d(z)
-    x_trend = np.linspace(min(receita), max(receita), 100)
-    ax.plot(x_trend, p(x_trend), color='#1976D2', linewidth=2, linestyle='--', label='Tendência Real')
+    # Linha de tendência (REGRESSÃO LOGARÍTMICA - GOLD STANDARD)
+    # Motivo: Alavancagem operacional tende a estabilizar (log), não cair (poly) ou subir infinito (linear)
+    
+    # 1. Filtra valores positivos para log
+    mask_valid = receita > 0
+    if np.sum(mask_valid) > 2:
+        x_log = receita[mask_valid]
+        y_log = ebitda_pct[mask_valid]
+        
+        # 2. Fit: y = a + b * ln(x) -> fit linear de y contra ln(x)
+        weights = np.polyfit(np.log(x_log), y_log, 1) # [b, a]
+        
+        # Funcao preditora
+        def log_predict(x):
+            return weights[0] * np.log(x) + weights[1]
+            
+        # 3. Plotagem Suave
+        x_trend = np.linspace(min(x_log), max(x_log), 100)
+        ax.plot(x_trend, log_predict(x_trend), color='#1976D2', linewidth=2, linestyle='--', label='Tendência Log (Alavancagem)')
+    else:
+        # Fallback se não tiver dados suficientes
+        z = np.polyfit(receita, ebitda_pct, 1)
+        p = np.poly1d(z)
+        x_trend = np.linspace(min(receita), max(receita), 100)
+        ax.plot(x_trend, p(x_trend), color='#1976D2', linewidth=2, linestyle='--', label='Tendência Linear')
     
     # Linha Ideal (tracejada) - cor vibrante e traço espesso para visibilidade
     if len(receita_ideal) == len(ebitda_pct_ideal):
@@ -964,7 +1011,7 @@ Este grafico responde: "Quando a receita cresce, o lucro cresce mais rapido, igu
 - **Margem EBITDA:** Lucro operacional dividido pela receita, em percentual
 """
         display(Markdown(como_ler))
-        display(Markdown("\\newpage"))
+        display(Markdown("\newpage"))
     else:
         plt.show()
     
@@ -1172,7 +1219,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
 **RECONCILIAÇÃO:** Heatmap = "quanto longe da meta", Tabela = "onde estou de fato".
 """
         display(Markdown(como_ler))
-        display(Markdown("\\newpage"))
+        display(Markdown("\newpage"))
     else:
         plt.show()
     
@@ -1208,7 +1255,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-note}}
+::: {{.callout-tip}}
 ## 💡 INSIGHT: Convergência ao Ideal
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
@@ -1363,7 +1410,10 @@ def executar_pagina_3_financeiro(df_real_m, df_real_s, df_ideal_m, premissas, re
       - report_mode: Se True, gera saída otimizada para PDF/DOCX
     """
     import os
-    os.makedirs('outputs/figs', exist_ok=True)
+    # Garantir criação do diretório com caminho absoluto para evitar erros no Quarto chdir
+    root_val = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+    output_dir = os.path.join(root_val, 'outputs/figs')
+    os.makedirs(output_dir, exist_ok=True)
     
     if not report_mode:
         print("\n" + "=" * 80)
@@ -1382,6 +1432,8 @@ def executar_pagina_3_financeiro(df_real_m, df_real_s, df_ideal_m, premissas, re
     resultados['viz2'] = gerar_viz_3_2_estrutura_custos(df_real_m, df_ideal_m, premissas, report_mode)
     
     # VIZ 3.3: Fluxo de Caixa Semanal
+    # VIZ 3.3: Fluxo de Caixa Semanal
+    print("DEBUG [V2_STOCHASTIC]: Iniciando VIZ 3.3. Argumento atual: df_real_s")
     resultados['viz3'] = gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode)
     
     # VIZ 3.4: Alavancagem Operacional

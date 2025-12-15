@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg3_viz1_evolucao_financeira",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-15T14:24:41.367629",
+  "title_simple": "VIZ 3.1: Evolução Financeira & Marco de Break-Even (M8)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "O Break-Even operacional ocorre no mês M8.",
+    "causa": "Crescimento de receita superando a base de custos fixos e estabilização do CAC.",
+    "implicacao": "A partir do M8, a operação deixa de consumir caixa e passa a gerar recursos próprios.",
+    "acao": "Acelerar reinvestimento de lucro em Growth (Canais Pagos) após consolidação do caixa."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz1_evolucao_financeira.png",
+    "json": "outputs/metadata/pg3_viz1_evolucao_financeira.json",
+    "table": "outputs/tables/pg3_viz1_evolucao_financeira_tabela.html"
+  },
+  "validation_status": "ok"
+}
