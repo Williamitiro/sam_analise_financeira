@@ -752,53 +752,64 @@ def calcular_sensibilidade_ltv_cac(PREMISSAS, premissas_sensiveis, variacao=0.20
             return pd.DataFrame()
 
     def get_ltv_cac(p):
-        """Executa o motor e extrai LTV/CAC final com 'Virtual Floor' para evitar paradoxo do infinito."""
+        """
+        Executa o motor e extrai LTV/CAC médio.
+        
+        FIX V2: Usa a MÉDIA de LTV/CAC (metricas['ltv_cac_medio']) em vez do valor do mês 36.
+        Isso captura melhor a sensibilidade a parâmetros que decaem (como churn_inicial),
+        porque o churn no mês 36 já convergiu para churn_maturidade, mascarando o efeito.
+        """
         try:
             # Rodar motor
             df_m, _, metricas, _ = motor_para_usar(p)
             
             if len(df_m) > 0:
-                last = df_m.iloc[-1]
-                ltv = last.get('ltv', 0)
-                cac = last.get('cac_blended', 0)
+                # V2: Usar média do período todo, não snapshot final
+                ltv_cac_medio = metricas.get('ltv_cac_medio', 0.0)
                 
-                # TRUQUE MATEMÁTICO PARA O TORNADO:
-                # Se CAC for zero (orgânico puro), usamos R$ 1.00 como divisor (Virtual Floor).
-                # Isso faz o LTV/CAC flutuar proporcionalmente ao LTV, permitindo ver o impacto de Churn/Price.
-                # Se não fizesse isso, seria sempre "Infinito" (10.000) e o gráfico ficaria vazio.
-                divisor_cac = max(cac, 1.00) 
+                # Fallback para cálculo manual se média não disponível
+                if ltv_cac_medio is None or ltv_cac_medio <= 0:
+                    last = df_m.iloc[-1]
+                    ltv = last.get('ltv', 0)
+                    cac = last.get('cac_blended', 0)
+                    divisor_cac = max(cac, 1.00)
+                    ltv_cac_medio = ltv / divisor_cac
                 
-                return ltv / divisor_cac
+                return float(ltv_cac_medio)
             
             return 0.0
             
         except Exception as e:
-            return 0.0
-            
-        except Exception as e:
-            # print(f"Erro silencioso no motor durante sensibilidade: {e}") # Debug only
+            # print(f"Erro no motor durante sensibilidade: {e}")
             return 0.0
 
-    # LTV/CAC Base
-    # Se valor real foi passado, usa ele. Senão, calcula.
+    import copy # Ensure this is available
+
+    # LTV/CAC Base Interno (Apple-to-Apples)
+    # Recalculamos a base usando deepcopy para não sujar a PREMISSAS original
+    ltv_cac_base_interno = get_ltv_cac(copy.deepcopy(PREMISSAS))
+    
+    # Se valor real foi passado, usaremos ele como âncora visual, mas os deltas vêm do interno
     if ltv_cac_base_real is not None and ltv_cac_base_real > 0:
-        ltv_cac_base = ltv_cac_base_real
+        base_display = ltv_cac_base_real
     else:
-        ltv_cac_base = get_ltv_cac(PREMISSAS)
+        base_display = ltv_cac_base_interno
     
     # Se base for 0, algo está muito errado
-    if ltv_cac_base == 0:
+    if ltv_cac_base_interno == 0:
         print("⚠️ AVISO: LTV/CAC Base calculado é 0.0. Verifique suas premissas base ou o motor.")
-        # Podemos retornar vazio ou tentar continuar (vai dar tudo 0)
+        return pd.DataFrame() 
     
     resultados = []
     
-    # Dicionário de labels amigáveis (apenas para display, não afeta lógica)
+    # Dicionário de labels amigáveis
     nomes_display_map = {
         'marketing_fixo_mensal': 'Budget Marketing',
         'churn_inicial': 'Churn Base (%)',
         'taxa_trial_para_pagante': 'Conv. Trial -> Pago',
         'cpc_instagram': 'CPC Instagram',
+        'cpc_facebook': 'CPC Facebook',
+        'cpc_youtube': 'CPC Youtube',
         'cpc_google': 'CPC Google',
         'preco_trader': 'Preço Trader',
         'custo_ia_trader': 'Custo IA Trader',
@@ -809,11 +820,12 @@ def calcular_sensibilidade_ltv_cac(PREMISSAS, premissas_sensiveis, variacao=0.20
         'imposto_simples_inicial': 'Imposto Inicial'
     }
     
+    # DEBUG: Print header
+    # print(f"DEBUG SENSITIVIDADE: Variacao={variacao}")
+    
     for chave in premissas_sensiveis:
         # A chave deve existir em PREMISSAS
         if chave not in PREMISSAS:
-            # Tenta verificar se está aninhada (caso raro, mas possível)
-            # Por simplicidade/performance, assumimos flat ou tratamos 'monte_carlo' fora.
             continue
             
         valor_base = PREMISSAS[chave]
@@ -822,24 +834,48 @@ def calcular_sensibilidade_ltv_cac(PREMISSAS, premissas_sensiveis, variacao=0.20
         if not isinstance(valor_base, (int, float)):
             continue
             
-        # Cenário -20%
-        p_min = PREMISSAS.copy()
+        # Cenário -20% (DEEPCOPY É CRÍTICO AQUI)
+        p_min = copy.deepcopy(PREMISSAS)
         p_min[chave] = valor_base * (1 - variacao)
-        ltv_cac_min = get_ltv_cac(p_min)
+        ltv_cac_min_raw = get_ltv_cac(p_min)
         
-        # Cenário +20%
-        p_max = PREMISSAS.copy()
+        # Cenário +20% (DEEPCOPY É CRÍTICO AQUI)
+        p_max = copy.deepcopy(PREMISSAS)
         p_max[chave] = valor_base * (1 + variacao)
-        ltv_cac_max = get_ltv_cac(p_max)
+        ltv_cac_max_raw = get_ltv_cac(p_max)
         
-        # Impacto
-        impacto_abs = abs(ltv_cac_max - ltv_cac_min)
+        # DEBUG: Verificar se rodou
+        if ltv_cac_min_raw == 0 or ltv_cac_max_raw == 0:
+             print(f"⚠️ ERRO SILENCIOSO no Tornado Plot para '{chave}': Retornou 0.0. O Motor falhou.")
+        
+        # DEBUG DETALHADO PARA CHURN (PROBLEMA ESPECÍFICO)
+        if chave == 'churn_inicial':
+            print(f"\n🔍 DEBUG CHURN:")
+            print(f"   Valor Base: {valor_base:.4f} ({valor_base*100:.2f}%)")
+            print(f"   Cenário -20%: {valor_base * (1 - variacao):.4f} → LTV/CAC = {ltv_cac_min_raw:.2f}x")
+            print(f"   Cenário +20%: {valor_base * (1 + variacao):.4f} → LTV/CAC = {ltv_cac_max_raw:.2f}x")
+            print(f"   Base Interno: {ltv_cac_base_interno:.2f}x | Base Display: {base_display:.2f}x")
+            print(f"   Delta Min: {ltv_cac_min_raw - ltv_cac_base_interno:+.2f} | Delta Max: {ltv_cac_max_raw - ltv_cac_base_interno:+.2f}")
+            print(f"   Proj Min: {base_display + (ltv_cac_min_raw - ltv_cac_base_interno):.2f}x")
+            print(f"   Proj Max: {base_display + (ltv_cac_max_raw - ltv_cac_base_interno):.2f}x")
+        
+        # CALCULAR DELTAS (Diferença pura vs Base Interna)
+        delta_min = ltv_cac_min_raw - ltv_cac_base_interno
+        delta_max = ltv_cac_max_raw - ltv_cac_base_interno
+        
+        # PROJETAR NO DISPLAY (Base Real + Delta)
+        val_min_proj = base_display + delta_min
+        val_max_proj = base_display + delta_max
+        
+        # Impacto Absoluto (Tamanho da barra total)
+        impacto_abs = abs(val_max_proj - val_min_proj)
         
         # Se impacto for zero absoluto ou muito pequeno, ignoramos para limpar gráfico
         if impacto_abs < 0.01:
             continue
             
-        impacto_rel = impacto_abs / ltv_cac_base if ltv_cac_base > 0 else 0
+        # Impacto Relativo
+        impacto_rel = impacto_abs / base_display
         
         resultados.append({
             'premissa': chave,
@@ -847,11 +883,12 @@ def calcular_sensibilidade_ltv_cac(PREMISSAS, premissas_sensiveis, variacao=0.20
             'valor_base': valor_base,
             'valor_min': valor_base * (1 - variacao),
             'valor_max': valor_base * (1 + variacao),
-            'valor_max': valor_base * (1 + variacao),
-            # FORCE BASE REAL: Garante que o valor central é o mesmo do relatório
-            'ltv_cac_base': ltv_cac_base, 
-            'ltv_cac_min': ltv_cac_min,
-            'ltv_cac_max': ltv_cac_max,
+            
+            # VALORES CORRIGIDOS PARA DISPLAY
+            'ltv_cac_base': base_display, 
+            'ltv_cac_min': val_min_proj,
+            'ltv_cac_max': val_max_proj,
+            
             'impacto_absoluto': impacto_abs,
             'impacto_relativo': impacto_rel
         })

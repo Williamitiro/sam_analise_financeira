@@ -807,6 +807,135 @@ def gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=False):
     )
 
 
+def gerar_viz_2_7_timeline_growth(df_real_m, premissas, report_mode=False):
+    """
+    VIZ 2.7: Cronograma de Investimento & Tiers de Growth (Solicitação User)
+    """
+    # 1. DADOS
+    meses_num = df_real_m['mes'].values
+    gasto_mkt = df_real_m['gasto_marketing'].values
+    trafego_org = df_real_m['trafego_organico'].values
+    
+    # Recupera Tiers das Premissas para colorir (dedução reversa)
+    tiers = premissas.get('growth_tiers', [])
+    
+    # 2. PLOTAGEM (Dual Axis)
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+    
+    # Barras de Investimento
+    bars = ax1.bar(meses_num, gasto_mkt, color='#5C6BC0', alpha=0.8, label='Investimento Mensal (R$)')
+    ax1.set_xlabel('Mês de Operação')
+    ax1.set_ylabel('Budget de Marketing (R$)', color='#3F51B5')
+    ax1.tick_params(axis='y', labelcolor='#3F51B5')
+    
+    # Linha de Tráfego Orgânico (Resultado do Tier)
+    ax2 = ax1.twinx()
+    ax2.plot(meses_num, trafego_org, color='#66BB6A', linewidth=3, linestyle='-', marker='o', markersize=4, label='Tráfego Orgânico (Visitantes)')
+    ax2.set_ylabel('Crescimento Orgânico (Vol)', color='#2E7D32')
+    ax2.tick_params(axis='y', labelcolor='#2E7D32')
+    
+    # Tiras de Tiers (Background Color ou Anotação?)
+    # Vamos usar anotação de texto nos meses chave para não poluir
+    
+    # Legenda combinada
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper left')
+    
+    # 3. TABELA (O PONTO CRÍTICO PEDIDO PELO USER)
+    meses_idx = [0, 5, 11, 23, 35]
+    tabela_data = []
+    
+    for idx in meses_idx:
+        if idx >= len(df_real_m): continue
+        
+        mes_nome = f"M{idx+1}"
+        invest = df_real_m.loc[idx, 'gasto_marketing']
+        org_traffic = df_real_m.loc[idx, 'trafego_organico']
+        
+        # Dedução do Tier Ativo
+        tier_nome = "NI (Tier 0)"
+        tier_desc = "Sem Investimento"
+        tier_badge = "<span class='status-red'>INATIVO</span>"
+        
+        if invest <= 0:
+             tier_nome = "Tier 0 (Hustle)"
+             tier_badge = "<span class='status-red'>ZERO</span>"
+        else:
+            for i, t in enumerate(tiers):
+                if t['budget_min'] <= invest < t['budget_max']:
+                    tier_nome = t.get('nome', f"Tier {i+1} ({t['taxa']*100:.1f}%)")
+                    # Define cor badge baseado no budget
+                    if invest < 2000:
+                        tier_badge = "<span class='status-yellow'>BAIXO</span>"
+                    elif invest < 10000:
+                        tier_badge = "<span class='status-green'>MÉDIO</span>"
+                    else:
+                        tier_badge = "<span class='status-green' style='background:#b9f6ca'>TURBO</span>"
+                    break
+            
+            # Fallback para ultimo tier se estourar max
+            if invest >= tiers[-1]['budget_min']:
+                tier_nome = tiers[-1].get('nome', "Tier Max (Growth Agressivo)")
+                tier_badge = "<span class='status-green' style='background:#b9f6ca'>TURBO MAX</span>"
+
+        tabela_data.append({
+            "Período": mes_nome,
+            "Budget (R$)": formata_moeda(invest),
+            "Tier Ativo (Growth Engine)": tier_nome,
+            "Tráfego Orgânico": f"{int(org_traffic)} visitantes",
+            "Status": tier_badge
+        })
+        
+    df_tabela = pd.DataFrame(tabela_data)
+
+    # 4. LEGENDA
+    legend_md = """
+**O QUE ESTOU VENDO?** A correlação direta entre o dinheiro colocado em Marketing e o nível de crescimento orgânico ativado (Os "Tiers").
+    
+**ELEMENTOS VISUAIS:** - **Barras Azuis:** Quanto dinheiro saiu do caixa para Mkt. - **Linha Verde:** O resultado em tráfego gratuito (SEO/Viral) gerado por esse investimento.
+    """
+
+    # 5. INSIGHT
+    invest_m36 = gasto_mkt[-1] if len(gasto_mkt) > 0 else 0
+    if invest_m36 > 5000:
+        insight = {
+            "fato": f"No M36, a empresa opera com budget de {formata_moeda(invest_m36)}, ativando Tiers de alta performance.",
+            "causa": "Receita crescente desbloqueou budgets maiores (% da Receita).",
+            "implicacao": "Efeito 'Flywheel': Mais receita -> Mais Mkt -> Mais Orgânico -> Mais Receita.",
+            "acao": "Monitorar saturação de canais para manter eficiência."
+        }
+    else:
+        insight = {
+            "fato": f"Investimento no M36 ({formata_moeda(invest_m36)}) ainda é conservador.",
+            "causa": "Restrições de caixa ou estratégia de bootstrap.",
+            "implicacao": "Crescimento orgânico limitado pelos Tiers baixos.",
+            "acao": "Avaliar aporte para saltar de Tier."
+        }
+        
+    formulas = """
+    1. **Growth Tier**: Nível de crescimento determinado pelo budget.
+       - Ex: Budget > R$ 3k ativa 'SEO Profissional' (1.8% a.m.).
+    2. **Lógica**: O código verifica o budget do mês e aplica a taxa do Tier correspondente.
+    3. **Fonte**: *novas_premissas.py* (Tabela de Tiers).
+    """
+
+    render_atomic_block(
+        chart_id="pg2_viz2_7_tiers",
+        title_colloquial="Em qual marcha o motor de crescimento esta?",
+        title_technical="VIZ 2.7: Timeline de Investimento e Tiers de Growth",
+        fig=fig,
+        legend_md=legend_md,
+        df_tabela=df_tabela,
+        insight_dict=insight,
+        formulas_md=formulas,
+        report_mode=report_mode,
+        table_title="Histórico de Ativação de Tiers",
+        data_source_text="Fonte: df_real_m (Gasto Mkt) + Premissas (Tiers)"
+    )
+
+
+
 def gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, report_mode=False):
     """
     Gera o Veredito Analítico Inteligente (Smart Insight).
@@ -963,6 +1092,9 @@ def executar_pagina_2_growth_machine(df_real_m, df_real_s, df_ideal, df_ideal_s,
     
     # Antiga Viz 2.5 -> Viz 2.6
     gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=report_mode)
+
+    # NOVA VIZ 2.7 (Solicitada pelo User): Timeline de Tiers
+    gerar_viz_2_7_timeline_growth(df_real_m, premissas, report_mode=report_mode)
     
     # Gera conclusão DINÂMICA (Smart Verdict)
     gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, report_mode=report_mode)

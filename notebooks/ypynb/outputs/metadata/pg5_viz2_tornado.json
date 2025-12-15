@@ -2,14 +2,14 @@
   "chart_id": "pg5_viz2_tornado",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-13T21:13:11.769663",
+  "timestamp": "2025-12-14T21:28:08.094042",
   "title_simple": "VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "A variável **Conv. Trial -> Pago** é o maior vetor de volatilidade, com 30% do impacto total.",
-    "causa": "As top 3 variáveis (Conv. Trial -> Pago, Churn Base (%), cpc_youtube) explicam 60% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.",
+    "fato": "A variável **Conv. Trial -> Pago** é o maior vetor de volatilidade, com 31% do impacto total.",
+    "causa": "As top 3 variáveis (Conv. Trial -> Pago, Churn Base (%), Preço Trader) explicam 63% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.",
     "implicacao": "Erros de estimativa nestes drivers custam desproporcionalmente caro. Otimizar **Conv. Trial -> Pago** traz maior ROI que qualquer outra ação.",
-    "acao": "Criar dashboard semanal específico para monitorar: Conv. Trial -> Pago, Churn Base (%), cpc_youtube."
+    "acao": "Criar dashboard semanal específico para monitorar: Conv. Trial -> Pago, Churn Base (%), Preço Trader."
   },
   "files": {
     "png": "outputs/figs/pg5_viz2_tornado.png",

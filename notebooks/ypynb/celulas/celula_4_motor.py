@@ -186,120 +186,73 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
         dados['eficiencia_time'][mes] = eficiencia
         
         # --------------------------
-        # 3.1 GROWTH COM TRAVAS REALISTAS
+        # 3.1 GROWTH PARAMETRIZADO (V13.2 - ZERO HARDCODE)
         # --------------------------
-        if mes_atual_num <= 6:
-            taxa_crescimento_meta = p_run['crescimento_trafego_mes_1_6']
-        elif mes_atual_num <= 12:
-            taxa_crescimento_meta = p_run['crescimento_trafego_mes_7_12']
-        else:
-            taxa_crescimento_meta = p_run['crescimento_trafego_mes_13_plus']
-        
-        # Budget de Marketing com verificação de caixa
-        # CORREÇÃO V13.2: Marketing Zero Explícito com fallback R$1
+
+        # 1. CÁLCULO DO BUDGET (mantém lógica original)
         mkt_fixo = p_run.get('marketing_fixo_mensal', 0.0)
         mkt_perc = p_run.get('marketing_perc_receita', 0.0)
         mkt_hab = p_run.get('marketing_habilitado', True)
-        
-        # Se marketing desabilitado OU (fixo=0 E perc=0), força zero total
+
         if not mkt_hab or (mkt_fixo <= 0 and mkt_perc <= 0):
             budget_mkt_desejado = 0.0
         elif mes == 0:
-            # Fallback R$1 mínimo para evitar divisão por zero em cálculos de CPC
             budget_mkt_desejado = max(1.0, mkt_fixo)
         else:
-            # LÓGICA HÍBRIDA:
-            # 1. Calcula % da Receita do mês anterior
-            # 2. Aplica piso (Fixo Mensal) e teto (Marketing Teto)
             budget_calc = dados['receita_bruta'][mes - 1] * mkt_perc
             budget_mkt_desejado = np.clip(budget_calc, mkt_fixo, p_run['marketing_teto'])
-        
-        # V12.3 CORREÇÃO 1: Regras de marketing estritas (usar caixa físico)
-        # Regra: se caixa negativo -> corte total; se abaixo de 20% da reserva -> -50%;
-        # se abaixo de 50% da reserva -> -25%; caso contrário normal.
+
+        # Regras de corte por caixa (mantém lógica original)
         if mes > 0 and caixa_atual < 0:
-            # Corte total: não gastar caixa que não existe
             budget_mkt = 0.0
             alertas.append({
                 'tipo': 'marketing_corte_total_caixa_negativa',
                 'mes': mes_atual_num,
                 'caixa': caixa_atual,
-                'threshold': 0.0,
-                'corte_pct': 100.0,
-                'mensagem': f'⚠️ Mês {mes_atual_num}: Marketing CORTADO (100%). Caixa negativo: R$ {caixa_atual:.2f}. Sobrevivência ameaçada.'
+                'mensagem': f'⚠️ Mês {mes_atual_num}: Marketing CORTADO (100%). Caixa negativo: R$ {caixa_atual:.2f}'
             })
         elif mes > 0 and caixa_atual < (CAIXA_RESERVA * 0.20):
-            # Modo sobrevivência: corta 50% do marketing
             budget_mkt = budget_mkt_desejado * 0.50
             alertas.append({
                 'tipo': 'marketing_emergencia_caixa_critico',
                 'mes': mes_atual_num,
                 'caixa': caixa_atual,
-                'threshold': CAIXA_RESERVA * 0.20,
                 'corte_pct': 50.0,
-                'mensagem': f'🔴 Mês {mes_atual_num}: Marketing em EMERGÊNCIA (corte 50%). Caixa crítico: R$ {caixa_atual:.2f} (limite: R$ {CAIXA_RESERVA * 0.20:.2f}).'
+                'mensagem': f'🔴 Mês {mes_atual_num}: Marketing em EMERGÊNCIA (corte 50%). Caixa: R$ {caixa_atual:.2f}'
             })
         elif mes > 0 and caixa_atual < (CAIXA_RESERVA * 0.50):
-            # Modo cautela: corta 25% do marketing
             budget_mkt = budget_mkt_desejado * 0.75
             alertas.append({
                 'tipo': 'marketing_cautela',
                 'mes': mes_atual_num,
                 'caixa': caixa_atual,
-                'threshold': CAIXA_RESERVA * 0.50,
                 'corte_pct': 25.0,
-                'mensagem': f'🟡 Mês {mes_atual_num}: Marketing em CAUTELA (corte 25%). Caixa baixo: R$ {caixa_atual:.2f} (limite: R$ {CAIXA_RESERVA * 0.50:.2f}).'
+                'mensagem': f'🟡 Mês {mes_atual_num}: Marketing em CAUTELA (corte 25%). Caixa: R$ {caixa_atual:.2f}'
             })
         else:
-            # Operação normal
             budget_mkt = budget_mkt_desejado
-        
+
         dados['gasto_marketing'][mes] = budget_mkt
-        
-        # Correção: Vetores de detalhamento de MKT preenchidos
-        dados['gasto_instagram'][mes] = budget_mkt * p_run['canal_instagram_pct']
-        dados['gasto_facebook'][mes] = budget_mkt * p_run['canal_facebook_pct']
-        dados['gasto_youtube'][mes] = budget_mkt * p_run['canal_youtube_pct']
-        dados['gasto_google'][mes] = budget_mkt * p_run['canal_google_pct']
-        
-        # Brand Lift com função logística
-        fator_brand_lift_raw = budget_mkt / BUDGET_REF_BRAND
-        fator_brand_lift = 1.0 / (1.0 + np.exp(-2 * (fator_brand_lift_raw - 0.5)))
-        fator_brand_lift = np.clip(fator_brand_lift, 0.05, 1.0)
-        
-        taxa_seo_basico = 0.02
-        taxa_crescimento_real = taxa_seo_basico + (taxa_crescimento_meta * fator_brand_lift)
-        taxa_crescimento_real = min(taxa_crescimento_real, taxa_crescimento_meta)
-        
-        # Atualização do tráfego base
+
+        # 2. NOVO: DETERMINA TAXA DE CRESCIMENTO ORGÂNICO BASEADO NO BUDGET
+        # ------------------------------------------------------------------
+        # Busca o tier correspondente ao budget atual nas premissas
+        taxa_crescimento_organico = 0.0  # Default: sem crescimento
+
+        growth_tiers = p_run.get('growth_tiers', [])
+        for tier in growth_tiers:
+            if tier['budget_min'] <= budget_mkt < tier['budget_max']:
+                taxa_crescimento_organico = tier['taxa']
+                if modo_debug and mes < 3:
+                    print(f"Mês {mes_atual_num}: Budget R$ {budget_mkt:.2f} → Tier '{tier['nome']}' → Growth {tier['taxa']*100:.1f}%/mês")
+                break
+
+        # 3. APLICA CRESCIMENTO ORGÂNICO NO TRÁFEGO BASE
         if mes > 0:
-            crescimento_potencial = trafego_base * (1 + taxa_crescimento_meta)
-            crescimento_real = trafego_base * (1 + taxa_crescimento_real)
-            dados['trafego_potencial_perdido'][mes] = crescimento_potencial - crescimento_real
-            trafego_base = crescimento_real
-        
-        # CORREÇÃO 2: Validação de Tráfego Inicial (alertas se suspeito)
-        if mes == 0:
-            trafego_min_recomendado = 50
-            trafego_max_recomendado = usuarios_ativos * 100  # 5 usuários = max 500 visitas
-            
-            if trafego_base < trafego_min_recomendado:
-                alertas.append({
-                    'tipo': 'trafego_inicial_muito_baixo',
-                    'valor': trafego_base,
-                    'recomendado': trafego_min_recomendado,
-                    'mensagem': f'Tráfego inicial de {trafego_base} visitas pode ser insuficiente para validação'
-                })
-            
-            if trafego_base > trafego_max_recomendado:
-                alertas.append({
-                    'tipo': 'trafego_inicial_suspeito',
-                    'valor': trafego_base,
-                    'recomendado': trafego_max_recomendado,
-                    'mensagem': f'Tráfego inicial de {trafego_base} visitas parece alto para {usuarios_ativos} usuários (ratio {trafego_base/usuarios_ativos:.0f}:1)'
-                })
-        
-        # CPC Blended
+            # Crescimento orgânico acontece APENAS se houver investimento
+            trafego_base = trafego_base * (1 + taxa_crescimento_organico)
+
+        # 4. CALCULA CPC BLENDED E VISITAS PAGAS (lógica original)
         cpc_blended = (
             p_run['cpc_instagram'] * p_run['canal_instagram_pct'] +
             p_run['cpc_facebook'] * p_run['canal_facebook_pct'] +
@@ -307,61 +260,53 @@ def executar_motor_fintech_v10_production_ready(p, seed=None, variacao_params=No
             p_run['cpc_youtube'] * p_run['canal_youtube_pct']
         )
         dados['cpc_blended'][mes] = cpc_blended
-        
-        # V12.1: Visitas Pagas com dupla limitação: Inventário de Ads + Saturação de Mercado
-        # CORREÇÃO 1: Remove * fator_sazon (sazonalidade afeta demanda/conversão, não CPC)
+
+        # Visitas pagas (com limitadores de mercado - mantém lógica original)
         visitas_pagas_teoricas = (budget_mkt / max(cpc_blended, 0.01))
-        
-        # Limite 1: Inventário de anúncios (supply de ads disponíveis)
+
         limite_inventario = LIMITE_INVENTARIO
-        
-        # Limite 2: Saturação de mercado (não adianta comprar tráfego se não há mercado disponível)
-        # Lógica: Se 90% do mercado já são clientes, o pool de prospects é apenas 10%
-        # Assumimos que 10% do tráfego se converte em trial, e 10% dos trials viram pagantes
-        # Logo: mercado_disponivel / (taxa_trial * taxa_conversao) = tráfego máximo útil
         mercado_disponivel = max(0, MERCADO_POTENCIAL - usuarios_ativos)
         taxa_conversao_pipeline = (p_run['taxa_visitante_para_trial'] * 
                                    p_run['taxa_trial_para_pagante'] * 
-                                   eficiencia)  # eficiência já foi calculada acima (linha 273)
-        
-        # Limite de mercado realista (PLANO DE CORREÇÃO 3.2): não usar divisão direta
-        # por taxa de conversão que gera números absurdos. Estimamos alcance mensal
-        # realista e aplicamos fator de saturação.
+                                   eficiencia)
+
         mercado_alcancavel_mensal = MERCADO_POTENCIAL * 0.10
         penetracao_mercado = usuarios_ativos / max(1.0, mercado_alcancavel_mensal)
         fator_saturacao = max(0.1, 1.0 - penetracao_mercado)
         limite_mercado_realistico = mercado_alcancavel_mensal * fator_saturacao
 
         if taxa_conversao_pipeline > 0:
-            # Ainda respeitamos a noção de mercado disponível, mas aplicamos teto realista
             limite_mercado = min(limite_mercado_realistico, mercado_disponivel / taxa_conversao_pipeline)
         else:
             limite_mercado = limite_mercado_realistico
-        
-        # Aplica o limite mais restritivo
+
         visitas_pagas = min(visitas_pagas_teoricas, limite_inventario, limite_mercado)
-        
-        # Registra perdas por saturação (diagnóstico)
+
         if visitas_pagas < visitas_pagas_teoricas:
             dados['saturacao_mercado'][mes] = visitas_pagas_teoricas - visitas_pagas
 
-        # V12.3 CORREÇÃO 3: aplicar sazonalidade antes do cálculo viral
-        # Ajusta a base de tráfego pela sazonalidade e depois soma visitas virais
+        # 5. CALCULA VISITAS ORGÂNICAS (BASE + VIRAIS)
         trafego_base_ajustado = trafego_base * fator_sazon
 
-        # Visitas Virais com curva S de saturação (parametrizado)
+        # Visitas Virais (mantém lógica original)
         elasticidade = p_run.get('elasticidade_organico', 1.0)
         fator_viral_base = p_run.get('fator_visitas_organicas_por_pagante', 0.0)
-
         penetracao = usuarios_ativos / MERCADO_POTENCIAL
         fator_saturacao_viral = 1.0 / (1.0 + np.exp(10 * (penetracao - 0.5)))
-
         visitas_virais = (usuarios_ativos * fator_viral_base * elasticidade * fator_saturacao_viral)
+
         visitas_organicas = trafego_base_ajustado + visitas_virais
-        
+
+        # 6. REGISTRA VETORES
         dados['trafego_pago'][mes] = visitas_pagas
         dados['trafego_organico'][mes] = visitas_organicas
         dados['trafego_total'][mes] = visitas_pagas + visitas_organicas
+
+        # Vetores de detalhamento de MKT
+        dados['gasto_instagram'][mes] = budget_mkt * p_run['canal_instagram_pct']
+        dados['gasto_facebook'][mes] = budget_mkt * p_run['canal_facebook_pct']
+        dados['gasto_youtube'][mes] = budget_mkt * p_run['canal_youtube_pct']
+        dados['gasto_google'][mes] = budget_mkt * p_run['canal_google_pct']
         
         # --------------------------
         # 3.2 CONVERSÃO

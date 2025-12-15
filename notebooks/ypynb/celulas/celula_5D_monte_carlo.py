@@ -9,6 +9,7 @@ import sys
 import time
 import pickle
 import warnings
+import copy
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -73,7 +74,7 @@ def perturb_premissas_com_correlacao(base, sim_index, mc_config, scenario='base'
     seed_offset = (sim_index * 9973 + hash(scenario)) % (2**31 - 1)
     seed = (mc_config['random_seed'] + seed_offset) % (2**31 - 1)
     rng = np.random.RandomState(seed)
-    p = base.copy()
+    p = copy.deepcopy(base)
     variaveis = mc_config['variaveis']
     correlacoes = mc_config.get('correlacoes', {})
     
@@ -273,7 +274,9 @@ def executar_monte_carlo(premissas, motor_func=None):
     # Validação Prévia
     if mc['validacao']['rodar_teste_previo']:
         print("\n🔍 VALIDAÇÃO PRÉVIA...")
-        test_result = run_single_simulation(0, premissas, mc, 'base', motor_func)
+        # Use deepcopy para garantir que o teste não contamine o original
+        p_teste = copy.deepcopy(premissas)
+        test_result = run_single_simulation(0, p_teste, mc, 'base', motor_func)
         if not test_result.get('success', False):
             print(f"❌ ERRO: {test_result.get('error')}")
             if mc['validacao']['abort_se_teste_falhar']:

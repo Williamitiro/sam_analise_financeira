@@ -39,8 +39,8 @@ def obter_premissas_ideal():
         # ====================================================================
         # 3. AQUISIÇÃO & GROWTH (BENCHMARK OTIMISTA)
         # ====================================================================
-        'usuarios_pagos_iniciais': 5,          # 2x do Real (benchmark)
-        'trafego_inicial': 250,                 # 3x do Real (benchmark)
+        'usuarios_pagos_iniciais': 6,          # = do Real (benchmark)
+        'trafego_inicial': 300,                 # = do Real (benchmark)
         
         # Metas de crescimento AGRESSIVAS (benchmark de mercado)
         'crescimento_trafego_mes_1_6': 0.20,    # 20% ao mês (vs 12% Real)
@@ -80,9 +80,9 @@ def obter_premissas_ideal():
         'preco_trader': 99.90, 
         'preco_pro': 169.90,
         
-        'mix_lite': 0.45,                       # Menos Lite no Ideal
+        'mix_lite': 0.40,                       # Menos Lite no Ideal
         'mix_trader': 0.40,                     # Mais Trader
-        'mix_pro': 0.15,
+        'mix_pro': 0.20,
         'taxa_upgrade_lite_trader': 0.03,       # 3% upgrades (vs 2% Real)
         
         'mix_pagamento_cartao': 0.55, 
@@ -96,7 +96,7 @@ def obter_premissas_ideal():
         
         'taxa_inadimplencia_cartao': 0.04,      # Menor inadimplência
         'taxa_inadimplencia_pix': 0.07,
-        'taxa_inadimplencia_boleto': 0.02,
+        'taxa_inadimplencia_boleto': 0.08,
         
         'imposto_simples_inicial': 0.06,
         'imposto_lucro_presumido': 0.1633,
@@ -105,9 +105,9 @@ def obter_premissas_ideal():
         # ====================================================================
         # 6. INFRAESTRUTURA (IGUAL AO REAL)
         # ====================================================================
-        'custo_ia_lite': 3.00, 
-        'custo_ia_trader': 5.00, 
-        'custo_ia_pro': 13.00,
+        'custo_ia_lite': 3.50, 
+        'custo_ia_trader': 5.50, 
+        'custo_ia_pro': 13.50,
         
         'custo_ferramentas_base': 1.00,
         'custo_suporte_por_1000_users': 1.00,
@@ -159,17 +159,17 @@ def obter_premissas_ideal():
         # 7. MARKETING (BENCHMARK - COM BUDGET)
         # ====================================================================
         'marketing_habilitado': True,
-        'marketing_fixo_mensal': 3500.00,       # R$5k fixo (benchmark tem budget)
+        'marketing_fixo_mensal': 4500.00,       # R$5k fixo (benchmark tem budget)
         'marketing_perc_receita': 0.30,         # 30% reinvestimento
         'marketing_teto': 30000.00,
 
         'marketing_budget_ref_brand_lift': 3000.0,
         'limite_inventario_mensal': 50000,
         
-        'canal_instagram_pct': 0.35, 'cpc_instagram': 0.50, 'conv_instagram': 0.04,
-        'canal_facebook_pct': 0.20, 'cpc_facebook': 0.70, 'conv_facebook': 0.03,
-        'canal_youtube_pct': 0.35, 'cpc_youtube': 2.50, 'conv_youtube': 0.10,
-        'canal_google_pct': 0.10, 'cpc_google': 5.00, 'conv_google': 0.12,
+        'canal_instagram_pct': 0.35, 'cpc_instagram': 1.60, 'conv_instagram': 0.04,
+        'canal_facebook_pct': 0.20, 'cpc_facebook': 1.00, 'conv_facebook': 0.03,
+        'canal_youtube_pct': 0.35, 'cpc_youtube': 4.00, 'conv_youtube': 0.10,
+        'canal_google_pct': 0.10, 'cpc_google': 8.00, 'conv_google': 0.12,
 
         # ====================================================================
         # 8. PROGRAMA DE AFILIADOS
@@ -185,8 +185,8 @@ def obter_premissas_ideal():
         # 9. RH & EQUIPE (TRIGGERS MAIS CEDO)
         # ====================================================================
         'salario_fundador': 6000.00, 'trigger_fundador': 35000.00,  # Mais cedo
-        'salario_dev_senior': 10000.00, 'trigger_dev': 650,          # Mais cedo
-        'salario_cs': 4000.00, 'trigger_cs': 850,                   # Mais cedo
+        'salario_dev_senior': 10000.00, 'trigger_dev': 500,          # Mais cedo
+        'salario_cs': 4000.00, 'trigger_cs': 800,                   # Mais cedo
         'encargos_trabalhistas': 0.70,
 
         # ====================================================================
@@ -219,7 +219,7 @@ def obter_premissas_ideal():
         # ====================================================================
         # 11. CAPITAL (BENCHMARK COM MAIS CAIXA)
         # ====================================================================
-        'caixa_inicial': 35000.00,              # R$35k (benchmark tem capital)
+        'caixa_inicial': 15000.00,              # R$15k (benchmark tem capital)
         'aporte_mensal': 3500.00,               # R$3.5k/mês
         'meses_aporte': 10,                     # 10 meses garantidos
 

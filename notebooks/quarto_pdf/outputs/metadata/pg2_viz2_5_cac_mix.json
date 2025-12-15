@@ -2,11 +2,11 @@
   "chart_id": "pg2_viz2_5_cac_mix",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-14T08:40:01.607281",
+  "timestamp": "2025-12-14T21:37:28.700173",
   "title_simple": "VIZ 2.5: Impacto do Mix de Canais (CAC Pago vs Blended)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Tráfego orgânico reduz o CAC em R$ 45,22 por cliente.",
+    "fato": "Tráfego orgânico reduz o CAC em R$ 73,09 por cliente.",
     "causa": "Mix balanceado entre canais pagos e gratuitos.",
     "implicacao": "Menor sensibilidade a aumentos de CPM nas plataformas de ads.",
     "acao": "Manter investimento em SEO para ampliar o gap."
