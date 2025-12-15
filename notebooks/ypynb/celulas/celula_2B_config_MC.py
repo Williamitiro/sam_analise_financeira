@@ -104,19 +104,19 @@ PREMISSAS['monte_carlo'] = {
         'cpc_instagram': {
             'std': 0.20,          # ±20% (mercado de ads flutua)
             'min': 0.10,
-            'max': 5.0,
+            'max': 3.5,           # Ajustado: Max 2.5x o base (R$ 1.40)
             'dist': 'lognormal'   # CPC tende a ter cauda longa
         },
         'cpc_facebook': {
             'std': 0.20,
             'min': 0.10,
-            'max': 5.0,
+            'max': 2.5,           # Ajustado: Max 2.8x o base (R$ 0.90)
             'dist': 'lognormal'
         },
         'cpc_google': {
             'std': 0.25,          # Google varia mais
             'min': 0.50,
-            'max': 15.0,
+            'max': 12.0,          # Ajustado: Max ~1.7x o base (R$ 7.00)
             'dist': 'lognormal'
         },
         'cpc_youtube': {
@@ -164,9 +164,9 @@ PREMISSAS['monte_carlo'] = {
         
         # B2B (ALTA INCERTEZA)
         'b2b_probabilidade_anual': {
-            'std': 0.50,          # ±50% (muito incerto)
+            'std': 0.15,          # ±50% (muito incerto)
             'min': 0.0,
-            'max': 0.80,
+            'max': 0.50,
             'dist': 'uniform'     # Não sabemos a distribuição
         },
         

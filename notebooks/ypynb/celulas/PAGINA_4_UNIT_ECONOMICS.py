@@ -63,10 +63,6 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 4.1: LTV vs CAC")
-    else:
-        display(Markdown("***"))
-        display(Markdown("## VIZ 4.1: LTV vs CAC (A 'Regua de Ouro')"))
-        display(Markdown("**Pergunta:** O valor que o cliente deixa paga o custo de traze-lo?"))
 
     # Dados
     meses = df_real['mes'].values
@@ -248,10 +244,6 @@ def gerar_viz_4_2_cohorts(df_real, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 4.2: Cohort Retention")
-    else:
-        display(Markdown("***"))
-        display(Markdown("## VIZ 4.2: Cohort Analysis (Retencao por Safra)"))
-        display(Markdown("**Pergunta:** Os clientes antigos continuam pagando ao longo do tempo?"))
 
     matrix, tamanhos = gerar_matriz_cohort_sintetica(df_real)
     
@@ -364,10 +356,6 @@ def gerar_viz_4_3_churn_volatility(df_real_s, premissas, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 4.3: Volatilidade Semanal (Churn)")
-    else:
-        display(Markdown("***"))
-        display(Markdown("## VIZ 4.3: Volatilidade Semanal (Controle de Risco)"))
-        display(Markdown("**Pergunta:** O sangramento de clientes esta estavel ou imprevisivel?"))
 
     # Verifica se dados semanais existem
     if df_real_s is None or 'churn_rate' not in df_real_s.columns:
@@ -405,11 +393,15 @@ def gerar_viz_4_3_churn_volatility(df_real_s, premissas, report_mode=False):
     ax.grid(True, alpha=0.3, linestyle=':')
     
     # Tabela
-    tabela_md = "| Semana | Churn Rate | Status |\n|:---|:---|:---|\n"
+    # Tabela
+    tabela_md = "| Semana | Churn Rate | Média | Desvio | Status |\n|:---|:---|:---|:---|:---|\n"
     for _, row in df_plot.tail(5).iterrows():
         val = row['churn_rate'] * 100
-        status = "🔴 ALERTA" if val > ucl else "🟢 OK"
-    tabela_md += f"| S{int(row['semana'])} | {val:.2f}% | {status} |\n"
+        delta = val - media
+        status = "🔴 ALERTA" if val > ucl else ("🟢 OK" if val < ucl else "⚠️ WARN")
+        
+        arrow = "⬆️" if delta > 0 else "⬇️"
+        tabela_md += f"| S{int(row['semana'])} | {val:.2f}% | {media:.2f}% | {arrow} {abs(delta):.2f}pp | {status} |\n"
         
     legend_md = """
 **📖 COMO LER ESTE GRÁFICO (SPC):**
@@ -452,10 +444,6 @@ def gerar_viz_4_4_escala_unit_economics(df_real_m, premissas, report_mode=False)
     """
     if not report_mode:
         print("\n🔹 VIZ 4.4: Escala vs Saúde Unitária")
-    else:
-        display(Markdown("***"))
-        display(Markdown("## VIZ 4.4: Escala vs Saúde Unitária (Elasticidade)"))
-        display(Markdown("**Pergunta:** Se dobrar a base de clientes, a unidade continua lucrativa?"))
     
     # Dados
     usuarios = df_real_m['usuarios_ativos'].values
@@ -543,10 +531,6 @@ def gerar_viz_4_5_waterfall_leaks(df_real_m, premissas, report_mode=False):
     """
     if not report_mode:
         print("\n🔹 VIZ 4.5: Waterfall de Vazamentos")
-    else:
-        display(Markdown("***"))
-        display(Markdown("## VIZ 4.5: Waterfall de Lucratividade (Por Cliente)"))
-        display(Markdown("**Pergunta:** Onde fica o dinheiro do cliente?"))
 
     # Cálculos Último Mês
     idx = -1

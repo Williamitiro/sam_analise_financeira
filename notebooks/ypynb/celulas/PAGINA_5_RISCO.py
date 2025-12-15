@@ -2369,12 +2369,6 @@ Vamos começar do básico. O **Runway** é quanto tempo (em meses) a empresa con
 
 :::
 
-**GLOSSÁRIO TÉCNICO (Explicado para Leigos):**
-- **VaR (Value at Risk):** Imagine que rodamos 100 futuros possíveis. O VaR é o caixa no 5º PIOR futuro. Se der negativo (ex: -R$ 50k), significa que precisamos ter pelo menos R$ 50k de reserva para sobreviver aos piores cenários.
-- **CVaR:** É a MÉDIA do caixa nos 5% piores futuros. Mais conservador que o VaR, mostra o "estrago médio" quando dá muito errado.
-- **Sobrevivência:** De 100 futuros simulados, em quantos a empresa termina com dinheiro no banco? Se for 94%, em 6 cenários quebramos.
-- **Upside:** Se tudo der MUITO certo (top 5% de sorte), quanto a mais ganhamos comparado ao cenário "normal" (mediana)?
-- **Dispersão:** Quão imprevisível é o resultado? Se P95 diz R$ 500k e P5 diz R$ 50k, a incerteza é grande (10x). Quanto maior, menos sabemos o que vai acontecer.
 """
     display(Markdown(insight_md))
     
@@ -2601,6 +2595,30 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
             st1=cards[0]['status'], st2=cards[1]['status'], st3=cards[2]['status'], st4=cards[3]['status']
         )
         display(Markdown(cards_md))
+        
+        # INSERÇÃO DO GLOSSÁRIO (Posição solicitada pelo usuário)
+        glossario_md = """
+::: {.callout-note title="📚 GLOSSÁRIO: COMO INTERPRETAR OS CARDS DE RISCO" collapse="true"}
+
+**1. 🛡️ SOBREVIVÊNCIA:**
+Imagine que simulamos 100 futuros possíveis para sua empresa. Este número diz em quantos deles você **termina com dinheiro no caixa**.
+*   *Ex: 94% significa que em apenas 6 de 100 cenários a empresa quebra.*
+
+**2. ⚠️ VaR (Value at Risk - O Pior Cenário):**
+Olhando para os **5% piores futuros** (a "tempestade perfeita"), quanto dinheiro sobra (ou falta)?
+*   *Se negativo (ex: -R$ 50k), é o tamanho da reserva de emergência que você precisa ter hoje para não quebrar no pior caso.*
+
+**3. 🚀 UPSIDE (Potencial de Ganho):**
+Se tudo der muito certo (top 5% de sorte), quanto resultado financeiro teremos a mais do que o esperado (mediana)?
+*   *Ex: +150% significa que o "céu é o limite" se a execução for perfeita.*
+
+**4. 📊 DISPERSÃO (Incerteza):**
+Medida de quão imprevisível é o futuro.
+*   *Baixa (<3x): O modelo é estável e confiável.*
+*   *Alta (>3x): O resultado é uma "aposta" - pode ser gigante ou zero.*
+:::
+"""
+        display(Markdown(glossario_md))
     else:
         # Formato Console
         print("\n┌" + "─"*18 + "┬" + "─"*18 + "┬" + "─"*18 + "┬" + "─"*18 + "┐")
@@ -2636,16 +2654,20 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
     caixa_final = mc_results.get('caixa_final', mc_results.get('caixa', pd.Series([0])))
     prob_sobrevivencia = (caixa_final > 0).mean()
     
-    # Comparar ARR Real vs Ideal para mostrar trade-off
-    arr_real_final = df_real_m['arr'].iloc[-1] if 'arr' in df_real_m.columns else 0
-    arr_ideal_final = df_ideal_m['arr'].iloc[-1] if 'arr' in df_ideal_m.columns else 0
-    caixa_real_final = df_real_m['caixa'].iloc[-1]
-    caixa_ideal_final = df_ideal_m['caixa'].iloc[-1]
-    mrr_real_final = df_real_m['mrr'].iloc[-1] if 'mrr' in df_real_m.columns else 0
-    mrr_ideal_final = df_ideal_m['mrr'].iloc[-1] if 'mrr' in df_ideal_m.columns else 0
+    # Comparar Real vs Monte Carlo P50 (Mediana)
+    mc_arr = mc_results['arr_final'] if 'arr_final' in mc_results.columns else mc_results.get('arr', pd.Series([0]))
+    mc_caixa = mc_results['caixa_final'] if 'caixa_final' in mc_results.columns else mc_results.get('caixa', pd.Series([0]))
     
-    # Calcular razão de crescimento
-    arr_ratio = arr_ideal_final / max(arr_real_final, 1)
+    p50_arr = mc_arr.median()
+    p50_caixa = mc_caixa.median()
+
+    # Extrair valores do cenário Real (Necessário para a comparação)
+    arr_real_final = df_real_m['arr'].iloc[-1] if 'arr' in df_real_m.columns else 0
+    caixa_real_final = df_real_m['caixa'].iloc[-1] if 'caixa' in df_real_m.columns else 0
+    
+    # Delta Real vs P50
+    delta_arr_pct = (arr_real_final / p50_arr - 1) if p50_arr > 0 else 0
+    delta_caixa_pct = (caixa_real_final / p50_caixa - 1) if p50_caixa > 0 else 0
     
     insight_md = f"""
 ::: {{.callout-tip title="💡 INTERPRETAÇÃO RÁPIDA"}}
@@ -2657,34 +2679,21 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
 
 :::
 
-::: {{.callout-note title="📊 REAL vs IDEAL: ESTRATÉGIA DE CRESCIMENTO"}}
+::: {{.callout-note title="📊 REAL (PROJETADO) vs P50 (MEDIANA MONTE CARLO)"}}
 
-| Métrica M36 | 💰 Real (Conservador) | 🌟 Ideal (Agressivo) | Delta |
-|-------------|----------------------|---------------------|-------|
-| **ARR** | {formata_moeda(arr_real_final)} | {formata_moeda(arr_ideal_final)} | **{arr_ratio:.1f}x** |
-| **MRR** | {formata_moeda(mrr_real_final)} | {formata_moeda(mrr_ideal_final)} | +{(mrr_ideal_final/max(mrr_real_final,1)-1)*100:.0f}% |
-| **Caixa** | {formata_moeda(caixa_real_final)} | {formata_moeda(caixa_ideal_final)} | {'+' if caixa_ideal_final > caixa_real_final else ''}{formata_moeda(caixa_ideal_final - caixa_real_final)} |
+Esta análise verifica se sua projeção "Real" está otimista ou pessimista comparada à mediana das 100 simulações.
 
-**⚠️ OBSERVAÇÃO IMPORTANTE:**
+| Métrica M36 | 💰 Cenário Real (Você) | 🎲 Simulação P50 (Mediana) | Status |
+|-------------|----------------------|---------------------------|--------|
+| **ARR** | {formata_moeda(arr_real_final)} | {formata_moeda(p50_arr)} | {f'🟢 Acima da média (+{delta_arr_pct:.1%})' if delta_arr_pct > 0 else f'🟡 Conservador ({delta_arr_pct:.1%})'} |
+| **Caixa Final** | {formata_moeda(caixa_real_final)} | {formata_moeda(p50_caixa)} | {f'🟢 Acima da média (+{delta_caixa_pct:.1%})' if delta_caixa_pct > 0 else f'🟡 Conservador ({delta_caixa_pct:.1%})'} |
 
-O cenário **Ideal (Agressivo)** pode apresentar **caixa negativo em meses iniciais**. Isso é **intencional** e segue 
-a estratégia clássica de startups com investimento:
-
-- 🔥 **Investimento Antecipado:** Marketing R$ 10k/mês (vs R$ 1.5k do Real)
-- 📈 **Crescimento Acelerado:** ARR **{arr_ratio:.1f}x maior** no M36
-- 💡 **Lógica:** *"Queimar caixa hoje para capturar mercado e criar valor futuro"*
-
-Startups como **Amazon, Uber e Netflix** operaram no prejuízo por anos para maximizar crescimento.
-O cenário Ideal simula este comportamento — sacrifica caixa curto prazo por escala.
-
+**O QUE ISSO SIGNIFICA?**
+*   **Conservador (Real < P50):** Sua projeção oficial é mais segura que a maioria dos cenários simulados. "Promete menos, entrega mais".
+*   **Otimista (Real > P50):** Sua projeção assume que a execução será melhor que a média da sorte/azar. Exige atenção redobrada.
 :::
-
-**GLOSSÁRIO (Explicado para Leigos):**
-- **VaR:** Imagine 100 futuros possíveis. O VaR é o caixa no 5% PIOR. Se negativo, precisamos dessa reserva.
-- **Sobrevivência:** Em quantos % dos futuros a empresa termina com dinheiro? 94% = 6 de 100 quebramos.
-- **Upside:** Se der MUITO certo, quanto ganhamos a mais que o esperado?
-- **Dispersão:** Quão imprevisível é o resultado? Maior = mais incerteza.
 """
+
     
     if report_mode:
         display(Markdown(insight_md))

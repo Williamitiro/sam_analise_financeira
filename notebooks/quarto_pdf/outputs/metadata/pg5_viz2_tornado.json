@@ -2,7 +2,7 @@
   "chart_id": "pg5_viz2_tornado",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-15T17:41:40.211477",
+  "timestamp": "2025-12-15T19:18:14.868495",
   "title_simple": "VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {

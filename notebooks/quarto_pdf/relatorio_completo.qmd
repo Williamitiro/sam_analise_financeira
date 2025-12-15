@@ -143,6 +143,9 @@ import importlib
 importlib.reload(PAGINA_3_FINANCEIRO)
 from PAGINA_3_FINANCEIRO import executar_pagina_3_financeiro
 from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
+from PAGINA_4_UNIT_ECONOMICS import executar_pagina_4_unit_economics
+import PAGINA_5_RISCO
+importlib.reload(PAGINA_5_RISCO)
 from PAGINA_5_RISCO import executar_pagina_5_risco
 from celula_5D_monte_carlo import executar_monte_carlo
 ```
