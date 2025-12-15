@@ -148,11 +148,20 @@ def gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=False)
     
     # 4. LEGENDA "COMO LER" (Markdown)
     legend_md = """
-**O QUE ESTOU VENDO?** Comparativo direto entre o funil realizado (Barras Escuras) e a meta estipulada (Barras Cinzas).
+**O QUE ESTOU VENDO?** Gráfico de barras comparando o **Funil de Vendas Real** (barras escuras) com a **Meta de Mercado** (barras cinzas).
 
-**ELEMENTOS VISUAIS:** - **Barras Escuras:** Resultados do cenário Conservador. - **Barras Cinza (Fundo):** Benchmark de mercado (Ideal). - **Eixo X (Log):** Escala exponencial para visualizar grandes discrepâncias de volume.
+**COMO LER O GRÁFICO:**
+- **Barras Escuras (Preto/Verde):** Volume REAL alcançado em cada etapa do funil no cenário conservador.
+- **Barras Cinza (Fundo Tracejado):** Benchmark de mercado (quanto deveríamos ter se estivéssemos na média do setor).
+- **Eixo X (Escala Logarítmica):** Comprime números grandes para facilitar visualização. Ex: 10.000 visitantes vs 64 vendas ficam visíveis juntos.
 
-**INTERPRETAÇÃO:** - Se a barra escura preencher completamente a cinza, a meta foi batida. Se ultrapassar, o desempenho é superior ao benchmark.
+**COMO LER A TABELA:**
+- **Visitantes (Real):** Quantas pessoas únicas chegaram ao site.
+- **Conv. Global Real:** De cada 100 visitantes, quantos viraram pagantes (%).
+- **Conv. Meta (Ideal):** A conversão esperada se estivéssemos no padrão de mercado.
+- **Δ (Delta):** Diferença em pontos percentuais (p.p.). Negativo = abaixo da meta.
+
+**INTERPRETAÇÃO:** Se todas as barras escuras preencherem ou ultrapassarem as cinzas, a operação está no trilho certo.
 """
     
     # 5. INSIGHT
@@ -176,13 +185,16 @@ def gerar_viz_2_1_funil_macro(df_real_m, df_ideal, premissas, report_mode=False)
 
     # 6. RENDERIZAR BLOCO ATÔMICO
     formulas = """
-    1. **Taxa de Conversão Global** = (Novos Pagantes / Visitantes Únicos) * 100
-    2. **Benchmark (Ideal)**: Definido nas premissas (ex: 1.0% para SaaS B2C).
-    3. **Delta**: Diferença percentual (p.p.) entre a conversão Real e a Meta.
-    4. **Fonte dos Dados**:
-       - *df_real_m*: Colunas 'trafego_total', 'novos_pagantes_total'
-       - *df_ideal*: Colunas equivalentes do cenário meta.
-    """
+**FÓRMULAS:**
+1. **Taxa de Conversão Global** = (Novos Pagantes / Visitantes Únicos) × 100
+2. **Delta (Δ)** = Conversão Real - Conversão Meta (em pontos percentuais)
+
+**GLOSSÁRIO:**
+- **Leads (Trials):** Visitantes que iniciaram o período de teste gratuito (demonstraram interesse).
+- **Novas Vendas:** Usuários que se tornaram pagantes no mês.
+- **Base Ativa:** Total de clientes pagantes ativos ao final do período.
+- **p.p. (Pontos Percentuais):** Diferença absoluta entre duas porcentagens. Ex: 0.62% - 0.79% = -0.17 p.p.
+"""
     
     render_atomic_block(
         chart_id="pg2_viz2_1",
@@ -276,11 +288,22 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
     # 4. LEGENDA COMO LER
     # 4. LEGENDA COMO LER
     legend_md = """
-**O QUE ESTOU VENDO?** A evolução da eficiência financeira (Quanto retorna de Valor para cada R$ 1 investido em Aquisição).
+**O QUE ESTOU VENDO?** A evolução do índice de eficiência financeira (LTV/CAC) ao longo do tempo, sobreposto a zonas coloridas de risco.
 
-**ELEMENTOS VISUAIS:** - **Linha Azul:** LTV/CAC Real ao longo do tempo. - **Zona Verde (>3x):** Alta eficiência (Escalável). - **Zona Vermelha (<1x):** Destruição de valor (Prejuízo unitário).
+**COMO LER O GRÁFICO:**
+- **Linha Azul:** Valor do LTV/CAC Real em cada mês.
+- **Zona Verde (>3x):** Operação altamente eficiente. Cada R$1 investido retorna R$3+. Pode escalar agressivamente.
+- **Zona Amarela (1x-3x):** Operação sustentável, mas margem apertada. Crescimento lento.
+- **Zona Vermelha (<1x):** Destruição de valor. Cada cliente CUSTA mais do que gera (Prejuízo).
 
-**INTERPRETAÇÃO:** - Mantenha a operação na zona verde ou amarela. A zona vermelha indica que custa mais trazer um cliente do que ele paga.
+**DIFERENÇA ENTRE LTV/CAC e MRR/MARKETING (Tier 1):**
+- **MRR/Marketing (Tier 1):** Quanto de receita mensal gera por cada R$1 gasto. É uma visão de curto prazo (mês a mês).
+- **LTV/CAC (Este Gráfico):** Quanto o cliente gera durante TODA sua vida útil por cada R$1 investido. É uma visão de longo prazo (ciclo de vida).
+
+**POR QUE ISSO IMPORTA?**
+Um negócio pode ter MRR/Marketing baixo nos primeiros meses, mas LTV/CAC alto se a retenção for forte (cliente paga por 2 anos). Por isso analisamos os dois.
+
+**INTERPRETAÇÃO:** Mantenha a linha azul na zona verde ou amarela. Se entrar no vermelho, CONGELE investimentos.
 """
 
     # 5. INSIGHT
@@ -302,14 +325,21 @@ def gerar_viz_2_2_eficiencia_ltv_cac(df_real_m, df_ideal, premissas, report_mode
     # 6. RENDER
     # 6. RENDER
     formulas = """
-    1. **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
-    2. **CAC (Custo Aquisição)** = Gastos Marketing / Novos Clientes
-    3. **LTV/CAC**: Razão de eficiência. Quanto retorna para cada R$ 1 investido.
-    4. **Zonas de Risco**:
-       - 🟢 > 3.0x: Alta eficiência (Escalável)
-       - 🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar
-       - 🔴 < 1.0x: Destruição de valor (Prejuízo unitário)
-    """
+**FÓRMULAS:**
+1. **LTV (Lifetime Value)** = ARPU × (1 / Churn Rate) × Margem Bruta %
+2. **CAC (Custo Aquisição)** = Gastos Marketing Totais / Novos Clientes Pagantes
+3. **LTV/CAC** = LTV ÷ CAC
+
+**ZONAS DE RISCO:**
+- 🟢 **>3.0x:** Alta eficiência (Escalável sem medo)
+- 🟡 **1.0x - 3.0x:** Operação paga contas mas cresce devagar
+- 🔴 **<1.0x:** Destruição de valor (Cada cliente dá prejuízo)
+
+**GLOSSÁRIO:**
+- **ARPU:** Receita Média por Usuário (Average Revenue Per User)
+- **Churn Rate:** Percentual de clientes que cancelam por mês
+- **Margem Bruta:** Receita menos custos diretos (COGS)
+"""
     
     render_atomic_block(
         chart_id="pg2_viz2_2",
@@ -406,14 +436,33 @@ def gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode
         
     df_tabela = pd.DataFrame(tabela_data)
 
-    # 4. LEGENDA
-    # 4. LEGENDA
+    # 4. LEGENDA COMO LER
     legend_md = """
-**O QUE ESTOU VENDO?** Monitoramento tático de curto prazo para identificar disparadas anormais no Custo de Aquisição (CAC).
+**O QUE ESTOU VENDO?** Grafico de Controle Estatistico (SPC) do CAC semanal para detectar anomalias operacionais.
 
-**ELEMENTOS VISUAIS:** - **Linha Preta:** Custo real da semana. - **Faixa Cinza:** Variação estatística aceitável (Túnel de Controle). - **Pontos Vermelhos:** Anomalias graves.
+**COMO LER O GRAFICO:**
+- **Linha Preta com Pontos:** Custo de Aquisicao (CAC) real em cada semana.
+- **Linha Azul Horizontal:** Media historica do CAC (o "centro" do tunel).
+- **Faixa Cinza (Tunel):** Intervalo de variacao estatistica aceitavel (+/-2 Desvios Padrao).
+- **Pontos Vermelhos:** Semanas com CAC FORA do tunel (anomalias que exigem investigacao).
 
-**INTERPRETAÇÃO:** - Se a linha preta sair do túnel cinza, investigue imediatamente a causa raiz (Bug, Campanha, Sazonalidade).
+**COMO LER A TABELA:**
+- **Semana:** Identificador da semana (S1, S10, etc.)
+- **CAC Real:** Custo de trazer 1 cliente naquela semana especifica.
+- **Media (Centro):** Valor medio de todas as semanas (mesmo para todas as linhas).
+- **UCL (Limite):** Limite Superior de Controle. Se CAC > UCL, e anomalia.
+- **Status:** "CONTROLADO" (dentro do tunel) ou "ANOMALIA" (fora do tunel).
+
+**POR QUE O UCL E IGUAL EM TODAS AS LINHAS?**
+O UCL e um **limite fixo** calculado uma unica vez (Media + 2xDesvio Padrao). Ele nao muda por semana. O que muda e o CAC Real.
+
+**COMO INVESTIGAR ANOMALIAS (FONTES DE DADOS):**
+1. **Google Ads / Meta Ads:** Verifique CPCs e impressoes da semana.
+2. **Google Analytics:** Cheque origem do trafego e taxa de rejeicao.
+3. **CRM/Pipeline:** Verifique se houve campanha promocional ou bug no checkout.
+4. **Calendario:** Compare com datas comemorativas ou eventos do setor.
+
+**INTERPRETACAO:** Se um ponto vermelho aparecer, NAO entre em panico. Investigue primeiro. Pode ser um teste A/B bem-sucedido ou uma sazonalidade prevista.
 """
 
     # 5. INSIGHT
@@ -434,13 +483,19 @@ def gerar_viz_2_3_controle_semanal(df_real_s, df_ideal_s, premissas, report_mode
         }
         
     formulas = """
-    1. **CAC Semanal** = Custo Marketing da Semana / Novos Clientes da Semana
-    2. **Média (Central)** = Média aritmética de todas as semanas observadas.
-    3. **Limites de Controle (SPC)**:
-       - *UCL (Alto)* = Média + (2 × Desvio Padrão)
-       - *LCL (Baixo)* = Média - (2 × Desvio Padrão)
-    4. **Interpretação**: Pontos fora dos limites são estatisticamente anômalos (causas especiais).
-    """
+**FÓRMULAS:**
+1. **CAC Semanal** = Custo Marketing da Semana ÷ Novos Clientes da Semana
+2. **Média (Centro)** = Soma de todos os CACs ÷ Número de semanas
+3. **Desvio Padrão (σ)** = Dispersão dos valores em torno da média
+4. **UCL (Upper Control Limit)** = Média + (2 × σ)
+5. **LCL (Lower Control Limit)** = Média - (2 × σ)
+
+**GLOSSÁRIO:**
+- **SPC (Statistical Process Control):** Método de monitoramento de qualidade usado em manufatura e operações.
+- **UCL (Upper Control Limit):** Limite superior. Valores acima disso são estatisticamente anormais (apenas 2.5% de chance de ocorrer naturalmente).
+- **LCL (Lower Control Limit):** Limite inferior. Valores abaixo podem indicar oportunidade (CAC muito baixo) OU erro de dados.
+- **Anomalia:** Ponto fora do túnel de controle. Pode ser positivo (oportunidade) ou negativo (problema).
+"""
 
     render_atomic_block(
         chart_id="pg2_viz2_3",
@@ -565,11 +620,22 @@ def gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=False):
 
     # 4. LEGENDA
     legend_md = """
-**O QUE ESTOU VENDO?** Teste de elasticidade de canal (Se dobrar investimento, vendas dobram?).
+**O QUE ESTOU VENDO?** Grafico de elasticidade de canal que responde: "Se eu dobrar o investimento em marketing, as vendas dobram?"
 
-**ELEMENTOS VISUAIS:** - **Bolinhas Azuis:** Mês real (Escuro=Recente). - **Linha Sólida:** Tendência Real. - **Linha Tracejada:** Crescimento Linear Ideal.
+**RESPOSTA DIRETA:**
+- **Se a linha azul estiver PARALELA a linha cinza tracejada:** SIM, dobrar marketing = dobra vendas.
+- **Se a linha azul estiver CURVANDO PARA BAIXO:** NAO, dobrar marketing traz MENOS que o dobro de vendas (saturacao).
 
-**INTERPRETAÇÃO:** - Se a linha sólida "deitar" (curvar para baixo), significa que o canal está saturando e o CAC marginal está subindo.
+**COMO LER O GRAFICO:**
+- **Bolinhas Azuis:** Cada bolinha e um mes real. Cor mais escura = mes mais recente.
+- **Linha Azul Solida (Tendencia):** Curva ajustada que mostra o comportamento real.
+- **Linha Cinza Tracejada (Linear):** Cenario ideal onde o CAC nunca sobe.
+
+**DIFERENCA DESTE GRAFICO PARA O LTV/CAC:**
+- **LTV/CAC (VIZ 2.2):** Mede eficiencia PASSADA (quanto ja retornou).
+- **Este Grafico (VIZ 2.4):** Projeta eficiencia FUTURA (quanto VAI retornar se aumentar budget).
+
+**INTERPRETACAO:** Se a linha azul estiver "deitando" (curvando para baixo), e um sinal de alerta. Significa que os canais atuais estao saturando e voce precisa diversificar.
 """
 
     # 5. INSIGHT
@@ -590,11 +656,17 @@ def gerar_viz_2_4_curva_escala(df_real_m, premissas, report_mode=False):
         }
         
     formulas = """
-    1. **Curva Saturada**: Regressão Polinomial (Grau 2) *y = ax² + bx + c* sobre os dados reais.
-    2. **Crescimento Linear (Ideal)**: Projeção *y = x / CAC_minimo*. Assume que o CAC se mantém fixo infinitamente.
-    3. **Perda de Eficiência** = 1 - (Clientes Estimados na Curva / Clientes na Reta Linear).
-       - Ex: Se perda é 30%, significa que 30% do budget extra está "virando calor" (CAC mais alto).
-    """
+**FORMULAS:**
+1. **Curva Saturada:** Regressao Polinomial (Grau 2) y = ax2 + bx + c
+2. **Crescimento Linear (Ideal):** y = x / CAC_minimo (assume CAC fixo para sempre)
+3. **Perda de Eficiencia** = 1 - (Clientes Reais / Clientes Teoricos)
+
+**GLOSSARIO:**
+- **Elasticidade:** Razao entre variacao de vendas e variacao de investimento. Elasticidade 1.0 = dobrou budget, dobrou vendas.
+- **Saturacao:** Ponto onde aumentar investimento traz retornos decrescentes.
+- **Perda de Eficiencia:** Quanto do budget extra esta "virando calor" (CAC mais alto).
+- **Linear Teorico:** Cenario impossivel onde o CAC nunca sobe, nao importa o volume.
+"""
 
     render_atomic_block(
         chart_id="pg2_viz2_4",
@@ -664,17 +736,35 @@ def gerar_viz_2_5_cac_mix_canais(df_real_m, premissas, report_mode=False):
 
     # 4. LEGENDA
     legend_md = """
-**O QUE ESTOU VENDO?** Diferença entre dependência de anúncios (Vermelho) e custo real (Azul).
-**INTERPRETAÇÃO:** 
-- **Linhas afastadas:** Branding e Orgânico estão funcionando (Economia).
-- **Linhas juntas:** O crescimento é 100% dependente de anúncios pagos (Risco).
+**O QUE ESTOU VENDO?** Comparativo entre o custo de aquisicao se dependessemos 100% de anuncios (Vermelho) vs o custo real misturando organico (Azul).
+
+**COMO LER O GRAFICO:**
+- **Linha Vermelha Tracejada (CAC Pago):** Quanto custaria trazer 1 cliente se TODO o trafego viesse de anuncios.
+- **Linha Azul Solida (CAC Blended):** Custo real por cliente, considerando trafego organico + pago.
+- **Area Azul Clara:** Representa a ECONOMIA gerada pelo trafego organico.
+
+**COMO LER A TABELA:**
+- **CAC Pago:** Custo por cliente se fosse 100% pago.
+- **CAC Blended:** Custo real por cliente (misturado).
+- **Economia/Cliente:** Diferenca entre Pago e Blended. Quanto voce economiza por cliente gratuito.
+- **Total Economizado:** Economia multiplicada pelo numero de clientes novos no mes.
+
+**INTERPRETACAO:** 
+- **Linhas afastadas:** SEO, Indicacoes e Branding estao gerando trafego gratuito (Otimo!).
+- **Linhas juntas:** O crescimento e 100% dependente de anuncios pagos (Risco alto).
 """
 
     formulas = """
-    1. **CAC Pago** = Gasto Ads / Novos Clientes (Só de Ads)
-    2. **CAC Blended** = Gasto Ads / Novos Clientes (Totais)
-    3. **Economia** = CAC Pago - CAC Blended
-    """
+**FORMULAS:**
+1. **CAC Pago** = Gasto em Ads / Novos Clientes (vindos de Ads)
+2. **CAC Blended** = Gasto Total em Marketing / Novos Clientes (TOTAIS, inclusive organicos)
+3. **Economia** = CAC Pago - CAC Blended
+
+**GLOSSARIO:**
+- **Blended:** "Misturado". Significa que estamos calculando o custo medio considerando TODOS os clientes, nao so os de ads.
+- **Organico:** Trafego que vem "de graca" - SEO, indicacoes, redes sociais nao-pagas.
+- **Economia Organica:** Quanto voce economiza por nao depender 100% de anuncios pagos.
+"""
     
     # 5. INSIGHT
     econ_m36 = economia[-1]
@@ -768,34 +858,56 @@ def gerar_viz_2_6_custo_churn(df_real_m, premissas, report_mode=False):
 
     # 4. LEGENDA
     legend_md = """
-**O QUE ESTOU VENDO?** Análise de vazamento de receita (Churn) vs Novos Contratos.
+**O QUE ESTOU VENDO?** Grafico de vazamento de receita que mostra o quanto entra (vendas) vs quanto sai (cancelamentos) por mes.
 
-**ELEMENTOS VISUAIS:** - **Verde:** Vendas Novas (Entrada). - **Vermelho:** Cancelamentos (Saída). - **Cinza:** Perda "Normal" de mercado (5%).
+**COMO LER O GRAFICO:**
+- **Barras Verdes (Acima de 0):** Receita NOVA que entrou no mes (novas vendas).
+- **Barras Vermelhas (Abaixo de 0):** Receita PERDIDA por cancelamentos (churn real).
+- **Barras Cinzas (Fundo):** O quanto seria aceitavel perder (benchmark de 5% de churn).
+- **Linha Preta (Net Growth):** RESULTADO LIQUIDO = Vendas Novas - Churn. Se positivo, a empresa cresce. Se negativo, encolhe.
 
-**INTERPRETAÇÃO:** - A parte vermelha que excede a sombra cinza é ineficiência de retenção que corrói o crescimento.
+**O QUE A LINHA PRETA SIGNIFICA:**
+A linha preta mostra o **crescimento liquido** do MRR. Ela considera TODOS os clientes, novos e antigos:
+- **Linha preta ACIMA de 0:** A empresa esta crescendo (mais vendas que cancelamentos).
+- **Linha preta NA linha 0:** Empresa estagnada (vendas = cancelamentos).
+- **Linha preta ABAIXO de 0:** Empresa encolhendo (mais cancelamentos que vendas).
+
+**COMO LER A TABELA:**
+- **Churn Rate:** Percentual de clientes que cancelaram no mes.
+- **Perda Real:** Valor em R$ dos contratos cancelados.
+- **Limite Aceitavel:** Quanto seria "normal" perder baseado no benchmark de 5%.
+- **Dinheiro Rasgado:** Perda Real - Limite Aceitavel. Se positivo, estamos perdendo mais que o normal.
+
+**INTERPRETACAO:** A parte vermelha que excede a sombra cinza e ineficiencia de retencao que corroi o crescimento.
 """
 
     # 5. INSIGHT
     total_waste_anual = sum([max(0, abs(l) - abs(t)) for l, t in zip(mrr_lost[-12:], mrr_lost_target[-12:])])
     insight = {
-        "fato": f"O churn acima do benchmark custou R$ {total_waste_anual:,.0f} no último ano.",
+        "fato": f"O churn acima do benchmark custou R$ {total_waste_anual:,.0f} no ultimo ano.",
         "causa": "Taxa de churn superior ao benchmark de 5%.",
-        "implicacao": "Redução direta do Valuation e necessidade de repor receita mais rápido.",
-        "acao": "Implementar squad de retenção para estancar o sangramento."
+        "implicacao": "Reducao direta do Valuation e necessidade de repor receita mais rapido.",
+        "acao": "Implementar squad de retencao para estancar o sangramento."
     }
         
     formulas = """
-    1. **Churn Rate Real** = Clientes Cancelados / Clientes Ativos Iniciais
-    2. **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados no mês.
-    3. **Perda Aceitável (Benchmark)** = MRR Inicial × 5.0% (Meta de Mercado).
-    4. **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitável.
-       - Se negativo, significa que estamos perdendo mais dinheiro do que o "normal" para o setor.
-    """
+**FORMULAS:**
+1. **Churn Rate Real** = Clientes Cancelados / Clientes Ativos Iniciais
+2. **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados no mes.
+3. **Perda Aceitavel (Benchmark)** = MRR Inicial x 5.0% (Meta de Mercado).
+4. **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitavel.
+
+**GLOSSARIO:**
+- **Net Growth (Crescimento Liquido):** Vendas Novas - Churn. Mostra se a empresa esta crescendo ou encolhendo.
+- **Churn Rate:** Percentual de clientes que cancelaram no mes.
+- **Benchmark 5%:** Taxa de churn considerada "saudavel" para SaaS.
+- **Dinheiro Rasgado:** Perda de receita alem do esperado. Dinheiro que "foi pro ralo" por retencao ruim.
+"""
 
     render_atomic_block(
-        chart_id="pg2_viz2_5",
+        chart_id="pg2_viz2_6",
         title_colloquial="Quanto dinheiro estamos perdendo pelo ralo?",
-        title_technical="VIZ 2.5: Análise de Vazamento (Net Growth & Churn)",
+        title_technical="VIZ 2.6: Analise de Vazamento (Net Growth e Churn)",
         fig=fig,
         legend_md=legend_md,
         df_tabela=df_tabela,
@@ -891,10 +1003,29 @@ def gerar_viz_2_7_timeline_growth(df_real_m, premissas, report_mode=False):
 
     # 4. LEGENDA
     legend_md = """
-**O QUE ESTOU VENDO?** A correlação direta entre o dinheiro colocado em Marketing e o nível de crescimento orgânico ativado (Os "Tiers").
-    
-**ELEMENTOS VISUAIS:** - **Barras Azuis:** Quanto dinheiro saiu do caixa para Mkt. - **Linha Verde:** O resultado em tráfego gratuito (SEO/Viral) gerado por esse investimento.
-    """
+**O QUE ESTOU VENDO?** Timeline visual mostrando em qual "marcha" o motor de crescimento esta em cada fase do negocio.
+
+**COMO LER O GRAFICO:**
+- **Barras Azuis:** Quanto dinheiro foi investido em Marketing no mes (R$).
+- **Linha Verde:** Volume de trafego organico gerado como RESULTADO desse investimento.
+- **Quanto maior a barra, maior o "Tier":** Cada nivel de investimento ativa diferentes estrategias de crescimento.
+
+**O QUE SAO OS "TIERS"?**
+Os Tiers sao niveis de crescimento que se desbloqueiam conforme o orcamento de marketing aumenta:
+- **Tier 0 (Hustle):** Zero investimento. Crescimento 100% no boca-a-boca.
+- **Tier 1 (Organico Basico):** Budget baixo. Foco em conteudo e SEO simples.
+- **Tier 2 (SEO Profissional):** Budget medio. Ativa estrategias de link building e conteudo avancado.
+- **Tier 3+ (Growth Agressivo):** Budget alto. Ads + Influencers + PR + Viralizacao.
+
+**COMO LER A TABELA:**
+- **Periodo:** Mes de operacao (M1, M6, etc.)
+- **Budget (R$):** Quanto foi investido em marketing naquele mes.
+- **Tier Ativo:** Qual nivel de crescimento estava ativo baseado no budget.
+- **Trafego Organico:** Quantos visitantes vieram por canais gratuitos.
+- **Status:** Se o tier esta ativo (BAIXO/MEDIO/TURBO) ou inativo (ZERO).
+
+**INTERPRETACAO:** A ideia e ver a "evolucao das marchas". Uma empresa saudavel vai desbloqueando tiers maiores conforme a receita cresce.
+"""
 
     # 5. INSIGHT
     invest_m36 = gasto_mkt[-1] if len(gasto_mkt) > 0 else 0
@@ -908,17 +1039,23 @@ def gerar_viz_2_7_timeline_growth(df_real_m, premissas, report_mode=False):
     else:
         insight = {
             "fato": f"Investimento no M36 ({formata_moeda(invest_m36)}) ainda é conservador.",
-            "causa": "Restrições de caixa ou estratégia de bootstrap.",
-            "implicacao": "Crescimento orgânico limitado pelos Tiers baixos.",
+            "causa": "Restricoes de caixa ou estrategia de bootstrap.",
+            "implicacao": "Crescimento organico limitado pelos Tiers baixos.",
             "acao": "Avaliar aporte para saltar de Tier."
         }
         
     formulas = """
-    1. **Growth Tier**: Nível de crescimento determinado pelo budget.
-       - Ex: Budget > R$ 3k ativa 'SEO Profissional' (1.8% a.m.).
-    2. **Lógica**: O código verifica o budget do mês e aplica a taxa do Tier correspondente.
-    3. **Fonte**: *novas_premissas.py* (Tabela de Tiers).
-    """
+**FORMULAS:**
+1. **Growth Tier** = Nivel de crescimento determinado pelo budget mensal.
+2. **Taxa Organica** = Percentual de crescimento do trafego organico ativado pelo tier.
+3. **Trafego Organico** = Visitantes do mes anterior x (1 + Taxa Organica do Tier)
+
+**GLOSSARIO:**
+- **Growth Tier:** Nivel de "marcha" do motor de crescimento. Quanto mais dinheiro, maior o tier.
+- **Taxa Organica:** Percentual de crescimento mensal do trafego gratuito (SEO, indicacoes).
+- **Flywheel Effect:** Ciclo virtuoso onde mais receita = mais marketing = mais organico = mais receita.
+- **Budget:** Orcamento mensal de marketing.
+"""
 
     render_atomic_block(
         chart_id="pg2_viz2_7_tiers",

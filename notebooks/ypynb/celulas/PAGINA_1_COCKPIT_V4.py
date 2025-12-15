@@ -161,10 +161,85 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
         ('  Runway (Meses de Sobrevivência)', 'runway_meses', 12, False),
         ('  Burn Rate (Queima Mensal)', 'burn_rate', 0, True),
         ('', '', '', '', '', ''),
-        ('📈 MARGENS', '', '', '', '', ''),
+        ('📈 MARGENS & RETORNO', '', '', '', '', ''),
         ('  Margem Bruta %', 'margem_bruta_pct', 70, False),
         ('  EBITDA (Lucro Operacional)', 'ebitda', 0, False),
+        ('  Lucro Líquido Acumulado (36m)', 'lucro_liquido_acum', 0, False),
+        ('', '', '', '', '', ''),
+        ('🏦 INVESTIDOR', '', '', '', '', ''),
+        ('  Investimento Realizado (Total)', 'investimento_total', 0, False),
+        ('  ROI Potencial (Exit 5x ARR)', 'roi_investidor_exit', 100, False),
+        ('  ROI Realizado (Caixa M36)', 'roi_investidor_caixa', 0, False),
+        ('  Valuation Estimado (5x ARR)', 'valuation_estimado', 1000000, False),
+        ('  Break-Even (Mês Lucrativo)', 'break_even_mes', 12, True),
     ]
+    
+    # =========================================
+    # CÁLCULOS PARA MÉTRICAS DO INVESTIDOR
+    # =========================================
+    # ROI: (Valor Atual - Investimento Total) / Investimento Total × 100
+    # Investimento = Caixa Inicial + Soma de todos os aportes (limitado aos meses de aporte)
+    try:
+        from celula_2_premissas import PREMISSAS
+        caixa_inicial = PREMISSAS.get('caixa_inicial', 4000)
+        aporte_mensal = PREMISSAS.get('aporte_mensal', 2500)
+        meses_aporte = PREMISSAS.get('meses_aporte', 6)
+    except:
+        caixa_inicial = 4000
+        aporte_mensal = 2500
+        meses_aporte = 6
+    
+    investimento_total = caixa_inicial + (aporte_mensal * meses_aporte) + 8000  # Capital (Empresa) + R$ 8k Equipamentos (PF)
+    
+    # Adiciona colunas calculadas ao DataFrame temporariamente
+    df_real = df_real.copy()
+    
+    # ROI por período
+    for i, row_idx in enumerate([0, 5, 11, -1]):  # M1, M6, M12, M36
+        mes_atual = row_idx + 1 if row_idx != -1 else 36
+        meses_aportados = min(mes_atual, meses_aporte)
+        inv_ate_agora = caixa_inicial + (aporte_mensal * meses_aportados)
+        
+    # ROI no M36
+    caixa_final = m36.get('caixa', 0)
+    arr_final = m36.get('arr', m36.get('mrr', 0) * 12)
+    # Valuation (Múltiplo 5x ARR - padrão SaaS)
+    valuation_m36 = arr_final * 5
+    
+    # ---------------------------------------------------------
+    # CÁLCULO DE RETORNO DO INVESTIDOR (LÓGICA DE EQUITY)
+    # ---------------------------------------------------------
+    # Premissa: Investidor pôs 100% do capital (27k) por 50% do negócio
+    equity_investidor = 0.50 
+    
+    # Cenário 1: EXIT (Venda da empresa)
+    valor_exit_investidor = valuation_m36 * equity_investidor
+    roi_exit_m36 = ((valor_exit_investidor - investimento_total) / max(investimento_total, 1)) * 100
+    
+    # Cenário 2: CAIXA (Liquidação/Dividendos)
+    # Se fechar hoje, divide o caixa 50/50
+    valor_caixa_investidor = caixa_final * equity_investidor
+    roi_caixa_m36 = ((valor_caixa_investidor - investimento_total) / max(investimento_total, 1)) * 100
+    
+    # Break-Even: encontrar primeiro mês com EBITDA > 0
+    break_even_mes = None
+    if 'ebitda' in df_real.columns:
+        mask = df_real['ebitda'] > 0
+        if mask.any():
+            break_even_mes = df_real[mask].iloc[0]['mes']
+    
+    # Adiciona as colunas calculadas
+    df_real['roi_investidor_exit'] = roi_exit_m36
+    df_real['roi_investidor_caixa'] = roi_caixa_m36
+    df_real['valuation_estimado'] = df_real['arr'] * 5 if 'arr' in df_real.columns else df_real['mrr'] * 12 * 5
+    df_real['break_even_mes'] = break_even_mes if break_even_mes else 99
+    df_real['investimento_total'] = investimento_total  # Coluna constante para o total investido
+    
+    # Atualiza snapshots com novos dados
+    m1 = df_real.iloc[0]
+    m6 = df_real.iloc[5] if len(df_real) > 5 else df_real.iloc[-1]
+    m12 = df_real.iloc[11] if len(df_real) > 11 else df_real.iloc[-1]
+    m36 = df_real.iloc[-1]
     
     # Header
     if not report_mode:
@@ -240,6 +315,41 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
             v12_str = f'{v12:.1f}m'
             v36_str = f'{v36:.1f}m'
             bench_str = f'<{benchmark:.0f}m'
+        elif coluna == 'investimento_total':
+            # Investimento Total: valor fixo (acumulado)
+            v1_str = '-'
+            v6_str = '-'
+            v12_str = '-'
+            v36_str = formatar_moeda(v36)
+            bench_str = '-'
+        elif coluna == 'roi_investidor_exit' or coluna == 'roi_investidor_caixa':
+            # ROI: percentual
+            v1_str = '-'
+            v6_str = '-'
+            v12_str = '-'
+            v36_str = f'{v36:.0f}%'
+            bench_str = f'>{benchmark:.0f}%'
+        elif coluna == 'valuation_estimado':
+            # Valuation: moeda grande
+            v1_str = formatar_moeda(v1)
+            v6_str = formatar_moeda(v6)
+            v12_str = formatar_moeda(v12)
+            v36_str = formatar_moeda(v36)
+            bench_str = f'>{formatar_moeda(benchmark)}'
+        elif coluna == 'break_even_mes':
+            # Break-Even: mês específico (não é série temporal)
+            if v36 < 99:
+                v1_str = '-'
+                v6_str = '-'
+                v12_str = '-'
+                v36_str = f'M{int(v36)}'
+                bench_str = f'<M{benchmark:.0f}'
+            else:
+                v1_str = '-'
+                v6_str = '-'
+                v12_str = '-'
+                v36_str = 'Não atingido'
+                bench_str = f'<M{benchmark:.0f}'
         else:
             v1_str = f'{v1:,.0f}'
             v6_str = f'{v6:,.0f}'
@@ -257,24 +367,39 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
     df_tab = pd.DataFrame(tabela_dados, columns=cols).fillna("")
     
     # =========================================
-    # RENDERIZAÇÃO ATÔMICA (V7.0)
+    # RENDERIZAÇÃO ATÔMICA (V7.0) - CORRIGIDA
     # =========================================
-    insight_dummy = {
-        "fato": "Visão consolidada dos KPIs.",
-        "causa": "Performance agregada.",
-        "implicacao": "Diagnóstico rápido da saúde do negócio.",
-        "acao": "Verificar métricas em vermelho (Críticas)."
+    # Identificar KPIs críticos (status vermelho)
+    kpis_criticos = [row[0] for row in tabela_dados if '🔴' in str(row[-1])]
+    kpis_atencao = [row[0] for row in tabela_dados if '⚠️' in str(row[-1])]
+    
+    # Insight dinâmico baseado nos dados reais
+    if len(kpis_criticos) > 0:
+        insight_fato = f"{len(kpis_criticos)} métrica(s) em estado CRÍTICO: {', '.join(kpis_criticos[:3])}"
+        insight_acao = f"Priorizar correção imediata de: {kpis_criticos[0]}"
+    elif len(kpis_atencao) > 0:
+        insight_fato = f"{len(kpis_atencao)} métrica(s) requerem atenção: {', '.join(kpis_atencao[:3])}"
+        insight_acao = "Monitorar de perto e definir plano de ação."
+    else:
+        insight_fato = "Todas as métricas dentro dos benchmarks estabelecidos."
+        insight_acao = "Manter execução e monitorar mensalmente."
+    
+    insight_tabela = {
+        "fato": insight_fato,
+        "causa": "Análise automática comparando M36 vs Benchmarks de mercado.",
+        "implicacao": "Esta tabela mostra a evolução temporal (M1→M36) dos principais indicadores de viabilidade do negócio.",
+        "acao": insight_acao
     }
 
     render_atomic_block(
         chart_id="pg1_viz1_exec_table",
-        title_colloquial="Visão Geral do Negócio",
+        title_colloquial="Como está a saúde geral do negócio?",
         title_technical="VIZ 1.1: Tabela Executiva Master",
-        fig=None,                   # Sem gráfico
-        legend_md=None,             # Sem legenda
-        table_title="📊 DADOS TABULADOS:", # Título customizado
+        fig=None,
+        legend_md=None,
+        table_title="📋 EVOLUÇÃO DOS INDICADORES (M1 → M36):",
         df_tabela=df_tab,
-        insight_dict=insight_dummy,
+        insight_dict=insight_tabela,
         report_mode=report_mode,
         data_source_text="Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)"
     )
@@ -371,10 +496,28 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     
     if report_mode:
         plt.close(fig)
-        display(Markdown("## 📊 1.0 PAINEL DE CONTROLE (KPIs)"))
+        display(Markdown("## 📊 PAINEL DE CONTROLE (KPIs)"))
         display(Markdown("**Visão Geral:** Indicadores chave de performance no final do período (M36)."))
         display(Markdown("![KPI Cards](outputs/figs/pg1_kpi_cards.png)"))
         display(Markdown("*Fonte: df_real_m (Simulacao Real) - Snapshot M36*"))
+        
+        # GLOSSÁRIO IMEDIATAMENTE APÓS OS CARDS
+        glossario_md = """
+::: {.callout-note title="📖 GLOSSÁRIO DOS KPIs"}
+
+| KPI | O que significa | Por que importa |
+|-----|-----------------|------------------|
+| **MRR** | Receita Mensal Recorrente | Quanto dinheiro entra TODO mês de forma previsível. |
+| **ROI (Exit)** | Retorno Potencial | Retorno se vender a empresa hoje (50% do Valuation - Investimento). |
+| **ROI (Caixa)** | Retorno Realizado | Retorno se liquidar a empresa hoje (50% do Caixa - Investimento). |
+| **Valuation** | Valuation (Exit) | Valor estimado de venda da empresa, calculado como **5x a Receita Anual (ARR)**. |
+| **LTV/CAC** | Retorno por Cliente | Para cada R$ 1 gasto para trazer um cliente, quantos R$ ele gera de volta. Meta: ≥3x. |
+| **Churn** | Evasão de Clientes | De cada 100 clientes, quantos cancelam por mês. Meta: <5%. |
+| **Runway** | Fôlego Financeiro | Com o caixa atual, quantos meses a empresa sobrevive SEM nova receita. Meta: >12 meses. |
+
+:::
+"""
+        display(Markdown(glossario_md))
         display(Markdown("***"))
     else:
         plt.show()
@@ -854,11 +997,15 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
         status_cor = "#D32F2F"
         status_bg = "#FFEBEE"
     
+    # Cálculo correto do Gap acumulado (soma do gap mensal, não multiplicação simples)
+    # Gap mensal × número de meses restantes médio (aproximação conservadora)
+    gap_anual = gap * 12  # Gap em 1 ano
+    
     insight_2 = {
-        "fato": f"Gap de {formatar_moeda(gap)} ({gap_pct:.0f}%) entre Real e Ideal.",
-        "causa": "Diferença entre projeção conservadora e cenário otimista.",
-        "implicacao": f"Potencial de {formatar_moeda(gap * 36)} em 3 anos não capturado.",
-        "acao": "Aumentar conversão ou reduzir churn para fechar gap."
+        "fato": f"Gap de {formatar_moeda(gap)}/mês ({gap_pct:.0f}%) entre Real e Ideal.",
+        "causa": "Diferença entre projeção conservadora e cenário benchmark de mercado.",
+        "implicacao": f"O cenário Ideal tem MRR {formatar_moeda(gap)} maior/mês. Em 12 meses, isso equivale a ~{formatar_moeda(gap_anual)} adicionais de receita.",
+        "acao": "Aumentar conversão ou reduzir churn para aproximar do cenário Ideal."
     }
     
     if report_mode:
@@ -946,7 +1093,19 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
 2. **CAC** = (Gasto Marketing + Gasto Vendas) / Novos Clientes
 3. **LTV/CAC** = LTV ÷ CAC (Meta: ≥3.0x)
 4. **Runway** = Caixa Disponível ÷ Despesas Mensais
-5. **Gap** = MRR Ideal - MRR Real
+
+**6. AUDITORIA DE ROI (Exemplo M36):**
+*   **Investimento Total:** R$ 27.000 (R$ 19k Empresa + R$ 8k Equipamentos)
+*   **Equity do Investidor:** 50%
+*   **A. Cenário CAIXA (Liquidação):**
+    *   Caixa Final: R$ 165.753
+    *   Parte do Investidor (50%): R$ 82.876
+    *   Lucro Líquido: R$ 82.876 - R$ 27.000 = R$ 55.876
+    *   **ROI Realizado:** (55.876 / 27.000) = **206%**
+*   **B. Cenário EXIT (Venda):**
+    *   Valuation (5x ARR): R$ 1.2M
+    *   Parte do Investidor (50%): R$ 600k
+    *   **ROI Potencial:** (600k - 27k) / 27k = **2.122%**
 """
     
     if report_mode:

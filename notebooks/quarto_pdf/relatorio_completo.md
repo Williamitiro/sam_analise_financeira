@@ -94,13 +94,13 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 
 ## 📊 1.1 TABELA EXECUTIVA MASTER
 
-## Visão Geral do Negócio
+## Como está a saúde geral do negócio?
 
 ### 📉 VIZ 1.1: Tabela Executiva Master
 
 *Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)*
 
-#### 📊 DADOS TABULADOS:
+#### 📋 EVOLUÇÃO DOS INDICADORES (M1 → M36):
 
 <style>
                 .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
@@ -137,29 +137,29 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>MRR</td>
-<td>R$ 849</td>
-<td>R$ 2.5k</td>
-<td>R$ 5.0k</td>
-<td>R$ 28.2k</td>
-<td>R$ 179.8k</td>
+<td>R$ 1.0k</td>
+<td>R$ 3.1k</td>
+<td>R$ 6.0k</td>
+<td>R$ 50.4k</td>
+<td>R$ 186.3k</td>
 <td>🔴</td>
 </tr>
 <tr>
 <td>ARR (Anual)</td>
-<td>R$ 10.2k</td>
-<td>R$ 30.6k</td>
-<td>R$ 59.9k</td>
-<td>R$ 337.8k</td>
+<td>R$ 12.2k</td>
+<td>R$ 37.5k</td>
+<td>R$ 72.2k</td>
+<td>R$ 605.0k</td>
 <td>R$ 2.2M</td>
 <td>🔴</td>
 </tr>
 <tr>
 <td>Usuários Ativos</td>
-<td>8</td>
-<td>25</td>
-<td>49</td>
-<td>276</td>
-<td>1,599</td>
+<td>10</td>
+<td>31</td>
+<td>59</td>
+<td>493</td>
+<td>1,657</td>
 <td>🔴</td>
 </tr>
 <tr>
@@ -182,21 +182,21 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>LTV/CAC (Índice de Retorno)</td>
-<td>0.57x</td>
-<td>1.81x</td>
-<td>2.71x</td>
-<td>4.81x</td>
+<td>1.11x</td>
+<td>2.09x</td>
+<td>3.05x</td>
+<td>5.28x</td>
 <td>3.0x</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>CAC (Custo Aquisição Cliente)</td>
-<td>R$ 1.2k</td>
-<td>R$ 417</td>
-<td>R$ 312</td>
-<td>R$ 314</td>
+<td>R$ 625</td>
+<td>R$ 357</td>
+<td>R$ 278</td>
+<td>R$ 287</td>
 <td>R$ 250</td>
-<td>🔴</td>
+<td>⚠️</td>
 </tr>
 <tr>
 <td>Churn (Taxa Cancelamento %)</td>
@@ -209,10 +209,10 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>Payback (Meses p/ Recuperar CAC)</td>
-<td>14.5m</td>
-<td>5.0m</td>
-<td>3.8m</td>
-<td>3.8m</td>
+<td>7.5m</td>
+<td>4.4m</td>
+<td>3.3m</td>
+<td>3.4m</td>
 <td>&lt;12m</td>
 <td>✅</td>
 </tr>
@@ -236,26 +236,26 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>Caixa Disponível</td>
-<td>R$ 3.3k</td>
-<td>R$ 3.7k</td>
-<td>R$ 11.0k</td>
-<td>R$ 116.6k</td>
+<td>R$ 4.0k</td>
+<td>R$ 8.5k</td>
+<td>R$ 12.1k</td>
+<td>R$ 165.4k</td>
 <td>R$ 50.0k</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>Runway (Meses de Sobrevivência)</td>
-<td>1.6m</td>
-<td>1.1m</td>
-<td>3.0m</td>
-<td>9.0m</td>
+<td>1.9m</td>
+<td>2.4m</td>
+<td>3.2m</td>
+<td>6.2m</td>
 <td>&gt;12m</td>
 <td>🔴</td>
 </tr>
 <tr>
 <td>Burn Rate (Queima Mensal)</td>
-<td>R$ 2.7k</td>
-<td>R$ 1.3k</td>
+<td>R$ 2.5k</td>
+<td>R$ 815</td>
 <td>R$ 0</td>
 <td>R$ 0</td>
 <td>R$ 0</td>
@@ -271,7 +271,7 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 <td></td>
 </tr>
 <tr>
-<td>**📈 MARGENS**</td>
+<td>**📈 MARGENS &amp; RETORNO**</td>
 <td></td>
 <td></td>
 <td></td>
@@ -281,7 +281,7 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>Margem Bruta %</td>
-<td>81.2%</td>
+<td>81.4%</td>
 <td>81.4%</td>
 <td>81.3%</td>
 <td>81.4%</td>
@@ -290,11 +290,74 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </tr>
 <tr>
 <td>EBITDA (Lucro Operacional)</td>
-<td>R$ -2.7k</td>
-<td>R$ -1.3k</td>
-<td>R$ 703</td>
-<td>R$ 11.7k</td>
+<td>R$ -2.5k</td>
+<td>R$ -815</td>
+<td>R$ 1.5k</td>
+<td>R$ 17.6k</td>
 <td>R$ 0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>****</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>**🏦 INVESTIDOR**</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Investimento Realizado (Total)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>R$ 27.0k</td>
+<td>-</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>ROI Potencial (Exit 5x ARR)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>5502%</td>
+<td>&gt;100%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>ROI Realizado (Caixa M36)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>206%</td>
+<td>&gt;0%</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Valuation Estimado (5x ARR)</td>
+<td>R$ 61.1k</td>
+<td>R$ 187.6k</td>
+<td>R$ 360.8k</td>
+<td>R$ 3.0M</td>
+<td>&gt;R$ 1.0M</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Break-Even (Mês Lucrativo)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>M8</td>
+<td><m12< td></td>
 <td>✅</td>
 </tr>
 </tbody>
@@ -304,12 +367,15 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Visão consolidada dos KPIs.
-> -   **CAUSA:** Performance agregada.
-> -   **IMPLICAÇÃO:** Diagnóstico rápido da saúde do negócio.
-> -   **AÇÃO RECOMENDADA:** Verificar métricas em vermelho (Críticas).
+> -   **FATO:** 4 métrica(s) em estado CRÍTICO: MRR, ARR (Anual),
+>     Usuários Ativos
+> -   **CAUSA:** Análise automática comparando M36 vs Benchmarks de
+>     mercado.
+> -   **IMPLICAÇÃO:** Esta tabela mostra a evolução temporal (M1→M36)
+>     dos principais indicadores de viabilidade do negócio.
+> -   **AÇÃO RECOMENDADA:** Priorizar correção imediata de: MRR
 
-## 📊 1.0 PAINEL DE CONTROLE (KPIs)
+## 📊 PAINEL DE CONTROLE (KPIs)
 
 **Visão Geral:** Indicadores chave de performance no final do período
 (M36).
@@ -320,6 +386,65 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 </figure>
 
 *Fonte: df_real_m (Simulacao Real) - Snapshot M36*
+
+> **📖 GLOSSÁRIO DOS KPIs**
+>
+> <table>
+> <colgroup>
+> <col style="width: 12%" />
+> <col style="width: 42%" />
+> <col style="width: 45%" />
+> </colgroup>
+> <thead>
+> <tr>
+> <th>KPI</th>
+> <th>O que significa</th>
+> <th>Por que importa</th>
+> </tr>
+> </thead>
+> <tbody>
+> <tr>
+> <td><strong>MRR</strong></td>
+> <td>Receita Mensal Recorrente</td>
+> <td>Quanto dinheiro entra TODO mês de forma previsível.</td>
+> </tr>
+> <tr>
+> <td><strong>ROI (Exit)</strong></td>
+> <td>Retorno Potencial</td>
+> <td>Retorno se vender a empresa hoje (50% do Valuation -
+> Investimento).</td>
+> </tr>
+> <tr>
+> <td><strong>ROI (Caixa)</strong></td>
+> <td>Retorno Realizado</td>
+> <td>Retorno se liquidar a empresa hoje (50% do Caixa -
+> Investimento).</td>
+> </tr>
+> <tr>
+> <td><strong>Valuation</strong></td>
+> <td>Valuation (Exit)</td>
+> <td>Valor estimado de venda da empresa, calculado como <strong>5x a
+> Receita Anual (ARR)</strong>.</td>
+> </tr>
+> <tr>
+> <td><strong>LTV/CAC</strong></td>
+> <td>Retorno por Cliente</td>
+> <td>Para cada R$ 1 gasto para trazer um cliente, quantos R$ ele gera de
+> volta. Meta: ≥3x.</td>
+> </tr>
+> <tr>
+> <td><strong>Churn</strong></td>
+> <td>Evasão de Clientes</td>
+> <td>De cada 100 clientes, quantos cancelam por mês. Meta: &lt;5%.</td>
+> </tr>
+> <tr>
+> <td><strong>Runway</strong></td>
+> <td>Fôlego Financeiro</td>
+> <td>Com o caixa atual, quantos meses a empresa sobrevive SEM nova
+> receita. Meta: &gt;12 meses.</td>
+> </tr>
+> </tbody>
+> </table>
 
 ------------------------------------------------------------------------
 
@@ -368,45 +493,45 @@ alt="Evolução Temporal" />
 <tbody>
 <tr>
 <td style="text-align: left;">M1</td>
-<td style="text-align: left;">R$ 849</td>
-<td style="text-align: left;">R$ 1.3k</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">35.1%</td>
+<td style="text-align: left;">R$ 1.0k</td>
+<td style="text-align: left;">R$ 1.5k</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">31.8%</td>
 </tr>
 <tr>
 <td style="text-align: left;">M3</td>
-<td style="text-align: left;">R$ 1.4k</td>
-<td style="text-align: left;">R$ 2.7k</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: left;">46.9%</td>
+<td style="text-align: left;">R$ 1.7k</td>
+<td style="text-align: left;">R$ 3.0k</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">43.2%</td>
 </tr>
 <tr>
 <td style="text-align: left;">M6</td>
-<td style="text-align: left;">R$ 2.5k</td>
-<td style="text-align: left;">R$ 5.1k</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: left;">50.3%</td>
+<td style="text-align: left;">R$ 3.1k</td>
+<td style="text-align: left;">R$ 6.0k</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">47.7%</td>
 </tr>
 <tr>
 <td style="text-align: left;">M12</td>
-<td style="text-align: left;">R$ 5.0k</td>
-<td style="text-align: left;">R$ 12.2k</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: left;">59.0%</td>
+<td style="text-align: left;">R$ 6.0k</td>
+<td style="text-align: left;">R$ 14.4k</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: left;">58.3%</td>
 </tr>
 <tr>
 <td style="text-align: left;">M24</td>
-<td style="text-align: left;">R$ 10.8k</td>
-<td style="text-align: left;">R$ 58.8k</td>
-<td style="text-align: right;">106</td>
-<td style="text-align: left;">81.6%</td>
+<td style="text-align: left;">R$ 16.4k</td>
+<td style="text-align: left;">R$ 76.4k</td>
+<td style="text-align: right;">161</td>
+<td style="text-align: left;">78.5%</td>
 </tr>
 <tr>
 <td style="text-align: left;">M36</td>
-<td style="text-align: left;">R$ 28.2k</td>
-<td style="text-align: left;">R$ 179.8k</td>
-<td style="text-align: right;">276</td>
-<td style="text-align: left;">84.3%</td>
+<td style="text-align: left;">R$ 50.4k</td>
+<td style="text-align: left;">R$ 186.3k</td>
+<td style="text-align: right;">493</td>
+<td style="text-align: left;">72.9%</td>
 </tr>
 </tbody>
 </table>
@@ -437,62 +562,62 @@ tempo previsto pelo benchmark.
 <tr>
 <td style="text-align: left;">💰 R$ 1k MRR</td>
 <td style="text-align: left;">M1</td>
-<td style="text-align: left;">M2</td>
-<td style="text-align: left;">⚠️ +1m ATRASO</td>
+<td style="text-align: left;">M1</td>
+<td style="text-align: left;">✅ IGUAL AO IDEAL</td>
 </tr>
 <tr>
 <td style="text-align: left;">💰 R$ 5k MRR</td>
 <td style="text-align: left;">M6</td>
-<td style="text-align: left;">M13</td>
-<td style="text-align: left;">⚠️ +7m ATRASO</td>
+<td style="text-align: left;">M10</td>
+<td style="text-align: left;">⚠️ +4m ATRASO</td>
 </tr>
 <tr>
 <td style="text-align: left;">👥 50 Usuários Ativos</td>
-<td style="text-align: left;">M7</td>
-<td style="text-align: left;">M13</td>
-<td style="text-align: left;">⚠️ +6m ATRASO</td>
+<td style="text-align: left;">M6</td>
+<td style="text-align: left;">M10</td>
+<td style="text-align: left;">⚠️ +4m ATRASO</td>
 </tr>
 <tr>
 <td style="text-align: left;">💰 R$ 10k MRR</td>
-<td style="text-align: left;">M11</td>
-<td style="text-align: left;">M23</td>
-<td style="text-align: left;">⚠️ +12m ATRASO</td>
+<td style="text-align: left;">M10</td>
+<td style="text-align: left;">M19</td>
+<td style="text-align: left;">⚠️ +9m ATRASO</td>
 </tr>
 <tr>
-<td style="text-align: left;">👥 108 Usuários (Meta M12)</td>
+<td style="text-align: left;">👥 128 Usuários (Meta M12)</td>
 <td style="text-align: left;">M12</td>
-<td style="text-align: left;">M25</td>
-<td style="text-align: left;">⚠️ +13m ATRASO</td>
+<td style="text-align: left;">M22</td>
+<td style="text-align: left;">⚠️ +10m ATRASO</td>
 </tr>
 <tr>
 <td style="text-align: left;">💰 R$ 20k MRR</td>
-<td style="text-align: left;">M16</td>
-<td style="text-align: left;">M32</td>
-<td style="text-align: left;">⚠️ +16m ATRASO</td>
+<td style="text-align: left;">M15</td>
+<td style="text-align: left;">M27</td>
+<td style="text-align: left;">⚠️ +12m ATRASO</td>
 </tr>
 <tr>
 <td style="text-align: left;">🎯 Break-Even (EBITDA &gt; 0)</td>
-<td style="text-align: left;">M7</td>
-<td style="text-align: left;">M10</td>
-<td style="text-align: left;">⚠️ +3m ATRASO</td>
+<td style="text-align: left;">M6</td>
+<td style="text-align: left;">M8</td>
+<td style="text-align: left;">⚠️ +2m ATRASO</td>
 </tr>
 <tr>
-<td style="text-align: left;">💰 R$ 58.8k MRR (Meta M24)</td>
+<td style="text-align: left;">💰 R$ 76.4k MRR (Meta M24)</td>
 <td style="text-align: left;">M24</td>
 <td style="text-align: left;">—</td>
 <td style="text-align: left;">🔴 NÃO ATINGIU</td>
 </tr>
 <tr>
-<td style="text-align: left;">👥 1599 Usuários (Meta M36)</td>
+<td style="text-align: left;">👥 1657 Usuários (Meta M36)</td>
 <td style="text-align: left;">M36</td>
 <td style="text-align: left;">—</td>
 <td style="text-align: left;">🔴 NÃO ATINGIU</td>
 </tr>
 <tr>
 <td style="text-align: left;">📈 LTV/CAC &gt; 3x</td>
-<td style="text-align: left;">M7</td>
-<td style="text-align: left;">M18</td>
-<td style="text-align: left;">⚠️ +11m ATRASO</td>
+<td style="text-align: left;">M6</td>
+<td style="text-align: left;">M12</td>
+<td style="text-align: left;">⚠️ +6m ATRASO</td>
 </tr>
 </tbody>
 </table>
@@ -534,26 +659,27 @@ alt="Eficiencia Marketing" />
 
 > **💡 INSIGHT 1: Saúde Unitária (LTV/CAC)**
 >
-> -   **FATO:** LTV/CAC = 4.81x no cenário conservador.
+> -   **FATO:** LTV/CAC = 5.28x no cenário conservador.
 > -   **CAUSA:** Relação entre valor do cliente (LTV) e custo de
 >     aquisição (CAC).
-> -   **IMPLICAÇÃO:** Cada R$ 1 investido em aquisição retorna R$ 4.81.
+> -   **IMPLICAÇÃO:** Cada R$ 1 investido em aquisição retorna R$ 5.28.
 > -   **AÇÃO RECOMENDADA:** Escalar aquisição se \> 3.0x. Revisar
 >     CAC/Churn se \< 3.0x.
 
 > **💡 INSIGHT 2: Gap de Receita**
 >
-> -   **FATO:** Gap de R$ 151.6k (84%) entre Real e Ideal.
+> -   **FATO:** Gap de R$ 135.9k/mês (73%) entre Real e Ideal.
 > -   **CAUSA:** Diferença entre projeção conservadora e cenário
->     otimista.
-> -   **IMPLICAÇÃO:** Potencial de R$ 5.5M em 3 anos não capturado.
+>     benchmark de mercado.
+> -   **IMPLICAÇÃO:** O cenário Ideal tem MRR R$ 135.9k maior/mês. Em 12
+>     meses, isso equivale a ~R$ 1.6M adicionais de receita.
 > -   **AÇÃO RECOMENDADA:** Aumentar conversão ou reduzir churn para
->     fechar gap.
+>     aproximar do cenário Ideal.
 
 > **💡 INSIGHT 3: Saúde de Caixa**
 >
-> -   **FATO:** Runway de 9.0 meses com caixa de R$ 116.6k.
-> -   **CAUSA:** Caixa disponível ÷ Despesas mensais (R$ 12.9k).
+> -   **FATO:** Runway de 6.2 meses com caixa de R$ 165.4k.
+> -   **CAUSA:** Caixa disponível ÷ Despesas mensais (R$ 26.6k).
 > -   **IMPLICAÇÃO:** Tempo de sobrevivência sem nova receita.
 > -   **AÇÃO RECOMENDADA:** Manter \>12 meses. Se \<6 meses, revisar
 >     custos urgente.
@@ -564,7 +690,15 @@ alt="Eficiencia Marketing" />
 > 2.  **CAC** = (Gasto Marketing + Gasto Vendas) / Novos Clientes
 > 3.  **LTV/CAC** = LTV ÷ CAC (Meta: ≥3.0x)
 > 4.  **Runway** = Caixa Disponível ÷ Despesas Mensais
-> 5.  **Gap** = MRR Ideal - MRR Real
+>
+> **6. AUDITORIA DE ROI (Exemplo M36):** \* **Investimento Total:** R$
+> 27.000 (R$ 19k Empresa + R$ 8k Equipamentos) \* **Equity do
+> Investidor:** 50% \* **A. Cenário CAIXA (Liquidação):** \* Caixa
+> Final: R$ 165.753 \* Parte do Investidor (50%): R$ 82.876 \* Lucro
+> Líquido: R$ 82.876 - R$ 27.000 = R$ 55.876 \* **ROI Realizado:**
+> (55.876 / 27.000) = **206%** \* **B. Cenário EXIT (Venda):** \*
+> Valuation (5x ARR): R$ 1.2M \* Parte do Investidor (50%): R$ 600k \*
+> **ROI Potencial:** (600k - 27k) / 27k = **2.122%**
 
 # TIER 2 - A MÁQUINA DE CRESCIMENTO (Growth Engine)
 
@@ -602,17 +736,25 @@ id="tier2-3" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** Comparativo direto entre o funil realizado
-> (Barras Escuras) e a meta estipulada (Barras Cinzas).
+> **O QUE ESTOU VENDO?** Gráfico de barras comparando o **Funil de
+> Vendas Real** (barras escuras) com a **Meta de Mercado** (barras
+> cinzas).
 >
-> **ELEMENTOS VISUAIS:** - **Barras Escuras:** Resultados do cenário
-> Conservador. - **Barras Cinza (Fundo):** Benchmark de mercado
-> (Ideal). - **Eixo X (Log):** Escala exponencial para visualizar
-> grandes discrepâncias de volume.
+> **COMO LER O GRÁFICO:** - **Barras Escuras (Preto/Verde):** Volume
+> REAL alcançado em cada etapa do funil no cenário conservador. -
+> **Barras Cinza (Fundo Tracejado):** Benchmark de mercado (quanto
+> deveríamos ter se estivéssemos na média do setor). - **Eixo X (Escala
+> Logarítmica):** Comprime números grandes para facilitar visualização.
+> Ex: 10.000 visitantes vs 64 vendas ficam visíveis juntos.
 >
-> **INTERPRETAÇÃO:** - Se a barra escura preencher completamente a
-> cinza, a meta foi batida. Se ultrapassar, o desempenho é superior ao
-> benchmark.
+> **COMO LER A TABELA:** - **Visitantes (Real):** Quantas pessoas únicas
+> chegaram ao site. - **Conv. Global Real:** De cada 100 visitantes,
+> quantos viraram pagantes (%). - **Conv. Meta (Ideal):** A conversão
+> esperada se estivéssemos no padrão de mercado. - **Δ (Delta):**
+> Diferença em pontos percentuais (p.p.). Negativo = abaixo da meta.
+>
+> **INTERPRETAÇÃO:** Se todas as barras escuras preencherem ou
+> ultrapassarem as cinzas, a operação está no trilho certo.
 
 #### Detalhamento do Funil (Real vs Meta)
 
@@ -641,34 +783,34 @@ id="tier2-3" />
 <tbody>
 <tr>
 <td>M1</td>
-<td>1166</td>
-<td>0.17%</td>
-<td>0.38%</td>
-<td>-0.20 p.p.</td>
+<td>1475</td>
+<td>0.27%</td>
+<td>0.34%</td>
+<td>-0.07 p.p.</td>
 <td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr>
 <td>M6</td>
-<td>1275</td>
-<td>0.47%</td>
-<td>0.61%</td>
-<td>-0.14 p.p.</td>
+<td>1608</td>
+<td>0.44%</td>
+<td>0.59%</td>
+<td>-0.16 p.p.</td>
 <td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr>
 <td>M12</td>
-<td>1376</td>
-<td>0.58%</td>
-<td>0.82%</td>
-<td>-0.24 p.p.</td>
+<td>1726</td>
+<td>0.52%</td>
+<td>0.77%</td>
+<td>-0.25 p.p.</td>
 <td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 <tr>
 <td>M36</td>
-<td>5027</td>
-<td>0.66%</td>
-<td>0.84%</td>
-<td>-0.18 p.p.</td>
+<td>10330</td>
+<td>0.62%</td>
+<td>0.79%</td>
+<td>-0.17 p.p.</td>
 <td><span class="status-yellow">PRÓXIMO</span></td>
 </tr>
 </tbody>
@@ -678,7 +820,7 @@ id="tier2-3" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** No M36, a conversão global está 0.18 p.p. abaixo da
+> -   **FATO:** No M36, a conversão global está 0.17 p.p. abaixo da
 >     meta.
 > -   **CAUSA:** Gargalo identificado na etapa de Trial -\> Pagante.
 > -   **IMPLICAÇÃO:** Custo de aquisição (CAC) está pressionado.
@@ -687,15 +829,16 @@ id="tier2-3" />
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **Taxa de Conversão Global** = (Novos Pagantes / Visitantes
->     Únicos) \* 100
-> 2.  **Benchmark (Ideal)**: Definido nas premissas (ex: 1.0% para SaaS
->     B2C).
-> 3.  **Delta**: Diferença percentual (p.p.) entre a conversão Real e a
->     Meta.
-> 4.  **Fonte dos Dados**:
->     -   *df_real_m*: Colunas ‘trafego_total’, ‘novos_pagantes_total’
->     -   *df_ideal*: Colunas equivalentes do cenário meta.
+> **FÓRMULAS:** 1. **Taxa de Conversão Global** = (Novos Pagantes /
+> Visitantes Únicos) × 100 2. **Delta (Δ)** = Conversão Real - Conversão
+> Meta (em pontos percentuais)
+>
+> **GLOSSÁRIO:** - **Leads (Trials):** Visitantes que iniciaram o
+> período de teste gratuito (demonstraram interesse). - **Novas
+> Vendas:** Usuários que se tornaram pagantes no mês. - **Base Ativa:**
+> Total de clientes pagantes ativos ao final do período. - **p.p.
+> (Pontos Percentuais):** Diferença absoluta entre duas porcentagens.
+> Ex: 0.62% - 0.79% = -0.17 p.p.
 
 ## O negócio para em pé? (Saúde Unitária)
 
@@ -711,15 +854,28 @@ id="tier2-17" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** A evolução da eficiência financeira (Quanto
-> retorna de Valor para cada R$ 1 investido em Aquisição).
+> **O QUE ESTOU VENDO?** A evolução do índice de eficiência financeira
+> (LTV/CAC) ao longo do tempo, sobreposto a zonas coloridas de risco.
 >
-> **ELEMENTOS VISUAIS:** - **Linha Azul:** LTV/CAC Real ao longo do
-> tempo. - **Zona Verde (\>3x):** Alta eficiência (Escalável). - **Zona
-> Vermelha (\<1x):** Destruição de valor (Prejuízo unitário).
+> **COMO LER O GRÁFICO:** - **Linha Azul:** Valor do LTV/CAC Real em
+> cada mês. - **Zona Verde (\>3x):** Operação altamente eficiente. Cada
+> R$1 investido retorna R$3+. Pode escalar agressivamente. - **Zona
+> Amarela (1x-3x):** Operação sustentável, mas margem apertada.
+> Crescimento lento. - **Zona Vermelha (\<1x):** Destruição de valor.
+> Cada cliente CUSTA mais do que gera (Prejuízo).
 >
-> **INTERPRETAÇÃO:** - Mantenha a operação na zona verde ou amarela. A
-> zona vermelha indica que custa mais trazer um cliente do que ele paga.
+> **DIFERENÇA ENTRE LTV/CAC e MRR/MARKETING (Tier 1):** -
+> **MRR/Marketing (Tier 1):** Quanto de receita mensal gera por cada R$1
+> gasto. É uma visão de curto prazo (mês a mês). - **LTV/CAC (Este
+> Gráfico):** Quanto o cliente gera durante TODA sua vida útil por cada
+> R$1 investido. É uma visão de longo prazo (ciclo de vida).
+>
+> **POR QUE ISSO IMPORTA?** Um negócio pode ter MRR/Marketing baixo nos
+> primeiros meses, mas LTV/CAC alto se a retenção for forte (cliente
+> paga por 2 anos). Por isso analisamos os dois.
+>
+> **INTERPRETAÇÃO:** Mantenha a linha azul na zona verde ou amarela. Se
+> entrar no vermelho, CONGELE investimentos.
 
 #### Evolução da Eficiência LTV/CAC
 
@@ -747,30 +903,30 @@ id="tier2-17" />
 <tbody>
 <tr>
 <td>M6</td>
-<td>1.81x</td>
+<td>2.09x</td>
 <td>3.0x</td>
-<td>-1.19x</td>
+<td>-0.91x</td>
 <td><span class="status-yellow">ATENÇÃO</span></td>
 </tr>
 <tr>
 <td>M12</td>
-<td>2.71x</td>
+<td>3.05x</td>
 <td>3.0x</td>
-<td>-0.29x</td>
-<td><span class="status-yellow">ATENÇÃO</span></td>
+<td>+0.05x</td>
+<td><span class="status-green">EXCELENTE</span></td>
 </tr>
 <tr>
 <td>M24</td>
-<td>3.60x</td>
+<td>4.11x</td>
 <td>3.0x</td>
-<td>+0.60x</td>
+<td>+1.11x</td>
 <td><span class="status-green">EXCELENTE</span></td>
 </tr>
 <tr>
 <td>M36</td>
-<td>4.81x</td>
+<td>5.28x</td>
 <td>3.0x</td>
-<td>+1.81x</td>
+<td>+2.28x</td>
 <td><span class="status-green">EXCELENTE</span></td>
 </tr>
 </tbody>
@@ -780,7 +936,7 @@ id="tier2-17" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** LTV/CAC encerra o período em 4.8x, dentro da zona de
+> -   **FATO:** LTV/CAC encerra o período em 5.3x, dentro da zona de
 >     excelência (Verde).
 > -   **CAUSA:** CAC controlado e expansão de LTV via retenção.
 > -   **IMPLICAÇÃO:** Modelo financeiro altamente atrativo para
@@ -790,14 +946,17 @@ id="tier2-17" />
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **LTV (Lifetime Value)** = (ARPU × Margem Bruta %) / Churn Rate
-> 2.  **CAC (Custo Aquisição)** = Gastos Marketing / Novos Clientes
-> 3.  **LTV/CAC**: Razão de eficiência. Quanto retorna para cada R$ 1
->     investido.
-> 4.  **Zonas de Risco**:
->     -   🟢 \> 3.0x: Alta eficiência (Escalável)
->     -   🟡 1.0x - 3.0x: Operação paga contas mas cresce devagar
->     -   🔴 \< 1.0x: Destruição de valor (Prejuízo unitário)
+> **FÓRMULAS:** 1. **LTV (Lifetime Value)** = ARPU × (1 / Churn Rate) ×
+> Margem Bruta % 2. **CAC (Custo Aquisição)** = Gastos Marketing Totais
+> / Novos Clientes Pagantes 3. **LTV/CAC** = LTV ÷ CAC
+>
+> **ZONAS DE RISCO:** - 🟢 **\>3.0x:** Alta eficiência (Escalável sem
+> medo) - 🟡 **1.0x - 3.0x:** Operação paga contas mas cresce devagar -
+> 🔴 **\<1.0x:** Destruição de valor (Cada cliente dá prejuízo)
+>
+> **GLOSSÁRIO:** - **ARPU:** Receita Média por Usuário (Average Revenue
+> Per User) - **Churn Rate:** Percentual de clientes que cancelam por
+> mês - **Margem Bruta:** Receita menos custos diretos (COGS)
 
 ## Existe descontrole tático de custos?
 
@@ -807,21 +966,43 @@ id="tier2-17" />
 src="relatorio_completo_files/figure-markdown_strict/tier2-output-31.png"
 id="tier2-31" />
 
-*Fonte: df_real_s (CAC Semanal) | Media: R$ 737*
+*Fonte: df_real_s (CAC Semanal) | Media: R$ 517*
 
 ------------------------------------------------------------------------
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** Monitoramento tático de curto prazo para
-> identificar disparadas anormais no Custo de Aquisição (CAC).
+> **O QUE ESTOU VENDO?** Grafico de Controle Estatistico (SPC) do CAC
+> semanal para detectar anomalias operacionais.
 >
-> **ELEMENTOS VISUAIS:** - **Linha Preta:** Custo real da semana. -
-> **Faixa Cinza:** Variação estatística aceitável (Túnel de Controle). -
-> **Pontos Vermelhos:** Anomalias graves.
+> **COMO LER O GRAFICO:** - **Linha Preta com Pontos:** Custo de
+> Aquisicao (CAC) real em cada semana. - **Linha Azul Horizontal:**
+> Media historica do CAC (o “centro” do tunel). - **Faixa Cinza
+> (Tunel):** Intervalo de variacao estatistica aceitavel (+/-2 Desvios
+> Padrao). - **Pontos Vermelhos:** Semanas com CAC FORA do tunel
+> (anomalias que exigem investigacao).
 >
-> **INTERPRETAÇÃO:** - Se a linha preta sair do túnel cinza, investigue
-> imediatamente a causa raiz (Bug, Campanha, Sazonalidade).
+> **COMO LER A TABELA:** - **Semana:** Identificador da semana (S1, S10,
+> etc.) - **CAC Real:** Custo de trazer 1 cliente naquela semana
+> especifica. - **Media (Centro):** Valor medio de todas as semanas
+> (mesmo para todas as linhas). - **UCL (Limite):** Limite Superior de
+> Controle. Se CAC \> UCL, e anomalia. - **Status:** “CONTROLADO”
+> (dentro do tunel) ou “ANOMALIA” (fora do tunel).
+>
+> **POR QUE O UCL E IGUAL EM TODAS AS LINHAS?** O UCL e um **limite
+> fixo** calculado uma unica vez (Media + 2xDesvio Padrao). Ele nao muda
+> por semana. O que muda e o CAC Real.
+>
+> **COMO INVESTIGAR ANOMALIAS (FONTES DE DADOS):** 1. **Google Ads /
+> Meta Ads:** Verifique CPCs e impressoes da semana. 2. **Google
+> Analytics:** Cheque origem do trafego e taxa de rejeicao. 3.
+> **CRM/Pipeline:** Verifique se houve campanha promocional ou bug no
+> checkout. 4. **Calendario:** Compare com datas comemorativas ou
+> eventos do setor.
+>
+> **INTERPRETACAO:** Se um ponto vermelho aparecer, NAO entre em panico.
+> Investigue primeiro. Pode ser um teste A/B bem-sucedido ou uma
+> sazonalidade prevista.
 
 #### Monitoramento de Anomalias (Semanal)
 
@@ -848,38 +1029,38 @@ id="tier2-31" />
 </thead>
 <tbody>
 <tr>
-<td>S3</td>
-<td>R$ 1201.11</td>
-<td>R$ 737.08</td>
-<td>R$ 1186.14</td>
-<td><span class="status-red">ANOMALIA (ALTA)</span></td>
-</tr>
-<tr>
-<td>S4</td>
-<td>R$ 1038.98</td>
-<td>R$ 737.08</td>
-<td>R$ 1186.14</td>
+<td>S1</td>
+<td>R$ 744.21</td>
+<td>R$ 517.18</td>
+<td>R$ 762.94</td>
 <td><span class="status-green">CONTROLADO</span></td>
 </tr>
 <tr>
-<td>S5</td>
-<td>R$ 1222.06</td>
-<td>R$ 737.08</td>
-<td>R$ 1186.14</td>
-<td><span class="status-red">ANOMALIA (ALTA)</span></td>
+<td>S10</td>
+<td>R$ 701.30</td>
+<td>R$ 517.18</td>
+<td>R$ 762.94</td>
+<td><span class="status-green">CONTROLADO</span></td>
 </tr>
 <tr>
-<td>S11</td>
-<td>R$ 452.04</td>
-<td>R$ 737.08</td>
-<td>R$ 1186.14</td>
+<td>S21</td>
+<td>R$ 313.41</td>
+<td>R$ 517.18</td>
+<td>R$ 762.94</td>
 <td><span class="status-green">CONTROLADO</span></td>
+</tr>
+<tr>
+<td>S23</td>
+<td>R$ 263.23</td>
+<td>R$ 517.18</td>
+<td>R$ 762.94</td>
+<td><span class="status-green">ANOMALIA (BAIXO)</span></td>
 </tr>
 <tr>
 <td>S24</td>
-<td>R$ 650.00</td>
-<td>R$ 737.08</td>
-<td>R$ 1186.14</td>
+<td>R$ 397.66</td>
+<td>R$ 517.18</td>
+<td>R$ 762.94</td>
 <td><span class="status-green">CONTROLADO</span></td>
 </tr>
 </tbody>
@@ -889,7 +1070,7 @@ id="tier2-31" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Identificados 2 semanas com volatilidade estatística
+> -   **FATO:** Identificados 1 semanas com volatilidade estatística
 >     anormal.
 > -   **CAUSA:** Provável teste de canal novo ou sazonalidade agressiva.
 > -   **IMPLICAÇÃO:** Risco de estourar budget mensal se a correção não
@@ -899,15 +1080,20 @@ id="tier2-31" />
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **CAC Semanal** = Custo Marketing da Semana / Novos Clientes da
->     Semana
-> 2.  **Média (Central)** = Média aritmética de todas as semanas
->     observadas.
-> 3.  **Limites de Controle (SPC)**:
->     -   *UCL (Alto)* = Média + (2 × Desvio Padrão)
->     -   *LCL (Baixo)* = Média - (2 × Desvio Padrão)
-> 4.  **Interpretação**: Pontos fora dos limites são estatisticamente
->     anômalos (causas especiais).
+> **FÓRMULAS:** 1. **CAC Semanal** = Custo Marketing da Semana ÷ Novos
+> Clientes da Semana 2. **Média (Centro)** = Soma de todos os CACs ÷
+> Número de semanas 3. **Desvio Padrão (σ)** = Dispersão dos valores em
+> torno da média 4. **UCL (Upper Control Limit)** = Média + (2 × σ) 5.
+> **LCL (Lower Control Limit)** = Média - (2 × σ)
+>
+> **GLOSSÁRIO:** - **SPC (Statistical Process Control):** Método de
+> monitoramento de qualidade usado em manufatura e operações. - **UCL
+> (Upper Control Limit):** Limite superior. Valores acima disso são
+> estatisticamente anormais (apenas 2.5% de chance de ocorrer
+> naturalmente). - **LCL (Lower Control Limit):** Limite inferior.
+> Valores abaixo podem indicar oportunidade (CAC muito baixo) OU erro de
+> dados. - **Anomalia:** Ponto fora do túnel de controle. Pode ser
+> positivo (oportunidade) ou negativo (problema).
 
 ## Se dobrar o marketing, dobra a venda?
 
@@ -923,15 +1109,28 @@ id="tier2-45" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** Teste de elasticidade de canal (Se dobrar
-> investimento, vendas dobram?).
+> **O QUE ESTOU VENDO?** Grafico de elasticidade de canal que responde:
+> “Se eu dobrar o investimento em marketing, as vendas dobram?”
 >
-> **ELEMENTOS VISUAIS:** - **Bolinhas Azuis:** Mês real
-> (Escuro=Recente). - **Linha Sólida:** Tendência Real. - **Linha
-> Tracejada:** Crescimento Linear Ideal.
+> **RESPOSTA DIRETA:** - **Se a linha azul estiver PARALELA a linha
+> cinza tracejada:** SIM, dobrar marketing = dobra vendas. - **Se a
+> linha azul estiver CURVANDO PARA BAIXO:** NAO, dobrar marketing traz
+> MENOS que o dobro de vendas (saturacao).
 >
-> **INTERPRETAÇÃO:** - Se a linha sólida “deitar” (curvar para baixo),
-> significa que o canal está saturando e o CAC marginal está subindo.
+> **COMO LER O GRAFICO:** - **Bolinhas Azuis:** Cada bolinha e um mes
+> real. Cor mais escura = mes mais recente. - **Linha Azul Solida
+> (Tendencia):** Curva ajustada que mostra o comportamento real. -
+> **Linha Cinza Tracejada (Linear):** Cenario ideal onde o CAC nunca
+> sobe.
+>
+> **DIFERENCA DESTE GRAFICO PARA O LTV/CAC:** - **LTV/CAC (VIZ 2.2):**
+> Mede eficiencia PASSADA (quanto ja retornou). - **Este Grafico (VIZ
+> 2.4):** Projeta eficiencia FUTURA (quanto VAI retornar se aumentar
+> budget).
+>
+> **INTERPRETACAO:** Se a linha azul estiver “deitando” (curvando para
+> baixo), e um sinal de alerta. Significa que os canais atuais estao
+> saturando e voce precisa diversificar.
 
 #### Teste de Elasticidade de Canal
 
@@ -955,24 +1154,24 @@ id="tier2-45" />
 <tbody>
 <tr>
 <td style="text-align: left;">R$ 2.500,00</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">27.2%</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">21.4%</td>
 <td style="text-align: left;">RETORNOS DECRESCENTES</td>
 </tr>
 <tr>
-<td style="text-align: left;">R$ 6.424,94</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">10.8%</td>
+<td style="text-align: left;">R$ 10.425,02</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">10.4%</td>
 <td style="text-align: left;">ALTA EFICIENCIA</td>
 </tr>
 <tr>
-<td style="text-align: left;">R$ 10.349,88</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">14.4%</td>
-<td style="text-align: left;">ALTA EFICIENCIA</td>
+<td style="text-align: left;">R$ 18.350,04</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">15.6%</td>
+<td style="text-align: left;">RETORNOS DECRESCENTES</td>
 </tr>
 </tbody>
 </table>
@@ -990,14 +1189,17 @@ id="tier2-45" />
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **Curva Saturada**: Regressão Polinomial (Grau 2) *y = ax² + bx +
->     c* sobre os dados reais.
-> 2.  **Crescimento Linear (Ideal)**: Projeção *y = x / CAC_minimo*.
->     Assume que o CAC se mantém fixo infinitamente.
-> 3.  **Perda de Eficiência** = 1 - (Clientes Estimados na Curva /
->     Clientes na Reta Linear).
->     -   Ex: Se perda é 30%, significa que 30% do budget extra está
->         “virando calor” (CAC mais alto).
+> **FORMULAS:** 1. **Curva Saturada:** Regressao Polinomial (Grau 2) y =
+> ax2 + bx + c 2. **Crescimento Linear (Ideal):** y = x / CAC_minimo
+> (assume CAC fixo para sempre) 3. **Perda de Eficiencia** = 1 -
+> (Clientes Reais / Clientes Teoricos)
+>
+> **GLOSSARIO:** - **Elasticidade:** Razao entre variacao de vendas e
+> variacao de investimento. Elasticidade 1.0 = dobrou budget, dobrou
+> vendas. - **Saturacao:** Ponto onde aumentar investimento traz
+> retornos decrescentes. - **Perda de Eficiencia:** Quanto do budget
+> extra esta “virando calor” (CAC mais alto). - **Linear Teorico:**
+> Cenario impossivel onde o CAC nunca sobe, nao importa o volume.
 
 ## Quanto economizamos com trafego organico?
 
@@ -1013,11 +1215,25 @@ id="tier2-59" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** Diferença entre dependência de anúncios
-> (Vermelho) e custo real (Azul). **INTERPRETAÇÃO:** - **Linhas
-> afastadas:** Branding e Orgânico estão funcionando (Economia). -
-> **Linhas juntas:** O crescimento é 100% dependente de anúncios pagos
-> (Risco).
+> **O QUE ESTOU VENDO?** Comparativo entre o custo de aquisicao se
+> dependessemos 100% de anuncios (Vermelho) vs o custo real misturando
+> organico (Azul).
+>
+> **COMO LER O GRAFICO:** - **Linha Vermelha Tracejada (CAC Pago):**
+> Quanto custaria trazer 1 cliente se TODO o trafego viesse de
+> anuncios. - **Linha Azul Solida (CAC Blended):** Custo real por
+> cliente, considerando trafego organico + pago. - **Area Azul Clara:**
+> Representa a ECONOMIA gerada pelo trafego organico.
+>
+> **COMO LER A TABELA:** - **CAC Pago:** Custo por cliente se fosse 100%
+> pago. - **CAC Blended:** Custo real por cliente (misturado). -
+> **Economia/Cliente:** Diferenca entre Pago e Blended. Quanto voce
+> economiza por cliente gratuito. - **Total Economizado:** Economia
+> multiplicada pelo numero de clientes novos no mes.
+>
+> **INTERPRETACAO:** - **Linhas afastadas:** SEO, Indicacoes e Branding
+> estao gerando trafego gratuito (Otimo!). - **Linhas juntas:** O
+> crescimento e 100% dependente de anuncios pagos (Risco alto).
 
 #### 📋 ECONOMIA DE CANAL
 
@@ -1041,31 +1257,31 @@ id="tier2-59" />
 <tbody>
 <tr>
 <td style="text-align: left;">M6</td>
-<td style="text-align: right;">R$ 625,00</td>
-<td style="text-align: right;">R$ 416,67</td>
-<td style="text-align: right;">R$ 208,33</td>
-<td style="text-align: right;">R$ 1.250,00</td>
+<td style="text-align: right;">R$ 500,00</td>
+<td style="text-align: right;">R$ 357,14</td>
+<td style="text-align: right;">R$ 142,86</td>
+<td style="text-align: right;">R$ 1.000,00</td>
 </tr>
 <tr>
 <td style="text-align: left;">M12</td>
-<td style="text-align: right;">R$ 500,00</td>
-<td style="text-align: right;">R$ 312,50</td>
-<td style="text-align: right;">R$ 187,50</td>
-<td style="text-align: right;">R$ 1.500,00</td>
+<td style="text-align: right;">R$ 416,67</td>
+<td style="text-align: right;">R$ 277,78</td>
+<td style="text-align: right;">R$ 138,89</td>
+<td style="text-align: right;">R$ 1.250,00</td>
 </tr>
 <tr>
 <td style="text-align: left;">M24</td>
-<td style="text-align: right;">R$ 449,78</td>
-<td style="text-align: right;">R$ 311,39</td>
-<td style="text-align: right;">R$ 138,39</td>
-<td style="text-align: right;">R$ 1.799,13</td>
+<td style="text-align: right;">R$ 374,38</td>
+<td style="text-align: right;">R$ 272,28</td>
+<td style="text-align: right;">R$ 102,10</td>
+<td style="text-align: right;">R$ 2.246,30</td>
 </tr>
 <tr>
 <td style="text-align: left;">M36</td>
-<td style="text-align: right;">R$ 431,25</td>
-<td style="text-align: right;">R$ 313,63</td>
-<td style="text-align: right;">R$ 117,61</td>
-<td style="text-align: right;">R$ 3.881,21</td>
+<td style="text-align: right;">R$ 359,80</td>
+<td style="text-align: right;">R$ 286,72</td>
+<td style="text-align: right;">R$ 73,09</td>
+<td style="text-align: right;">R$ 4.677,46</td>
 </tr>
 </tbody>
 </table>
@@ -1074,7 +1290,7 @@ id="tier2-59" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Tráfego orgânico reduz o CAC em R$ 117,61 por cliente.
+> -   **FATO:** Tráfego orgânico reduz o CAC em R$ 73,09 por cliente.
 > -   **CAUSA:** Mix balanceado entre canais pagos e gratuitos.
 > -   **IMPLICAÇÃO:** Menor sensibilidade a aumentos de CPM nas
 >     plataformas de ads.
@@ -1083,13 +1299,19 @@ id="tier2-59" />
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **CAC Pago** = Gasto Ads / Novos Clientes (Só de Ads)
-> 2.  **CAC Blended** = Gasto Ads / Novos Clientes (Totais)
-> 3.  **Economia** = CAC Pago - CAC Blended
+> **FORMULAS:** 1. **CAC Pago** = Gasto em Ads / Novos Clientes (vindos
+> de Ads) 2. **CAC Blended** = Gasto Total em Marketing / Novos Clientes
+> (TOTAIS, inclusive organicos) 3. **Economia** = CAC Pago - CAC Blended
+>
+> **GLOSSARIO:** - **Blended:** “Misturado”. Significa que estamos
+> calculando o custo medio considerando TODOS os clientes, nao so os de
+> ads. - **Organico:** Trafego que vem “de graca” - SEO, indicacoes,
+> redes sociais nao-pagas. - **Economia Organica:** Quanto voce
+> economiza por nao depender 100% de anuncios pagos.
 
 ## Quanto dinheiro estamos perdendo pelo ralo?
 
-### 📉 VIZ 2.5: Análise de Vazamento (Net Growth & Churn)
+### 📉 VIZ 2.6: Analise de Vazamento (Net Growth e Churn)
 
 <img
 src="relatorio_completo_files/figure-markdown_strict/tier2-output-73.png"
@@ -1101,15 +1323,31 @@ id="tier2-73" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** Análise de vazamento de receita (Churn) vs
-> Novos Contratos.
+> **O QUE ESTOU VENDO?** Grafico de vazamento de receita que mostra o
+> quanto entra (vendas) vs quanto sai (cancelamentos) por mes.
 >
-> **ELEMENTOS VISUAIS:** - **Verde:** Vendas Novas (Entrada). -
-> **Vermelho:** Cancelamentos (Saída). - **Cinza:** Perda “Normal” de
-> mercado (5%).
+> **COMO LER O GRAFICO:** - **Barras Verdes (Acima de 0):** Receita NOVA
+> que entrou no mes (novas vendas). - **Barras Vermelhas (Abaixo de
+> 0):** Receita PERDIDA por cancelamentos (churn real). - **Barras
+> Cinzas (Fundo):** O quanto seria aceitavel perder (benchmark de 5% de
+> churn). - **Linha Preta (Net Growth):** RESULTADO LIQUIDO = Vendas
+> Novas - Churn. Se positivo, a empresa cresce. Se negativo, encolhe.
 >
-> **INTERPRETAÇÃO:** - A parte vermelha que excede a sombra cinza é
-> ineficiência de retenção que corrói o crescimento.
+> **O QUE A LINHA PRETA SIGNIFICA:** A linha preta mostra o
+> **crescimento liquido** do MRR. Ela considera TODOS os clientes, novos
+> e antigos: - **Linha preta ACIMA de 0:** A empresa esta crescendo
+> (mais vendas que cancelamentos). - **Linha preta NA linha 0:** Empresa
+> estagnada (vendas = cancelamentos). - **Linha preta ABAIXO de 0:**
+> Empresa encolhendo (mais cancelamentos que vendas).
+>
+> **COMO LER A TABELA:** - **Churn Rate:** Percentual de clientes que
+> cancelaram no mes. - **Perda Real:** Valor em R$ dos contratos
+> cancelados. - **Limite Aceitavel:** Quanto seria “normal” perder
+> baseado no benchmark de 5%. - **Dinheiro Rasgado:** Perda Real -
+> Limite Aceitavel. Se positivo, estamos perdendo mais que o normal.
+>
+> **INTERPRETACAO:** A parte vermelha que excede a sombra cinza e
+> ineficiencia de retencao que corroi o crescimento.
 
 #### Impacto Financeiro do Churn
 
@@ -1139,33 +1377,33 @@ id="tier2-73" />
 <tr>
 <td>M6</td>
 <td>11.0%</td>
-<td>R$ 200,75</td>
-<td>R$ 105,40</td>
-<td>-R$ 95,36</td>
+<td>R$ 201,34</td>
+<td>R$ 130,87</td>
+<td>-R$ 70,47</td>
 <td>VAZAMENTO</td>
 </tr>
 <tr>
 <td>M12</td>
 <td>9.8%</td>
-<td>R$ 407,60</td>
-<td>R$ 229,28</td>
-<td>-R$ 178,33</td>
+<td>R$ 509,50</td>
+<td>R$ 280,23</td>
+<td>-R$ 229,27</td>
 <td>VAZAMENTO</td>
 </tr>
 <tr>
 <td>M24</td>
 <td>7.4%</td>
-<td>R$ 715,56</td>
-<td>R$ 506,01</td>
-<td>-R$ 209,56</td>
+<td>R$ 1.018,73</td>
+<td>R$ 748,77</td>
+<td>-R$ 269,96</td>
 <td>VAZAMENTO</td>
 </tr>
 <tr>
 <td>M36</td>
 <td>5.5%</td>
-<td>R$ 1.329,53</td>
-<td>R$ 1.293,74</td>
-<td>-R$ 35,80</td>
+<td>R$ 2.452,12</td>
+<td>R$ 2.293,76</td>
+<td>-R$ 158,37</td>
 <td>VAZAMENTO</td>
 </tr>
 </tbody>
@@ -1175,25 +1413,28 @@ id="tier2-73" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** O churn acima do benchmark custou R$ 1,377 no último
+> -   **FATO:** O churn acima do benchmark custou R$ 2,737 no ultimo
 >     ano.
 > -   **CAUSA:** Taxa de churn superior ao benchmark de 5%.
-> -   **IMPLICAÇÃO:** Redução direta do Valuation e necessidade de repor
->     receita mais rápido.
-> -   **AÇÃO RECOMENDADA:** Implementar squad de retenção para estancar
+> -   **IMPLICAÇÃO:** Reducao direta do Valuation e necessidade de repor
+>     receita mais rapido.
+> -   **AÇÃO RECOMENDADA:** Implementar squad de retencao para estancar
 >     o sangramento.
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **Churn Rate Real** = Clientes Cancelados / Clientes Ativos
->     Iniciais
-> 2.  **Perda Real (Churn MRR)** = Valor somado dos contratos cancelados
->     no mês.
-> 3.  **Perda Aceitável (Benchmark)** = MRR Inicial × 5.0% (Meta de
->     Mercado).
-> 4.  **Dinheiro Rasgado (Waste)** = Perda Real - Perda Aceitável.
->     -   Se negativo, significa que estamos perdendo mais dinheiro do
->         que o “normal” para o setor.
+> **FORMULAS:** 1. **Churn Rate Real** = Clientes Cancelados / Clientes
+> Ativos Iniciais 2. **Perda Real (Churn MRR)** = Valor somado dos
+> contratos cancelados no mes. 3. **Perda Aceitavel (Benchmark)** = MRR
+> Inicial x 5.0% (Meta de Mercado). 4. **Dinheiro Rasgado (Waste)** =
+> Perda Real - Perda Aceitavel.
+>
+> **GLOSSARIO:** - **Net Growth (Crescimento Liquido):** Vendas Novas -
+> Churn. Mostra se a empresa esta crescendo ou encolhendo. - **Churn
+> Rate:** Percentual de clientes que cancelaram no mes. - **Benchmark
+> 5%:** Taxa de churn considerada “saudavel” para SaaS. - **Dinheiro
+> Rasgado:** Perda de receita alem do esperado. Dinheiro que “foi pro
+> ralo” por retencao ruim.
 
 ## Em qual marcha o motor de crescimento esta?
 
@@ -1209,12 +1450,32 @@ id="tier2-87" />
 
 > **📖 COMO LER ESTE GRÁFICO**
 >
-> **O QUE ESTOU VENDO?** A correlação direta entre o dinheiro colocado
-> em Marketing e o nível de crescimento orgânico ativado (Os “Tiers”).
+> **O QUE ESTOU VENDO?** Timeline visual mostrando em qual “marcha” o
+> motor de crescimento esta em cada fase do negocio.
 >
-> **ELEMENTOS VISUAIS:** - **Barras Azuis:** Quanto dinheiro saiu do
-> caixa para Mkt. - **Linha Verde:** O resultado em tráfego gratuito
-> (SEO/Viral) gerado por esse investimento.
+> **COMO LER O GRAFICO:** - **Barras Azuis:** Quanto dinheiro foi
+> investido em Marketing no mes (R$). - **Linha Verde:** Volume de
+> trafego organico gerado como RESULTADO desse investimento. - **Quanto
+> maior a barra, maior o “Tier”:** Cada nivel de investimento ativa
+> diferentes estrategias de crescimento.
+>
+> **O QUE SAO OS “TIERS”?** Os Tiers sao niveis de crescimento que se
+> desbloqueiam conforme o orcamento de marketing aumenta: - **Tier 0
+> (Hustle):** Zero investimento. Crescimento 100% no boca-a-boca. -
+> **Tier 1 (Organico Basico):** Budget baixo. Foco em conteudo e SEO
+> simples. - **Tier 2 (SEO Profissional):** Budget medio. Ativa
+> estrategias de link building e conteudo avancado. - **Tier 3+ (Growth
+> Agressivo):** Budget alto. Ads + Influencers + PR + Viralizacao.
+>
+> **COMO LER A TABELA:** - **Periodo:** Mes de operacao (M1, M6, etc.) -
+> **Budget (R$):** Quanto foi investido em marketing naquele mes. -
+> **Tier Ativo:** Qual nivel de crescimento estava ativo baseado no
+> budget. - **Trafego Organico:** Quantos visitantes vieram por canais
+> gratuitos. - **Status:** Se o tier esta ativo (BAIXO/MEDIO/TURBO) ou
+> inativo (ZERO).
+>
+> **INTERPRETACAO:** A ideia e ver a “evolucao das marchas”. Uma empresa
+> saudavel vai desbloqueando tiers maiores conforme a receita cresce.
 
 #### Histórico de Ativação de Tiers
 
@@ -1243,36 +1504,36 @@ id="tier2-87" />
 <tr>
 <td>M1</td>
 <td>R$ 2.500,00</td>
-<td>Tier 3 (1.5%)</td>
-<td>321 visitantes</td>
+<td>Tier 3 (4.0%)</td>
+<td>354 visitantes</td>
 <td><span class="status-green">MÉDIO</span></td>
 </tr>
 <tr>
 <td>M6</td>
 <td>R$ 2.500,00</td>
-<td>Tier 3 (1.5%)</td>
-<td>430 visitantes</td>
+<td>Tier 3 (4.0%)</td>
+<td>487 visitantes</td>
 <td><span class="status-green">MÉDIO</span></td>
 </tr>
 <tr>
 <td>M12</td>
 <td>R$ 2.500,00</td>
-<td>Tier 3 (1.5%)</td>
-<td>531 visitantes</td>
+<td>Tier 3 (4.0%)</td>
+<td>605 visitantes</td>
 <td><span class="status-green">MÉDIO</span></td>
 </tr>
 <tr>
 <td>M24</td>
-<td>R$ 4.048,04</td>
-<td>Tier 4 (2.5%)</td>
-<td>802 visitantes</td>
+<td>R$ 5.990,12</td>
+<td>Tier 4 (5.0%)</td>
+<td>1055 visitantes</td>
 <td><span class="status-green">MÉDIO</span></td>
 </tr>
 <tr>
 <td>M36</td>
-<td>R$ 10.349,88</td>
-<td>Tier 5 (3.5%)</td>
-<td>1530 visitantes</td>
+<td>R$ 18.350,04</td>
+<td>Tier 5 (5.5%)</td>
+<td>2101 visitantes</td>
 <td><span class="status-green"
 style="background:#b9f6ca">TURBO</span></td>
 </tr>
@@ -1283,7 +1544,7 @@ style="background:#b9f6ca">TURBO</span></td>
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** No M36, a empresa opera com budget de R$ 10.349,88,
+> -   **FATO:** No M36, a empresa opera com budget de R$ 18.350,04,
 >     ativando Tiers de alta performance.
 > -   **CAUSA:** Receita crescente desbloqueou budgets maiores (% da
 >     Receita).
@@ -1294,32 +1555,32 @@ style="background:#b9f6ca">TURBO</span></td>
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
-> 1.  **Growth Tier**: Nível de crescimento determinado pelo budget.
->     -   Ex: Budget \> R$ 3k ativa ‘SEO Profissional’ (1.8% a.m.).
-> 2.  **Lógica**: O código verifica o budget do mês e aplica a taxa do
->     Tier correspondente.
-> 3.  **Fonte**: *novas_premissas.py* (Tabela de Tiers).
-
-> **🧠 VEREDITO ANALÍTICO: CENÁRIO IDEAL: MÁQUINA DE VENDAS VALIDADA**
+> **FORMULAS:** 1. **Growth Tier** = Nivel de crescimento determinado
+> pelo budget mensal. 2. **Taxa Organica** = Percentual de crescimento
+> do trafego organico ativado pelo tier. 3. **Trafego Organico** =
+> Visitantes do mes anterior x (1 + Taxa Organica do Tier)
 >
->         **Diagnóstico:** A tese foi **plenamente validada**. O negócio demonstra alta eficiência na captura de valor e retenção sólida.
+> **GLOSSARIO:** - **Growth Tier:** Nivel de “marcha” do motor de
+> crescimento. Quanto mais dinheiro, maior o tier. - **Taxa Organica:**
+> Percentual de crescimento mensal do trafego gratuito (SEO,
+> indicacoes). - **Flywheel Effect:** Ciclo virtuoso onde mais receita =
+> mais marketing = mais organico = mais receita. - **Budget:** Orcamento
+> mensal de marketing.
+
+> **🧠 VEREDITO ANALÍTICO: CENÁRIO VALIDADO: MÁQUINA DE VENDAS
+> EFICIENTE**
+>
+>         **Diagnóstico:** A tese de crescimento apresenta **fortes evidências de validação**. O negócio demonstra alta eficiência na captura de valor e retenção sólida.
 >         
->         **Evidência:** Com LTV/CAC de 4.8x e Churn controlado, cada Real investido retorna multiplicado. A operação é previsível e escalável.
+>         **Evidência:** Com LTV/CAC de 5.3x e Churn controlado, cada Real investido retorna multiplicado. A operação é previsível e escalável.
 >         
->         **Ação Recomendada:** O sinal é verde para aceleração máxima (Scale-up). Buscar Series A para dominar market share agressivamente.
+>         **Ação Recomendada:** O sinal é verde para aceleração (Scale-up). Monitorar saturação de canais conforme orçamento expande.
 >         
 
 # TIER 3 - Financeiro Completo
 
 **Objetivo:** Validar a saude financeira atraves da DRE, fluxo de caixa
 e estrutura de custos.
-
-# 💰 PÁGINA 3: ANÁLISE FINANCEIRA
-
-**Objetivo:** Provar que a conta fecha no cenário conservador vs
-benchmark.
-
-------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 
@@ -1362,94 +1623,94 @@ positivo?
 <tbody>
 <tr>
 <td style="text-align: left;">M1</td>
-<td style="text-align: left;">R$ 849,20</td>
-<td style="text-align: left;">R$ 105,80</td>
-<td style="text-align: left;">R$ 743,40</td>
-<td style="text-align: left;">R$ 54,00</td>
-<td style="text-align: left;">R$ 689,40</td>
+<td style="text-align: left;">R$ 1.019,00</td>
+<td style="text-align: left;">R$ 126,95</td>
+<td style="text-align: left;">R$ 892,05</td>
+<td style="text-align: left;">R$ 63,00</td>
+<td style="text-align: left;">R$ 829,05</td>
 <td style="text-align: left;">R$ 3.360,00</td>
-<td style="text-align: left;">R$ -2.670,60</td>
-<td style="text-align: left;">-314.5%</td>
+<td style="text-align: left;">R$ -2.530,95</td>
+<td style="text-align: left;">-248.4%</td>
 <td style="text-align: left;">🔴</td>
 </tr>
 <tr>
 <td style="text-align: left;">M6</td>
-<td style="text-align: left;">R$ 2.547,50</td>
-<td style="text-align: left;">R$ 317,38</td>
-<td style="text-align: left;">R$ 2.230,12</td>
-<td style="text-align: left;">R$ 157,50</td>
-<td style="text-align: left;">R$ 2.072,62</td>
+<td style="text-align: left;">R$ 3.126,90</td>
+<td style="text-align: left;">R$ 389,56</td>
+<td style="text-align: left;">R$ 2.737,34</td>
+<td style="text-align: left;">R$ 192,50</td>
+<td style="text-align: left;">R$ 2.544,84</td>
 <td style="text-align: left;">R$ 3.360,00</td>
-<td style="text-align: left;">R$ -1.287,38</td>
-<td style="text-align: left;">-50.5%</td>
-<td style="text-align: left;">🔴</td>
+<td style="text-align: left;">R$ -815,16</td>
+<td style="text-align: left;">-26.1%</td>
+<td style="text-align: left;">🟡</td>
 </tr>
 <tr>
 <td style="text-align: left;">M12</td>
-<td style="text-align: left;">R$ 4.995,10</td>
-<td style="text-align: left;">R$ 622,31</td>
-<td style="text-align: left;">R$ 4.372,79</td>
-<td style="text-align: left;">R$ 309,50</td>
-<td style="text-align: left;">R$ 4.063,29</td>
+<td style="text-align: left;">R$ 6.014,10</td>
+<td style="text-align: left;">R$ 749,27</td>
+<td style="text-align: left;">R$ 5.264,83</td>
+<td style="text-align: left;">R$ 372,50</td>
+<td style="text-align: left;">R$ 4.892,33</td>
 <td style="text-align: left;">R$ 3.360,00</td>
-<td style="text-align: left;">R$ 703,29</td>
-<td style="text-align: left;">14.1%</td>
+<td style="text-align: left;">R$ 1.532,33</td>
+<td style="text-align: left;">25.5%</td>
 <td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">M18</td>
-<td style="text-align: left;">R$ 7.033,10</td>
-<td style="text-align: left;">R$ 876,22</td>
-<td style="text-align: left;">R$ 6.156,88</td>
-<td style="text-align: left;">R$ 435,50</td>
-<td style="text-align: left;">R$ 5.721,38</td>
-<td style="text-align: left;">R$ 3.509,40</td>
-<td style="text-align: left;">R$ 2.211,98</td>
-<td style="text-align: left;">31.5%</td>
+<td style="text-align: left;">R$ 9.710,50</td>
+<td style="text-align: left;">R$ 1.209,78</td>
+<td style="text-align: left;">R$ 8.500,72</td>
+<td style="text-align: left;">R$ 600,50</td>
+<td style="text-align: left;">R$ 7.900,22</td>
+<td style="text-align: left;">R$ 4.392,52</td>
+<td style="text-align: left;">R$ 3.507,70</td>
+<td style="text-align: left;">36.1%</td>
 <td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">M24</td>
-<td style="text-align: left;">R$ 10.799,40</td>
-<td style="text-align: left;">R$ 1.345,44</td>
-<td style="text-align: left;">R$ 9.453,96</td>
-<td style="text-align: left;">R$ 667,00</td>
-<td style="text-align: left;">R$ 8.786,96</td>
-<td style="text-align: left;">R$ 4.908,04</td>
-<td style="text-align: left;">R$ 3.878,92</td>
-<td style="text-align: left;">35.9%</td>
+<td style="text-align: left;">R$ 16.403,90</td>
+<td style="text-align: left;">R$ 2.043,68</td>
+<td style="text-align: left;">R$ 14.360,22</td>
+<td style="text-align: left;">R$ 1.013,50</td>
+<td style="text-align: left;">R$ 13.346,72</td>
+<td style="text-align: left;">R$ 6.850,12</td>
+<td style="text-align: left;">R$ 6.496,60</td>
+<td style="text-align: left;">39.6%</td>
 <td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">M30</td>
-<td style="text-align: left;">R$ 17.013,30</td>
-<td style="text-align: left;">R$ 2.119,60</td>
-<td style="text-align: left;">R$ 14.893,70</td>
-<td style="text-align: left;">R$ 1.050,50</td>
-<td style="text-align: left;">R$ 13.843,20</td>
-<td style="text-align: left;">R$ 7.149,84</td>
-<td style="text-align: left;">R$ 6.693,36</td>
-<td style="text-align: left;">39.3%</td>
+<td style="text-align: left;">R$ 28.422,20</td>
+<td style="text-align: left;">R$ 3.540,98</td>
+<td style="text-align: left;">R$ 24.881,22</td>
+<td style="text-align: left;">R$ 1.759,00</td>
+<td style="text-align: left;">R$ 23.122,22</td>
+<td style="text-align: left;">R$ 15.459,88</td>
+<td style="text-align: left;">R$ 7.662,34</td>
+<td style="text-align: left;">27.0%</td>
 <td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">M36</td>
-<td style="text-align: left;">R$ 28.152,40</td>
-<td style="text-align: left;">R$ 3.507,37</td>
-<td style="text-align: left;">R$ 24.645,03</td>
-<td style="text-align: left;">R$ 1.740,00</td>
-<td style="text-align: left;">R$ 22.905,03</td>
-<td style="text-align: left;">R$ 11.209,88</td>
-<td style="text-align: left;">R$ 11.695,15</td>
-<td style="text-align: left;">41.5%</td>
+<td style="text-align: left;">R$ 50.420,70</td>
+<td style="text-align: left;">R$ 6.281,66</td>
+<td style="text-align: left;">R$ 44.139,04</td>
+<td style="text-align: left;">R$ 3.119,50</td>
+<td style="text-align: left;">R$ 41.019,54</td>
+<td style="text-align: left;">R$ 23.461,04</td>
+<td style="text-align: left;">R$ 17.558,50</td>
+<td style="text-align: left;">34.8%</td>
 <td style="text-align: left;">🟢</td>
 </tr>
 </tbody>
 </table>
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-11.png"
-id="tier3-11" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-8.png"
+id="tier3-8" />
 
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -1478,11 +1739,11 @@ Taxa de queima de caixa - quanto gastamos por mes alem do que ganhamos -
 
 > **💡 INSIGHT: Viabilidade Financeira**
 >
-> -   **FATO:** Break-even no M10 (Real) vs M7 (Ideal). Gap de 3 meses.
-> -   **CAUSA:** Burn Rate mensal cai de R$ 2.671,60 para R$ 0,00 (-100%
+> -   **FATO:** Break-even no M8 (Real) vs M6 (Ideal). Gap de 2 meses.
+> -   **CAUSA:** Burn Rate mensal cai de R$ 2.531,95 para R$ 0,00 (-100%
 >     de redução).
-> -   **IMPLICAÇÃO:** Caixa final de R$ 116.566,34 (Real) vs R$
->     434.973,62 (Ideal).
+> -   **IMPLICAÇÃO:** Caixa final de R$ 165.372,91 (Real) vs R$
+>     652.484,21 (Ideal).
 > -   **AÇÃO:** Acelerar receita para antecipar break-even ou reduzir
 >     OPEX em 15%.
 
@@ -1503,8 +1764,8 @@ Taxa de queima de caixa - quanto gastamos por mes alem do que ganhamos -
 ## De onde vem e para onde vai o dinheiro?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-20.png"
-id="tier3-20" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-17.png"
+id="tier3-17" />
 
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -1532,26 +1793,26 @@ id="tier3-20" />
 <tr>
 <td style="text-align: left;">🔧 COGS (Custo Direto)</td>
 <td style="text-align: left;">TOTAL</td>
-<td style="text-align: left;">R$ 1.740,00</td>
+<td style="text-align: left;">R$ 3.119,50</td>
 <td style="text-align: left;">6.2%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">IA - Lite</td>
-<td style="text-align: left;">R$ 381,50</td>
-<td style="text-align: left;">1.4%</td>
+<td style="text-align: left;">R$ 672,00</td>
+<td style="text-align: left;">1.3%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">IA - Trader</td>
-<td style="text-align: left;">R$ 616,00</td>
+<td style="text-align: left;">R$ 1.111,00</td>
 <td style="text-align: left;">2.2%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">IA - Pro</td>
-<td style="text-align: left;">R$ 742,50</td>
-<td style="text-align: left;">2.6%</td>
+<td style="text-align: left;">R$ 1.336,50</td>
+<td style="text-align: left;">2.7%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
@@ -1568,44 +1829,44 @@ id="tier3-20" />
 <tr>
 <td style="text-align: left;">📢 Marketing</td>
 <td style="text-align: left;">TOTAL</td>
-<td style="text-align: left;">R$ 10.349,88</td>
-<td style="text-align: left;">36.8%</td>
+<td style="text-align: left;">R$ 18.350,04</td>
+<td style="text-align: left;">36.4%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Instagram</td>
-<td style="text-align: left;">R$ 3.622,46</td>
-<td style="text-align: left;">12.9%</td>
+<td style="text-align: left;">R$ 7.340,02</td>
+<td style="text-align: left;">14.6%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Facebook</td>
-<td style="text-align: left;">R$ 2.069,98</td>
-<td style="text-align: left;">7.4%</td>
+<td style="text-align: left;">R$ 5.505,01</td>
+<td style="text-align: left;">10.9%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">YouTube</td>
-<td style="text-align: left;">R$ 3.622,46</td>
-<td style="text-align: left;">12.9%</td>
+<td style="text-align: left;">R$ 3.670,01</td>
+<td style="text-align: left;">7.3%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Google</td>
-<td style="text-align: left;">R$ 1.034,99</td>
-<td style="text-align: left;">3.7%</td>
+<td style="text-align: left;">R$ 1.835,00</td>
+<td style="text-align: left;">3.6%</td>
 </tr>
 <tr>
 <td style="text-align: left;">🏢 Operacional</td>
 <td style="text-align: left;">Pessoal (RH)</td>
-<td style="text-align: left;">R$ 0,00</td>
-<td style="text-align: left;">0.0%</td>
+<td style="text-align: left;">R$ 4.250,00</td>
+<td style="text-align: left;">8.4%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Infraestrutura</td>
 <td style="text-align: left;">R$ 860,00</td>
-<td style="text-align: left;">3.1%</td>
+<td style="text-align: left;">1.7%</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
@@ -1622,24 +1883,24 @@ id="tier3-20" />
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Viagens</td>
-<td style="text-align: left;">R$ 0,00</td>
+<td style="text-align: left;">R$ 1,00</td>
 <td style="text-align: left;">0.0%</td>
 </tr>
 </tbody>
 </table>
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-26.png"
-id="tier3-26" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-23.png"
+id="tier3-23" />
 
 > **💡 INSIGHT: Estrutura de Custos**
 >
 > -   **FATO:** Margem Bruta de 81.4% (+1.4pp vs benchmark).
-> -   **CAUSA:** Maior custo: Marketing (R$ 10.349,88, 36.8% da
+> -   **CAUSA:** Maior custo: Marketing (R$ 18.350,04, 36.4% da
 >     receita).
-> -   **IMPLICAÇÃO:** Para cada R$ 1 faturado, R$ 0.42 vira lucro
+> -   **IMPLICAÇÃO:** Para cada R$ 1 faturado, R$ 0.35 vira lucro
 >     operacional.
-> -   **AÇÃO:** Monitorar RH (0.0%) e Marketing (36.8%) como % da
+> -   **AÇÃO:** Monitorar RH (8.4%) e Marketing (36.4%) como % da
 >     receita.
 
 > **Auditoria VIZ 3.2**
@@ -1657,8 +1918,8 @@ id="tier3-26" />
 **Pergunta:** O caixa sobrevive ao ramp-up? Qual o momento mais critico?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-33.png"
-id="tier3-33" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-30.png"
+id="tier3-30" />
 
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -1691,50 +1952,50 @@ id="tier3-33" />
 <tbody>
 <tr>
 <td style="text-align: left;">S4</td>
-<td style="text-align: left;">R$ 3.245,19</td>
-<td style="text-align: left;">R$ 29,13</td>
-<td style="text-align: left;">R$ 99,07</td>
-<td style="text-align: left;">32.8 sem</td>
+<td style="text-align: left;">R$ 3.868,85</td>
+<td style="text-align: left;">R$ 34,95</td>
+<td style="text-align: left;">R$ 91,17</td>
+<td style="text-align: left;">42.4 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 <tr>
 <td style="text-align: left;">S8</td>
-<td style="text-align: left;">R$ 3.044,45</td>
-<td style="text-align: left;">R$ 74,03</td>
-<td style="text-align: left;">R$ 281,93</td>
-<td style="text-align: left;">10.8 sem</td>
+<td style="text-align: left;">R$ 4.114,40</td>
+<td style="text-align: left;">R$ 92,38</td>
+<td style="text-align: left;">R$ 61,20</td>
+<td style="text-align: left;">67.2 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 <tr>
 <td style="text-align: left;">S12</td>
-<td style="text-align: left;">R$ 2.775,79</td>
-<td style="text-align: left;">R$ 78,72</td>
-<td style="text-align: left;">R$ 190,46</td>
-<td style="text-align: left;">14.6 sem</td>
+<td style="text-align: left;">R$ 4.421,26</td>
+<td style="text-align: left;">R$ 93,58</td>
+<td style="text-align: left;">R$ 85,24</td>
+<td style="text-align: left;">51.9 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 <tr>
 <td style="text-align: left;">S16</td>
-<td style="text-align: left;">R$ 2.661,40</td>
-<td style="text-align: left;">R$ 112,10</td>
-<td style="text-align: left;">R$ 121,47</td>
-<td style="text-align: left;">21.9 sem</td>
+<td style="text-align: left;">R$ 4.906,35</td>
+<td style="text-align: left;">R$ 139,14</td>
+<td style="text-align: left;">R$ 140,23</td>
+<td style="text-align: left;">35.0 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 <tr>
 <td style="text-align: left;">S20</td>
-<td style="text-align: left;">R$ 2.679,98</td>
-<td style="text-align: left;">R$ 50,53</td>
-<td style="text-align: left;">R$ 309,10</td>
-<td style="text-align: left;">8.7 sem</td>
+<td style="text-align: left;">R$ 5.590,98</td>
+<td style="text-align: left;">R$ 62,72</td>
+<td style="text-align: left;">R$ 341,15</td>
+<td style="text-align: left;">16.4 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 <tr>
 <td style="text-align: left;">S24</td>
-<td style="text-align: left;">R$ 2.964,61</td>
-<td style="text-align: left;">R$ 117,38</td>
-<td style="text-align: left;">R$ 97,28</td>
-<td style="text-align: left;">30.5 sem</td>
+<td style="text-align: left;">R$ 6.607,23</td>
+<td style="text-align: left;">R$ 145,75</td>
+<td style="text-align: left;">R$ 112,22</td>
+<td style="text-align: left;">58.9 sem</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 </tbody>
@@ -1767,8 +2028,8 @@ Critico:** Reserva minima para emergencias (2 semanas de despesas)
 
 > **💡 INSIGHT: Liquidez no Ramp-up**
 >
-> -   **FATO:** Vale de caixa na semana 15 com R$ 2.656,76 (runway de
->     9.2 semanas).
+> -   **FATO:** Vale de caixa na semana 1 com R$ 3.571,24 (runway de
+>     13.3 semanas).
 > -   **CAUSA:** Gestão de caixa eficiente absorvendo o custo de
 >     aquisição inicial.
 > -   **IMPLICAÇÃO:** Liquidez saudável suporta o crescimento planejado.
@@ -1789,8 +2050,8 @@ Critico:** Reserva minima para emergencias (2 semanas de despesas)
 **Pergunta:** A empresa escala de forma eficiente?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-45.png"
-id="tier3-45" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-42.png"
+id="tier3-42" />
 
 **📖 COMO LER ESTE GRÁFICO (ALAVANCAGEM OPERACIONAL):**
 
@@ -1820,10 +2081,10 @@ Lucro operacional dividido pela receita, em percentual
 
 > **💡 INSIGHT: Escalabilidade do Modelo**
 >
-> -   **FATO:** Alavancagem operacional de 3.37x (Receita +464% → EBITDA
->     +1563%).
-> -   **CAUSA:** Custos fixos de R$ 860,00 representam 3.1% da receita
->     no M36.
+> -   **FATO:** Alavancagem operacional de 1.42x (Receita +738% → EBITDA
+>     +1046%).
+> -   **CAUSA:** Custos fixos de R$ 5.110,00 representam 10.1% da
+>     receita no M36.
 > -   **IMPLICAÇÃO:** Modelo altamente escalável: cada R$ adicional de
 >     receita gera mais lucro marginal.
 > -   **AÇÃO:** Priorizar crescimento de receita sobre corte de custos.
@@ -1843,8 +2104,8 @@ Lucro operacional dividido pela receita, em percentual
 **Pergunta:** Estamos convergindo para o cenario ideal?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-53.png"
-id="tier3-53" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-50.png"
+id="tier3-50" />
 
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -1866,7 +2127,7 @@ estou de fato”.
 
 > **💡 INSIGHT: Convergência ao Ideal**
 >
-> -   **FATO:** Maior desvio no M36: receita (-84.3% vs Ideal).
+> -   **FATO:** Maior desvio no M36: receita (-72.9% vs Ideal).
 > -   **CAUSA:** Gap acumulado por conservadorismo ou fricção na
 >     execução.
 > -   **IMPLICAÇÃO:** Potencial de crescimento não capturado plenamente.
@@ -1884,12 +2145,12 @@ estou de fato”.
 > **🔍 VEREDITO FINANCEIRO: APROVADO**
 >
 > **1. DIAGNÓSTICO:** A operação demonstra solidez financeira com margem
-> bruta de 81% e EBITDA positivo de 42%. A alavancagem é altamente
-> escalável, provando que a receita cresce com eficiência de custos.
+> bruta de 81% e EBITDA positivo de 35%. A alavancagem é moderada,
+> provando que a receita cresce com eficiência de custos.
 >
 > **2. PROGNÓSTICO:** A liquidez está controlada no curto prazo,
 > permitindo focar na convergência para o cenário ideal (gap médio de
-> -26.3%). A solvência não é um risco imediato, mas a eficiência sim.
+> -26.0%). A solvência não é um risco imediato, mas a eficiência sim.
 >
 > **3. PRESCRIÇÃO:** Foco total em **Growth e Otimização**. O modelo
 > está validado e solvente; a prioridade agora é melhorar as margens via
@@ -1899,13 +2160,6 @@ estou de fato”.
 
 **Objetivo:** Validar a saúde da unidade econômica (Cliente) e a
 eficiência operacional da escala.
-
-# PÁGINA 4: UNIT ECONOMICS & OPERAÇÃO
-
-**Objetivo:** Validar se a unidade econômica (Cliente) é saudável e
-escalável.
-
-------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 
@@ -1918,8 +2172,8 @@ escalável.
 ### 📉 VIZ 4.1: LTV vs CAC (A ‘Regua de Ouro’)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier4-output-9.png"
-id="tier4-9" />
+src="relatorio_completo_files/figure-markdown_strict/tier4-output-6.png"
+id="tier4-6" />
 
 *Fonte: df_real_m (Célula 5A) | Colunas: ‘ltv’, ‘cac_blended’*
 
@@ -1956,37 +2210,37 @@ class="math inline">)|<em>C</em><em>A</em><em>C</em>(<em>R</em></span>)</th>
 <tbody>
 <tr>
 <td style="text-align: left;">M1</td>
-<td style="text-align: right;">R$ 718,13</td>
-<td style="text-align: right;">R$ 1.250,00</td>
-<td style="text-align: right;">0.6x</td>
-<td style="text-align: left;">🔴 CRÍTICO</td>
+<td style="text-align: right;">R$ 690,87</td>
+<td style="text-align: right;">R$ 625,00</td>
+<td style="text-align: right;">1.1x</td>
+<td style="text-align: left;">🟡 ATENÇÃO</td>
 </tr>
 <tr>
 <td style="text-align: left;">M6</td>
-<td style="text-align: right;">R$ 753,68</td>
-<td style="text-align: right;">R$ 416,67</td>
-<td style="text-align: right;">1.8x</td>
+<td style="text-align: right;">R$ 746,29</td>
+<td style="text-align: right;">R$ 357,14</td>
+<td style="text-align: right;">2.1x</td>
 <td style="text-align: left;">🟡 ATENÇÃO</td>
 </tr>
 <tr>
 <td style="text-align: left;">M12</td>
-<td style="text-align: right;">R$ 846,17</td>
-<td style="text-align: right;">R$ 312,50</td>
-<td style="text-align: right;">2.7x</td>
-<td style="text-align: left;">🟡 ATENÇÃO</td>
+<td style="text-align: right;">R$ 846,13</td>
+<td style="text-align: right;">R$ 277,78</td>
+<td style="text-align: right;">3.0x</td>
+<td style="text-align: left;">🟢 EXCELENTE</td>
 </tr>
 <tr>
 <td style="text-align: left;">M24</td>
-<td style="text-align: right;">R$ 1.120,21</td>
-<td style="text-align: right;">R$ 311,39</td>
-<td style="text-align: right;">3.6x</td>
+<td style="text-align: right;">R$ 1.120,26</td>
+<td style="text-align: right;">R$ 272,28</td>
+<td style="text-align: right;">4.1x</td>
 <td style="text-align: left;">🟢 EXCELENTE</td>
 </tr>
 <tr>
 <td style="text-align: left;">M36</td>
-<td style="text-align: right;">R$ 1.508,90</td>
-<td style="text-align: right;">R$ 313,63</td>
-<td style="text-align: right;">4.8x</td>
+<td style="text-align: right;">R$ 1.512,80</td>
+<td style="text-align: right;">R$ 286,72</td>
+<td style="text-align: right;">5.3x</td>
 <td style="text-align: left;">🟢 EXCELENTE</td>
 </tr>
 </tbody>
@@ -1996,10 +2250,10 @@ class="math inline">)|<em>C</em><em>A</em><em>C</em>(<em>R</em></span>)</th>
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Múltiplo LTV/CAC atinge 4.8x no M36.
+> -   **FATO:** Múltiplo LTV/CAC atinge 5.3x no M36.
 > -   **CAUSA:** Resultado combinado de expansão do LTV e otimização do
 >     CAC.
-> -   **IMPLICAÇÃO:** Cada R$ 1 investido em marketing retorna R$ 4.81
+> -   **IMPLICAÇÃO:** Cada R$ 1 investido em marketing retorna R$ 5.28
 >     de margem bruta.
 > -   **AÇÃO RECOMENDADA:** Acelerar investimento em aquisição (Growth)
 >     pois a unidade é lucrativa.
@@ -2029,8 +2283,8 @@ class="math inline">)|<em>C</em><em>A</em><em>C</em>(<em>R</em></span>)</th>
 ### 📉 VIZ 4.2: Cohort Analyis (Retencao por Safra)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier4-output-26.png"
-id="tier4-26" />
+src="relatorio_completo_files/figure-markdown_strict/tier4-output-23.png"
+id="tier4-23" />
 
 *Fonte: Simulação df_real_m (Célula 5A) | Churn Rate Mensal*
 
@@ -2113,8 +2367,8 @@ id="tier4-26" />
 ### 📉 VIZ 4.3: Churn Volatility Control (SPC)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier4-output-43.png"
-id="tier4-43" />
+src="relatorio_completo_files/figure-markdown_strict/tier4-output-40.png"
+id="tier4-40" />
 
 *Fonte: df_real_s*
 
@@ -2147,7 +2401,7 @@ id="tier4-43" />
 <tbody>
 <tr>
 <td style="text-align: left;">S25</td>
-<td style="text-align: left;">11.68%</td>
+<td style="text-align: left;">10.59%</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 </tbody>
@@ -2157,10 +2411,10 @@ id="tier4-43" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Média semanal de 11.58% com 1 surtos recentes.
+> -   **FATO:** Média semanal de 11.64% com 0 surtos recentes.
 > -   **CAUSA:** Volatilidade natural vs Eventos de Cauda.
 > -   **IMPLICAÇÃO:** Previsibilidade da base de clientes.
-> -   **AÇÃO RECOMENDADA:** Investigar surtos.
+> -   **AÇÃO RECOMENDADA:** Manter monitoramento.
 
 > **🔍 AUDITORIA & FÓRMULAS**
 >
@@ -2178,8 +2432,8 @@ lucrativa?
 ### 📉 VIZ 4.4: Qualidade Marginal na Escala (LTV/CAC vs Volume)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier4-output-60.png"
-id="tier4-60" />
+src="relatorio_completo_files/figure-markdown_strict/tier4-output-57.png"
+id="tier4-57" />
 
 *Fonte: df_real_m*
 
@@ -2211,7 +2465,7 @@ id="tier4-60" />
 <tbody>
 <tr>
 <td style="text-align: left;">Média Geral</td>
-<td style="text-align: right;">3.08x</td>
+<td style="text-align: right;">3.61x</td>
 <td style="text-align: left;">🟢 OK</td>
 </tr>
 </tbody>
@@ -2221,7 +2475,7 @@ id="tier4-60" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** A inclinação da curva é 1.9869.
+> -   **FATO:** A inclinação da curva é 1.9426.
 > -   **CAUSA:** Comportamento dos custos marginais e retenção em
 >     escala.
 > -   **IMPLICAÇÃO:** Viabilidade de escalar agressivamente.
@@ -2242,8 +2496,8 @@ id="tier4-60" />
 ### 📉 VIZ 4.5: Unit Profitability Waterfall
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier4-output-77.png"
-id="tier4-77" />
+src="relatorio_completo_files/figure-markdown_strict/tier4-output-74.png"
+id="tier4-74" />
 
 *Fonte: df_real_m (Last Month)*
 
@@ -2275,23 +2529,23 @@ id="tier4-77" />
 <tbody>
 <tr>
 <td style="text-align: left;">LTV Bruto</td>
-<td style="text-align: right;">R$ 1.854,57</td>
+<td style="text-align: right;">R$ 1.859,51</td>
 </tr>
 <tr>
 <td style="text-align: left;">COGS</td>
-<td style="text-align: right;">R$ -345,68</td>
+<td style="text-align: right;">R$ -346,71</td>
 </tr>
 <tr>
 <td style="text-align: left;">Impostos</td>
-<td style="text-align: right;">R$ -185,46</td>
+<td style="text-align: right;">R$ -185,95</td>
 </tr>
 <tr>
 <td style="text-align: left;">CAC</td>
-<td style="text-align: right;">R$ -313,63</td>
+<td style="text-align: right;">R$ -286,72</td>
 </tr>
 <tr>
 <td style="text-align: left;">LUCRO LÍQUIDO</td>
-<td style="text-align: right;">R$ 1.009,81</td>
+<td style="text-align: right;">R$ 1.040,13</td>
 </tr>
 </tbody>
 </table>
@@ -2300,7 +2554,7 @@ id="tier4-77" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Sobram R$ 1.009,81 de lucro limpo por cliente.
+> -   **FATO:** Sobram R$ 1.040,13 de lucro limpo por cliente.
 > -   **CAUSA:** Estrutura de custos e eficiência de aquisição.
 > -   **IMPLICAÇÃO:** Potencial de reinvestimento.
 > -   **AÇÃO RECOMENDADA:** Otimizar.
@@ -2315,7 +2569,7 @@ id="tier4-77" />
 >
 > “Nesta análise de Unit Economics, nós provamos que:
 >
-> 1.  **O cliente é lucrativo (Viz 4.1):** Múltiplo de **4.8x**.
+> 1.  **O cliente é lucrativo (Viz 4.1):** Múltiplo de **5.3x**.
 > 2.  **Retenção Sólida (Viz 4.2):** Cohorts saudáveis.
 > 3.  **Risco Controlado (Viz 4.3):** Volatilidade de churn monitorada
 >     via SPC.
@@ -2329,20 +2583,6 @@ id="tier4-77" />
 
 **Objetivo:** Quantificar a incerteza e a probabilidade de sobrevivência
 através de simulações estocásticas (Monte Carlo).
-
-# PÁGINA 5: RISCO & CENÁRIOS
-
-**Objetivo:** Quantificar o risco do modelo através de simulações Monte
-Carlo, cenários de estresse e análise de sensibilidade, provando
-robustez e proteção de downside para o investidor.
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-## 📊 PAINEL EXECUTIVO DE RISCO
-
-**Objetivo:** Snapshot de 3 minutos - o investidor vê tudo de uma vez.
 
 <table>
 <colgroup>
@@ -2361,10 +2601,10 @@ robustez e proteção de downside para o investidor.
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><strong>86.6%</strong></td>
-<td style="text-align: center;"><strong>R$ -10.930,05</strong></td>
-<td style="text-align: center;"><strong>1686%</strong></td>
-<td style="text-align: center;"><strong>18.0x</strong></td>
+<td style="text-align: center;"><strong>93.0%</strong></td>
+<td style="text-align: center;"><strong>R$ -3.542,07</strong></td>
+<td style="text-align: center;"><strong>901%</strong></td>
+<td style="text-align: center;"><strong>10.0x</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;">Prob. Caixa &gt; R$ 0</td>
@@ -2373,13 +2613,13 @@ robustez e proteção de downside para o investidor.
 <td style="text-align: center;">Incerteza (P95-P5)/P50</td>
 </tr>
 <tr>
-<td style="text-align: center;">-3.4% vs meta 90%</td>
-<td style="text-align: center;">11k vs limite -50k</td>
-<td style="text-align: center;">1686% potencial acima mediana</td>
+<td style="text-align: center;">+3.0% vs meta 90%</td>
+<td style="text-align: center;">4k vs limite -50k</td>
+<td style="text-align: center;">901% potencial acima mediana</td>
 <td style="text-align: center;">Alta incerteza</td>
 </tr>
 <tr>
-<td style="text-align: center;">🔴</td>
+<td style="text-align: center;">🟢</td>
 <td style="text-align: center;">🟢</td>
 <td style="text-align: center;">🟢</td>
 <td style="text-align: center;">🟡</td>
@@ -2423,16 +2663,16 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Quebra (Caixa &lt; R$ 0)</td>
-<td style="text-align: left;">13.4%</td>
+<td style="text-align: left;">7.0%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 10%</td>
-<td style="text-align: left;">🔴</td>
+<td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &lt; R$ 50k</td>
-<td style="text-align: left;">39.4%</td>
+<td style="text-align: left;">29.0%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 20%</td>
@@ -2441,7 +2681,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &gt; R$ 100k</td>
-<td style="text-align: left;">50.9%</td>
+<td style="text-align: left;">58.3%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 50%</td>
@@ -2450,7 +2690,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. ARR &gt; R$ 1M</td>
-<td style="text-align: left;">32.2%</td>
+<td style="text-align: left;">40.0%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 60%</td>
@@ -2459,11 +2699,11 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. LTV/CAC &gt; 5x</td>
-<td style="text-align: left;">29.3%</td>
+<td style="text-align: left;">34.7%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 30%</td>
-<td style="text-align: left;">🟡</td>
+<td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">💰 CENÁRIO REAL (5A)</td>
@@ -2477,7 +2717,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Caixa Final</td>
-<td style="text-align: left;">R$ 116.566,34</td>
+<td style="text-align: left;">R$ 165.372,91</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 50k</td>
@@ -2486,7 +2726,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ARR Final</td>
-<td style="text-align: left;">R$ 337.828,80</td>
+<td style="text-align: left;">R$ 605.048,40</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 1M</td>
@@ -2495,16 +2735,16 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">MRR Final</td>
-<td style="text-align: left;">R$ 28.152,40</td>
+<td style="text-align: left;">R$ 50.420,70</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 50k</td>
-<td style="text-align: left;">🟡</td>
+<td style="text-align: left;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">LTV/CAC</td>
-<td style="text-align: left;">4.8x</td>
+<td style="text-align: left;">5.3x</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 3.0x</td>
@@ -2523,7 +2763,7 @@ robustez e proteção de downside para o investidor.
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Caixa Final</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">R$ 434.973,62</td>
+<td style="text-align: left;">R$ 652.484,21</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 100k</td>
 <td style="text-align: left;">🟢</td>
@@ -2532,7 +2772,7 @@ robustez e proteção de downside para o investidor.
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ARR Final</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">R$ 2.157.541,32</td>
+<td style="text-align: left;">R$ 2.235.476,76</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 1.5M</td>
 <td style="text-align: left;">🟢</td>
@@ -2551,7 +2791,7 @@ robustez e proteção de downside para o investidor.
 <td style="text-align: left;">Caixa Final</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">R$ 58.283,17</td>
+<td style="text-align: left;">R$ 82.686,45</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">🟡</td>
 </tr>
@@ -2560,7 +2800,7 @@ robustez e proteção de downside para o investidor.
 <td style="text-align: left;">ARR Final</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">R$ 202.697,28</td>
+<td style="text-align: left;">R$ 363.029,04</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">🔴</td>
 </tr>
@@ -2576,7 +2816,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">VaR 95% (Pior 5%)</td>
-<td style="text-align: left;">R$ -10.930,05</td>
+<td style="text-align: left;">R$ -3.542,07</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 50k</td>
@@ -2585,7 +2825,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CVaR 95%</td>
-<td style="text-align: left;">R$ -16.522,28</td>
+<td style="text-align: left;">R$ -9.296,72</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 100k</td>
@@ -2594,7 +2834,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">P50 (Mediana)</td>
-<td style="text-align: left;">R$ 105.953,03</td>
+<td style="text-align: left;">R$ 146.365,87</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 50k</td>
@@ -2603,7 +2843,7 @@ robustez e proteção de downside para o investidor.
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Dispersão (P95-P5)</td>
-<td style="text-align: left;">R$ 1.903.665,62</td>
+<td style="text-align: left;">R$ 1.468.967,49</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; R$ 200k</td>
@@ -2617,7 +2857,7 @@ ao limite) - 🔴 = Crítico (abaixo benchmark)
 
 > **💡 INTERPRETAÇÃO RÁPIDA**
 >
-> -   ✅ **Risco de quebra:** 13.4% (Atenção necessária)
+> -   ✅ **Risco de quebra:** 7.0% (Atenção necessária)
 > -   ✅ **Cenário Real:** Atinge metas principais
 > -   ⚠️ **Dispersão:** Alta incerteza - revisar premissas
 > -   🔴 **Cenário Estresse:** Modelo resiliente
@@ -2636,21 +2876,21 @@ ao limite) - 🔴 = Crítico (abaixo benchmark)
 > <tbody>
 > <tr>
 > <td><strong>ARR</strong></td>
-> <td>R$ 337.828,80</td>
-> <td>R$ 2.157.541,32</td>
-> <td><strong>6.4x</strong></td>
+> <td>R$ 605.048,40</td>
+> <td>R$ 2.235.476,76</td>
+> <td><strong>3.7x</strong></td>
 > </tr>
 > <tr>
 > <td><strong>MRR</strong></td>
-> <td>R$ 28.152,40</td>
-> <td>R$ 179.795,11</td>
-> <td>+539%</td>
+> <td>R$ 50.420,70</td>
+> <td>R$ 186.289,73</td>
+> <td>+269%</td>
 > </tr>
 > <tr>
 > <td><strong>Caixa</strong></td>
-> <td>R$ 116.566,34</td>
-> <td>R$ 434.973,62</td>
-> <td>+R$ 318.407,28</td>
+> <td>R$ 165.372,91</td>
+> <td>R$ 652.484,21</td>
+> <td>+R$ 487.111,30</td>
 > </tr>
 > </tbody>
 > </table>
@@ -2663,13 +2903,20 @@ ao limite) - 🔴 = Crítico (abaixo benchmark)
 >
 > -   🔥 **Investimento Antecipado:** Marketing R$ 10k/mês (vs R$ 1.5k
 >     do Real)
-> -   📈 **Crescimento Acelerado:** ARR **6.4x maior** no M36
+> -   📈 **Crescimento Acelerado:** ARR **3.7x maior** no M36
 > -   💡 **Lógica:** *“Queimar caixa hoje para capturar mercado e criar
 >     valor futuro”*
 >
 > Startups como **Amazon, Uber e Netflix** operaram no prejuízo por anos
 > para maximizar crescimento. O cenário Ideal simula este comportamento
 > — sacrifica caixa curto prazo por escala.
+
+**GLOSSÁRIO (Explicado para Leigos):** - **VaR:** Imagine 100 futuros
+possíveis. O VaR é o caixa no 5% PIOR. Se negativo, precisamos dessa
+reserva. - **Sobrevivência:** Em quantos % dos futuros a empresa termina
+com dinheiro? 94% = 6 de 100 quebramos. - **Upside:** Se der MUITO
+certo, quanto ganhamos a mais que o esperado? - **Dispersão:** Quão
+imprevisível é o resultado? Maior = mais incerteza.
 
 ------------------------------------------------------------------------
 
@@ -2725,16 +2972,7 @@ alt="Fan Chart Monte Carlo" />
 >
 > 🔴 **Cenário Crítico:** - P25 cruza linha vermelha = mais de 25% de
 > chance de quebra - Linha Real está fora da área cinza = modelo
-> descalibrado - Mês 6 está na zona cinza perto de R$ 0 = decisão
-> arriscada
->
-> **TERMOS IMPORTANTES:**
->
-> -   **P50 (Mediana):** Metade dos cenários fica acima, metade abaixo
-> -   **P10/P90:** 80% dos cenários estão entre estes valores
-> -   **Fan Chart:** “Gráfico de Leque” - mostra incerteza crescente ao
->     longo do tempo
-> -   **VaR (Value at Risk):** O pior cenário nos 5% mais pessimistas
+> descalibrado - Mês 6 está na zona cinza perto de R$ 0
 
 ------------------------------------------------------------------------
 
@@ -2754,14 +2992,14 @@ alt="Distribuição Mês 6" />
 > estarei no mês 6?”*
 >
 > **CORES DAS BARRAS:** - 🔴 **VERMELHO (esquerda):** Cenários de QUEBRA
-> (caixa \< R$ 0) - Probabilidade: **2.3%** das simulações
+> (caixa \< R$ 0) - Probabilidade: **0.3%** das simulações
 >
 > -   🟠 **LARANJA (centro-esquerda):** Cenários de RISCO (R$ 0 a R$
 >     10k)
->     -   Probabilidade: **34.9%** das simulações
+>     -   Probabilidade: **26.7%** das simulações
 >     -   Caixa insuficiente para emergências
 > -   🟢 **VERDE (direita):** Cenários SEGUROS (\> R$ 10k)
->     -   Probabilidade: **62.7%** das simulações
+>     -   Probabilidade: **73.0%** das simulações
 >     -   Margem confortável para continuar
 >
 > **LINHAS VERTICAIS:** - Linha AZUL = Cenário Real projetado para M6 -
@@ -2777,9 +3015,9 @@ alt="Distribuição Mês 6" />
 <table style="width:100%;">
 <colgroup>
 <col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
 <col style="width: 9%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
 <col style="width: 9%" />
 <col style="width: 10%" />
 <col style="width: 10%" />
@@ -2804,74 +3042,74 @@ alt="Distribuição Mês 6" />
 <tbody>
 <tr>
 <td style="text-align: left;">Caixa Final</td>
-<td style="text-align: left;">R$ -10.930,05</td>
-<td style="text-align: left;">R$ -3.369,67</td>
-<td style="text-align: left;">R$ 12.876,24</td>
-<td style="text-align: left;">R$ 105.953,03</td>
-<td style="text-align: left;">R$ 240.920,39</td>
-<td style="text-align: left;">R$ 1.168.410,99</td>
-<td style="text-align: left;">R$ 1.892.735,57</td>
-<td style="text-align: left;">R$ 353.217,48</td>
-<td style="text-align: left;">R$ 679.392,53</td>
+<td style="text-align: left;">R$ -3.542,07</td>
+<td style="text-align: left;">R$ 2.360,15</td>
+<td style="text-align: left;">R$ 34.360,39</td>
+<td style="text-align: left;">R$ 146.365,87</td>
+<td style="text-align: left;">R$ 548.342,40</td>
+<td style="text-align: left;">R$ 1.062.790,86</td>
+<td style="text-align: left;">R$ 1.465.425,42</td>
+<td style="text-align: left;">R$ 358.729,85</td>
+<td style="text-align: left;">R$ 486.299,60</td>
 </tr>
 <tr>
 <td style="text-align: left;">ARR Final</td>
-<td style="text-align: left;">R$ 14.265,60</td>
-<td style="text-align: left;">R$ 21.218,40</td>
-<td style="text-align: left;">R$ 69.741,00</td>
-<td style="text-align: left;">R$ 284.778,60</td>
-<td style="text-align: left;">R$ 1.607.019,60</td>
-<td style="text-align: left;">R$ 3.326.246,88</td>
-<td style="text-align: left;">R$ 4.350.849,12</td>
-<td style="text-align: left;">R$ 1.070.881,41</td>
-<td style="text-align: left;">R$ 1.523.156,11</td>
+<td style="text-align: left;">R$ 21.176,46</td>
+<td style="text-align: left;">R$ 42.630,48</td>
+<td style="text-align: left;">R$ 122.640,00</td>
+<td style="text-align: left;">R$ 513.990,60</td>
+<td style="text-align: left;">R$ 1.952.095,50</td>
+<td style="text-align: left;">R$ 2.621.280,60</td>
+<td style="text-align: left;">R$ 3.039.353,46</td>
+<td style="text-align: left;">R$ 1.026.954,25</td>
+<td style="text-align: left;">R$ 1.083.197,99</td>
 </tr>
 <tr>
 <td style="text-align: left;">MRR Final</td>
-<td style="text-align: left;">R$ 1.188,80</td>
-<td style="text-align: left;">R$ 1.768,20</td>
-<td style="text-align: left;">R$ 5.811,75</td>
-<td style="text-align: left;">R$ 23.731,55</td>
-<td style="text-align: left;">R$ 133.918,30</td>
-<td style="text-align: left;">R$ 277.187,24</td>
-<td style="text-align: left;">R$ 362.570,76</td>
-<td style="text-align: left;">R$ 89.240,12</td>
-<td style="text-align: left;">R$ 126.929,68</td>
+<td style="text-align: left;">R$ 1.764,71</td>
+<td style="text-align: left;">R$ 3.552,54</td>
+<td style="text-align: left;">R$ 10.220,00</td>
+<td style="text-align: left;">R$ 42.832,55</td>
+<td style="text-align: left;">R$ 162.674,62</td>
+<td style="text-align: left;">R$ 218.440,05</td>
+<td style="text-align: left;">R$ 253.279,46</td>
+<td style="text-align: left;">R$ 85.579,52</td>
+<td style="text-align: left;">R$ 90.266,50</td>
 </tr>
 <tr>
 <td style="text-align: left;">Usuários Final</td>
-<td style="text-align: left;">12</td>
 <td style="text-align: left;">17</td>
-<td style="text-align: left;">57</td>
-<td style="text-align: left;">234</td>
-<td style="text-align: left;">1,308</td>
-<td style="text-align: left;">2,718</td>
-<td style="text-align: left;">3,558</td>
-<td style="text-align: left;">873</td>
-<td style="text-align: left;">1,241</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">102</td>
+<td style="text-align: left;">423</td>
+<td style="text-align: left;">1,603</td>
+<td style="text-align: left;">2,126</td>
+<td style="text-align: left;">2,485</td>
+<td style="text-align: left;">836</td>
+<td style="text-align: left;">883</td>
 </tr>
 <tr>
 <td style="text-align: left;">LTV/CAC</td>
-<td style="text-align: left;">0.5x</td>
 <td style="text-align: left;">0.8x</td>
-<td style="text-align: left;">1.7x</td>
-<td style="text-align: left;">3.1x</td>
-<td style="text-align: left;">5.7x</td>
-<td style="text-align: left;">8.9x</td>
-<td style="text-align: left;">11.0x</td>
-<td style="text-align: left;">160.1x</td>
-<td style="text-align: left;">1239.7x</td>
+<td style="text-align: left;">1.3x</td>
+<td style="text-align: left;">2.1x</td>
+<td style="text-align: left;">3.5x</td>
+<td style="text-align: left;">5.8x</td>
+<td style="text-align: left;">7.6x</td>
+<td style="text-align: left;">8.3x</td>
+<td style="text-align: left;">70.8x</td>
+<td style="text-align: left;">816.2x</td>
 </tr>
 <tr>
 <td style="text-align: left;">Churn Médio</td>
 <td style="text-align: left;">5.6%</td>
 <td style="text-align: left;">5.8%</td>
 <td style="text-align: left;">6.4%</td>
-<td style="text-align: left;">8.1%</td>
-<td style="text-align: left;">10.9%</td>
-<td style="text-align: left;">13.3%</td>
-<td style="text-align: left;">14.7%</td>
-<td style="text-align: left;">8.9%</td>
+<td style="text-align: left;">8.6%</td>
+<td style="text-align: left;">11.2%</td>
+<td style="text-align: left;">13.6%</td>
+<td style="text-align: left;">14.6%</td>
+<td style="text-align: left;">9.1%</td>
 <td style="text-align: left;">3.0%</td>
 </tr>
 </tbody>
@@ -2966,33 +3204,33 @@ alt="Distribuição Mês 6" />
 <tbody>
 <tr>
 <td style="text-align: left;">Caixa &lt; R$ 0 (Quebra)</td>
-<td style="text-align: center;"><strong>13.4%</strong></td>
+<td style="text-align: center;"><strong>7.0%</strong></td>
 <td style="text-align: left;">Risco de morte da startup</td>
-<td style="text-align: center;">🔴 Alto</td>
+<td style="text-align: center;">🟢 Baixo</td>
 </tr>
 <tr>
 <td style="text-align: left;">Caixa &gt; R$ 50k</td>
-<td style="text-align: center;"><strong>60.6%</strong></td>
+<td style="text-align: center;"><strong>71.0%</strong></td>
 <td style="text-align: left;">Caixa mínimo para emergências</td>
-<td style="text-align: center;">🟡 Atenção</td>
+<td style="text-align: center;">🟢 Bom</td>
 </tr>
 <tr>
 <td style="text-align: left;">Caixa &gt; R$ 100k</td>
-<td style="text-align: center;"><strong>50.9%</strong></td>
+<td style="text-align: center;"><strong>58.3%</strong></td>
 <td style="text-align: left;">Caixa confortável para growth</td>
 <td style="text-align: center;">🟢 Ótimo</td>
 </tr>
 <tr>
 <td style="text-align: left;">ARR &gt; R$ 1M</td>
-<td style="text-align: center;"><strong>32.2%</strong></td>
+<td style="text-align: center;"><strong>40.0%</strong></td>
 <td style="text-align: left;">Faturamento mínimo para Série A</td>
 <td style="text-align: center;">🟡 Desenvolver</td>
 </tr>
 <tr>
 <td style="text-align: left;">LTV/CAC &gt; 5x</td>
-<td style="text-align: center;"><strong>29.3%</strong></td>
+<td style="text-align: center;"><strong>34.7%</strong></td>
 <td style="text-align: left;">Unit Economics excelente</td>
-<td style="text-align: center;">🟡 Melhorar</td>
+<td style="text-align: center;">🟢 Saudável</td>
 </tr>
 </tbody>
 </table>
@@ -3001,17 +3239,17 @@ alt="Distribuição Mês 6" />
 >
 > #### FATO (O que os números dizem)
 >
-> -   **Sobrevivência (M36):** 86.6% de probabilidade de caixa positivo
-> -   **Mediana do Caixa:** R$ 105.953,03 - valor mais provável ao final
-> -   **VaR 95%:** R$ -10.930,05 - pior cenário nos 5% mais pessimistas
-> -   **Dispersão:** R$ 1.903.665,62 entre P5 e P95
+> -   **Sobrevivência (M36):** 93.0% de probabilidade de caixa positivo
+> -   **Mediana do Caixa:** R$ 146.365,87 - valor mais provável ao final
+> -   **VaR 95%:** R$ -3.542,07 - pior cenário nos 5% mais pessimistas
+> -   **Dispersão:** R$ 1.468.967,49 entre P5 e P95
 >
 > #### PONTO DE DECISÃO MÊS 6
 >
-> -   **Status:** 🟡 Risco
-> -   **Caixa Mediana M6:** R$ 20.237,43
-> -   **Prob. Seguro (\>R$ 10k):** 62.7%
-> -   **Recomendação M6:** Reavaliar métricas de churn e CAC
+> -   **Status:** 🟢 Seguro
+> -   **Caixa Mediana M6:** R$ 26.216,74
+> -   **Prob. Seguro (\>R$ 10k):** 73.0%
+> -   **Recomendação M6:** Continuar com confiança
 >
 > #### IMPLICAÇÃO
 >
@@ -3026,7 +3264,7 @@ alt="Distribuição Mês 6" />
 >
 > #### PARÂMETROS DA SIMULAÇÃO
 >
-> -   **Número de simulações:** 4,500
+> -   **Número de simulações:** 300
 > -   **Horizonte:** 36 meses
 > -   **Seed:** 42 (reprodutível)
 > -   **Variáveis estocásticas:** Churn, CAC, Conversão, Tráfego
@@ -3059,8 +3297,8 @@ alt="Distribuição Mês 6" />
 ### 📉 VIZ 5.2: Análise de Sensibilidade (Tornado Plot)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier5-output-34.png"
-id="tier5-34" />
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-28.png"
+id="tier5-28" />
 
 *Fonte: Monte Carlo Sensitivity*
 
@@ -3101,29 +3339,29 @@ id="tier5-34" />
 </thead>
 <tbody>
 <tr>
-<td>taxa_trial_para_pagante</td>
-<td>Conv. Trial -&gt; Pago</td>
-<td>0.12</td>
-<td>0.094000</td>
-<td>0.146000</td>
-<td>4.811027</td>
-<td>3.731617</td>
-<td>5.579597</td>
-<td>1.847979</td>
-<td>0.384113</td>
-<td>1</td>
-</tr>
-<tr>
 <td>churn_inicial</td>
 <td>Churn Base (%)</td>
 <td>0.12</td>
 <td>0.094000</td>
 <td>0.146000</td>
-<td>4.811027</td>
-<td>4.707256</td>
-<td>3.536334</td>
-<td>1.170922</td>
-<td>0.243383</td>
+<td>5.276235</td>
+<td>6.092777</td>
+<td>4.485872</td>
+<td>1.606905</td>
+<td>0.304555</td>
+<td>1</td>
+</tr>
+<tr>
+<td>taxa_trial_para_pagante</td>
+<td>Conv. Trial -&gt; Pago</td>
+<td>0.13</td>
+<td>0.101833</td>
+<td>0.158167</td>
+<td>5.276235</td>
+<td>4.701237</td>
+<td>5.881421</td>
+<td>1.180184</td>
+<td>0.223679</td>
 <td>2</td>
 </tr>
 <tr>
@@ -3132,25 +3370,12 @@ id="tier5-34" />
 <td>99.90</td>
 <td>78.255000</td>
 <td>121.545000</td>
-<td>4.811027</td>
-<td>4.414728</td>
-<td>5.056495</td>
-<td>0.641767</td>
-<td>0.133395</td>
+<td>5.276235</td>
+<td>5.031140</td>
+<td>5.533184</td>
+<td>0.502043</td>
+<td>0.095152</td>
 <td>3</td>
-</tr>
-<tr>
-<td>cpc_youtube</td>
-<td>cpc_youtube</td>
-<td>4.00</td>
-<td>3.133333</td>
-<td>4.866667</td>
-<td>4.811027</td>
-<td>5.084491</td>
-<td>4.464319</td>
-<td>0.620172</td>
-<td>0.128906</td>
-<td>4</td>
 </tr>
 <tr>
 <td>taxa_visitante_para_trial</td>
@@ -3158,116 +3383,64 @@ id="tier5-34" />
 <td>0.05</td>
 <td>0.039167</td>
 <td>0.060833</td>
-<td>4.811027</td>
-<td>4.487495</td>
-<td>4.944519</td>
-<td>0.457024</td>
-<td>0.094995</td>
+<td>5.276235</td>
+<td>5.110779</td>
+<td>5.447524</td>
+<td>0.336745</td>
+<td>0.063823</td>
+<td>4</td>
+</tr>
+<tr>
+<td>trafego_inicial</td>
+<td>Tráfego Inicial</td>
+<td>350.00</td>
+<td>274.166667</td>
+<td>425.833333</td>
+<td>5.276235</td>
+<td>5.131403</td>
+<td>5.442028</td>
+<td>0.310625</td>
+<td>0.058872</td>
 <td>5</td>
 </tr>
 <tr>
 <td>cpc_google</td>
 <td>CPC Google</td>
-<td>8.00</td>
-<td>6.266667</td>
-<td>9.733333</td>
-<td>4.811027</td>
-<td>4.911843</td>
-<td>4.525242</td>
-<td>0.386601</td>
-<td>0.080357</td>
+<td>7.00</td>
+<td>5.483333</td>
+<td>8.516667</td>
+<td>5.276235</td>
+<td>5.436664</td>
+<td>5.177790</td>
+<td>0.258874</td>
+<td>0.049064</td>
 <td>6</td>
+</tr>
+<tr>
+<td>cpc_youtube</td>
+<td>CPC Youtube</td>
+<td>3.50</td>
+<td>2.741667</td>
+<td>4.258333</td>
+<td>5.276235</td>
+<td>5.436664</td>
+<td>5.177790</td>
+<td>0.258874</td>
+<td>0.049064</td>
+<td>7</td>
 </tr>
 <tr>
 <td>cpc_instagram</td>
 <td>CPC Instagram</td>
-<td>1.60</td>
-<td>1.253333</td>
-<td>1.946667</td>
-<td>4.811027</td>
-<td>4.902513</td>
-<td>4.603199</td>
-<td>0.299314</td>
-<td>0.062214</td>
-<td>7</td>
-</tr>
-<tr>
-<td>imposto_simples_inicial</td>
-<td>Imposto Inicial</td>
-<td>0.06</td>
-<td>0.047000</td>
-<td>0.073000</td>
-<td>4.811027</td>
-<td>4.887898</td>
-<td>4.734155</td>
-<td>0.153743</td>
-<td>0.031956</td>
+<td>1.40</td>
+<td>1.096667</td>
+<td>1.703333</td>
+<td>5.276235</td>
+<td>5.414619</td>
+<td>5.188308</td>
+<td>0.226311</td>
+<td>0.042892</td>
 <td>8</td>
-</tr>
-<tr>
-<td>trafego_inicial</td>
-<td>Tráfego Inicial</td>
-<td>300.00</td>
-<td>235.000000</td>
-<td>365.000000</td>
-<td>4.811027</td>
-<td>4.682012</td>
-<td>4.794306</td>
-<td>0.112294</td>
-<td>0.023341</td>
-<td>9</td>
-</tr>
-<tr>
-<td>cpc_facebook</td>
-<td>cpc_facebook</td>
-<td>1.00</td>
-<td>0.783333</td>
-<td>1.216667</td>
-<td>4.811027</td>
-<td>4.852975</td>
-<td>4.745958</td>
-<td>0.107018</td>
-<td>0.022244</td>
-<td>10</td>
-</tr>
-<tr>
-<td>custo_ia_pro</td>
-<td>custo_ia_pro</td>
-<td>13.50</td>
-<td>10.575000</td>
-<td>16.425000</td>
-<td>4.811027</td>
-<td>4.844817</td>
-<td>4.777236</td>
-<td>0.067581</td>
-<td>0.014047</td>
-<td>11</td>
-</tr>
-<tr>
-<td>custo_ia_trader</td>
-<td>Custo IA Trader</td>
-<td>5.50</td>
-<td>4.308333</td>
-<td>6.691667</td>
-<td>4.811027</td>
-<td>4.839060</td>
-<td>4.782993</td>
-<td>0.056067</td>
-<td>0.011654</td>
-<td>12</td>
-</tr>
-<tr>
-<td>custo_ia_lite</td>
-<td>custo_ia_lite</td>
-<td>3.50</td>
-<td>2.741667</td>
-<td>4.258333</td>
-<td>4.811027</td>
-<td>4.828389</td>
-<td>4.793665</td>
-<td>0.034723</td>
-<td>0.007217</td>
-<td>13</td>
 </tr>
 <tr>
 <td>marketing_fixo_mensal</td>
@@ -3275,11 +3448,76 @@ id="tier5-34" />
 <td>2500.00</td>
 <td>1958.333333</td>
 <td>3041.666667</td>
-<td>4.811027</td>
-<td>4.716198</td>
-<td>4.705398</td>
-<td>0.010800</td>
-<td>0.002245</td>
+<td>5.276235</td>
+<td>5.362930</td>
+<td>5.222312</td>
+<td>0.140618</td>
+<td>0.026651</td>
+<td>9</td>
+</tr>
+<tr>
+<td>imposto_simples_inicial</td>
+<td>Imposto Inicial</td>
+<td>0.06</td>
+<td>0.047000</td>
+<td>0.073000</td>
+<td>5.276235</td>
+<td>5.333867</td>
+<td>5.218603</td>
+<td>0.115264</td>
+<td>0.021846</td>
+<td>10</td>
+</tr>
+<tr>
+<td>cpc_facebook</td>
+<td>CPC Facebook</td>
+<td>0.90</td>
+<td>0.705000</td>
+<td>1.095000</td>
+<td>5.276235</td>
+<td>5.352575</td>
+<td>5.244230</td>
+<td>0.108345</td>
+<td>0.020535</td>
+<td>11</td>
+</tr>
+<tr>
+<td>custo_ia_pro</td>
+<td>custo_ia_pro</td>
+<td>13.50</td>
+<td>10.575000</td>
+<td>16.425000</td>
+<td>5.276235</td>
+<td>5.301640</td>
+<td>5.250829</td>
+<td>0.050811</td>
+<td>0.009630</td>
+<td>12</td>
+</tr>
+<tr>
+<td>custo_ia_trader</td>
+<td>Custo IA Trader</td>
+<td>5.50</td>
+<td>4.308333</td>
+<td>6.691667</td>
+<td>5.276235</td>
+<td>5.297133</td>
+<td>5.255337</td>
+<td>0.041796</td>
+<td>0.007921</td>
+<td>13</td>
+</tr>
+<tr>
+<td>custo_ia_lite</td>
+<td>custo_ia_lite</td>
+<td>3.50</td>
+<td>2.741667</td>
+<td>4.258333</td>
+<td>5.276235</td>
+<td>5.289314</td>
+<td>5.263155</td>
+<td>0.026159</td>
+<td>0.004958</td>
 <td>14</td>
 </tr>
 </tbody>
@@ -3289,16 +3527,16 @@ id="tier5-34" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** A variável **Conv. Trial -\> Pago** é o maior vetor de
+> -   **FATO:** A variável **Churn Base (%)** é o maior vetor de
 >     volatilidade, com 31% do impacto total.
-> -   **CAUSA:** As top 3 variáveis (Conv. Trial -\> Pago, Churn Base
->     (%), Preço Trader) explicam 61% da sensibilidade do modelo devido
+> -   **CAUSA:** As top 3 variáveis (Churn Base (%), Conv. Trial -\>
+>     Pago, Preço Trader) explicam 64% da sensibilidade do modelo devido
 >     à natureza multiplicativa do Unit Economics.
 > -   **IMPLICAÇÃO:** Erros de estimativa nestes drivers custam
->     desproporcionalmente caro. Otimizar **Conv. Trial -\> Pago** traz
->     maior ROI que qualquer outra ação.
+>     desproporcionalmente caro. Otimizar **Churn Base (%)** traz maior
+>     ROI que qualquer outra ação.
 > -   **AÇÃO RECOMENDADA:** Criar dashboard semanal específico para
->     monitorar: Conv. Trial -\> Pago, Churn Base (%), Preço Trader.
+>     monitorar: Churn Base (%), Conv. Trial -\> Pago, Preço Trader.
 
 > **🧠 COMO INTERPRETAR A SENSIBILIDADE (TORNADO)**
 >
@@ -3307,7 +3545,7 @@ id="tier5-34" />
 > estimativa (ou sucesso na execução) tem maior alavancagem sobre o
 > resultado final.
 >
-> **LEITURA TÉCNICA:** \* **Eixo Central (4.8x):** O LTV/CAC projetado
+> **LEITURA TÉCNICA:** \* **Eixo Central (5.3x):** O LTV/CAC projetado
 > no cenário base. \* **Largura das Barras:** A volatilidade gerada ao
 > oscilar cada premissa individualmente em **±22%** (Ceteris Paribus).
 > \* **Assimetria:** Observe se a barra cresce mais para a esquerda
@@ -3360,38 +3598,38 @@ Risco)**
 <tbody>
 <tr>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">Conv. Trial -&gt; Pago</td>
+<td style="text-align: left;">Churn Base (%)</td>
 <td style="text-align: right;">0.12</td>
-<td style="text-align: left;">38%</td>
-<td style="text-align: left;">3.7x ↔︎ 5.6x</td>
+<td style="text-align: left;">30%</td>
+<td style="text-align: left;">6.1x ↔︎ 4.5x</td>
 </tr>
 <tr>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">Churn Base (%)</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: left;">24%</td>
-<td style="text-align: left;">4.7x ↔︎ 3.5x</td>
+<td style="text-align: left;">Conv. Trial -&gt; Pago</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: left;">22%</td>
+<td style="text-align: left;">4.7x ↔︎ 5.9x</td>
 </tr>
 <tr>
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">Preço Trader</td>
 <td style="text-align: right;">99.9</td>
-<td style="text-align: left;">13%</td>
-<td style="text-align: left;">4.4x ↔︎ 5.1x</td>
+<td style="text-align: left;">10%</td>
+<td style="text-align: left;">5.0x ↔︎ 5.5x</td>
 </tr>
 <tr>
 <td style="text-align: right;">4</td>
-<td style="text-align: left;">cpc_youtube</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">13%</td>
-<td style="text-align: left;">5.1x ↔︎ 4.5x</td>
+<td style="text-align: left;">taxa_visitante_para_trial</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: left;">6%</td>
+<td style="text-align: left;">5.1x ↔︎ 5.4x</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">taxa_visitante_para_trial</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: left;">9%</td>
-<td style="text-align: left;">4.5x ↔︎ 4.9x</td>
+<td style="text-align: left;">Tráfego Inicial</td>
+<td style="text-align: right;">350</td>
+<td style="text-align: left;">6%</td>
+<td style="text-align: left;">5.1x ↔︎ 5.4x</td>
 </tr>
 </tbody>
 </table>
@@ -3410,22 +3648,22 @@ Risco)**
 >
 > #### FATO
 >
-> A premissa **Conv. Trial -\> Pago** é o maior vetor de risco, com
-> **38% de impacto** no LTV/CAC. sozinha, ela afeta o resultado mais do
-> que as 11 últimas variáveis somadas.
+> A premissa **Churn Base (%)** é o maior vetor de risco, com **30% de
+> impacto** no LTV/CAC. sozinha, ela afeta o resultado mais do que as 11
+> últimas variáveis somadas.
 >
 > #### CAUSA
 >
-> As **3 variáveis do topo** (Conv. Trial -\> Pago, Churn Base (%),
-> Preço Trader) explicam **61%** de toda a variabilidade do modelo. Isso
+> As **3 variáveis do topo** (Churn Base (%), Conv. Trial -\> Pago,
+> Preço Trader) explicam **64%** de toda a variabilidade do modelo. Isso
 > ocorre pela natureza multiplicativa da fórmula do Unit Economics.
 >
 > #### IMPLICAÇÃO PRÁTICA
 >
-> Otimizar **Conv. Trial -\> Pago** em 10% trará **0.2x mais retorno**
-> do que qualquer esforço nas variáveis da base. **Ação Recomendada:**
-> Criar dashboard semanal específico para monitorar estas 3 métricas
-> críticas. Errar aqui custa caro.
+> Otimizar **Churn Base (%)** em 10% trará **0.2x mais retorno** do que
+> qualquer esforço nas variáveis da base. **Ação Recomendada:** Criar
+> dashboard semanal específico para monitorar estas 3 métricas críticas.
+> Errar aqui custa caro.
 
 > **🔍 AUDITORIA TÉCNICA**
 >
@@ -3442,8 +3680,8 @@ Risco)**
 *“Por quanto tempo sobrevivemos se tudo der errado?”*
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier5-output-54.png"
-id="tier5-54" />
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-48.png"
+id="tier5-48" />
 
 *Fonte: df_real_m (5A), df_ideal_m (5B), df_stress_m (5C) | Motor V13 |
 Célula 4*
@@ -3456,7 +3694,7 @@ Célula 4*
 > empresa consegue operar **se a receita parar amanhã**. É o “colchão de
 > segurança” financeiro — quanto maior, mais tempo para reagir a crises.
 >
-> *(Runway Mínimo Atual: 1.2 meses no M2)*
+> *(Runway Mínimo Atual: 1.6 meses no M1)*
 >
 > ### O que são os 5 gráficos?
 >
@@ -3524,32 +3762,32 @@ Célula 4*
 <tbody>
 <tr>
 <td style="text-align: left;">Real</td>
-<td style="text-align: left;">1.2 meses</td>
-<td style="text-align: left;">M2</td>
-<td style="text-align: left;">6 (17%)</td>
-<td style="text-align: left;">R$ 392,28/mês</td>
-<td style="text-align: left;">152%</td>
-<td style="text-align: left;">Marketing 74%</td>
-<td style="text-align: left;">🔴 Baixa</td>
+<td style="text-align: left;">1.6 meses</td>
+<td style="text-align: left;">M1</td>
+<td style="text-align: left;">3 (8%)</td>
+<td style="text-align: left;">R$ 303,09/mês</td>
+<td style="text-align: left;">149%</td>
+<td style="text-align: left;">Marketing 67%</td>
+<td style="text-align: left;">🟡 Média</td>
 </tr>
 <tr>
 <td style="text-align: left;">Ideal</td>
-<td style="text-align: left;">2.1 meses</td>
+<td style="text-align: left;">2.5 meses</td>
 <td style="text-align: left;">M1</td>
-<td style="text-align: left;">2 (6%)</td>
-<td style="text-align: left;">R$ 757,55/mês</td>
-<td style="text-align: left;">132%</td>
-<td style="text-align: left;">Marketing 45%</td>
+<td style="text-align: left;">1 (3%)</td>
+<td style="text-align: left;">R$ 285,70/mês</td>
+<td style="text-align: left;">149%</td>
+<td style="text-align: left;">Marketing 47%</td>
 <td style="text-align: left;">🟡 Média</td>
 </tr>
 <tr>
 <td style="text-align: left;">Estresse</td>
-<td style="text-align: left;">0.7 meses</td>
-<td style="text-align: left;">M3</td>
-<td style="text-align: left;">9 (25%)</td>
-<td style="text-align: left;">R$ 1.473,42/mês</td>
-<td style="text-align: left;">78%</td>
-<td style="text-align: left;">Marketing 88%</td>
+<td style="text-align: left;">1.1 meses</td>
+<td style="text-align: left;">M1</td>
+<td style="text-align: left;">7 (19%)</td>
+<td style="text-align: left;">R$ 2.563,60/mês</td>
+<td style="text-align: left;">76%</td>
+<td style="text-align: left;">Marketing 81%</td>
 <td style="text-align: left;">🔴 Baixa</td>
 </tr>
 </tbody>
@@ -3579,43 +3817,56 @@ Célula 4*
 >
 > ### FATO (O que os números dizem)
 >
-> ⚠️ **ALERTA ESTRUTURAL:** O modelo apresenta **6 meses críticos**
-> (runway \< 3 meses), o que representa **17%** do período total. O
-> ponto mais vulnerável é o **mês 2** com runway de apenas **1.2
-> meses**. A taxa de cobertura de **152%** indica que a receita não
-> cobre os custos.
+> Identificamos **3 meses críticos** (runway \< 3 meses), concentrados
+> principalmente no período M1-M1. O pior momento ocorre no **mês 1**
+> com apenas **1.6 meses** de caixa. O burn rate médio de **R$
+> 303,09/mês** consome o caixa antes da receita estabilizar.
 >
-> 📊 **Gap com Cenário Ideal:** O modelo Real está **1.0 meses** abaixo
+> 📊 **Gap com Cenário Ideal:** O modelo Real está **0.9 meses** abaixo
 > do potencial. Isso representa oportunidade de melhoria via otimização
 > de custos ou aceleração de receita.
 >
 > ### CAUSA (Por que isso acontece)
 >
 > O driver principal do burn rate é **Marketing**, responsável por
-> **74%** das saídas de caixa mensais. O investimento agressivo em
-> marketing (74% do burn) ocorre **antes** do payback dos clientes
+> **67%** das saídas de caixa mensais. O investimento agressivo em
+> marketing (67% do burn) ocorre **antes** do payback dos clientes
 > adquiridos, criando uma curva J típica de startups em fase de growth.
-> Com cobertura de 152%, o modelo já opera em regime de
+> Com cobertura de 149%, o modelo já opera em regime de
 > **auto-financiamento** após o período inicial de investimento.
 >
 > ### IMPLICAÇÃO (O que significa na prática)
 >
-> 🔴 **Modelo Frágil:** Com 6 meses críticos, o negócio depende de
-> **execução perfeita** e **zero imprevistos** para sobreviver. O risco
-> de insolvência é estrutural, não conjuntural.
+> ⚠️ **Janela de Vulnerabilidade:** Entre M1 e M1, o modelo opera com
+> margem apertada. Qualquer atraso em receita ou aumento inesperado de
+> custos pode acionar espiral de morte. **Probabilidade de precisar de
+> capital bridge: Alta.**
 >
 > 🔥 **Teste de Estresse:** Sob condições adversas (churn 2x, CAC 1.5x),
-> os meses críticos saltam de 6 para **9**. Isso expõe moderada
+> os meses críticos saltam de 3 para **7**. Isso expõe moderada
 > resiliência a choques.
 >
 > ### AÇÃO RECOMENDADA (O que fazer agora)
 >
-> 🔴 **AÇÃO URGENTE (Prioridade Máxima):** 1. **IMEDIATO:** Cortar
-> marketing em 30% (economia de R$ 86,83/mês) 2. **CURTO PRAZO:** Buscar
-> capital bridge de R$ 2.353,68 nas próximas 4 semanas 3.
-> **RENEGOCIAR:** Alongar prazos com fornecedores para preservar caixa
-> 4. **PIVOT:** Avaliar modelo de receita — cobertura de 152% é
-> insustentável
+> ⚠️ **AÇÃO PREVENTIVA (Prioridade Moderada):** 1. **CAPTAÇÃO:** Iniciar
+> processo no M1 (3 meses antes do vale) 2. **CUSTO:** Revisar marketing
+> — representa 67% do burn 3. **BUFFER:** Criar reserva de R$ 1.818,53
+> antes de M1 4. **TRIGGER:** Se runway \< 4 meses em qualquer momento →
+> ativar plano de contingência
+
+**GLOSSÁRIO TÉCNICO (Explicado para Leigos):** - **VaR (Value at
+Risk):** Imagine que rodamos 100 futuros possíveis. O VaR é o caixa no
+5º PIOR futuro. Se der negativo (ex: -R$ 50k), significa que precisamos
+ter pelo menos R$ 50k de reserva para sobreviver aos piores cenários. -
+**CVaR:** É a MÉDIA do caixa nos 5% piores futuros. Mais conservador que
+o VaR, mostra o “estrago médio” quando dá muito errado. -
+**Sobrevivência:** De 100 futuros simulados, em quantos a empresa
+termina com dinheiro no banco? Se for 94%, em 6 cenários quebramos. -
+**Upside:** Se tudo der MUITO certo (top 5% de sorte), quanto a mais
+ganhamos comparado ao cenário “normal” (mediana)? - **Dispersão:** Quão
+imprevisível é o resultado? Se P95 diz R$ 500k e P5 diz R$ 50k, a
+incerteza é grande (10x). Quanto maior, menos sabemos o que vai
+acontecer.
 
 > **🔍 AUDITORIA TÉCNICA**
 >
@@ -3652,8 +3903,8 @@ Célula 4*
 ### 📉 VIZ 5.4: Análise de Break-Even sob Estresse
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier5-output-70.png"
-id="tier5-70" />
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-64.png"
+id="tier5-64" />
 
 *Fonte: Projeção Financeira Real/Ideal/Estresse*
 
@@ -3697,18 +3948,18 @@ id="tier5-70" />
 <tbody>
 <tr>
 <td>Real</td>
-<td>M10</td>
-<td>R$ 14.122,47</td>
+<td>M8</td>
+<td>R$ 10.911,50</td>
 </tr>
 <tr>
 <td>Ideal</td>
-<td>M7</td>
-<td>R$ 12.317,65</td>
+<td>M6</td>
+<td>R$ 10.285,37</td>
 </tr>
 <tr>
 <td>Estresse</td>
-<td>M27</td>
-<td>R$ 37.729,70</td>
+<td>M21</td>
+<td>R$ 29.451,86</td>
 </tr>
 </tbody>
 </table>
@@ -3717,11 +3968,11 @@ id="tier5-70" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** Break-Even Real esperado no Mês 10 (consumo de R$
->     14.122,47).
+> -   **FATO:** Break-Even Real esperado no Mês 8 (consumo de R$
+>     10.911,50).
 > -   **CAUSA:** Estrutura de custos vs Ramp-up de receita atual.
-> -   **IMPLICAÇÃO:** Em cenário de estresse, BE atrasa 17 meses e exige
->     R$ 23.607,24 extra.
+> -   **IMPLICAÇÃO:** Em cenário de estresse, BE atrasa 13 meses e exige
+>     R$ 18.540,37 extra.
 > -   **AÇÃO RECOMENDADA:** Focar eficiência de aquisição (CAC) e
 >     retenção para antecipar BE em 3-6 meses.
 
@@ -3730,8 +3981,8 @@ id="tier5-70" />
 ### 📉 VIZ 5.5: Decomposição de Gap (Real vs Estresse)
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier5-output-83.png"
-id="tier5-83" />
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-77.png"
+id="tier5-77" />
 
 *Fonte: Monte Carlo Shapley Decomposition*
 
@@ -3780,17 +4031,17 @@ id="tier5-83" />
 <tbody>
 <tr>
 <td>Churn (Retenção)</td>
-<td>R$ 29.141,58</td>
+<td>R$ 41.343,23</td>
 <td>50.0%</td>
 </tr>
 <tr>
 <td>CAC (Aquisição)</td>
-<td>R$ 17.484,95</td>
+<td>R$ 24.805,94</td>
 <td>30.0%</td>
 </tr>
 <tr>
 <td>Outros</td>
-<td>R$ 11.656,63</td>
+<td>R$ 16.537,29</td>
 <td>20.0%</td>
 </tr>
 </tbody>
@@ -3800,13 +4051,13 @@ id="tier5-83" />
 
 > **💡 INSIGHT ESTRATÉGICO**
 >
-> -   **FATO:** O Gap de Caixa totaliza R$ 58.283,17. O fator **Churn
+> -   **FATO:** O Gap de Caixa totaliza R$ 82.686,45. O fator **Churn
 >     (Retenção)** responde sozinho por 50% dessa perda.
 > -   **CAUSA:** A alta sensibilidade ao Churn (Retenção) indica que o
 >     modelo de negócios depende excessivamente da eficiência desta
 >     métrica no pior cenário.
 > -   **IMPLICAÇÃO:** Uma deterioração isolada em Churn (Retenção) é
->     suficiente para consumir R$ 29.141,58 do caixa projetado.
+>     suficiente para consumir R$ 41.343,23 do caixa projetado.
 > -   **AÇÃO RECOMENDADA:** Hedge Operacional: Diversificar fontes e
 >     otimizar Churn (Retenção) para reduzir sua volatilidade.
 
@@ -3819,35 +4070,33 @@ id="tier5-83" />
 > **funcional mas com margem apertada** para os próximos 36 meses.
 >
 > Começamos com a **Simulação Monte Carlo** (Ato 1), que revelou uma
-> probabilidade de sobrevivência de **86.6%** — ou seja, em 87 de cada
+> probabilidade de sobrevivência de **93.0%** — ou seja, em 93 de cada
 > 100 futuros simulados, a startup termina com caixa positivo. O **P50
-> (mediana)** projeta um caixa final de **R$ 105.953,03**, enquanto o
+> (mediana)** projeta um caixa final de **R$ 146.365,87**, enquanto o
 > **VaR 95%** (pior cenário nos 5% mais pessimistas) indica risco máximo
-> de **R$ -10.930,05**.
+> de **R$ -3.542,07**.
 >
-> O **Ponto de Decisão no Mês 6** mostrou-se **viável mas exige
-> atenção**, com **62.7%** de probabilidade de caixa acima de R$ 10k. A
-> recomendação tática para este marco é: **criar buffer de R$ 30-50k
-> antes do mês 6**.
+> O **Ponto de Decisão no Mês 6** mostrou-se **seguro para continuar**,
+> com **73.0%** de probabilidade de caixa acima de R$ 10k. A
+> recomendação tática para este marco é: **manter o curso atual**.
 >
 > O **Cenário de Estresse** (Mundo C) aplicou multiplicadores adversos
 > (churn 2x, CAC 1.5x, conversão 0.5x) e verificou que o modelo
-> **sobrevive ao estresse, terminando com R$ 58.283,17**. Isso demonstra
+> **sobrevive ao estresse, terminando com R$ 82.686,45**. Isso demonstra
 > resiliência estrutural.
 >
-> A **dispersão entre P5 e P95** foi de **R$ 1.903.665,62** (18.0x a
+> A **dispersão entre P5 e P95** foi de **R$ 1.468.967,49** (10.0x a
 > mediana), indicando alta incerteza que exige revisão de premissas.
 >
 > **CONCLUSÃO ESTRATÉGICA:**
 >
-> O modelo passa no teste de risco com nota **2/4** nos critérios de
-> robustez. Recomenda-se aumentar runway antes de escalar
-> agressivamente. O gargalo principal identificado é a dispersão das
-> premissas.
+> O modelo passa no teste de risco com nota **3/4** nos critérios de
+> robustez. A startup está pronta para acelerar com confiança. O gargalo
+> principal identificado é a dispersão das premissas.
 >
 > **PRÓXIMOS PASSOS:** 1. Criar buffer financeiro de R$ 30-50k antes do
-> Mês 6 2. Revisar CAC e churn semanalmente nos primeiros 3 meses 3.
-> Focar em break-even antes de buscar investimento
+> Mês 6 2. Monitorar métricas mensalmente 3. Focar em break-even antes
+> de buscar investimento
 
 # Metodologia Completa
 
@@ -3883,8 +4132,8 @@ id="tier5-83" />
 <tbody>
 <tr>
 <td style="text-align: left;">Tráfego Inicial (Visitas)</td>
-<td style="text-align: left;">300</td>
-<td style="text-align: left;">300</td>
+<td style="text-align: left;">350</td>
+<td style="text-align: left;">350</td>
 <td style="text-align: left;">N/A</td>
 </tr>
 <tr>
@@ -3895,8 +4144,8 @@ id="tier5-83" />
 </tr>
 <tr>
 <td style="text-align: left;">Conv. Trial -&gt; Pago</td>
-<td style="text-align: left;">12.0%</td>
-<td style="text-align: left;">14.4%</td>
+<td style="text-align: left;">13.0%</td>
+<td style="text-align: left;">15.6%</td>
 <td style="text-align: left;">x0.75</td>
 </tr>
 <tr>
@@ -3907,8 +4156,8 @@ id="tier5-83" />
 </tr>
 <tr>
 <td style="text-align: left;">Fator Viral (K-Factor)</td>
-<td style="text-align: left;">6x</td>
-<td style="text-align: left;">7.800000000000001</td>
+<td style="text-align: left;">1.2x</td>
+<td style="text-align: left;">1.56</td>
 <td style="text-align: left;">N/A</td>
 </tr>
 </tbody>
@@ -3985,20 +4234,20 @@ id="tier5-83" />
 </tr>
 <tr>
 <td style="text-align: left;">Aporte Mensal</td>
-<td style="text-align: left;">R$ 2,000.00</td>
-<td style="text-align: left;">R$ 3,000.00</td>
+<td style="text-align: left;">R$ 2,500.00</td>
+<td style="text-align: left;">R$ 3,750.00</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr>
 <td style="text-align: left;">Salário Fundador</td>
-<td style="text-align: left;">R$ 5,000.00</td>
-<td style="text-align: left;">R$ 5,000.00</td>
+<td style="text-align: left;">R$ 2,500.00</td>
+<td style="text-align: left;">R$ 2,500.00</td>
 <td style="text-align: left;">-</td>
 </tr>
 <tr>
 <td style="text-align: left;">Gatilho Salário Fundador (MRR)</td>
-<td style="text-align: left;">R$ 35,000.00</td>
-<td style="text-align: left;">R$ 35,000.00</td>
+<td style="text-align: left;">R$ 20,000.00</td>
+<td style="text-align: left;">R$ 20,000.00</td>
 <td style="text-align: left;">-</td>
 </tr>
 </tbody>
@@ -4006,7 +4255,7 @@ id="tier5-83" />
 
 ### 4. Parâmetros de Risco (Monte Carlo)
 
--   **Simulações:** 1500 rodadas
+-   **Simulações:** 100 rodadas
 
 -   **Seed:** 42
 

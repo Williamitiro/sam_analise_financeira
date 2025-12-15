@@ -238,7 +238,7 @@ PREMISSAS = {
     'threshold_caixa_quebra': -3000.0,
     'caixa_reserva_operacional': 1000.0,
     
-    'capex_inicial': 1.00,
+    'capex_inicial': 1.00,                 # Simbólico. Equipamentos (R$ 8k) comprados na PF (não entra no fluxo da empresa)
     'capex_recorrente_24m': 10000.00,     
     'tempo_depreciacao_equipamento_meses': 24,
 

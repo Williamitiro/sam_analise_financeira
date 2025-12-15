@@ -2369,12 +2369,12 @@ Vamos começar do básico. O **Runway** é quanto tempo (em meses) a empresa con
 
 :::
 
-**GLOSSÁRIO TÉCNICO:**
-- **VaR (Value at Risk):** No pior cenário possível (5% azar), quanto capital teremos? Se negativo, precisamos desse montante como reserva.
-- **CVaR:** Média das perdas nos 5% piores cenários (Cauda Extrema).
-- **Sobrevivência:** Probabilidade de não quebrar (Caixa > 0) ao longo de 36 meses.
-- **Upside:** Potencial de ganho acima da mediana (P95 vs P50).
-- **Dispersão:** Grau de incerteza (distância entre cenário otimista e pessimista).
+**GLOSSÁRIO TÉCNICO (Explicado para Leigos):**
+- **VaR (Value at Risk):** Imagine que rodamos 100 futuros possíveis. O VaR é o caixa no 5º PIOR futuro. Se der negativo (ex: -R$ 50k), significa que precisamos ter pelo menos R$ 50k de reserva para sobreviver aos piores cenários.
+- **CVaR:** É a MÉDIA do caixa nos 5% piores futuros. Mais conservador que o VaR, mostra o "estrago médio" quando dá muito errado.
+- **Sobrevivência:** De 100 futuros simulados, em quantos a empresa termina com dinheiro no banco? Se for 94%, em 6 cenários quebramos.
+- **Upside:** Se tudo der MUITO certo (top 5% de sorte), quanto a mais ganhamos comparado ao cenário "normal" (mediana)?
+- **Dispersão:** Quão imprevisível é o resultado? Se P95 diz R$ 500k e P5 diz R$ 50k, a incerteza é grande (10x). Quanto maior, menos sabemos o que vai acontecer.
 """
     display(Markdown(insight_md))
     
@@ -2679,12 +2679,11 @@ O cenário Ideal simula este comportamento — sacrifica caixa curto prazo por e
 
 :::
 
-**GLOSSÁRIO TÉCNICO:**
-- **VaR (Value at Risk):** No pior cenário possível (5% azar), quanto capital teremos? Se negativo, precisamos desse montante como reserva.
-- **CVaR:** Média das perdas nos 5% piores cenários (Cauda Extrema).
-- **Sobrevivência:** Probabilidade de não quebrar (Caixa > 0) ao longo de 36 meses.
-- **Upside:** Potencial de ganho acima da mediana (P95 vs P50).
-- **Dispersão:** Grau de incerteza (distância entre cenário otimista e pessimista).
+**GLOSSÁRIO (Explicado para Leigos):**
+- **VaR:** Imagine 100 futuros possíveis. O VaR é o caixa no 5% PIOR. Se negativo, precisamos dessa reserva.
+- **Sobrevivência:** Em quantos % dos futuros a empresa termina com dinheiro? 94% = 6 de 100 quebramos.
+- **Upside:** Se der MUITO certo, quanto ganhamos a mais que o esperado?
+- **Dispersão:** Quão imprevisível é o resultado? Maior = mais incerteza.
 """
     
     if report_mode:
