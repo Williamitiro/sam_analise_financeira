@@ -1180,15 +1180,7 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
 🔴 **Cenário Crítico:**
 - P25 cruza linha vermelha = mais de 25% de chance de quebra
 - Linha Real está fora da área cinza = modelo descalibrado
-- Mês 6 está na zona cinza perto de R$ 0 = decisão arriscada
-
-**TERMOS IMPORTANTES:**
-
-- **P50 (Mediana):** Metade dos cenários fica acima, metade abaixo
-- **P10/P90:** 80% dos cenários estão entre estes valores
-- **Fan Chart:** "Gráfico de Leque" - mostra incerteza crescente ao longo do tempo
-- **VaR (Value at Risk):** O pior cenário nos 5% mais pessimistas
-
+- Mês 6 está na zona cinza perto de R$ 0
 :::
 """
     
@@ -1207,7 +1199,6 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
     if not report_mode:
         print("\n" + "-"*40)
         print("🎯 ZOOM: PONTO DE DECISÃO - MÊS 6")
-        print("-"*40)
     else:
         display(Markdown("***"))
         display(Markdown("### 🎯 ZOOM: PONTO DE DECISÃO - MÊS 6"))
@@ -2377,6 +2368,13 @@ Vamos começar do básico. O **Runway** é quanto tempo (em meses) a empresa con
 {insight['acao']}
 
 :::
+
+**GLOSSÁRIO TÉCNICO:**
+- **VaR (Value at Risk):** No pior cenário possível (5% azar), quanto capital teremos? Se negativo, precisamos desse montante como reserva.
+- **CVaR:** Média das perdas nos 5% piores cenários (Cauda Extrema).
+- **Sobrevivência:** Probabilidade de não quebrar (Caixa > 0) ao longo de 36 meses.
+- **Upside:** Potencial de ganho acima da mediana (P95 vs P50).
+- **Dispersão:** Grau de incerteza (distância entre cenário otimista e pessimista).
 """
     display(Markdown(insight_md))
     
@@ -2580,9 +2578,8 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
         print("📊 PÁGINA 5 - FASE 1: PAINEL EXECUTIVO DE RISCO")
         print("="*80)
     else:
-        display(Markdown("***"))
-        display(Markdown("## 📊 PAINEL EXECUTIVO DE RISCO"))
-        display(Markdown("**Objetivo:** Snapshot de 3 minutos - o investidor vê tudo de uma vez."))
+        # Título removido para evitar duplicidade com cabeçalho Tier 5 do report
+        pass
     
     # Gerar KPI Cards
     cards = gerar_kpi_cards_risco(mc_results, df_real_m)
@@ -2681,6 +2678,13 @@ Startups como **Amazon, Uber e Netflix** operaram no prejuízo por anos para max
 O cenário Ideal simula este comportamento — sacrifica caixa curto prazo por escala.
 
 :::
+
+**GLOSSÁRIO TÉCNICO:**
+- **VaR (Value at Risk):** No pior cenário possível (5% azar), quanto capital teremos? Se negativo, precisamos desse montante como reserva.
+- **CVaR:** Média das perdas nos 5% piores cenários (Cauda Extrema).
+- **Sobrevivência:** Probabilidade de não quebrar (Caixa > 0) ao longo de 36 meses.
+- **Upside:** Potencial de ganho acima da mediana (P95 vs P50).
+- **Dispersão:** Grau de incerteza (distância entre cenário otimista e pessimista).
 """
     
     if report_mode:
@@ -2728,13 +2732,9 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
         print("🚀 INICIANDO PÁGINA 5: RISCO & CENÁRIOS")
         print("="*80)
     else:
-        display(Markdown("# PÁGINA 5: RISCO & CENÁRIOS"))
-        display(Markdown(
-            "**Objetivo:** Quantificar o risco do modelo através de simulações Monte Carlo, "
-            "cenários de estresse e análise de sensibilidade, provando robustez e proteção de downside "
-            "para o investidor."
-        ))
-        display(Markdown("***"))
+        # Título removido para evitar duplicidade com cabeçalho Tier 5 do report
+        # display(Markdown("# PÁGINA 5: RISCO & CENÁRIOS"))
+        pass
     
     # 1. Gerar Cenário Estresse (Mundo C)
     if not report_mode:

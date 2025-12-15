@@ -194,7 +194,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz1_evolucao_financeira.png')
     
     if report_mode:
-        plt.show()
+        display(fig)
         
         # COMO LER
         como_ler = """
@@ -433,7 +433,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz2_waterfall.png')
     
     if report_mode:
-        plt.show()
+        display(fig)
         como_ler = """
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -564,7 +564,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     salvar_figura_silencioso(fig2, 'outputs/figs/pg3_viz2_composicao_custos.png')
     
     if report_mode:
-        plt.show()
+        display(fig2)
         display(Markdown("\\newpage"))
     else:
         plt.show()
@@ -729,7 +729,7 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz3_fluxo_caixa_semanal.png')
     
     if report_mode:
-        plt.show()
+        display(fig)
         
         # COMO LER (Legenda obrigatória)
         como_ler = """
@@ -934,7 +934,7 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz4_alavancagem.png')
     
     if report_mode:
-        plt.show()
+        display(fig)
         
         # COMO LER (Legenda obrigatória)
         como_ler = """
@@ -1151,7 +1151,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz5_heatmap_dre.png')
     
     if report_mode:
-        plt.show()
+        display(fig)
         
         # COMO LER (Legenda obrigatória) - explicação detalhada
         como_ler = """
@@ -1370,9 +1370,8 @@ def executar_pagina_3_financeiro(df_real_m, df_real_s, df_ideal_m, premissas, re
         print("💰 PÁGINA 3: ANÁLISE FINANCEIRA (DRE + FLUXO + MARGENS)")
         print("=" * 80)
     else:
-        display(Markdown("# 💰 PÁGINA 3: ANÁLISE FINANCEIRA"))
-        display(Markdown("**Objetivo:** Provar que a conta fecha no cenário conservador vs benchmark."))
-        display(Markdown("---"))
+        # Título removido para evitar duplicação com o Cabeçalho do Tier no QMD
+        pass
     
     resultados = {}
     

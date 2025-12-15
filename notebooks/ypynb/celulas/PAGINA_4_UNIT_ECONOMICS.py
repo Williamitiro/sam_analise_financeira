@@ -676,9 +676,9 @@ def executar_pagina_4_unit_economics(df_real_m, df_real_s, df_ideal, premissas, 
         print("🚀 INICIANDO PÁGINA 4: UNIT ECONOMICS")
         print("="*80)
     else:
-        display(Markdown("# PÁGINA 4: UNIT ECONOMICS & OPERAÇÃO"))
-        display(Markdown("**Objetivo:** Validar se a unidade econômica (Cliente) é saudável e escalável."))
-        display(Markdown("***"))
+        # Título removido para evitar duplicação com o Cabeçalho de Tier
+        pass
+        # display(Markdown("***"))
 
     gerar_viz_4_1_ltv_cac(df_real_m, df_ideal, report_mode)
     gerar_viz_4_2_cohorts(df_real_m, report_mode)

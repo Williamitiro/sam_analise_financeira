@@ -1011,14 +1011,15 @@ def gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, re
 
     # CENÁRIO D: SUCESSO (Máquina de Vendas)
     elif economics_ok and not churn_critico:
-        titulo_cenario = "CENÁRIO IDEAL: MÁQUINA DE VENDAS VALIDADA"
+        # CORREÇÃO: Título dinâmico para não chamar Real de Ideal
+        titulo_cenario = "CENÁRIO VALIDADO: MÁQUINA DE VENDAS EFICIENTE" 
         cor_box = "callout-tip" # Verde
         texto_narrativo = f"""
-        **Diagnóstico:** A tese foi **plenamente validada**. O negócio demonstra alta eficiência na captura de valor e retenção sólida.
+        **Diagnóstico:** A tese de crescimento apresenta **fortes evidências de validação**. O negócio demonstra alta eficiência na captura de valor e retenção sólida.
         
         **Evidência:** Com LTV/CAC de {ltv_cac:.1f}x e Churn controlado, cada Real investido retorna multiplicado. A operação é previsível e escalável.
         
-        **Ação Recomendada:** O sinal é verde para aceleração máxima (Scale-up). Buscar Series A para dominar market share agressivamente.
+        **Ação Recomendada:** O sinal é verde para aceleração (Scale-up). Monitorar saturação de canais conforme orçamento expande.
         """
         
     else:
