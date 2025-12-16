@@ -420,61 +420,109 @@ def preparar_dados_fan_chart(mc_results, df_real_m, df_ideal_m):
     """
     Prepara os percentis para o Fan Chart.
     
-    PROBLEMA: mc_results pode ter formato diferente (por simulação, não por mês).
-    SOLUÇÃO: Se não tiver coluna 'mes', usa df_real_m como base e apenas o caixa_final.
+    VERSÃO V2.0 - GOLD STANDARD:
+    Prioridade 1: Usar 'caixa_series' (série temporal real de cada simulação)
+    Prioridade 2: Usar formato 'mes'/'caixa' (cada linha = 1 mês de 1 sim)
+    Prioridade 3: Fallback para interpolação (último recurso)
     
     OUTPUT:
         DataFrame com colunas: mes, p5, p10, p25, p50, p75, p90, p95, real, ideal
     """
     
-    # Verificar estrutura do mc_results
+    # ==========================================================================
+    # PRIORIDADE 1: caixa_series (IDEAL - séries temporais reais do MC)
+    # ==========================================================================
+    if 'caixa_series' in mc_results.columns:
+        try:
+            # Converter lista de séries para matriz numpy
+            # Cada linha é uma simulação, cada coluna é um mês
+            series_list = mc_results['caixa_series'].tolist()
+            
+            # Filtrar séries válidas (não vazias e com tamanho correto)
+            valid_series = [s for s in series_list if isinstance(s, (list, np.ndarray)) and len(s) > 0]
+            
+            if len(valid_series) > 10:  # Mínimo de simulações para estatística válida
+                series_matrix = np.array(valid_series)
+                n_meses = series_matrix.shape[1]
+                
+                # Calcular percentis REAIS por mês (axis=0 = ao longo das simulações)
+                percentis = pd.DataFrame({
+                    'mes': np.arange(1, n_meses + 1),
+                    'p5': np.percentile(series_matrix, 5, axis=0),
+                    'p10': np.percentile(series_matrix, 10, axis=0),
+                    'p25': np.percentile(series_matrix, 25, axis=0),
+                    'p50': np.percentile(series_matrix, 50, axis=0),
+                    'p75': np.percentile(series_matrix, 75, axis=0),
+                    'p90': np.percentile(series_matrix, 90, axis=0),
+                    'p95': np.percentile(series_matrix, 95, axis=0),
+                })
+                
+                # Adicionar linhas Real e Ideal
+                if len(percentis) == len(df_real_m):
+                    percentis['real'] = df_real_m['caixa'].values if 'caixa' in df_real_m.columns else 0
+                    percentis['ideal'] = df_ideal_m['caixa'].values if 'caixa' in df_ideal_m.columns else 0
+                else:
+                    percentis['real'] = np.interp(percentis['mes'], df_real_m['mes'], df_real_m['caixa'])
+                    percentis['ideal'] = np.interp(percentis['mes'], df_ideal_m['mes'], df_ideal_m['caixa'])
+                
+                return percentis
+        except Exception as e:
+            print(f"⚠️ Erro ao processar caixa_series: {e}. Usando fallback.")
+    
+    # ==========================================================================
+    # PRIORIDADE 2: Formato mes/caixa (cada linha = 1 mês de 1 simulação)
+    # ==========================================================================
     if 'mes' in mc_results.columns and 'caixa' in mc_results.columns:
-        # Formato ideal: cada linha é um mês de uma simulação
         percentis = mc_results.groupby('mes')['caixa'].quantile(
             [0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95]
         ).unstack()
         percentis.columns = ['p5', 'p10', 'p25', 'p50', 'p75', 'p90', 'p95']
         percentis = percentis.reset_index()
-    else:
-        # Formato alternativo: cada linha é uma simulação com caixa_final
-        # Criar dados sintéticos baseados na distribuição final
-        caixa_final_col = 'caixa_final' if 'caixa_final' in mc_results.columns else 'caixa'
-        caixa_final = mc_results[caixa_final_col] if caixa_final_col in mc_results.columns else pd.Series([0])
         
-        # Calcular percentis finais
-        p5_final = caixa_final.quantile(0.05)
-        p10_final = caixa_final.quantile(0.10)
-        p25_final = caixa_final.quantile(0.25)
-        p50_final = caixa_final.quantile(0.50)
-        p75_final = caixa_final.quantile(0.75)
-        p90_final = caixa_final.quantile(0.90)
-        p95_final = caixa_final.quantile(0.95)
+        if len(percentis) == len(df_real_m):
+            percentis['real'] = df_real_m['caixa'].values if 'caixa' in df_real_m.columns else 0
+            percentis['ideal'] = df_ideal_m['caixa'].values if 'caixa' in df_ideal_m.columns else 0
+        else:
+            percentis['real'] = np.interp(percentis['mes'], df_real_m['mes'], df_real_m['caixa'])
+            percentis['ideal'] = np.interp(percentis['mes'], df_ideal_m['mes'], df_ideal_m['caixa'])
         
-        # Interpolar linearmente do mês 1 até o final
-        meses = df_real_m['mes'].values
-        n_meses = len(meses)
-        caixa_inicial = df_real_m['caixa'].iloc[0] if 'caixa' in df_real_m.columns else 0
-        
-        # Gerar faixas que crescem do início até os percentis finais
-        percentis = pd.DataFrame({
-            'mes': meses,
-            'p5': np.linspace(caixa_inicial * 0.8, p5_final, n_meses),
-            'p10': np.linspace(caixa_inicial * 0.85, p10_final, n_meses),
-            'p25': np.linspace(caixa_inicial * 0.9, p25_final, n_meses),
-            'p50': np.linspace(caixa_inicial, p50_final, n_meses),
-            'p75': np.linspace(caixa_inicial * 1.1, p75_final, n_meses),
-            'p90': np.linspace(caixa_inicial * 1.15, p90_final, n_meses),
-            'p95': np.linspace(caixa_inicial * 1.2, p95_final, n_meses),
-        })
+        return percentis
+    
+    # ==========================================================================
+    # PRIORIDADE 3: Fallback - Interpolação (ÚLTIMO RECURSO)
+    # ==========================================================================
+    caixa_final_col = 'caixa_final' if 'caixa_final' in mc_results.columns else 'caixa'
+    caixa_final = mc_results[caixa_final_col] if caixa_final_col in mc_results.columns else pd.Series([0])
+    
+    # Calcular percentis finais
+    p5_final = caixa_final.quantile(0.05)
+    p10_final = caixa_final.quantile(0.10)
+    p25_final = caixa_final.quantile(0.25)
+    p50_final = caixa_final.quantile(0.50)
+    p75_final = caixa_final.quantile(0.75)
+    p90_final = caixa_final.quantile(0.90)
+    p95_final = caixa_final.quantile(0.95)
+    
+    # Interpolar linearmente do mês 1 até o final
+    meses = df_real_m['mes'].values
+    n_meses = len(meses)
+    caixa_inicial = df_real_m['caixa'].iloc[0] if 'caixa' in df_real_m.columns else 0
+    
+    # Gerar faixas que crescem do início até os percentis finais
+    percentis = pd.DataFrame({
+        'mes': meses,
+        'p5': np.linspace(caixa_inicial * 0.8, p5_final, n_meses),
+        'p10': np.linspace(caixa_inicial * 0.85, p10_final, n_meses),
+        'p25': np.linspace(caixa_inicial * 0.9, p25_final, n_meses),
+        'p50': np.linspace(caixa_inicial, p50_final, n_meses),
+        'p75': np.linspace(caixa_inicial * 1.1, p75_final, n_meses),
+        'p90': np.linspace(caixa_inicial * 1.15, p90_final, n_meses),
+        'p95': np.linspace(caixa_inicial * 1.2, p95_final, n_meses),
+    })
     
     # Adicionar linhas Real e Ideal
-    if len(percentis) == len(df_real_m):
-        percentis['real'] = df_real_m['caixa'].values if 'caixa' in df_real_m.columns else 0
-        percentis['ideal'] = df_ideal_m['caixa'].values if 'caixa' in df_ideal_m.columns else 0
-    else:
-        # Ajustar tamanho se necessário
-        percentis['real'] = np.interp(percentis['mes'], df_real_m['mes'], df_real_m['caixa'])
-        percentis['ideal'] = np.interp(percentis['mes'], df_ideal_m['mes'], df_ideal_m['caixa'])
+    percentis['real'] = df_real_m['caixa'].values if 'caixa' in df_real_m.columns else 0
+    percentis['ideal'] = df_ideal_m['caixa'].values if 'caixa' in df_ideal_m.columns else 0
     
     return percentis
 
@@ -1050,6 +1098,10 @@ def gerar_tabela_probabilidades_mc(mc_results):
     payback = get_col(mc_results, ['payback_meses', 'payback'])
     
     # Calcular percentis
+    # VERSÃO V2.0 - Inclui NRR e Burn Rate (antes órfãos)
+    nrr = get_col(mc_results, ['nrr', 'net_revenue_retention'])
+    burn_rate = get_col(mc_results, ['burn_rate_medio', 'burn_rate'])
+    
     metricas = {
         'Caixa Final': caixa_final,
         'ARR Final': arr_final,
@@ -1057,6 +1109,8 @@ def gerar_tabela_probabilidades_mc(mc_results):
         'Usuários Final': usuarios_final,
         'LTV/CAC': ltv_cac,
         'Churn Médio': churn,
+        'NRR (%)': nrr,
+        'Burn Rate (R$/mês)': burn_rate,
         'Payback (meses)': payback
     }
     
@@ -1079,16 +1133,244 @@ def gerar_tabela_probabilidades_mc(mc_results):
     
     df_tabela = pd.DataFrame(tabela)
     
-    # Formatar valores monetários
+    # Formatar valores conforme tipo de métrica
+    # VERSÃO V2.0: Inclui NRR e Burn Rate
     for col in ['P5', 'P10', 'P25', 'P50', 'P75', 'P90', 'P95', 'Média', 'Desvio']:
         df_tabela[col] = df_tabela.apply(
-            lambda row: formata_moeda(row[col]) if row['Métrica'] in ['Caixa Final', 'ARR Final', 'MRR Final'] 
-            else (f"{row[col]:.1%}" if row['Métrica'] == 'Churn Médio' 
+            lambda row: formata_moeda(row[col]) if row['Métrica'] in ['Caixa Final', 'ARR Final', 'MRR Final', 'Burn Rate (R$/mês)'] 
+            else (f"{row[col]:.1%}" if row['Métrica'] in ['Churn Médio', 'NRR (%)']
                   else (f"{row[col]:.1f}x" if row['Métrica'] == 'LTV/CAC' 
                         else f"{row[col]:,.0f}")), axis=1
         )
     
     return df_tabela
+
+
+def render_var_histogram(mc_results, df_real_m, premissas, report_mode=False):
+    """
+    VIZ 5.X: HISTOGRAMA DE DISTRIBUIÇÃO VAR (Value at Risk)
+    
+    VERSÃO V1.0 - GOLD STANDARD
+    Mostra a distribuição de caixa final com zonas de risco coloridas.
+    Essencial para investidores institucionais.
+    
+    ELEMENTOS:
+    1. Histograma com bins coloridos (Vermelho/Laranja/Verde)
+    2. Linha vertical VaR95 (5% piores cenários)
+    3. Linha vertical CVaR95 (média dos 5% piores)
+    4. Linha vertical P50 (mediana)
+    5. Linha vertical do Cenário Real
+    """
+    
+    # Extrair caixa final
+    caixa_final_col = 'caixa_final' if 'caixa_final' in mc_results.columns else 'caixa'
+    if caixa_final_col not in mc_results.columns:
+        return None
+    
+    caixa_final = mc_results[caixa_final_col].dropna()
+    
+    if len(caixa_final) < 10:
+        return None
+    
+    # Calcular métricas de risco
+    var95 = caixa_final.quantile(0.05)  # VaR95 = P5
+    cvar95 = caixa_final[caixa_final <= var95].mean()  # Média dos piores 5%
+    p50 = caixa_final.median()
+    caixa_real_final = df_real_m['caixa'].iloc[-1] if 'caixa' in df_real_m.columns else 0
+    
+    # Probabilidades por zona
+    prob_quebra = (caixa_final < 0).mean()
+    prob_risco = ((caixa_final >= 0) & (caixa_final < 50000)).mean()
+    prob_seguro = (caixa_final >= 50000).mean()
+    
+    # Criar figura
+    figsize = (10, 5) if report_mode else (12, 6)
+    fig, ax = plt.subplots(figsize=figsize, dpi=150)
+    
+    # Definir bins
+    n_bins = 40
+    bins = np.linspace(caixa_final.min() * 1.1, caixa_final.quantile(0.95), n_bins)
+    
+    # Plotar histograma com cores por zona
+    n, bins_out, patches = ax.hist(caixa_final.clip(upper=caixa_final.quantile(0.95)), 
+                                    bins=bins, edgecolor='white', linewidth=0.5, alpha=0.8)
+    
+    # Colorir cada bin conforme a zona
+    for patch, left_edge in zip(patches, bins_out[:-1]):
+        if left_edge < 0:
+            patch.set_facecolor('#EF4444')  # Vermelho - Quebra
+        elif left_edge < 50000:
+            patch.set_facecolor('#F59E0B')  # Laranja - Risco
+        else:
+            patch.set_facecolor('#10B981')  # Verde - Seguro
+    
+    # Linhas verticais de referência
+    ax.axvline(x=var95, color='#DC2626', linewidth=2.5, linestyle='--', 
+               label=f'VaR95: {formata_moeda(var95)}')
+    ax.axvline(x=cvar95, color='#991B1B', linewidth=2, linestyle=':', 
+               label=f'CVaR95: {formata_moeda(cvar95)}')
+    ax.axvline(x=p50, color='#1F2937', linewidth=2.5, linestyle='-', 
+               label=f'Mediana (P50): {formata_moeda(p50)}')
+    ax.axvline(x=caixa_real_final, color='#2563EB', linewidth=2.5, linestyle='-', 
+               label=f'Cenário Real: {formata_moeda(caixa_real_final)}')
+    ax.axvline(x=0, color='#000000', linewidth=1.5, linestyle='-', alpha=0.5)
+    
+    # Formatação
+    ax.set_xlabel('Caixa Final M36 (R$)', fontsize=11, fontweight='bold')
+    ax.set_ylabel('Frequência (nº de simulações)', fontsize=11, fontweight='bold')
+    ax.set_title('DISTRIBUIÇÃO DE RISCO: Onde Estaremos no M36?\n' + 
+                 f'P(Quebra)={prob_quebra:.1%} | P(Risco)={prob_risco:.1%} | P(Seguro)={prob_seguro:.1%}',
+                 fontsize=13, fontweight='bold', pad=15)
+    
+    # Formatar eixo X em milhares
+    from matplotlib.ticker import FuncFormatter
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, p: f'R$ {x/1000:.0f}k'))
+    
+    ax.legend(loc='upper right', fontsize=9, framealpha=0.9)
+    ax.grid(True, alpha=0.3, axis='y')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    # Adicionar anotações de zona
+    ax.text(0.02, 0.95, '🔴 QUEBRA', transform=ax.transAxes, fontsize=10, 
+            color='#DC2626', fontweight='bold', verticalalignment='top')
+    ax.text(0.02, 0.88, f'{prob_quebra:.1%}', transform=ax.transAxes, fontsize=9, 
+            color='#DC2626', verticalalignment='top')
+    
+    plt.tight_layout()
+    
+    # Salvar se report_mode
+    if report_mode:
+        try:
+            import os
+            os.makedirs('outputs/figs', exist_ok=True)
+            plt.savefig('outputs/figs/pag5_var_histogram.png', dpi=150, bbox_inches='tight')
+        except:
+            pass
+    
+    return fig, {
+        'var95': var95,
+        'cvar95': cvar95,
+        'p50': p50,
+        'prob_quebra': prob_quebra,
+        'prob_risco': prob_risco,
+        'prob_seguro': prob_seguro
+    }
+
+
+def render_survival_curve(mc_results, premissas, report_mode=False):
+    """
+    VIZ 5.X: CURVA DE SOBREVIVÊNCIA ACUMULADA
+    
+    VERSÃO V1.0 - GOLD STANDARD
+    Mostra a probabilidade de sobrevivência (caixa > 0) ao longo dos 36 meses.
+    Responde: "QUANDO é a zona de perigo, não apenas SE sobrevive."
+    
+    REQUER: caixa_series no mc_results (lista de 36 valores por simulação)
+    """
+    
+    # Verificar se temos time series
+    if 'caixa_series' not in mc_results.columns:
+        # Fallback: usar apenas caixa_final (curva plana)
+        caixa_final_col = 'caixa_final' if 'caixa_final' in mc_results.columns else 'caixa'
+        if caixa_final_col not in mc_results.columns:
+            return None, None
+        
+        # Criar curva sintética (linear do mês 1 ao 36)
+        prob_final = (mc_results[caixa_final_col] > 0).mean()
+        meses = np.arange(1, 37)
+        prob_sobrevivencia = np.linspace(1.0, prob_final, 36)
+        
+        source_note = "⚠️ Curva sintética (caixa_series não disponível)"
+    else:
+        # Extrair séries temporais reais
+        try:
+            series_list = mc_results['caixa_series'].tolist()
+            valid_series = [s for s in series_list if isinstance(s, (list, np.ndarray)) and len(s) > 0]
+            
+            if len(valid_series) < 10:
+                return None, None
+            
+            series_matrix = np.array(valid_series)
+            n_meses = series_matrix.shape[1]
+            meses = np.arange(1, n_meses + 1)
+            
+            # Calcular P(caixa > 0) para cada mês
+            prob_sobrevivencia = (series_matrix > 0).mean(axis=0)
+            source_note = f"✅ Baseado em {len(valid_series)} simulações MC reais"
+        except Exception as e:
+            return None, None
+    
+    # Criar figura
+    figsize = (10, 5) if report_mode else (12, 6)
+    fig, ax = plt.subplots(figsize=figsize, dpi=150)
+    
+    # Plotar curva principal (APENAS LINHA - sem preenchimento por feedback do usuário)
+    ax.plot(meses, prob_sobrevivencia, color='#047857', linewidth=3, marker='o', 
+            markersize=3, markevery=3, label='P(Sobrevivência)')
+    
+    # Linhas de threshold
+    ax.axhline(y=0.95, color='#10B981', linestyle='--', linewidth=1.5, 
+               alpha=0.7, label='95% - Zona Segura')
+    ax.axhline(y=0.80, color='#F59E0B', linestyle='--', linewidth=1.5, 
+               alpha=0.7, label='80% - Zona de Atenção')
+    ax.axhline(y=0.50, color='#EF4444', linestyle='--', linewidth=1.5, 
+               alpha=0.7, label='50% - Zona Crítica')
+    
+    # Ponto de decisão no Mês 6
+    if len(meses) >= 6:
+        prob_m6 = prob_sobrevivencia[5]  # Índice 5 = Mês 6
+        ax.scatter([6], [prob_m6], s=200, color='#1D4ED8', zorder=5, 
+                   edgecolors='white', linewidth=2)
+        ax.annotate(f'M6: {prob_m6:.1%}', xy=(6, prob_m6), 
+                    xytext=(8, prob_m6 + 0.05), fontsize=10, fontweight='bold',
+                    arrowprops=dict(arrowstyle='->', color='#1D4ED8', lw=1.5))
+    
+    # Formatação
+    ax.set_xlabel('Mês', fontsize=11, fontweight='bold')
+    ax.set_ylabel('Probabilidade de Sobrevivência', fontsize=11, fontweight='bold')
+    ax.set_title('CURVA DE SOBREVIVÊNCIA: Quando é a Zona de Perigo?\n' + 
+                 f'P(Caixa > 0) ao Longo de 36 Meses | {source_note}',
+                 fontsize=13, fontweight='bold', pad=15)
+    
+    ax.set_xlim(1, len(meses))
+    ax.set_ylim(0, 1.05)
+    ax.set_xticks(range(1, len(meses) + 1, 3))
+    
+    # Formatar eixo Y como porcentagem
+    from matplotlib.ticker import PercentFormatter
+    ax.yaxis.set_major_formatter(PercentFormatter(1.0))
+    
+    ax.legend(loc='lower left', fontsize=9, framealpha=0.9)
+    ax.grid(True, alpha=0.3)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    # Background zones removidas por feedback do usuário - gráfico mais limpo
+    
+    plt.tight_layout()
+    
+    # Salvar se report_mode
+    if report_mode:
+        try:
+            import os
+            os.makedirs('outputs/figs', exist_ok=True)
+            plt.savefig('outputs/figs/pag5_survival_curve.png', dpi=150, bbox_inches='tight')
+        except:
+            pass
+    
+    # Identificar mês mais crítico (menor probabilidade)
+    mes_critico = meses[np.argmin(prob_sobrevivencia)]
+    prob_minima = prob_sobrevivencia.min()
+    
+    return fig, {
+        'meses': meses,
+        'prob_sobrevivencia': prob_sobrevivencia,
+        'mes_critico': mes_critico,
+        'prob_minima': prob_minima,
+        'prob_m6': prob_sobrevivencia[5] if len(prob_sobrevivencia) >= 6 else None,
+        'prob_m36': prob_sobrevivencia[-1] if len(prob_sobrevivencia) > 0 else None
+    }
 
 
 def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_mode=False):
@@ -1712,14 +1994,17 @@ def calcular_metricas_runway_profundas(df_real_m, df_ideal_m, df_stress_m, premi
         burn_rate = np.maximum(burn_rate, 0)  # Se negativo, está lucrando = burn 0
         
         # Runway em cada mês
+        # Runway em cada mês (ZERO REVENUE SCENARIO - Alinhado com Título)
+        # "Quanto tempo a empresa sobrevive se a receita parar?"
         runway = np.zeros(len(df))
         for i in range(len(df)):
             if caixa[i] <= threshold:
                 runway[i] = 0
-            elif burn_rate[i] <= 0:
-                runway[i] = 36  # Cap
+            elif custos_totais[i] <= 0:
+                runway[i] = 36  # Sem custos = infinito
             else:
-                runway[i] = min(36, caixa[i] / burn_rate[i])
+                # Fórmula de Sobrevivência: Caixa / Custos Brutos (sem considerar receita)
+                runway[i] = min(36, caixa[i] / custos_totais[i])
         
         # Identificar mês mais crítico
         mes_critico = np.argmin(runway) + 1
@@ -1798,14 +2083,15 @@ def calcular_metricas_runway_profundas(df_real_m, df_ideal_m, df_stress_m, premi
     return metricas
 
 
-def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
+def plotar_analise_runway_profunda(metricas, premissas, report_mode=False, mc_runway_percentis=None):
     """
     Gera visualização multi-painel com profundidade analítica:
     
-    PAINEL 1: Trajetória de Runway (3 cenários)
+    PAINEL 1: Trajetória de Runway (3 cenários + MC Percentis)
     - Linhas de runway ao longo do tempo
     - Bandas de zona crítica (< 3 meses) e atenção (3-6 meses)
     - Marcação do ponto mais crítico
+    - V2.0: Linhas P10/P50/P90 do Monte Carlo
     
     PAINEL 2: Decomposição do Burn Rate
     - Stacked area mostrando o que consome o caixa
@@ -1819,8 +2105,8 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
     figsize = (10, 12) if report_mode else (14, 14)
     fig = plt.figure(figsize=figsize, dpi=150)
     
-    # Grid: 3 linhas
-    gs = fig.add_gridspec(3, 2, height_ratios=[1.2, 1, 1], hspace=0.35, wspace=0.25)
+    # Grid: 3 linhas (Painel 1 Topo, Painéis 2-3 Meio, Tabela Baixo)
+    gs = fig.add_gridspec(3, 2, height_ratios=[1.3, 1, 0.4], hspace=0.45, wspace=0.25)
     
     cores = {'Real': '#2563EB', 'Ideal': '#10B981', 'Estresse': '#EF4444'}
     meses = np.arange(1, 37)
@@ -1835,7 +2121,24 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
     ax1.axhspan(3, 6, alpha=0.10, color='orange', label='Zona Atenção (3-6m)')
     ax1.axhspan(6, 36, alpha=0.05, color='green', label='Zona Segura (>6m)')
     
-    # Linhas de runway
+    # =========================================================================
+    # V2.0: LINHAS P10/P50/P90 DO MONTE CARLO (antes das linhas determinísticas)
+    # =========================================================================
+    if mc_runway_percentis is not None:
+        mc_meses = mc_runway_percentis['meses']
+        p10 = mc_runway_percentis['P10']
+        p50 = mc_runway_percentis['P50']
+        p90 = mc_runway_percentis['P90']
+        
+        # Faixa P10-P90 (área sombreada)
+        ax1.fill_between(mc_meses, p10, p90, alpha=0.15, color='#6366F1', 
+                        label='MC: P10-P90 (80% cenários)')
+        
+        # Linha P50 (mediana MC)
+        ax1.plot(mc_meses, p50, color='#6366F1', linewidth=2, linestyle='--',
+                label='MC: P50 (Mediana)', alpha=0.8)
+    
+    # Linhas de runway determinísticas
     for nome, cor in cores.items():
         if nome in metricas:
             m = metricas[nome]
@@ -1863,10 +2166,13 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
     ax1.set_ylim(0, min(36, max([metricas[n]['runway'].max() for n in metricas]) * 1.1))
     ax1.set_xlabel('Mês', fontsize=11, fontweight='bold')
     ax1.set_ylabel('Runway (meses de sobrevivência)', fontsize=11, fontweight='bold')
-    ax1.set_title('TRAJETÓRIA DE RUNWAY: Real vs Ideal vs Estresse\n' +
+    
+    # Título dinâmico baseado em se temos MC ou não
+    titulo_mc = " + Monte Carlo P10/P50/P90" if mc_runway_percentis else ""
+    ax1.set_title(f'TRAJETÓRIA DE RUNWAY: Real vs Ideal vs Estresse{titulo_mc}\n' +
                  'Quanto tempo a empresa sobrevive se a receita parar?', 
                  fontsize=13, fontweight='bold', pad=10)
-    ax1.legend(loc='upper right', fontsize=10)
+    ax1.legend(loc='upper right', fontsize=9, ncol=2)
     ax1.grid(True, alpha=0.3)
     ax1.set_xticks(range(1, 37, 3))
     
@@ -1938,45 +2244,9 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
         ax3.set_xlim(1, 36)
     
     # =========================================================================
-    # PAINEL 4: CORRELAÇÃO CAIXA × COBERTURA (coluna esquerda inferior)
+    # PAINEL 4: COMPARATIVO FINAL (Minilinha inferior)
     # =========================================================================
-    ax4 = fig.add_subplot(gs[2, 0])
-    
-    if 'Real' in metricas:
-        m = metricas['Real']
-        caixa = m['caixa']
-        cobertura = m['receita'] / np.maximum(m['custos_totais'], 1)  # Evita div/0
-        
-        scatter = ax4.scatter(cobertura * 100, caixa / 1000, 
-                             c=meses[:len(caixa)], cmap='viridis', 
-                             s=80, alpha=0.7, edgecolors='white')
-        
-        # Linha de tendência
-        if len(cobertura) > 2:
-            z = np.polyfit(cobertura * 100, caixa / 1000, 1)
-            p = np.poly1d(z)
-            x_line = np.linspace(cobertura.min() * 100, cobertura.max() * 100, 50)
-            ax4.plot(x_line, p(x_line), 'r--', alpha=0.7, linewidth=2, label='Tendência')
-        
-        # Colorbar
-        cbar = plt.colorbar(scatter, ax=ax4)
-        cbar.set_label('Mês', fontsize=10)
-        
-        # Zonas
-        ax4.axvline(x=100, color='green', linestyle='--', alpha=0.5, label='Break-even (100%)')
-        ax4.axhline(y=0, color='red', linestyle='--', alpha=0.5)
-        
-        ax4.set_xlabel('Taxa de Cobertura (Receita ÷ Custos × 100%)', fontsize=11, fontweight='bold')
-        ax4.set_ylabel('Caixa (R$ mil)', fontsize=11, fontweight='bold')
-        ax4.set_title(f'CORRELAÇÃO: Cobertura × Caixa\nQuando receita = custos, o caixa estabiliza?',
-                     fontsize=12, fontweight='bold')
-        ax4.legend(loc='upper left', fontsize=9)
-        ax4.grid(True, alpha=0.3)
-    
-    # =========================================================================
-    # PAINEL 5: COMPARATIVO FINAL (coluna direita inferior)
-    # =========================================================================
-    ax5 = fig.add_subplot(gs[2, 1])
+    ax5 = fig.add_subplot(gs[2, :])
     
     # Tabela visual de comparação
     cenarios = ['Real', 'Ideal', 'Estresse']
@@ -1998,19 +2268,19 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
     
     ax5.axis('off')
     
-    # Criar tabela
+    # Criar tabela - V3.0: Escala reduzida e posicionada no topo para evitar sobreposição
     table = ax5.table(
         cellText=np.array(data).T.tolist(),
         rowLabels=metricas_labels,
         colLabels=cenarios,
         cellLoc='center',
-        loc='center',
+        loc='upper center',  # Mudou de 'center' para 'upper center'
         colColours=['#DBEAFE', '#D1FAE5', '#FEE2E2'],
         rowColours=['#F3F4F6'] * 4
     )
     table.auto_set_font_size(False)
-    table.set_fontsize(11)
-    table.scale(1.2, 2)
+    table.set_fontsize(9)  # Reduzido de 11 para 9
+    table.scale(0.8, 1.2)  # V3.0: Reduzido de (1.0, 1.5) para (0.8, 1.2)
     
     # Colorir células baseado em valor
     for i in range(3):  # colunas
@@ -2026,9 +2296,9 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False):
                     else:
                         cell.set_facecolor('#D1FAE5')
     
-    ax5.set_title('COMPARATIVO DE RESILIÊNCIA', fontsize=13, fontweight='bold', pad=20)
+    ax5.set_title('COMPARATIVO DE RESILIÊNCIA', fontsize=12, fontweight='bold', pad=5)
     
-    plt.tight_layout()
+    plt.tight_layout(pad=2.0)  # Aumentado padding para evitar sobreposição
     return fig
 
 
@@ -2227,10 +2497,12 @@ def gerar_insight_runway_profundo(metricas, premissas):
     }
 
 
-def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, report_mode=False):
+def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, mc_results=None, report_mode=False):
     """
     Renderiza Ato 3 completo: Análise de Resiliência de Runway.
     Segue padrão Gold Standard V22.0 com profundidade analítica.
+    
+    V2.0: Agora aceita mc_results para adicionar linhas P10/P50/P90 do Monte Carlo.
     """
     
     # =========================================================================
@@ -2258,12 +2530,52 @@ def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, re
         return None
     
     # =========================================================================
+    # 1B. CALCULAR PERCENTIS DO MONTE CARLO (V2.0 - RUNWAY PROBABILÍSTICO)
+    # =========================================================================
+    mc_runway_percentis = None
+    if mc_results is not None and 'caixa_series' in mc_results.columns:
+        try:
+            # Extrair séries de caixa de cada simulação
+            series_list = mc_results['caixa_series'].tolist()
+            valid_series = [s for s in series_list if isinstance(s, (list, np.ndarray)) and len(s) > 0]
+            
+            if len(valid_series) > 10:
+                series_matrix = np.array(valid_series)
+                n_meses = series_matrix.shape[1]
+                
+                # Calcular burn rate médio por simulação (aproximado)
+                # Burn = diferença média de caixa mês a mês quando negativa
+                burn_approx = premissas.get('custos_operacionais_mensais', 3000)
+                
+                # Calcular runway por mês: caixa / burn
+                runway_p10 = np.percentile(series_matrix, 10, axis=0) / max(burn_approx, 100)
+                runway_p50 = np.percentile(series_matrix, 50, axis=0) / max(burn_approx, 100)
+                runway_p90 = np.percentile(series_matrix, 90, axis=0) / max(burn_approx, 100)
+                
+                # Limitar a valores razoáveis (0-36 meses)
+                runway_p10 = np.clip(runway_p10, 0, 36)
+                runway_p50 = np.clip(runway_p50, 0, 36)
+                runway_p90 = np.clip(runway_p90, 0, 36)
+                
+                mc_runway_percentis = {
+                    'meses': np.arange(1, n_meses + 1),
+                    'P10': runway_p10,
+                    'P50': runway_p50,
+                    'P90': runway_p90
+                }
+                if not report_mode:
+                    print("   ✅ Percentis MC de Runway calculados!")
+        except Exception as e:
+            if not report_mode:
+                print(f"   ⚠️ Erro ao calcular percentis MC: {e}")
+    
+    # =========================================================================
     # 2. VISUALIZAÇÃO MULTI-PAINEL
     # =========================================================================
-    fig = plotar_analise_runway_profunda(metricas, premissas, report_mode)
+    fig = plotar_analise_runway_profunda(metricas, premissas, report_mode, mc_runway_percentis)
     display(fig)
     display(Markdown(""))
-    display(Markdown("_Fonte: df_real_m (5A), df_ideal_m (5B), df_stress_m (5C) | Motor V13 | Célula 4_"))
+    display(Markdown("_Fonte: df_real_m (5A), df_ideal_m (5B), df_stress_m (5C), mc_results (5D) | Motor V13 | Célula 4_"))
     plt.close(fig)
     
     # =========================================================================
@@ -2277,38 +2589,86 @@ def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, re
 ::: {{.callout-note title="📖 COMO LER A ANÁLISE DE RESILIÊNCIA DE RUNWAY" collapse="false"}}
 
 ### O que é essa análise?
-Vamos começar do básico. O **Runway** é quanto tempo (em meses) a empresa consegue operar **se a receita parar amanhã**. É o "colchão de segurança" financeiro — quanto maior, mais tempo para reagir a crises.
+Você tem razão: o Runway deve mostrar a **segurança real**. Por isso, ajustamos o cálculo para o cenário "Pior Caso": **Zero Revenue Runway**.
+Isso responde: *"Se todos os clientes cancelarem hoje e a receita for a zero, quantos meses eu pago as contas com o que tenho no banco?"*
 
-*(Runway Mínimo Atual: {runway_min:.1f} meses no M{mes_crit})*
+Isso explica por que o gráfico oscila em vez de "explodir" para 36 meses. Mesmo lucrando, se seu caixa for baixo e seus custos altos, seu risco de **morte súbita** (caso a receita pare) é alto.
 
-### O que são os 5 gráficos?
+*(Seu Runway 'Zero Revenue' Mínimo: **{runway_min:.1f} meses** no mês **M{mes_crit}**)*
 
-**Painel 1 - Trajetória de Runway:** Mostra a evolução do runway ao longo de 36 meses para 3 cenários:
-- **Linha Azul (Real):** O que acontece com suas premissas atuais
-- **Linha Verde (Ideal):** O que aconteceria com benchmarks de mercado
-- **Linha Vermelha (Estresse):** O que acontece se churn dobrar e CAC subir 50%
+---
 
-**Zonas coloridas no fundo:**
-- 🔴 **Zona Vermelha (< 3 meses):** Perigo iminente — você tem menos de 90 dias para reagir
-- 🟡 **Zona Amarela (3-6 meses):** Atenção — é hora de buscar capital ou cortar custos
-- 🟢 **Zona Verde (> 6 meses):** Seguro — você pode focar em crescimento
+### 📊 PAINEL 1 - Trajetória de Runway (Gráfico Principal)
 
-**Painel 2 - Decomposição do Burn:** Mostra **o que está "comendo" seu caixa**. Marketing? Pessoal? Infraestrutura? Saber disso permite cortar no lugar certo.
+Este é o coração da análise. Mostra a evolução do runway ao longo de 36 meses em **3 cenários determinísticos** + **intervalo de confiança Monte Carlo**:
 
-**Painel 3 - Gap Real vs Ideal:** Mostra quanto runway você está "deixando na mesa" por não operar no benchmark. Verde = oportunidade de melhoria.
+**Linhas Sólidas (Cenários Determinísticos):**
+- 🔵 **Linha Azul (Real):** Trajetória usando suas premissas atuais (bootstrap conservador)
+- 🟢 **Linha Verde (Ideal):** O que aconteceria se você atingisse benchmarks de mercado
+- 🔴 **Linha Vermelha (Estresse):** Cenário adverso com churn 2x maior e CAC 1.5x mais caro
 
-**Painel 4 - Correlação Cobertura × Caixa:** Mostra a relação entre "quantos % dos custos a receita cobre" e o caixa. Quando cobertura = 100%, o negócio para de queimar caixa.
+**Linhas Tracejadas (Monte Carlo - Análise Probabilística):**
+- 💜 **Linha Roxa Tracejada (P50 - Mediana):** O resultado "típico" — 50% das simulações ficam acima e 50% abaixo desta linha. Use esta linha para planejamento realista.
+- 💜 **Área Sombreada Roxa (P10-P90):** O "corredor de confiança" — 80% das simulações caem dentro desta faixa. Quanto mais larga a faixa, maior a incerteza do modelo.
 
-**Painel 5 - Tabela Comparativa:** Resume as métricas-chave dos 3 cenários lado a lado.
+**Zonas de Risco (Fundo Colorido):**
+- 🔴 **Zona Vermelha (<3 meses):** Perigo iminente — você tem menos de 90 dias para reagir
+- 🟡 **Zona Laranja (3-6 meses):** Atenção — hora de buscar capital ou otimizar custos
+- 🟢 **Zona Verde (>6 meses):** Seguro — você pode focar em crescimento
 
-### Dica Prática (Regra de Ouro)
-1. **Foque no ponto mais baixo da linha azul:** É ali que você mais precisa de caixa.
-2. **Se a barra de Marketing domina o gráfico 2:** Seu crescimento está caro — otimize CAC.
-3. **Se o gap verde é grande:** Você tem potencial inexplorado — invista em eficiência.
+**💡 Dica de Leitura:** Procure o ponto mais baixo da linha azul (Real). É ali que sua empresa estará mais vulnerável. Se esse ponto estiver na zona vermelha, você precisa agir AGORA.
+
+---
+
+### 📊 PAINEL 2 - Decomposição do Burn Rate
+
+Responde à pergunta: **"O que está comendo meu caixa?"**
+
+As barras mostram a participação percentual de cada categoria nas saídas de caixa:
+- **Marketing:** Investimento em aquisição de clientes (Ads, conteúdo, parcerias)
+- **Pessoal:** Folha de pagamento, encargos, benefícios da equipe
+- **Infra:** Servidores, ferramentas SaaS, custos técnicos fixos
+- **Outros:** Administrativo, jurídico, impostos operacionais
+
+**💡 Dica de Leitura:** Se uma barra domina mais de 50% do gráfico, esse é seu maior "vilão". É ali que um corte de 10-20% terá maior impacto no runway.
+
+---
+
+### 📊 PAINEL 3 - Gap Real vs Ideal
+
+Mostra quanto runway você está **"deixando na mesa"** por não operar no benchmark de mercado.
+
+- **Área Verde (Ideal > Real):** Representa oportunidade — se você melhorar eficiência, pode ganhar esses meses extras de runway
+- **Área Rosa (Real > Ideal):** Significa que você está mais conservador que o benchmark — pode não ser ruim, mas talvez esteja crescendo devagar demais
+
+**💡 Dica de Leitura:** Quanto maior a área verde, maior o potencial de melhoria. Se a área verde for grande nos meses iniciais, priorize otimização de custos antes de escalar marketing.
+
+---
+
+### 📊 PAINEL 4 - Tabela Comparativa
+
+Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
+- **Runway Mínimo:** O pior momento de cada cenário
+- **Mês Crítico:** Quando ocorre o ponto mais vulnerável
+- **% Meses <3m:** Quantos meses você passa na "zona vermelha"
+- **Burn Médio:** Quanto sai de caixa por mês em média
+
+**💡 Dica de Leitura:** Compare a coluna "Real" com "Estresse". Se o estresse mostra muito mais meses críticos, seu modelo é frágil a choques externos.
+
+---
+
+### 🎯 Regras de Ouro para Decisão Gerencial
+
+1. **Se a linha azul toca a zona vermelha:** Ative plano de contingência imediatamente
+2. **Se P10-P90 (área roxa) é muito larga:** Seu modelo tem alta incerteza — reduza variáveis de risco
+3. **Se a linha P50 está acima da linha Real:** A simulação Monte Carlo é mais otimista — revise suas premissas conservadoras
+4. **Se Marketing > 50% do burn:** Seu CAC está caro — otimize antes de escalar
+5. **Se o gap verde é grande nos meses iniciais:** Foque em eficiência operacional primeiro
 
 :::
 """
     display(Markdown(como_ler))
+
     
     # =========================================================================
     # 4. TABELA DE ANÁLISE
@@ -2596,26 +2956,50 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
         )
         display(Markdown(cards_md))
         
-        # INSERÇÃO DO GLOSSÁRIO (Posição solicitada pelo usuário)
+        # INSERÇÃO DO GLOSSÁRIO COMPLETO (Atualizado por feedback do usuário)
         glossario_md = """
-::: {.callout-note title="📚 GLOSSÁRIO: COMO INTERPRETAR OS CARDS DE RISCO" collapse="true"}
+::: {.callout-note title="📚 GLOSSÁRIO TÉCNICO: TERMOS DE RISCO E ESTATÍSTICA" collapse="false"}
 
-**1. 🛡️ SOBREVIVÊNCIA:**
-Imagine que simulamos 100 futuros possíveis para sua empresa. Este número diz em quantos deles você **termina com dinheiro no caixa**.
-*   *Ex: 94% significa que em apenas 6 de 100 cenários a empresa quebra.*
+### 1. CARDS DE RISCO
 
-**2. ⚠️ VaR (Value at Risk - O Pior Cenário):**
-Olhando para os **5% piores futuros** (a "tempestade perfeita"), quanto dinheiro sobra (ou falta)?
-*   *Se negativo (ex: -R$ 50k), é o tamanho da reserva de emergência que você precisa ter hoje para não quebrar no pior caso.*
+| Termo | Significado | Por que importa |
+|-------|-------------|-----------------|
+| **Sobrevivência** | % de simulações com caixa > R$ 0 no M36 | Probabilidade de não quebrar |
+| **VaR (Value at Risk)** | Pior resultado nos 5% mais pessimistas | Quanto pode perder no cenário extremo |
+| **CVaR (Conditional VaR)** | Média das perdas nos 5% piores cenários | Mais conservador que VaR |
+| **Upside** | Diferença % entre P95 e P50 | Potencial de ganho se tudo der certo |
+| **Dispersão** | Razão (P95-P5) / P50 | Mede a incerteza do modelo |
 
-**3. 🚀 UPSIDE (Potencial de Ganho):**
-Se tudo der muito certo (top 5% de sorte), quanto resultado financeiro teremos a mais do que o esperado (mediana)?
-*   *Ex: +150% significa que o "céu é o limite" se a execução for perfeita.*
+### 2. PERCENTIS (P5, P10, P25, P50, P75, P90, P95)
 
-**4. 📊 DISPERSÃO (Incerteza):**
-Medida de quão imprevisível é o futuro.
-*   *Baixa (<3x): O modelo é estável e confiável.*
-*   *Alta (>3x): O resultado é uma "aposta" - pode ser gigante ou zero.*
+Os percentis dividem os resultados das simulações Monte Carlo em faixas:
+
+| Percentil | Significado | Uso prático |
+|-----------|-------------|-------------|
+| **P5** | 5% piores cenários (VaR 95%) | Planejamento de contingência extrema |
+| **P10** | 10% piores cenários | Orçamento conservador |
+| **P25** | Limite inferior "normal" | 75% dos cenários superam este valor |
+| **P50** | **MEDIANA** - Use para planejar | Resultado mais provável |
+| **P75** | Limite superior "normal" | Apenas 25% superam este valor |
+| **P90** | Cenário otimista realista | Meta stretch alcançável |
+| **P95** | Top 5% (melhor caso) | Upside máximo provável |
+
+### 3. MÉTRICAS FINANCEIRAS
+
+| Termo | Fórmula | Benchmark |
+|-------|---------|-----------|
+| **NRR (Net Revenue Retention)** | (MRR fim + Expansão - Churn) / MRR início | > 100% = expansão |
+| **Burn Rate** | Custos - Receita (saída líquida mensal) | < R$ 0 = lucrando |
+| **Runway** | Caixa ÷ Burn Rate | > 12 meses = seguro |
+| **Desvio Padrão (σ)** | Dispersão dos resultados | Alto = incerteza |
+
+### 4. LEITURA RÁPIDA
+
+- **P50 é sua bússola:** Use como caso base para planejamento
+- **P5 vs P50:** Se a diferença for grande, há muito risco
+- **P50 vs P95:** Se a diferença for grande, há muito upside
+- **Largura (P95-P5):** Mede a incerteza total do modelo
+
 :::
 """
         display(Markdown(glossario_md))
@@ -2768,6 +3152,100 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     if not report_mode:
         print("   ✅ Ato 1 gerado com sucesso!")
     
+    # =========================================================================
+    # 3B. VaR HISTOGRAM (NEW - V2.0 GOLD STANDARD)
+    # =========================================================================
+    if not report_mode:
+        print("\n   📊 Gerando VaR Histogram...")
+    
+    try:
+        var_result = render_var_histogram(mc_results, df_real_m, premissas, report_mode)
+        if var_result and var_result[0] is not None:
+            fig_var, var_data = var_result
+            if report_mode:
+                display(Markdown("***"))
+                display(Markdown("### 📊 DISTRIBUIÇÃO DE RISCO (VaR)"))
+                display(Markdown("![VaR Histogram](outputs/figs/pag5_var_histogram.png)"))
+                display(Markdown(f"_Fonte: mc_results (Célula 5D) | {len(mc_results)} simulações_"))
+                
+                # Callout explicativo
+                var_callout = f"""
+::: {{.callout-note title="📖 COMO LER O HISTOGRAMA VAR" collapse="false"}}
+
+**O QUE É VaR (Value at Risk)?**
+O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
+
+**ZONAS DO GRÁFICO:**
+- 🔴 **VERMELHO:** Cenários de quebra (caixa < R$ 0)
+- 🟠 **LARANJA:** Cenários de risco (R$ 0 a R$ 50k)
+- 🟢 **VERDE:** Cenários seguros (> R$ 50k)
+
+**LINHAS DE REFERÊNCIA:**
+- **VaR95:** {formata_moeda(var_data['var95'])} - pior resultado nos 5% mais pessimistas
+- **CVaR95:** {formata_moeda(var_data['cvar95'])} - média dos 5% piores cenários
+- **P50:** {formata_moeda(var_data['p50'])} - resultado mais provável
+
+**INTERPRETAÇÃO RÁPIDA:**
+- P(Quebra) = {var_data['prob_quebra']:.1%} → {"🟢 Risco baixo" if var_data['prob_quebra'] < 0.10 else "🔴 Risco elevado"}
+:::
+"""
+                display(Markdown(var_callout))
+            else:
+                display(fig_var)
+            plt.close(fig_var)
+            if not report_mode:
+                print("   ✅ VaR Histogram gerado!")
+    except Exception as e:
+        if not report_mode:
+            print(f"   ⚠️ VaR Histogram não disponível: {e}")
+    
+    # =========================================================================
+    # 3C. SURVIVAL CURVE (NEW - V2.0 GOLD STANDARD)
+    # =========================================================================
+    if not report_mode:
+        print("\n   📈 Gerando Curva de Sobrevivência...")
+    
+    try:
+        survival_result = render_survival_curve(mc_results, premissas, report_mode)
+        if survival_result and survival_result[0] is not None:
+            fig_surv, surv_data = survival_result
+            if report_mode:
+                display(Markdown("***"))
+                display(Markdown("### 📈 CURVA DE SOBREVIVÊNCIA"))
+                display(Markdown("![Survival Curve](outputs/figs/pag5_survival_curve.png)"))
+                display(Markdown(f"_Fonte: mc_results (Célula 5D) | caixa_series por mês_"))
+                
+                # Callout explicativo
+                surv_callout = f"""
+::: {{.callout-note title="📖 COMO LER A CURVA DE SOBREVIVÊNCIA" collapse="false"}}
+
+**O QUE ESTA CURVA MOSTRA?**
+A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
+
+**ZONAS COLORIDAS:**
+- 🟢 **VERDE (>80%):** Zona segura - probabilidade alta de sobrevivência
+- 🟡 **AMARELO (50-80%):** Zona de atenção - risco moderado
+- 🔴 **VERMELHO (<50%):** Zona crítica - probabilidade de morte > 50%
+
+**PONTOS-CHAVE:**
+- **Mês mais crítico:** M{surv_data['mes_critico']} com {surv_data['prob_minima']:.1%} de sobrevivência
+- **Mês 6 (decisão):** {surv_data['prob_m6']:.1%} de sobrevivência
+- **Mês 36 (final):** {surv_data['prob_m36']:.1%} de sobrevivência
+
+**INTERPRETAÇÃO:**
+{"🟢 Trajetória saudável - sobrevivência consistente acima de 80%" if surv_data['prob_minima'] > 0.80 else "⚠️ Há período(s) de risco durante a trajetória" if surv_data['prob_minima'] > 0.50 else "🔴 Alta probabilidade de morte em algum momento da trajetória"}
+:::
+"""
+                display(Markdown(surv_callout))
+            else:
+                display(fig_surv)
+            plt.close(fig_surv)
+            if not report_mode:
+                print("   ✅ Curva de Sobrevivência gerada!")
+    except Exception as e:
+        if not report_mode:
+            print(f"   ⚠️ Curva de Sobrevivência não disponível: {e}")
+    
     # 4. ATO 2: Tornado Plot (Sensibilidade)
     if not report_mode:
         print("\n" + "-"*40)
@@ -2785,7 +3263,7 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
         print("🗓️ Gerando Ato 3: Heatmap Runway...")
         
     ato3_results = render_ato3_heatmap_runway(
-        df_real_m, df_ideal_m, df_stress_m, premissas, report_mode
+        df_real_m, df_ideal_m, df_stress_m, premissas, mc_results, report_mode
     )
     
     if not report_mode:
