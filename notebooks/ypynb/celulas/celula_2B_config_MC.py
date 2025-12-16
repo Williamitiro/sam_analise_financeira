@@ -12,13 +12,13 @@ PREMISSAS['monte_carlo'] = {
     # ------------------------------------------------------------------------
     # CONFIGURAÇÃO GERAL
     # ------------------------------------------------------------------------
-    'n_simulacoes': 100,              # Número de simulações por cenário
+    'n_simulacoes': 10000,            # Número de simulações por cenário (Produção)
     'enable_scenarios': True,         # Roda Pessimista/Base/Otimista
     'enable_correlations': True,      # Ativa correlações entre variáveis
     'save_timeseries': True,         # Economiza memória (não salva séries)
     'timeout_seconds': 30,            # Timeout por simulação (evita travamento)
     'checkpoint_every': 50,           # Salva a cada N simulações
-    'save_folder': 'mc_outputs',      # Pasta de saída
+    'save_folder': 'outputs/mc_data', # Pasta de saída centralizada
     'random_seed': 42,                # Seed base (reprodutibilidade)
     
     # ------------------------------------------------------------------------

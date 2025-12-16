@@ -12,6 +12,23 @@ import json
 import os
 from datetime import datetime
 
+# ============================================================================
+# CONSTANTES DE DIRETÓRIO (CENTRALIZAÇÃO)
+# ============================================================================
+# Garante que outputs sempre vão para notebooks/ypynb/outputs
+# Independente de onde o script é executado (root ou subpasta)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUTPUTS_DIR = os.path.join(BASE_DIR, "outputs")
+FIGS_DIR = os.path.join(OUTPUTS_DIR, "figs")
+META_DIR = os.path.join(OUTPUTS_DIR, "metadata")
+TABLES_DIR = os.path.join(OUTPUTS_DIR, "tables")
+MC_DIR = os.path.join(OUTPUTS_DIR, "mc_data")
+
+# Garante que existem na importação
+for d in [OUTPUTS_DIR, FIGS_DIR, META_DIR, TABLES_DIR, MC_DIR]:
+    if not os.path.exists(d):
+        os.makedirs(d)
+
 try:
     from IPython.display import display, HTML, Markdown
 except ImportError:
@@ -71,9 +88,11 @@ def check_create_dir(path):
 
 def salvar_figura(fig, nome_arquivo):
     """Salva figura em 300 DPI e exibe inline no notebook."""
-    path_figs = os.path.join("outputs", "figs")
-    check_create_dir(path_figs)
-    full_path = os.path.join(path_figs, nome_arquivo)
+    # check_create_dir(path_figs) -> Já garantido na inicialização
+    
+    # Se nome_arquivo vier com caminhos relativos antigos (outputs/figs/...), limpa
+    nome_limpo = os.path.basename(nome_arquivo)
+    full_path = os.path.join(FIGS_DIR, nome_limpo)
     
     fig.savefig(full_path, dpi=300, bbox_inches='tight', facecolor='white')
     print(f"   📸 Figura salva: {full_path}")
@@ -88,15 +107,13 @@ def salvar_figura(fig, nome_arquivo):
 
 def salvar_figura_silencioso(fig, nome_arquivo):
     """Salva figura sem exibir (usado pelo render_atomic_block)."""
-    path_figs = os.path.join("outputs", "figs")
-    check_create_dir(path_figs)
-    full_path = os.path.join(path_figs, nome_arquivo)
+    nome_limpo = os.path.basename(nome_arquivo)
+    full_path = os.path.join(FIGS_DIR, nome_limpo)
     fig.savefig(full_path, dpi=300, bbox_inches='tight', facecolor='white')
 
 def salvar_metadados_json(chart_id, titulo, data_source, insight_dict, filename):
     """Gera arquivo JSON para integração com Quarto/Markdown."""
-    path_meta = os.path.join("outputs", "metadata")
-    check_create_dir(path_meta)
+    # META_DIR já definido
     
     metadata = {
         "chart_id": chart_id,
@@ -107,21 +124,24 @@ def salvar_metadados_json(chart_id, titulo, data_source, insight_dict, filename)
         "data_source": data_source,
         "insight_generated": insight_dict,
         "files": {
-            "png": f"outputs/figs/{filename}.png",
-            "json": f"outputs/metadata/{filename}.json",
-            "table": f"outputs/tables/{filename}_tabela.html"
+            "png": f"outputs/figs/{os.path.basename(filename)}.png",
+            "json": f"outputs/metadata/{os.path.basename(filename)}.json",
+            "table": f"outputs/tables/{os.path.basename(filename)}_tabela.html"
         },
         "validation_status": "ok"
     }
     
-    full_path = os.path.join(path_meta, f"{filename}.json")
+    name_clean = os.path.basename(filename)
+    if not name_clean.endswith('.json'):
+        name_clean += '.json'
+    
+    full_path = os.path.join(META_DIR, name_clean)
     with open(full_path, 'w', encoding='utf-8') as f:
         json.dump(metadata, f, indent=2, ensure_ascii=False)
 
 def salvar_tabela_html(df_tabela, filename):
     """Exporta DataFrame da tabela auxiliar para HTML e exibe inline."""
-    path_tables = os.path.join("outputs", "tables")
-    check_create_dir(path_tables)
+    # TABLES_DIR já definido
     
     # Estilização básica CSS inline para garantir consistência
     style = """
@@ -136,19 +156,26 @@ def salvar_tabela_html(df_tabela, filename):
     </style>
     """
     
-    html_content = style + df_tabela.to_html(index=False, escape=False)
+    if isinstance(df_tabela, pd.DataFrame):
+        html_content = style + df_tabela.to_html(index=False, escape=False)
+    else:
+        html_content = style + str(df_tabela)
     
-    full_path = os.path.join(path_tables, f"{filename}_tabela.html")
+    name_clean = os.path.basename(filename)
+    full_path = os.path.join(TABLES_DIR, f"{name_clean}_tabela.html")
     with open(full_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
     print(f"   📋 Tabela salva: {full_path}")
 
 def salvar_tabela_html_silencioso(df_tabela, filename):
     """Salva HTML sem exibir (usado pelo render_atomic_block)."""
-    path_tables = os.path.join("outputs", "tables")
-    check_create_dir(path_tables)
+    if isinstance(df_tabela, str) or df_tabela is None:
+        return
+        
     html_content = df_tabela.to_html(index=False, escape=False)
-    full_path = os.path.join(path_tables, f"{filename}_tabela.html")
+    
+    name_clean = os.path.basename(filename)
+    full_path = os.path.join(TABLES_DIR, f"{name_clean}_tabela.html")
     with open(full_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
 
