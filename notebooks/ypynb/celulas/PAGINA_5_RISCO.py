@@ -3269,22 +3269,32 @@ A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
     if not report_mode:
         print("   ✅ Ato 3 gerado com sucesso!")
 
-    # 6. ATOS 4-5: Análises Finais (Import Dinâmico)
+    # 6. ATOS 4-5 + EXTRAS: Análises Finais (Import Dinâmico)
     try:
         # Tenta importar do módulo separado
         try:
-            from .PAGINA_5_RISCO_ATO4_5 import render_ato4_breakeven, render_ato5_gap_analysis
+            from .PAGINA_5_RISCO_ATO4_5 import (
+                render_ato4_breakeven, render_ato5_gap_analysis, 
+                render_ato_use_of_funds, render_ato_valuation_probabilistico
+            )
         except ImportError:
             try:
-                from celulas.PAGINA_5_RISCO_ATO4_5 import render_ato4_breakeven, render_ato5_gap_analysis
+                from celulas.PAGINA_5_RISCO_ATO4_5 import (
+                    render_ato4_breakeven, render_ato5_gap_analysis,
+                    render_ato_use_of_funds, render_ato_valuation_probabilistico
+                )
             except ImportError:
                 import PAGINA_5_RISCO_ATO4_5
                 render_ato4_breakeven = PAGINA_5_RISCO_ATO4_5.render_ato4_breakeven
                 render_ato5_gap_analysis = PAGINA_5_RISCO_ATO4_5.render_ato5_gap_analysis
+                render_ato_use_of_funds = PAGINA_5_RISCO_ATO4_5.render_ato_use_of_funds
+                render_ato_valuation_probabilistico = PAGINA_5_RISCO_ATO4_5.render_ato_valuation_probabilistico
     except Exception as e:
-        print(f"⚠️ Erro ao importar Atos 4-5: {e}")
+        print(f"⚠️ Erro ao importar Atos 4-5 + Extras: {e}")
         render_ato4_breakeven = None
         render_ato5_gap_analysis = None
+        render_ato_use_of_funds = None
+        render_ato_valuation_probabilistico = None
     
     ato4_results = None
     ato5_results = None
@@ -3313,6 +3323,15 @@ A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
         
         if not report_mode:
             print("   ✅ Ato 5 gerado com sucesso!")
+
+        # ATO EXTRA 1: USE OF FUNDS
+        if render_ato_use_of_funds:
+            render_ato_use_of_funds(df_real_m, premissas, report_mode)
+            
+        # ATO EXTRA 2: VALUATION PROBABILÍSTICO
+        if render_ato_valuation_probabilistico:
+            render_ato_valuation_probabilistico(df_real_m, mc_results, premissas, report_mode)
+
 
     
     # 5. VEREDITO NARRATIVO FINAL (GOLD STANDARD V22.0)

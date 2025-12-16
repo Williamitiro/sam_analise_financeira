@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg6_valuation",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-16T11:19:18.699860",
+  "title_simple": "VIZ FINAL: Valuation Probabilístico (Monte Carlo)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "O modelo aponta um Valuation mediano de R$ 2.129.112,00 no Mês 36 com múltiplo de 5.0x ARR.",
+    "causa": "Variação natural de Churn e CAC nas milahres de simulações.",
+    "implicacao": "Oferece um range de negociação fundamentado matematicamente, não 'chute'.",
+    "acao": "Utilizar o P10 (Cenário Conservador) como piso de negociação e P90 como alvo."
+  },
+  "files": {
+    "png": "outputs/figs/pg6_valuation.png",
+    "json": "outputs/metadata/pg6_valuation.json",
+    "table": "outputs/tables/pg6_valuation_tabela.html"
+  },
+  "validation_status": "ok"
+}

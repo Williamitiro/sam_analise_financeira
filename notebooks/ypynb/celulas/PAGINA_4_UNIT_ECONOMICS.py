@@ -333,7 +333,7 @@ def gerar_viz_4_2_cohorts(df_real, report_mode=False):
     render_atomic_block(
         chart_id="pg4_viz2_cohorts",
         title_colloquial="Os clientes antigos continuam pagando ao longo do tempo?",
-        title_technical="VIZ 4.2: Cohort Analyis (Retencao por Safra)",
+        title_technical="VIZ 4.2: Cohort Analysis (Retenção por Safra)",
         fig=fig,
         legend_md=legend_md,
         df_tabela=tabela_md,

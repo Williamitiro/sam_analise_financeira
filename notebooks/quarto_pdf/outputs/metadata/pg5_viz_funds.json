@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg5_viz_funds",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-16T11:19:17.493797",
+  "title_simple": "VIZ EXTRA: Use of Funds (Burn Rate Breakdown)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Marketing responde por 69.4% do budget. Nota: Custos de equipe (Salários) estão zerados pois as premissas de gatilho de receita não foram atingidas no período.",
+    "causa": "Estrutura de custos baseada em gatilhos de receita (Bootstrap Mode).",
+    "implicacao": "Para valuation de Série A, investidores esperam ver investimento em equipe (R&D).",
+    "acao": "Revisar gatilhos de contratação nas Premissas se o objetivo for captar para expandir time."
+  },
+  "files": {
+    "png": "outputs/figs/pg5_viz_funds.png",
+    "json": "outputs/metadata/pg5_viz_funds.json",
+    "table": "outputs/tables/pg5_viz_funds_tabela.html"
+  },
+  "validation_status": "ok"
+}

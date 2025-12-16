@@ -427,3 +427,226 @@ Resolva o problema da barra maior primeiro. Pela Lei de Pareto, mitigar este ún
     plt.close(fig)
 
     return {'gap_final': gap_final, 'top_fator': top_fator}
+
+
+# ==============================================================================
+# ATO EXTRA 1: USE OF FUNDS (USO DOS RECURSOS)
+# ==============================================================================
+def render_ato_use_of_funds(df_real_m, premissas, report_mode=False):
+    """
+    Gera gráfico de 'Use of Funds' baseado nos custos projetados dos próximos 18 meses.
+    Responde: 'Para onde vai o dinheiro?'
+    """
+    if not report_mode:
+        print("\n" + "-"*40)
+        print("💰 ATO EXTRA: USE OF FUNDS (USO DOS RECURSOS)")
+        print("-" * 40)
+    
+    setup_plot_style()
+    
+    # 1. Calcular Custos Acumulados (Próximos 18 meses = Runway típico de Seed)
+    periodo_projecao = 18
+    df_proj = df_real_m.iloc[:periodo_projecao].copy()
+    
+    # Extração Robusta de Colunas (com fallback para 0)
+    def get_sum(col):
+        return df_proj[col].sum() if col in df_proj.columns else 0
+    
+    # Detalhamento de Custos
+    c_marketing = get_sum('gasto_marketing')
+    c_pessoal = get_sum('custo_pessoal')
+    c_infra = get_sum('custo_infra_fixo')
+    c_cogs = get_sum('total_cogs') # Inclui IA, servidores variáveis, taxas (exceto impostos)
+    c_opex_total = get_sum('total_opex')
+    
+    # Calcular "Outros" (Admin, Viagens, Escritório, etc.)
+    # Outros = OPEX Total - (Marketing + Pessoal + Infra)
+    c_outros = max(0, c_opex_total - (c_marketing + c_pessoal + c_infra))
+    
+    # Agrupamento para Gráfico "Clean"
+    # Grupo 1: Growth (Marketing)
+    # Grupo 2: Product & Tech (Pessoal + Infra + COGS de IA/Server) -> Foco em produto
+    # Grupo 3: Ops & Admin (Outros)
+    
+    # Para startups early stage, Pessoal geralmente é R&D (Produto).
+    # Vamos criar categorias amigáveis para investidor:
+    
+    cat_marketing = c_marketing
+    cat_equipe = c_pessoal
+    cat_tecnologia = c_infra + c_cogs
+    cat_admin = c_outros
+    
+    labels = ['Growth & Marketing', 'Equipe (Salários)', 'Tecnologia & Infra', 'Ops & Admin']
+    sizes = [cat_marketing, cat_equipe, cat_tecnologia, cat_admin]
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#95A5A6'] # Red, Teal, Blue, Gray
+    explode = (0.05, 0, 0, 0)
+    
+    # Filtrar zeros
+    final_labels = []
+    final_sizes = []
+    final_colors = []
+    final_explode = []
+    
+    for i, val in enumerate(sizes):
+        if val > 0.01: # Filtra valores irrelevantes
+            final_labels.append(labels[i])
+            final_sizes.append(val)
+            final_colors.append(colors[i])
+            final_explode.append(explode[i])
+            
+    if sum(final_sizes) == 0:
+        if not report_mode: print("⚠️ Sem custos projetados para Use of Funds.")
+        return 
+        
+    # 2. Plotar Donut Chart
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    wedges, texts, autotexts = ax.pie(final_sizes, explode=final_explode, labels=final_labels, 
+                                     colors=final_colors, autopct='%1.1f%%',
+                                     shadow=False, startangle=90, pctdistance=0.85,
+                                     textprops=dict(color="black", fontweight='bold', fontsize=10))
+                                     
+    # Círculo central (Donut)
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    fig.gca().add_artist(centre_circle)
+    
+    ax.axis('equal')  
+    
+    # Texto central com Total
+    total_budget = sum(final_sizes)
+    plt.text(0, 0, f"TOTAL (18m)\n{formata_moeda(total_budget)}", ha='center', va='center', fontsize=11, fontweight='bold')
+    
+    plt.title(f"USE OF FUNDS (Projeção 18 Meses)", fontsize=14, fontweight='bold', pad=20)
+    
+    # 3. Tabela Simples
+    df_funds = pd.DataFrame({
+        'Categoria': final_labels,
+        'Valor Projetado': [formata_moeda(x) for x in final_sizes],
+        '% Alocação': [formata_pct(x/total_budget) for x in final_sizes]
+    })
+    
+    # 4. Insight Dinâmico
+    insight_texto = f"Marketing responde por {formata_pct(cat_marketing/total_budget)} do budget."
+    if cat_equipe == 0:
+        insight_texto += " Nota: Custos de equipe (Salários) estão zerados pois as premissas de gatilho de receita não foram atingidas no período."
+    
+    insight = {
+        "fato": insight_texto,
+        "causa": "Estrutura de custos baseada em gatilhos de receita (Bootstrap Mode).",
+        "implicacao": "Para valuation de Série A, investidores esperam ver investimento em equipe (R&D).",
+        "acao": "Revisar gatilhos de contratação nas Premissas se o objetivo for captar para expandir time."
+    }
+    
+    render_atomic_block(
+        chart_id="pg5_viz_funds",
+        title_technical="VIZ EXTRA: Use of Funds (Burn Rate Breakdown)",
+        title_colloquial="Como o capital será alocado?",
+        fig=fig,
+        legend_md="**Nota:** Projeção baseada nas premissas atuais de gatilho de custos. Se 'Equipe' for 0%, o modelo assume que os fundadores não retiram pró-labore no período.",
+        df_tabela=df_funds,
+        insight_dict=insight,
+        report_mode=report_mode,
+        data_source_text="Fonte: Motor Financeiro (opex + cogs)"
+    )
+    plt.close(fig)
+
+
+# ==============================================================================
+# ATO EXTRA 2: VALUATION PROBABILÍSTICO (GRAND FINALE)
+# ==============================================================================
+def render_ato_valuation_probabilistico(df_real_m, mc_results, premissas, report_mode=False):
+    """
+    Gera tabela final de Valuation Probabilístico.
+    Cruza Valuation Alvo (ex: 5x ARR) com Probabilidade Monte Carlo de atingir esse ARR.
+    """
+    if not report_mode:
+        print("\n" + "-"*40)
+        print("💎 ATO EXTRA: VALUATION PROBABILÍSTICO")
+        print("-" * 40)
+        
+    setup_plot_style()
+    
+    if mc_results is None or 'arr_final' not in mc_results.columns:
+        print("⚠️ Sem dados Monte Carlo para Valuation.")
+        return
+
+    # Premissas de Valuation
+    MULTIPLO_ARR = 5.0  # Benchmark SaaS
+    
+    # Dados Monte Carlo
+    arr_series = mc_results['arr_final']
+    
+    # Percentis ARR
+    arr_p10 = np.percentile(arr_series, 10)
+    arr_p50 = np.percentile(arr_series, 50)
+    arr_p90 = np.percentile(arr_series, 90)
+    
+    # Valuations Derivados
+    val_p10 = arr_p10 * MULTIPLO_ARR
+    val_p50 = arr_p50 * MULTIPLO_ARR
+    val_p90 = arr_p90 * MULTIPLO_ARR
+    
+    # Valuation Real e Ideal
+    arr_real = df_real_m['arr'].iloc[-1]
+    val_real = arr_real * MULTIPLO_ARR
+    
+    # Probabilidade de Unicórnio (R$ 1B) ou Minicorn (R$ 100M)
+    prob_100m = (arr_series * MULTIPLO_ARR > 100000000).mean()
+    
+    # Construir Tabela "Matadora"
+    df_val = pd.DataFrame([
+        {'Cenário': 'Conservador (P10)', 'ARR Projetado (M36)': formata_moeda(arr_p10), 'Valuation (5x ARR)': formata_moeda(val_p10), 'Probabilidade': '100%'},
+        {'Cenário': 'Base/Realista (P50)', 'ARR Projetado (M36)': formata_moeda(arr_p50), 'Valuation (5x ARR)': formata_moeda(val_p50), 'Probabilidade': '50%'},
+        {'Cenário': 'Otimista (P90)', 'ARR Projetado (M36)': formata_moeda(arr_p90), 'Valuation (5x ARR)': formata_moeda(val_p90), 'Probabilidade': '10%'},
+    ])
+    
+    # Gráfico simples de distribuição de Valuation
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    # Histograma
+    valuations = arr_series * MULTIPLO_ARR
+    ax.hist(valuations / 1e6, bins=30, color='#6366F1', alpha=0.7, edgecolor='white')
+    
+    # Linhas verticais
+    ax.axvline(val_p50 / 1e6, color='black', linestyle='--', linewidth=2, label=f'Mediana: {val_p50/1e6:.1f}M')
+    ax.axvline(val_real / 1e6, color='#2563EB', linestyle='-', linewidth=2, label=f'Cenário Real: {val_real/1e6:.1f}M')
+    
+    ax.set_title(f"DISTRIBUIÇÃO DE PROBABILIDADE DE VALUATION (M36)\nBaseado em {len(arr_series)} Simulações x Múltiplo {MULTIPLO_ARR}x ARR", fontsize=12, fontweight='bold')
+    ax.set_xlabel("Valuation Projetado (R$ Milhões)")
+    ax.set_ylabel("Frequência (Simulações)")
+    ax.legend()
+    ax.grid(True, alpha=0.2)
+    
+    # Insight
+    texto_insight = f"O modelo aponta um Valuation mediano de {formata_moeda(val_p50)} no Mês 36 com múltiplo de {MULTIPLO_ARR}x ARR."
+    if prob_100m > 0:
+        texto_insight += f" Existe uma chance de {prob_100m:.1%} de atingir Valuation > R$ 100M."
+        
+    insight = {
+        "fato": texto_insight,
+        "causa": "Variação natural de Churn e CAC nas milahres de simulações.",
+        "implicacao": "Oferece um range de negociação fundamentado matematicamente, não 'chute'.",
+        "acao": "Utilizar o P10 (Cenário Conservador) como piso de negociação e P90 como alvo."
+    }
+    
+    # Texto Como Ler
+    texto_como_ler = """
+**O QUE É ISSO?**
+É a resposta para "Quanto vai valer minha empresa?". Não damos um número único, mas uma **curva de probabilidade**.
+*   **Piso (P10):** Mesmo que tudo dê errado, a empresa deve valer isso.
+*   **Alvo (P50):** Onde esperamos chegar.
+*   **Teto (P90):** O potencial de "home run".
+    """
+    
+    render_atomic_block(
+        chart_id="pg6_valuation",
+        title_technical="VIZ FINAL: Valuation Probabilístico (Monte Carlo)",
+        title_colloquial="Quanto essa startup pode valer em 3 anos?",
+        fig=fig,
+        legend_md=texto_como_ler,
+        df_tabela=df_val,
+        insight_dict=insight,
+        report_mode=report_mode,
+        data_source_text=f"Fonte: {len(arr_series)} Simulações Monte Carlo | Múltiplo {MULTIPLO_ARR}x ARR"
+    )
+    plt.close(fig)
