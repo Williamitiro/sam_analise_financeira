@@ -29,18 +29,15 @@ try:
         render_atomic_block, salvar_figura_silencioso
     )
 except ImportError:
-    print("⚠️  celula_0_utils não encontrado. Definindo helpers locais...")
-    CORES = {
-        'sucesso': '#388E3C', 'alerta': '#FBC02D', 'critico': '#D32F2F',
-        'receita': '#2196F3', 'despesa': '#F44336', 'neutro': '#9E9E9E'
-    }
-    def setup_plot_style(): pass
-    def formata_moeda(v):
-        s = f"{float(v):,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
-        return f"R$ {s}"
-    def formata_pct(v): return f"{v:.1f}%"
-    def render_atomic_block(**kwargs): display(Markdown(f"## {kwargs.get('title_colloquial', '')}"))
-    def salvar_figura_silencioso(fig, path): fig.savefig(path, dpi=300, bbox_inches='tight')
+    # Tenta importar via caminho relativo se sys.path falhar
+    try:
+        from .celula_0_utils import (
+            CORES, setup_plot_style, formata_moeda, formata_pct,
+            render_atomic_block, salvar_figura_silencioso
+        )
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils even after sys.path append.")
+         raise
 
 setup_plot_style()
 
@@ -227,7 +224,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['caixa', 'ebitda', 'burn_rate']")
     
     plt.tight_layout()
-    salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz1_evolucao_financeira.png')
+    salvar_figura_silencioso(fig, 'pg3_viz1_evolucao_financeira.png')
     
     if report_mode:
         display(fig)
@@ -462,7 +459,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     
     fig.suptitle('WATERFALL DRE - RECEITA ATÉ EBITDA', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
-    salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz2_waterfall.png')
+    salvar_figura_silencioso(fig, 'pg3_viz2_waterfall.png')
     
     if report_mode:
         display(fig)
@@ -584,7 +581,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     
     fig2.suptitle('COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=0.98)
     # plt.tight_layout() REMOVIDO PARA MARGENS CONTROLADAS
-    salvar_figura_silencioso(fig2, 'outputs/figs/pg3_viz2_composicao_custos.png')
+    salvar_figura_silencioso(fig2, 'pg3_viz2_composicao_custos.png')
     
     if report_mode:
         display(fig2)
@@ -754,7 +751,7 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     # [Annotation removida conforme solicitação do usuário]
 
     plt.tight_layout()
-    salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz3_fluxo_caixa_semanal.png')
+    salvar_figura_silencioso(fig, 'pg3_viz3_fluxo_caixa_semanal.png')
     
     if report_mode:
         display(fig)

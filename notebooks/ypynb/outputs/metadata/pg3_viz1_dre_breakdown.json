@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg3_viz1_dre_breakdown",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-17T16:12:40.720968",
+  "title_simple": "VIZ 3.0: Decomposição da DRE (M36)",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "Estrutura de custos analisada.",
+    "causa": "Breakdown de M36.",
+    "implicacao": "Entendimento da eficiência.",
+    "acao": "Otimizar linha a linha."
+  },
+  "files": {
+    "png": "outputs/figs/pg3_viz1_dre_breakdown.png",
+    "json": "outputs/metadata/pg3_viz1_dre_breakdown.json",
+    "table": "outputs/tables/pg3_viz1_dre_breakdown_tabela.html"
+  },
+  "validation_status": "ok"
+}

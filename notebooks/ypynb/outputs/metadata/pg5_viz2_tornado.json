@@ -2,12 +2,12 @@
   "chart_id": "pg5_viz2_tornado",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-17T09:22:50.081912",
+  "timestamp": "2025-12-17T16:13:04.995664",
   "title_simple": "VIZ 5.3 Tornado Plot (Sensibilidade)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "A variável **Churn Base (%)** é o maior vetor de volatilidade, com 31% do impacto total.",
-    "causa": "As top 3 variáveis (Churn Base (%), Conv. Trial -> Pago, Preço Trader) explicam 64% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.",
+    "fato": "A variável **Churn Base (%)** é o maior vetor de volatilidade, com 32% do impacto total.",
+    "causa": "As top 3 variáveis (Churn Base (%), Conv. Trial -> Pago, Preço Trader) explicam 63% da sensibilidade do modelo devido à natureza multiplicativa do Unit Economics.",
     "implicacao": "Erros de estimativa nestes drivers custam desproporcionalmente caro. Otimizar **Churn Base (%)** traz maior ROI que qualquer outra ação.",
     "acao": "Criar dashboard semanal específico para monitorar: Churn Base (%), Conv. Trial -> Pago, Preço Trader."
   },

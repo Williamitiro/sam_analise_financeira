@@ -37,7 +37,15 @@ try:
         render_atomic_block, salvar_figura_silencioso, salvar_tabela_html_silencioso
     )
 except ImportError:
-    pass
+    # Tenta importar via caminho relativo se sys.path falhar
+    try:
+        from .celula_0_utils import (
+            setup_plot_style, formata_moeda, formata_pct,
+            render_atomic_block, salvar_figura_silencioso, salvar_tabela_html_silencioso
+        )
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils in Page 4.")
+         raise
 
 setup_plot_style()
 

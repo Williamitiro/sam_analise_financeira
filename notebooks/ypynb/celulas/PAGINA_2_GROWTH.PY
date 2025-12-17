@@ -37,13 +37,17 @@ try:
         render_atomic_block
     )
 except ImportError:
-    # Fallback se não encontrar o módulo (ex: rodando isolado sem path)
-    # Mas idealmente deve funcionar com o sys.path append acima
-    print("⚠️  AVISO: celula_0_utils não encontrado. Importando helpers locais...")
-    def setup_plot_style(): pass
-    def formata_moeda(v): return f"R$ {v:.2f}"
-    # (Poderíamos definir fallbacks, mas vamos confiar no import)
-    pass
+    # Tenta importar via caminho relativo se sys.path falhar
+    try:
+        from .celula_0_utils import (
+            setup_plot_style, formata_moeda, formata_pct,
+            check_create_dir, salvar_figura, salvar_figura_silencioso,
+            salvar_metadados_json, salvar_tabela_html, salvar_tabela_html_silencioso,
+            render_atomic_block
+        )
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils even after sys.path append.")
+         raise
 
 # (Helpers removidos para evitar duplicação - use celula_0_utils.py)
 

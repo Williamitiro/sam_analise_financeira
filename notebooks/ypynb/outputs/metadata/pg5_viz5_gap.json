@@ -2,13 +2,13 @@
   "chart_id": "pg5_viz5_gap",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-16T15:46:32.524788",
+  "timestamp": "2025-12-17T16:13:10.638781",
   "title_simple": "VIZ 5.6 Gap Analysis (Real vs Estresse)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "O Gap de Caixa totaliza R$ 82.686,45. O fator **Churn (Retenção)** responde sozinho por 50% dessa perda.",
+    "fato": "O Gap de Caixa totaliza R$ 75.053,59. O fator **Churn (Retenção)** responde sozinho por 50% dessa perda.",
     "causa": "A alta sensibilidade ao Churn (Retenção) indica que o modelo de negócios depende excessivamente da eficiência desta métrica no pior cenário.",
-    "implicacao": "Uma deterioração isolada em Churn (Retenção) é suficiente para consumir R$ 41.343,23 do caixa projetado.",
+    "implicacao": "Uma deterioração isolada em Churn (Retenção) é suficiente para consumir R$ 37.526,80 do caixa projetado.",
     "acao": "Hedge Operacional: Diversificar fontes e otimizar Churn (Retenção) para reduzir sua volatilidade."
   },
   "files": {

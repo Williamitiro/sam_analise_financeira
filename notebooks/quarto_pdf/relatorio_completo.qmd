@@ -134,7 +134,7 @@ Quantificacao da incerteza via Monte Carlo:
 
 ```{python}
 #| label: setup
-#| output: false
+#| include: false
 import sys
 import os
 import contextlib
@@ -143,6 +143,7 @@ from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')  # [FIX] Force non-interactive backend to avoid WinError 6
 import matplotlib.pyplot as plt
+import importlib
 
 root_dir = os.path.abspath('../../')
 if root_dir not in sys.path:
@@ -150,6 +151,15 @@ if root_dir not in sys.path:
 
 sys.path.append(os.path.join(root_dir, 'notebooks/ypynb/'))
 sys.path.append(os.path.join(root_dir, 'notebooks/ypynb/celulas/'))
+
+# [CRITICAL FIX] Force reload of shared utils to avoid stale cache issues
+try:
+    import celula_0_utils
+    importlib.reload(celula_0_utils)
+    from celula_0_utils import CORES, setup_plot_style
+    print("✅ celula_0_utils reloaded successfully.")
+except ImportError:
+    print("⚠️ Warning: Could not reload celula_0_utils in setup.")
 
 from celula_2_premissas import PREMISSAS
 

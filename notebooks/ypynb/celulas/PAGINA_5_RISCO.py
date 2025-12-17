@@ -40,11 +40,15 @@ try:
         render_atomic_block, salvar_figura_silencioso
     )
 except ImportError:
-    # Fallback para desenvolvimento
-    def formata_moeda(valor):
-        return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    def formata_pct(valor):
-        return f"{valor*100:.1f}%"
+    # Tenta importar via caminho relativo se sys.path falhar
+    try:
+        from .celula_0_utils import (
+            setup_plot_style, formata_moeda, formata_pct,
+            render_atomic_block, salvar_figura_silencioso
+        )
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils in Page 5.")
+         raise
 
 # Import Motor (Fallback Robusto para Ato 2)
 try:
@@ -1240,11 +1244,13 @@ def render_var_histogram(mc_results, df_real_m, premissas, report_mode=False):
     plt.tight_layout()
     
     # Salvar se report_mode
+    # Salvar se report_mode
     if report_mode:
         try:
-            import os
-            os.makedirs('outputs/figs', exist_ok=True)
-            plt.savefig('outputs/figs/pag5_var_histogram.png', dpi=150, bbox_inches='tight')
+            salvar_figura_silencioso(fig, 'pag5_var_histogram.png')
+            # import os # Removido
+            # os.makedirs('outputs/figs', exist_ok=True) # Removido
+            # plt.savefig('outputs/figs/pag5_var_histogram.png', dpi=150, bbox_inches='tight')
         except:
             pass
     
@@ -1353,9 +1359,10 @@ def render_survival_curve(mc_results, premissas, report_mode=False):
     # Salvar se report_mode
     if report_mode:
         try:
-            import os
-            os.makedirs('outputs/figs', exist_ok=True)
-            plt.savefig('outputs/figs/pag5_survival_curve.png', dpi=150, bbox_inches='tight')
+            salvar_figura_silencioso(fig, 'pag5_survival_curve.png')
+            # import os
+            # os.makedirs('outputs/figs', exist_ok=True)
+            # plt.savefig('outputs/figs/pag5_survival_curve.png', dpi=150, bbox_inches='tight')
         except:
             pass
     
@@ -1404,10 +1411,12 @@ def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_m
     
     if report_mode:
         try:
-            import os
-            os.makedirs('outputs/figs', exist_ok=True)
-            plt.savefig('outputs/figs/pag5_monte_carlo_fan_chart.png', dpi=150, bbox_inches='tight')
-            display(Markdown("![Fan Chart Monte Carlo](outputs/figs/pag5_monte_carlo_fan_chart.png)"))
+            salvar_figura_silencioso(fig1, 'pag5_monte_carlo_fan_chart.png')
+            # import os
+            # os.makedirs('outputs/figs', exist_ok=True)
+            # plt.savefig('outputs/figs/pag5_monte_carlo_fan_chart.png', dpi=150, bbox_inches='tight')
+            display(fig1)
+            # display(Markdown("![Fan Chart Monte Carlo](outputs/figs/pag5_monte_carlo_fan_chart.png)"))
             display(Markdown("_Fonte: mc_results (Célula 5D - Monte Carlo) | df_real_m vs df_ideal_m (Célula 5A/5B)_"))
         except:
             pass
@@ -1488,8 +1497,10 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
     
     if report_mode:
         try:
-            plt.savefig('outputs/figs/pag5_distribuicao_mes6.png', dpi=150, bbox_inches='tight')
-            display(Markdown("![Distribuição Mês 6](outputs/figs/pag5_distribuicao_mes6.png)"))
+            salvar_figura_silencioso(fig2, 'pag5_distribuicao_mes6.png')
+            # plt.savefig('outputs/figs/pag5_distribuicao_mes6.png', dpi=150, bbox_inches='tight')
+            display(fig2)
+            # display(Markdown("![Distribuição Mês 6](outputs/figs/pag5_distribuicao_mes6.png)"))
             display(Markdown("_Fonte: mc_results (Célula 5D) | df_real_m, df_ideal_m (Célula 5A/5B)_"))
         except:
             pass
@@ -2217,9 +2228,13 @@ def plotar_analise_runway_profunda(metricas, premissas, report_mode=False, mc_ru
         
         ax3.set_xlabel('Mês', fontsize=11, fontweight='bold')
         ax3.set_ylabel('Gap de Runway (meses)', fontsize=11, fontweight='bold')
-        ax3.set_title(f'GAP REAL vs IDEAL: Quanto runway estamos "perdendo"?\n' +
-                     f'Gap médio: {gap_medio:.1f} meses | Máximo: {gap_maximo:.1f}m (M{mes_gap_max})',
-                     fontsize=12, fontweight='bold')
+        gap_minimo = gap_runway.min()
+        
+        titulo_gap = f'GAP REAL vs IDEAL: Quanto runway estamos "perdendo"?\nGap médio: {gap_medio:.1f} meses | Máximo: +{gap_maximo:.1f}m (M{mes_gap_max})'
+        if gap_minimo < -0.1:
+            titulo_gap += f' | Mínimo: {gap_minimo:.1f}m'
+            
+        ax3.set_title(titulo_gap, fontsize=12, fontweight='bold')
         ax3.legend(loc='upper right', fontsize=9)
         ax3.grid(True, alpha=0.3)
         ax3.set_xlim(1, 36)
@@ -2335,6 +2350,7 @@ def gerar_insight_runway_profundo(metricas, premissas):
     gap_runway = 0
     if ideal:
         gap_runway = ideal['runway_minimo'] - real['runway_minimo']
+        gap_minimo = (ideal['runway'] - real['runway']).min() # Calculado dinamicamente
     
     # Vulnerabilidade do estresse
     stress_delta = 0
@@ -2349,31 +2365,32 @@ def gerar_insight_runway_profundo(metricas, premissas):
             f"O modelo apresenta **zero meses críticos** (runway < 3 meses) ao longo dos 36 meses. "
             f"O ponto de menor resiliência ocorre no **mês {mes_crit}**, quando o runway atinge "
             f"**{runway_min:.1f} meses** de sobrevivência. A taxa de cobertura média (receita/custos) "
-            f"é de **{cobertura*100:.0f}%**, indicando que a receita cobre **{cobertura*100:.0f}%** "
-            f"dos custos operacionais."
+            f"é de **{cobertura*100:.0f}%**, indicando que a receita {'cobre' if cobertura >= 1.0 else 'não cobre'} "
+            f"os custos operacionais."
         )
     elif meses_criticos < 6:
         fato = (
             f"Identificamos **{meses_criticos} meses críticos** (runway < 3 meses), concentrados "
             f"principalmente no período M1-M{mes_crit}. O pior momento ocorre no **mês {mes_crit}** "
             f"com apenas **{runway_min:.1f} meses** de caixa. O burn rate médio de "
-            f"**{formata_moeda(burn_medio)}/mês** consome o caixa antes da receita estabilizar."
+            f"**{formata_moeda(burn_medio)}/mês** consome o caixa antes da receita estabilizar. "
+            f"A taxa de cobertura de **{cobertura*100:.0f}%** indica que a receita {'cobre' if cobertura >= 1.0 else 'não cobre'} os custos."
         )
     else:
         fato = (
             f"⚠️ **ALERTA ESTRUTURAL:** O modelo apresenta **{meses_criticos} meses críticos** "
             f"(runway < 3 meses), o que representa **{meses_criticos/36*100:.0f}%** do período total. "
             f"O ponto mais vulnerável é o **mês {mes_crit}** com runway de apenas **{runway_min:.1f} meses**. "
-            f"A taxa de cobertura de **{cobertura*100:.0f}%** indica que a receita não cobre os custos."
+            f"A taxa de cobertura de **{cobertura*100:.0f}%** indica que a receita {'cobre' if cobertura >= 1.0 else 'não cobre'} os custos."
         )
     
     # Adicionar comparação com cenários
     if gap_runway > 0:
         fato += (
-            f"\n\n📊 **Gap com Cenário Ideal:** O modelo Real está **{gap_runway:.1f} meses** "
-            f"abaixo do potencial. Isso representa oportunidade de melhoria via otimização "
-            f"de custos ou aceleração de receita."
+            f"\n\n📊 **Gap com Cenário Ideal:** O modelo Real apresenta gap médio de **{gap_runway:.1f} meses**. "
         )
+        if gap_minimo < -1:
+             fato += f"Entretanto, há picos de ineficiência onde o gap atinge **{gap_minimo:.1f} meses** (M{np.argmin(ideal['runway'] - real['runway'])+1}), indicando alta exposição pontual."
     
     # =========================================================================
     # CAUSA - Por que isso acontece (DETALHADO)
@@ -2402,10 +2419,16 @@ def gerar_insight_runway_profundo(metricas, premissas):
             f"**{formata_moeda((1-cobertura) * burn_medio)}** do caixa antes de atingir break-even."
         )
     elif cobertura >= 1.0:
-        causa += (
-            f"Com cobertura de {cobertura*100:.0f}%, o modelo já opera em regime de "
-            f"**auto-financiamento** após o período inicial de investimento."
-        )
+        if meses_criticos > 0:
+             causa += (
+                f"Apesar da cobertura operacional positiva ({cobertura*100:.0f}%), o modelo sofre com **descasamento de caixa (timing)**. "
+                f"O lucro contábil não se traduz em liquidez imediata para cobrir o burn inicial."
+            )
+        else:
+            causa += (
+                f"Com cobertura de {cobertura*100:.0f}%, o modelo já opera em regime de "
+                f"**auto-financiamento** após o período inicial de investimento."
+            )
     
     # =========================================================================
     # IMPLICAÇÃO - O que significa para o negócio (PRÁTICO)
@@ -2458,14 +2481,14 @@ def gerar_insight_runway_profundo(metricas, premissas):
             f"⚠️ **AÇÃO PREVENTIVA (Prioridade Moderada):**\n"
             f"1. **CAPTAÇÃO:** Iniciar processo no M{mes_captacao} (3 meses antes do vale)\n"
             f"2. **CUSTO:** Revisar {driver_principal.lower()} — representa {driver_pct:.0f}% do burn\n"
-            f"3. **BUFFER:** Criar reserva de {formata_moeda(burn_medio * 6)} antes de M{primeiro_crit or mes_crit}\n"
+            f"3. **BUFFER:** Criar reserva de {formata_moeda(burn_medio * 6)} (6 meses de burn) para atravessar o vale crítico (M1-M{primeiro_crit or mes_crit})\n"
             f"4. **TRIGGER:** Se runway < 4 meses em qualquer momento → ativar plano de contingência"
         )
     else:
         acao = (
             f"🔴 **AÇÃO URGENTE (Prioridade Máxima):**\n"
             f"1. **IMEDIATO:** Cortar {driver_principal.lower()} em 30% (economia de {formata_moeda(burn_medio * driver_pct/100 * 0.3)}/mês)\n"
-            f"2. **CURTO PRAZO:** Buscar capital bridge de {formata_moeda(burn_medio * 6)} nas próximas 4 semanas\n"
+            f"2. **CURTO PRAZO:** Buscar capital bridge de {formata_moeda(burn_medio * 6)} (6 meses de burn) para blindar o período M1-M{mes_crit}\n"
             f"3. **RENEGOCIAR:** Alongar prazos com fornecedores para preservar caixa\n"
             f"4. **PIVOT:** Avaliar modelo de receita — cobertura de {cobertura*100:.0f}% é insustentável"
         )
@@ -3133,7 +3156,7 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
             if report_mode:
                 display(Markdown("***"))
                 display(Markdown("### DISTRIBUIÇÃO DE RISCO (VaR)"))
-                display(Markdown("![VaR Histogram](outputs/figs/pag5_var_histogram.png)"))
+                display(fig_var)
                 display(Markdown(f"_Fonte: mc_results (Célula 5D) | {len(mc_results)} simulações_"))
                 
                 # Callout explicativo
@@ -3180,7 +3203,7 @@ O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
             if report_mode:
                 display(Markdown("***"))
                 display(Markdown("### CURVA DE SOBREVIVÊNCIA"))
-                display(Markdown("![Survival Curve](outputs/figs/pag5_survival_curve.png)"))
+                display(fig_surv)
                 display(Markdown(f"_Fonte: mc_results (Célula 5D) | caixa_series por mês_"))
                 
                 # Callout explicativo
@@ -3188,7 +3211,7 @@ O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
 ### COMO LER A CURVA DE SOBREVIVÊNCIA
 
 **O QUE ESTA CURVA MOSTRA?**
-A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
+O probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
 
 **ZONAS COLORIDAS:**
 - 🟢 **VERDE (>80%):** Zona segura - probabilidade alta de sobrevivência
@@ -3292,9 +3315,9 @@ A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
         if not report_mode:
             print("   ✅ Ato 5 gerado com sucesso!")
 
-        # ATO EXTRA 1: USE OF FUNDS
-        if render_ato_use_of_funds:
-            render_ato_use_of_funds(df_real_m, premissas, report_mode)
+        # ATO EXTRA 1: USE OF FUNDS - DESATIVADO (REDUNDANTE)
+        # if render_ato_use_of_funds:
+        #     render_ato_use_of_funds(df_real_m, premissas, report_mode)
             
         # ATO EXTRA 2: VALUATION PROBABILÍSTICO
         if render_ato_valuation_probabilistico:

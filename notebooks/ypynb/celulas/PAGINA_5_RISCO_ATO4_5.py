@@ -16,21 +16,18 @@ from IPython.display import display, Markdown
 # Import utils compartilhados
 # Ajuste conforme estrutura de imports do notebook (assumindo execução como módulo ou script)
 try:
-    from .celula_0_utils import (
+    from celula_0_utils import (
         render_atomic_block, formata_moeda, formata_pct, setup_plot_style
     )
 except ImportError:
-    # Tenta import direto se estiver na mesma pasta
+    # Tenta importar via caminho relativo se sys.path falhar
     try:
-        from celula_0_utils import (
+        from .celula_0_utils import (
             render_atomic_block, formata_moeda, formata_pct, setup_plot_style
         )
-    except:
-        # Fallback dummy
-        def render_atomic_block(**kwargs): print("⚠️ render_atomic_block missing")
-        def formata_moeda(v): return f"R$ {v:,.2f}"
-        def formata_pct(v): return f"{v:.1%}"
-        def setup_plot_style(): pass
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils in Page 5 (Ato 4/5).")
+         raise
 
 # ==============================================================================
 # ATO 4: BREAK-EVEN SOB ESTRESSE (ANÁLISE DE ESCALA)
@@ -71,10 +68,10 @@ def render_ato4_breakeven(df_real_m, df_ideal_m, df_stress_m, premissas, report_
     Renderiza Ato 4: Trajetória de Break-Even sob Estresse.
     """
     # Titulo removido para evitar duplicidade com render_atomic_block
-        if not report_mode:
-            print("\n" + "-"*40)
-            print("VIZ 5.5: ANÁLISE DE BREAK-EVEN SOB ESTRESSE")
-            print("-" * 40)
+    if not report_mode:
+        print("\n" + "-"*40)
+        print("VIZ 5.5: ANÁLISE DE BREAK-EVEN SOB ESTRESSE")
+        print("-" * 40)
     
     setup_plot_style()
     
@@ -311,10 +308,10 @@ def render_ato5_gap_analysis(df_real_m, df_stress_m, premissas, motor_func, repo
     Mostra onde o dinheiro "vaza" no pior cenário.
     """
     # Titulo removido para evitar duplicidade
-        if not report_mode:
-            print("\n" + "-"*40)
-            print("VIZ 5.6: GAP ANALYSIS E VAZAMENTO DE VALOR")
-            print("-" * 40)
+    if not report_mode:
+        print("\n" + "-"*40)
+        print("VIZ 5.6: GAP ANALYSIS E VAZAMENTO DE VALOR")
+        print("-" * 40)
     
     setup_plot_style()
     

@@ -41,6 +41,15 @@ except ImportError:
 # 1. SETUP E HELPERS VISUAIS
 # ============================================================================
 
+# Paleta de Cores Padronizada (P3/P5 Compatible)
+CORES = {
+    'sucesso': '#388E3C', 'alerta': '#FBC02D', 'critico': '#D32F2F',
+    'receita': '#2196F3', 'despesa': '#F44336', 'neutro': '#9E9E9E',
+    'real': '#000000', 'ideal': '#388E3C', 'benchmark': '#D32F2F',
+    'pessimista': '#F57C00', 'usuarios': '#7B1FA2', 'marketing': '#1976D2',
+    'fundo': '#FFFFFF'
+}
+
 def setup_plot_style():
     """Define o estilo 'Gold Standard' para matplotlib."""
     plt.style.use('default')  # Base limpa

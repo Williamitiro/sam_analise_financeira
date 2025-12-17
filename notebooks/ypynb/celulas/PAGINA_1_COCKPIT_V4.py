@@ -43,8 +43,16 @@ try:
     )
     HAS_UTILS = True
 except ImportError:
-    HAS_UTILS = False
-    # print("⚠️  celula_0_utils não encontrado. Usando fallback.")
+    # Tenta importar via caminho relativo se sys.path falhar
+    try:
+        from .celula_0_utils import (
+            render_atomic_block, setup_plot_style, 
+            salvar_figura_silencioso, salvar_tabela_html_silencioso
+        )
+        HAS_UTILS = True
+    except ImportError:
+         print("❌ ERRO CRÍTICO: Não foi possível importar celula_0_utils in Page 1.")
+         raise
 
 
 # ============================================================================
@@ -493,13 +501,13 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
             spine.set_linewidth(1.5)
     
     plt.tight_layout()
-    plt.savefig('outputs/figs/pg1_kpi_cards.png', dpi=300, bbox_inches='tight', facecolor='white')
+    salvar_figura_silencioso(fig, 'pg1_kpi_cards.png')
     
     if report_mode:
-        plt.close(fig)
+        # plt.close(fig) # Não fechar se formos exibir
         display(Markdown("## PAINEL DE CONTROLE (KPIs)"))
         display(Markdown("**Visão Geral:** Indicadores chave de performance no final do período (M36)."))
-        display(Markdown("![KPI Cards](outputs/figs/pg1_kpi_cards.png)"))
+        display(fig)
         display(Markdown("*Fonte: df_real_m (Simulacao Real) - Snapshot M36*"))
         
         # GLOSSÁRIO IMEDIATAMENTE APÓS OS CARDS
@@ -613,13 +621,13 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
     ax1.set_xlim(1, 36)
     
     plt.tight_layout()
-    plt.savefig('outputs/figs/pg1_temporal_correlacao.png', bbox_inches='tight')
+    salvar_figura_silencioso(fig, 'pg1_temporal_correlacao.png')
     
     if report_mode:
-        plt.close(fig)
+        # plt.close(fig)
         display(Markdown("### EVOLUÇÃO MRR vs USUÁRIOS"))
         display(Markdown("**Pergunta:** O crescimento de usuarios esta se convertendo em receita proporcional?"))
-        display(Markdown("![Evolução Temporal](outputs/figs/pg1_temporal_correlacao.png)"))
+        display(fig)
         display(Markdown("*Fonte: df_real_m vs df_ideal_m | Projecao 36 meses*"))
         
         # COMO LER
@@ -860,13 +868,13 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
             family='monospace')
     
     plt.tight_layout()
-    plt.savefig('outputs/figs/pg1_eficiencia_marketing.png', dpi=300, bbox_inches='tight', facecolor='white')
+    salvar_figura_silencioso(fig, 'pg1_eficiencia_marketing.png')
     
     if report_mode:
-        plt.close(fig)
+        # plt.close(fig)
         display(Markdown("### EFICIÊNCIA DE MARKETING (ROI)"))
         display(Markdown("**Pergunta:** O dinheiro investido em marketing esta retornando como receita recorrente?"))
-        display(Markdown("![Eficiencia Marketing](outputs/figs/pg1_eficiencia_marketing.png)"))
+        display(fig)
         display(Markdown("*Fonte: df_real_m | gasto_marketing vs mrr*"))
         
         # COMO LER
@@ -1133,7 +1141,7 @@ def executar_pagina_1(df_real_m, df_ideal, met_real, met_ideal, report_mode=Fals
         print("\nEXECUTANDO GERAÇÃO DA PÁGINA 1...")
         print("="*80)
     
-    os.makedirs('outputs/figs', exist_ok=True)
+    # os.makedirs('outputs/figs', exist_ok=True) # Removido - gerenciado por utils
     os.makedirs('outputs/metadata', exist_ok=True)
     os.makedirs('outputs/tabelas', exist_ok=True)
 
