@@ -2,11 +2,11 @@
   "chart_id": "pg2_viz2_7_tiers",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-17T16:12:38.836405",
+  "timestamp": "2025-12-17T18:15:53.770846",
   "title_simple": "VIZ 2.7: Timeline de Investimento e Tiers de Growth",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "No M36, a empresa opera com budget de R$ 16.759,60, ativando Tiers de alta performance.",
+    "fato": "No M36, a empresa opera com budget de R$ 18.350,04, ativando Tiers de alta performance.",
     "causa": "Receita crescente desbloqueou budgets maiores (% da Receita).",
     "implicacao": "Efeito 'Flywheel': Mais receita -> Mais Mkt -> Mais Orgânico -> Mais Receita.",
     "acao": "Monitorar saturação de canais para manter eficiência."

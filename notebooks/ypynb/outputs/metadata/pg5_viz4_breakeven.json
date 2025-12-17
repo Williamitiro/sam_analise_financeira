@@ -2,13 +2,13 @@
   "chart_id": "pg5_viz4_breakeven",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-17T16:13:08.861102",
+  "timestamp": "2025-12-17T16:46:20.265780",
   "title_simple": "VIZ 5.5 Break-Even sob Estresse",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "Break-Even Real esperado no Mês 8 (consumo de R$ 9.249,57).",
+    "fato": "Break-Even Real esperado no Mês 8 (consumo de R$ 10.911,50).",
     "causa": "Estrutura de custos vs Ramp-up de receita atual.",
-    "implicacao": "Em cenário de estresse, BE atrasa 14 meses e exige R$ 16.423,43 extra.",
+    "implicacao": "Em cenário de estresse, BE atrasa 13 meses e exige R$ 18.540,37 extra.",
     "acao": "Focar eficiência de aquisição (CAC) e retenção para antecipar BE em 3-6 meses."
   },
   "files": {

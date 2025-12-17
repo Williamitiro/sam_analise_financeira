@@ -20,3 +20,18 @@ notebooks/imagens/
 notebooks/outputs/
 notebooks/metadata/
 _archive/
+
+# Large binaries (Git LFS would be needed, but usually we just ignore them)
+*.pkl
+*.pickle
+*.h5
+*.joblib
+*.npy
+*.npz
+
+# Quarto & PDF Outputs (Recursive)
+**/outputs/figs/
+**/outputs/tables/
+**/outputs/mc_data/
+**/quarto_pdf/outputs/
+**/*_files/

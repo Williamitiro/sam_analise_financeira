@@ -2,11 +2,11 @@
   "chart_id": "pg2_viz2_6",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-17T16:12:37.650621",
+  "timestamp": "2025-12-17T18:15:50.972597",
   "title_simple": "VIZ 2.6: Analise de Vazamento (Net Growth e Churn)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
-    "fato": "O churn acima do benchmark custou R$ 2,552 no ultimo ano.",
+    "fato": "O churn acima do benchmark custou R$ 2,737 no ultimo ano.",
     "causa": "Taxa de churn superior ao benchmark de 5%.",
     "implicacao": "Reducao direta do Valuation e necessidade de repor receita mais rapido.",
     "acao": "Implementar squad de retencao para estancar o sangramento."

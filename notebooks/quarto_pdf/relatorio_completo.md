@@ -75,6 +75,24 @@ Analise profunda:
 -   Fluxo de caixa
 -   Runway e solvencia
 
+### Tier 4 - Unit Economics & Operação
+
+Validacao da saude unitaria e eficiencia operacional:
+
+-   LTV/CAC Evolution
+-   Payback Period
+-   ARPU por Cohort
+-   Analise dos fundamentos de escala
+
+### Tier 5 - Analise de Risco & Cenarios
+
+Quantificacao da incerteza via Monte Carlo:
+
+-   Simulações estocásticas (33k+ cenários)
+-   Value at Risk (VaR) financeiro
+-   Análise de sensibilidade e “Cisne Negro”
+-   Trajetória de Runway probabilística
+
 ------------------------------------------------------------------------
 
 # Principios do Documento
@@ -380,10 +398,9 @@ Simulacao Conservadora (Real) contra os Benchmarks (Ideal).
 **Visão Geral:** Indicadores chave de performance no final do período
 (M36).
 
-<figure>
-<img src="outputs/figs/pg1_kpi_cards.png" alt="KPI Cards" />
-<figcaption aria-hidden="true">KPI Cards</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier1-output-13.png"
+id="tier1-13" />
 
 *Fonte: df_real_m (Simulacao Real) - Snapshot M36*
 
@@ -453,11 +470,9 @@ receita. Meta: &gt;12 meses.</td>
 **Pergunta:** O crescimento de usuarios esta se convertendo em receita
 proporcional?
 
-<figure>
-<img src="outputs/figs/pg1_temporal_correlacao.png"
-alt="Evolução Temporal" />
-<figcaption aria-hidden="true">Evolução Temporal</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier1-output-19.png"
+id="tier1-19" />
 
 *Fonte: df_real_m vs df_ideal_m | Projecao 36 meses*
 
@@ -631,11 +646,9 @@ tempo previsto pelo benchmark.
 **Pergunta:** O dinheiro investido em marketing esta retornando como
 receita recorrente?
 
-<figure>
-<img src="outputs/figs/pg1_eficiencia_marketing.png"
-alt="Eficiencia Marketing" />
-<figcaption aria-hidden="true">Eficiencia Marketing</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier1-output-34.png"
+id="tier1-34" />
 
 *Fonte: df_real_m | gasto_marketing vs mrr*
 
@@ -1805,9 +1818,88 @@ Burn M36) / Burn M1 x 100
 
 ## De onde vem e para onde vai o dinheiro?
 
+### VIZ 3.0: Decomposição da DRE (M36)
+
+#### DADOS TABULADOS:
+
+<style>
+                .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
+                .dataframe th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: left; }
+                .dataframe td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; color: #212529; }
+                .dataframe tr:hover { background-color: #f1f3f5; }
+                .status-red { color: #c0392b; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-yellow { color: #d4ac0d; font-weight: bold; background-color: #fcf3cf; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-green { color: #27ae60; font-weight: bold; background-color: #d5f5e3; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+            </style>
+            
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr style="text-align: right;">
+<th data-quarto-table-cell-role="th">Categoria</th>
+<th data-quarto-table-cell-role="th">Valor</th>
+<th data-quarto-table-cell-role="th">% Receita</th>
+<th data-quarto-table-cell-role="th">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receita Bruta</td>
+<td>R$ 50.420,70</td>
+<td>100%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>(-) Impostos &amp; Taxas</td>
+<td>R$ 6.281,66</td>
+<td>12.5%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>= Receita Líquida</td>
+<td>R$ 44.139,04</td>
+<td>87.5%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>(-) COGS Total</td>
+<td>R$ 3.119,50</td>
+<td>6.2%</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td>= Margem Bruta</td>
+<td>R$ 41.019,54</td>
+<td>81.4%</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td>(-) OPEX Total</td>
+<td>R$ 23.461,04</td>
+<td>46.5%</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td>= EBITDA</td>
+<td>R$ 17.558,50</td>
+<td>34.8%</td>
+<td>🟢</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+### INSIGHT ESTRATÉGICO
+
+-   **FATO:** Estrutura de custos analisada.
+-   **CAUSA:** Breakdown de M36.
+-   **IMPLICAÇÃO:** Entendimento da eficiência.
+-   **AÇÃO RECOMENDADA:** Otimizar linha a linha.
+
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-17.png"
-id="tier3-17" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-25.png"
+id="tier3-25" />
 
 ### COMO LER ESTE GRÁFICO:
 
@@ -1932,8 +2024,8 @@ id="tier3-17" />
 </table>
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-23.png"
-id="tier3-23" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-31.png"
+id="tier3-31" />
 
 ewpage
 
@@ -1960,8 +2052,8 @@ maior 80%, OPEX menor 50%, EBITDA maior 20%
 **Pergunta:** Como se comportam as entradas e saidas no curto prazo?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-30.png"
-id="tier3-30" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-38.png"
+id="tier3-38" />
 
 ### COMO LER ESTE GRÁFICO
 
@@ -2075,8 +2167,8 @@ OPEX + Deducoes - Tendencia = Media Movel 12 semanas
 **Pergunta:** A empresa escala de forma eficiente?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-42.png"
-id="tier3-42" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-50.png"
+id="tier3-50" />
 
 **COMO LER ESTE GRÁFICO (ALAVANCAGEM OPERACIONAL):**
 
@@ -2130,8 +2222,8 @@ Receita - Margem de Contribuicao = Receita - Custos Variaveis
 **Pergunta:** Estamos convergindo para o cenario ideal?
 
 <img
-src="relatorio_completo_files/figure-markdown_strict/tier3-output-50.png"
-id="tier3-50" />
+src="relatorio_completo_files/figure-markdown_strict/tier3-output-58.png"
+id="tier3-58" />
 
 **📖 COMO LER ESTE GRÁFICO:**
 
@@ -2630,10 +2722,10 @@ através de simulações estocásticas (Monte Carlo).
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><strong>90.7%</strong></td>
-<td style="text-align: center;"><strong>R$ -5.319,61</strong></td>
-<td style="text-align: center;"><strong>1024%</strong></td>
-<td style="text-align: center;"><strong>11.3x</strong></td>
+<td style="text-align: center;"><strong>92.5%</strong></td>
+<td style="text-align: center;"><strong>R$ -4.511,15</strong></td>
+<td style="text-align: center;"><strong>967%</strong></td>
+<td style="text-align: center;"><strong>10.7x</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;">Prob. Caixa &gt; R$ 0</td>
@@ -2642,9 +2734,9 @@ através de simulações estocásticas (Monte Carlo).
 <td style="text-align: center;">Incerteza (P95-P5)/P50</td>
 </tr>
 <tr>
-<td style="text-align: center;">+0.7% vs meta 90%</td>
+<td style="text-align: center;">+2.5% vs meta 90%</td>
 <td style="text-align: center;">5k vs limite -50k</td>
-<td style="text-align: center;">1024% potencial acima mediana</td>
+<td style="text-align: center;">967% potencial acima mediana</td>
 <td style="text-align: center;">Alta incerteza</td>
 </tr>
 <tr>
@@ -2840,7 +2932,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Quebra (Caixa &lt; R$ 0)</td>
-<td style="text-align: left;">9.3%</td>
+<td style="text-align: left;">7.5%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 10%</td>
@@ -2849,7 +2941,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &lt; R$ 50k</td>
-<td style="text-align: left;">32.0%</td>
+<td style="text-align: left;">30.3%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; 20%</td>
@@ -2858,7 +2950,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. Caixa &gt; R$ 100k</td>
-<td style="text-align: left;">53.7%</td>
+<td style="text-align: left;">55.7%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 50%</td>
@@ -2867,7 +2959,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. ARR &gt; R$ 1M</td>
-<td style="text-align: left;">37.7%</td>
+<td style="text-align: left;">36.5%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 60%</td>
@@ -2876,7 +2968,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Prob. LTV/CAC &gt; 5x</td>
-<td style="text-align: left;">33.7%</td>
+<td style="text-align: left;">32.4%</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; 30%</td>
@@ -2993,7 +3085,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">VaR 95% (Pior 5%)</td>
-<td style="text-align: left;">R$ -5.319,61</td>
+<td style="text-align: left;">R$ -4.511,15</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 50k</td>
@@ -3002,7 +3094,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CVaR 95%</td>
-<td style="text-align: left;">R$ -13.739,93</td>
+<td style="text-align: left;">R$ -10.921,10</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; -R$ 100k</td>
@@ -3011,7 +3103,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">P50 (Mediana)</td>
-<td style="text-align: left;">R$ 116.570,13</td>
+<td style="text-align: left;">R$ 130.075,99</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&gt; R$ 50k</td>
@@ -3020,7 +3112,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 <tr>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Dispersão (P95-P5)</td>
-<td style="text-align: left;">R$ 1.315.512,54</td>
+<td style="text-align: left;">R$ 1.392.362,87</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">&lt; R$ 200k</td>
@@ -3034,7 +3126,7 @@ ao limite) - 🔴 = Crítico (abaixo benchmark)
 
 ### INTERPRETAÇÃO RÁPIDA
 
--   ✅ **Risco de quebra:** 9.3% (Atenção necessária)
+-   ✅ **Risco de quebra:** 7.5% (Atenção necessária)
 -   ✅ **Cenário Real:** Atinge metas principais
 -   ⚠️ **Dispersão:** Alta incerteza - revisar premissas
 -   🔴 **Cenário Estresse:** Modelo resiliente
@@ -3063,14 +3155,14 @@ comparada à mediana das 100 simulações.
 <tr>
 <td><strong>ARR</strong></td>
 <td>R$ 605.048,40</td>
-<td>R$ 411.321,00</td>
-<td>🟢 Acima da média (+47.1%)</td>
+<td>R$ 461.189,40</td>
+<td>🟢 Acima da média (+31.2%)</td>
 </tr>
 <tr>
 <td><strong>Caixa Final</strong></td>
 <td>R$ 165.372,91</td>
-<td>R$ 116.570,13</td>
-<td>🟢 Acima da média (+41.9%)</td>
+<td>R$ 130.075,99</td>
+<td>🟢 Acima da média (+27.1%)</td>
 </tr>
 </tbody>
 </table>
@@ -3088,11 +3180,9 @@ redobrada.
 **Pergunta Central:** *“Qual a probabilidade real de chegarmos vivos aos
 36 meses?”*
 
-<figure>
-<img src="outputs/figs/pag5_monte_carlo_fan_chart.png"
-alt="Fan Chart Monte Carlo" />
-<figcaption aria-hidden="true">Fan Chart Monte Carlo</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-11.png"
+id="tier5-11" />
 
 *Fonte: mc_results (Célula 5D - Monte Carlo) | df_real_m vs df_ideal_m
 (Célula 5A/5B)*
@@ -3139,11 +3229,9 @@ descalibrado - Mês 6 está na zona cinza perto de R$ 0
 
 ### ZOOM: PONTO DE DECISÃO - MÊS 6
 
-<figure>
-<img src="outputs/figs/pag5_distribuicao_mes6.png"
-alt="Distribuição Mês 6" />
-<figcaption aria-hidden="true">Distribuição Mês 6</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-16.png"
+id="tier5-16" />
 
 *Fonte: mc_results (Célula 5D) | df_real_m, df_ideal_m (Célula 5A/5B)*
 
@@ -3153,13 +3241,13 @@ alt="Distribuição Mês 6" />
 estarei no mês 6?”*
 
 **CORES DAS BARRAS:** - 🔴 **VERMELHO (esquerda):** Cenários de QUEBRA
-(caixa \< R$ 0) - Probabilidade: **1.0%** das simulações
+(caixa \< R$ 0) - Probabilidade: **0.4%** das simulações
 
 -   🟠 **LARANJA (centro-esquerda):** Cenários de RISCO (R$ 0 a R$ 10k)
-    -   Probabilidade: **27.0%** das simulações
+    -   Probabilidade: **27.1%** das simulações
     -   Caixa insuficiente para emergências
 -   🟢 **VERDE (direita):** Cenários SEGUROS (\> R$ 10k)
-    -   Probabilidade: **72.0%** das simulações
+    -   Probabilidade: **72.5%** das simulações
     -   Margem confortável para continuar
 
 **LINHAS VERTICAIS:** - Linha AZUL = Cenário Real projetado para M6 -
@@ -3202,75 +3290,75 @@ extrema - Se caixa \> R$ 10k → Continuar com confiança
 <tbody>
 <tr>
 <td style="text-align: left;">Caixa Final</td>
-<td style="text-align: left;">R$ -5.319,61</td>
-<td style="text-align: left;">R$ 347,87</td>
-<td style="text-align: left;">R$ 22.517,48</td>
-<td style="text-align: left;">R$ 116.570,13</td>
-<td style="text-align: left;">R$ 366.222,22</td>
-<td style="text-align: left;">R$ 935.930,90</td>
-<td style="text-align: left;">R$ 1.310.192,93</td>
-<td style="text-align: left;">R$ 331.982,84</td>
-<td style="text-align: left;">R$ 575.670,01</td>
+<td style="text-align: left;">R$ -4.511,15</td>
+<td style="text-align: left;">R$ 1.218,65</td>
+<td style="text-align: left;">R$ 31.613,67</td>
+<td style="text-align: left;">R$ 130.075,99</td>
+<td style="text-align: left;">R$ 404.638,58</td>
+<td style="text-align: left;">R$ 1.007.208,37</td>
+<td style="text-align: left;">R$ 1.387.851,73</td>
+<td style="text-align: left;">R$ 334.929,75</td>
+<td style="text-align: left;">R$ 496.103,25</td>
 </tr>
 <tr>
 <td style="text-align: left;">ARR Final</td>
-<td style="text-align: left;">R$ 19.540,80</td>
-<td style="text-align: left;">R$ 29.695,20</td>
-<td style="text-align: left;">R$ 100.672,50</td>
-<td style="text-align: left;">R$ 411.321,00</td>
-<td style="text-align: left;">R$ 1.677.158,10</td>
-<td style="text-align: left;">R$ 2.529.924,96</td>
-<td style="text-align: left;">R$ 3.027.067,74</td>
-<td style="text-align: left;">R$ 978.914,41</td>
-<td style="text-align: left;">R$ 1.208.785,21</td>
+<td style="text-align: left;">R$ 22.376,46</td>
+<td style="text-align: left;">R$ 37.522,80</td>
+<td style="text-align: left;">R$ 127.643,40</td>
+<td style="text-align: left;">R$ 461.189,40</td>
+<td style="text-align: left;">R$ 1.704.795,30</td>
+<td style="text-align: left;">R$ 2.647.290,12</td>
+<td style="text-align: left;">R$ 3.039.481,02</td>
+<td style="text-align: left;">R$ 980.453,60</td>
+<td style="text-align: left;">R$ 1.093.707,57</td>
 </tr>
 <tr>
 <td style="text-align: left;">MRR Final</td>
-<td style="text-align: left;">R$ 1.628,40</td>
-<td style="text-align: left;">R$ 2.474,60</td>
-<td style="text-align: left;">R$ 8.389,38</td>
-<td style="text-align: left;">R$ 34.276,75</td>
-<td style="text-align: left;">R$ 139.763,17</td>
-<td style="text-align: left;">R$ 210.827,08</td>
-<td style="text-align: left;">R$ 252.255,64</td>
-<td style="text-align: left;">R$ 81.576,20</td>
-<td style="text-align: left;">R$ 100.732,10</td>
+<td style="text-align: left;">R$ 1.864,71</td>
+<td style="text-align: left;">R$ 3.126,90</td>
+<td style="text-align: left;">R$ 10.636,95</td>
+<td style="text-align: left;">R$ 38.432,45</td>
+<td style="text-align: left;">R$ 142.066,28</td>
+<td style="text-align: left;">R$ 220.607,51</td>
+<td style="text-align: left;">R$ 253.290,08</td>
+<td style="text-align: left;">R$ 81.704,47</td>
+<td style="text-align: left;">R$ 91.142,30</td>
 </tr>
 <tr>
 <td style="text-align: left;">Usuários Final</td>
-<td style="text-align: left;">16</td>
-<td style="text-align: left;">24</td>
-<td style="text-align: left;">82</td>
-<td style="text-align: left;">335</td>
-<td style="text-align: left;">1,368</td>
-<td style="text-align: left;">2,073</td>
-<td style="text-align: left;">2,396</td>
-<td style="text-align: left;">797</td>
-<td style="text-align: left;">986</td>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">103</td>
+<td style="text-align: left;">376</td>
+<td style="text-align: left;">1,384</td>
+<td style="text-align: left;">2,152</td>
+<td style="text-align: left;">2,481</td>
+<td style="text-align: left;">799</td>
+<td style="text-align: left;">890</td>
 </tr>
 <tr>
 <td style="text-align: left;">LTV/CAC</td>
-<td style="text-align: left;">0.7x</td>
-<td style="text-align: left;">1.2x</td>
+<td style="text-align: left;">0.8x</td>
+<td style="text-align: left;">1.3x</td>
 <td style="text-align: left;">2.2x</td>
-<td style="text-align: left;">3.5x</td>
+<td style="text-align: left;">3.6x</td>
 <td style="text-align: left;">5.7x</td>
-<td style="text-align: left;">7.7x</td>
-<td style="text-align: left;">8.7x</td>
-<td style="text-align: left;">171.1x</td>
-<td style="text-align: left;">1283.9x</td>
+<td style="text-align: left;">7.6x</td>
+<td style="text-align: left;">8.6x</td>
+<td style="text-align: left;">104.0x</td>
+<td style="text-align: left;">994.8x</td>
 </tr>
 <tr>
 <td style="text-align: left;">Churn Médio</td>
 <td style="text-align: left;">5.6%</td>
 <td style="text-align: left;">5.8%</td>
 <td style="text-align: left;">6.4%</td>
-<td style="text-align: left;">8.2%</td>
-<td style="text-align: left;">11.2%</td>
-<td style="text-align: left;">13.9%</td>
-<td style="text-align: left;">15.8%</td>
-<td style="text-align: left;">9.2%</td>
-<td style="text-align: left;">3.2%</td>
+<td style="text-align: left;">8.1%</td>
+<td style="text-align: left;">10.8%</td>
+<td style="text-align: left;">13.2%</td>
+<td style="text-align: left;">14.7%</td>
+<td style="text-align: left;">8.9%</td>
+<td style="text-align: left;">2.9%</td>
 </tr>
 <tr>
 <td style="text-align: left;">NRR (%)</td>
@@ -3279,23 +3367,23 @@ extrema - Se caixa \> R$ 10k → Continuar com confiança
 <td style="text-align: left;">100.0%</td>
 <td style="text-align: left;">100.0%</td>
 <td style="text-align: left;">109.8%</td>
-<td style="text-align: left;">120.7%</td>
-<td style="text-align: left;">131.2%</td>
-<td style="text-align: left;">104.0%</td>
-<td style="text-align: left;">15.0%</td>
+<td style="text-align: left;">124.6%</td>
+<td style="text-align: left;">136.2%</td>
+<td style="text-align: left;">104.8%</td>
+<td style="text-align: left;">14.9%</td>
 </tr>
 <tr>
 <td style="text-align: left;">Burn Rate (R<span
 class="math inline">/<em>m</em><em>ê</em><em>s</em>)|<em>R</em></span>
-140,51</td>
-<td style="text-align: left;">R$ 162,97</td>
-<td style="text-align: left;">R$ 243,66</td>
-<td style="text-align: left;">R$ 480,56</td>
-<td style="text-align: left;">R$ 711,58</td>
-<td style="text-align: left;">R$ 907,31</td>
-<td style="text-align: left;">R$ 1.035,83</td>
-<td style="text-align: left;">R$ 504,98</td>
-<td style="text-align: left;">R$ 294,28</td>
+122,21</td>
+<td style="text-align: left;">R$ 157,38</td>
+<td style="text-align: left;">R$ 248,16</td>
+<td style="text-align: left;">R$ 439,62</td>
+<td style="text-align: left;">R$ 672,72</td>
+<td style="text-align: left;">R$ 879,64</td>
+<td style="text-align: left;">R$ 997,23</td>
+<td style="text-align: left;">R$ 484,25</td>
+<td style="text-align: left;">R$ 278,61</td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
@@ -3390,31 +3478,31 @@ cancelamento - menor é melhor
 <tbody>
 <tr>
 <td style="text-align: left;">Caixa &lt; R$ 0 (Quebra)</td>
-<td style="text-align: center;"><strong>9.3%</strong></td>
+<td style="text-align: center;"><strong>7.5%</strong></td>
 <td style="text-align: left;">Risco de morte da startup</td>
 <td style="text-align: center;">🟢 Baixo</td>
 </tr>
 <tr>
 <td style="text-align: left;">Caixa &gt; R$ 50k</td>
-<td style="text-align: center;"><strong>68.0%</strong></td>
+<td style="text-align: center;"><strong>69.7%</strong></td>
 <td style="text-align: left;">Caixa mínimo para emergências</td>
 <td style="text-align: center;">🟡 Atenção</td>
 </tr>
 <tr>
 <td style="text-align: left;">Caixa &gt; R$ 100k</td>
-<td style="text-align: center;"><strong>53.7%</strong></td>
+<td style="text-align: center;"><strong>55.7%</strong></td>
 <td style="text-align: left;">Caixa confortável para growth</td>
 <td style="text-align: center;">🟢 Ótimo</td>
 </tr>
 <tr>
 <td style="text-align: left;">ARR &gt; R$ 1M</td>
-<td style="text-align: center;"><strong>37.7%</strong></td>
+<td style="text-align: center;"><strong>36.5%</strong></td>
 <td style="text-align: left;">Faturamento mínimo para Série A</td>
 <td style="text-align: center;">🟡 Desenvolver</td>
 </tr>
 <tr>
 <td style="text-align: left;">LTV/CAC &gt; 5x</td>
-<td style="text-align: center;"><strong>33.7%</strong></td>
+<td style="text-align: center;"><strong>32.4%</strong></td>
 <td style="text-align: left;">Unit Economics excelente</td>
 <td style="text-align: center;">🟢 Saudável</td>
 </tr>
@@ -3425,16 +3513,16 @@ cancelamento - menor é melhor
 
 #### FATO (O que os números dizem)
 
--   **Sobrevivência (M36):** 90.7% de probabilidade de caixa positivo
--   **Mediana do Caixa:** R$ 116.570,13 - valor mais provável ao final
--   **VaR 95%:** R$ -5.319,61 - pior cenário nos 5% mais pessimistas
--   **Dispersão:** R$ 1.315.512,54 entre P5 e P95
+-   **Sobrevivência (M36):** 92.5% de probabilidade de caixa positivo
+-   **Mediana do Caixa:** R$ 130.075,99 - valor mais provável ao final
+-   **VaR 95%:** R$ -4.511,15 - pior cenário nos 5% mais pessimistas
+-   **Dispersão:** R$ 1.392.362,87 entre P5 e P95
 
 #### PONTO DE DECISÃO MÊS 6
 
 -   **Status:** 🟢 Seguro
--   **Caixa Mediana M6:** R$ 23.205,57
--   **Prob. Seguro (\>R$ 10k):** 72.0%
+-   **Caixa Mediana M6:** R$ 24.962,25
+-   **Prob. Seguro (\>R$ 10k):** 72.5%
 -   **Recomendação M6:** Continuar com confiança
 
 #### IMPLICAÇÃO
@@ -3450,7 +3538,7 @@ cancelamento - menor é melhor
 
 #### PARÂMETROS DA SIMULAÇÃO
 
--   **Número de simulações:** 300
+-   **Número de simulações:** 3,000
 -   **Horizonte:** 36 meses
 -   **Seed:** 42 (reprodutível)
 -   **Variáveis estocásticas:** Churn, CAC, Conversão, Tráfego
@@ -3476,12 +3564,11 @@ cancelamento - menor é melhor
 
 ### DISTRIBUIÇÃO DE RISCO (VaR)
 
-<figure>
-<img src="outputs/figs/pag5_var_histogram.png" alt="VaR Histogram" />
-<figcaption aria-hidden="true">VaR Histogram</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-27.png"
+id="tier5-27" />
 
-*Fonte: mc_results (Célula 5D) | 300 simulações*
+*Fonte: mc_results (Célula 5D) | 3000 simulações*
 
 ### COMO LER O HISTOGRAMA VAR
 
@@ -3492,26 +3579,25 @@ cenários, quanto posso perder?”*
 0) - 🟠 **LARANJA:** Cenários de risco (R$ 0 a R$ 50k) - 🟢 **VERDE:**
 Cenários seguros (\> R$ 50k)
 
-**LINHAS DE REFERÊNCIA:** - **VaR95:** R$ -5.319,61 - pior resultado nos
-5% mais pessimistas - **CVaR95:** R$ -13.739,93 - média dos 5% piores
-cenários - **P50:** R$ 116.570,13 - resultado mais provável
+**LINHAS DE REFERÊNCIA:** - **VaR95:** R$ -4.511,15 - pior resultado nos
+5% mais pessimistas - **CVaR95:** R$ -10.921,10 - média dos 5% piores
+cenários - **P50:** R$ 130.075,99 - resultado mais provável
 
-**INTERPRETAÇÃO RÁPIDA:** - P(Quebra) = 9.3% → 🟢 Risco baixo
+**INTERPRETAÇÃO RÁPIDA:** - P(Quebra) = 7.5% → 🟢 Risco baixo
 
 ------------------------------------------------------------------------
 
 ### CURVA DE SOBREVIVÊNCIA
 
-<figure>
-<img src="outputs/figs/pag5_survival_curve.png" alt="Survival Curve" />
-<figcaption aria-hidden="true">Survival Curve</figcaption>
-</figure>
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-32.png"
+id="tier5-32" />
 
 *Fonte: mc_results (Célula 5D) | caixa_series por mês*
 
 ### COMO LER A CURVA DE SOBREVIVÊNCIA
 
-**O QUE ESTA CURVA MOSTRA?** A probabilidade de sobrevivência (caixa \>
+**O QUE ESTA CURVA MOSTRA?** O probabilidade de sobrevivência (caixa \>
 R$ 0) ao longo dos 36 meses.
 
 **ZONAS COLORIDAS:** - 🟢 **VERDE (\>80%):** Zona segura - probabilidade
@@ -3519,9 +3605,9 @@ alta de sobrevivência - 🟡 **AMARELO (50-80%):** Zona de atenção - risco
 moderado - 🔴 **VERMELHO (\<50%):** Zona crítica - probabilidade de
 morte \> 50%
 
-**PONTOS-CHAVE:** - **Mês mais crítico:** M24 com 73.7% de
-sobrevivência - **Mês 6 (decisão):** 89.0% de sobrevivência - **Mês 36
-(final):** 90.7% de sobrevivência
+**PONTOS-CHAVE:** - **Mês mais crítico:** M24 com 75.9% de
+sobrevivência - **Mês 6 (decisão):** 90.7% de sobrevivência - **Mês 36
+(final):** 92.5% de sobrevivência
 
 **INTERPRETAÇÃO:** ⚠️ Há período(s) de risco durante a trajetória
 
@@ -4107,20 +4193,21 @@ Série A: Runway mínimo \> 12 meses - Cobertura mínima viável: \> 70%
 ⚠️ **ALERTA ESTRUTURAL:** O modelo apresenta **11 meses críticos**
 (runway \< 3 meses), o que representa **31%** do período total. O ponto
 mais vulnerável é o **mês 1** com runway de apenas **1.2 meses**. A taxa
-de cobertura de **149%** indica que a receita não cobre os custos.
+de cobertura de **149%** indica que a receita cobre os custos.
 
-📊 **Gap com Cenário Ideal:** O modelo Real está **0.6 meses** abaixo do
-potencial. Isso representa oportunidade de melhoria via otimização de
-custos ou aceleração de receita.
+📊 **Gap com Cenário Ideal:** O modelo Real apresenta gap médio de **0.6
+meses**. Entretanto, há picos de ineficiência onde o gap atinge **-4.2
+meses** (M26), indicando alta exposição pontual.
 
 ### CAUSA (Por que isso acontece)
 
 O driver principal do burn rate é **Marketing**, responsável por **67%**
 das saídas de caixa mensais. O investimento agressivo em marketing (67%
 do burn) ocorre **antes** do payback dos clientes adquiridos, criando
-uma curva J típica de startups em fase de growth. Com cobertura de 149%,
-o modelo já opera em regime de **auto-financiamento** após o período
-inicial de investimento.
+uma curva J típica de startups em fase de growth. Apesar da cobertura
+operacional positiva (149%), o modelo sofre com **descasamento de caixa
+(timing)**. O lucro contábil não se traduz em liquidez imediata para
+cobrir o burn inicial.
 
 ### IMPLICAÇÃO (O que significa na prática)
 
@@ -4136,9 +4223,10 @@ a choques.
 
 🔴 **AÇÃO URGENTE (Prioridade Máxima):** 1. **IMEDIATO:** Cortar
 marketing em 30% (economia de R$ 60,60/mês) 2. **CURTO PRAZO:** Buscar
-capital bridge de R$ 1.818,53 nas próximas 4 semanas 3. **RENEGOCIAR:**
-Alongar prazos com fornecedores para preservar caixa 4. **PIVOT:**
-Avaliar modelo de receita — cobertura de 149% é insustentável
+capital bridge de R$ 1.818,53 (6 meses de burn) para blindar o período
+M1-M1 3. **RENEGOCIAR:** Alongar prazos com fornecedores para preservar
+caixa 4. **PIVOT:** Avaliar modelo de receita — cobertura de 149% é
+insustentável
 
 ### AUDITORIA TÉCNICA
 
@@ -4170,6 +4258,246 @@ Avaliar modelo de receita — cobertura de 149% é insustentável
 -   Motor Financeiro V13 (`celula_4_motor.py`)
 -   Cenários 5A, 5B, 5C (`celula_5A/5B/stress`)
 
+## Quando o negócio atinge autossuficiência?
+
+### VIZ 5.5 Break-Even sob Estresse
+
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-70.png"
+id="tier5-70" />
+
+*Fonte: Projeção Financeira Real/Ideal/Estresse*
+
+------------------------------------------------------------------------
+
+### COMO LER ESTE GRÁFICO
+
+**O QUE ESTAMOS MEDINDO?** A “Autossuficiência” (Break-Even) é o marco
+zero da sobrevivência. \* **Linha Azul (Real):** Caminho provável. Se
+cruzar a linha zero antes do M12 (trajetória atual), o modelo é
+saudável. \* **Linha Vermelha (Estresse):** Caminho de dor. Mostra
+quanto tempo (meses de atraso) e quanto dinheiro (R$) extra você
+precisará se a “Tempestade Perfeita” ocorrer.
+
+**CAPITAL DE RISCO (GRÁFICO DA DIREITA):** A diferença de altura entre a
+barra Azul e Vermelha é o seu **“Seguro Desastre”**. Se o Estresse pede
+R$ 50k a mais, esse dinheiro precisa estar no banco HOJE, não quando a
+crise estourar.
+
+#### 📋 TABELA DE DADOS:
+
+<style>
+                .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
+                .dataframe th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: left; }
+                .dataframe td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; color: #212529; }
+                .dataframe tr:hover { background-color: #f1f3f5; }
+                .status-red { color: #c0392b; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-yellow { color: #d4ac0d; font-weight: bold; background-color: #fcf3cf; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-green { color: #27ae60; font-weight: bold; background-color: #d5f5e3; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+            </style>
+            
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr style="text-align: right;">
+<th data-quarto-table-cell-role="th">Cenário</th>
+<th data-quarto-table-cell-role="th">Mês Break-Even</th>
+<th data-quarto-table-cell-role="th">Capital Consumido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Real</td>
+<td>M8</td>
+<td>R$ 10.911,50</td>
+</tr>
+<tr>
+<td>Ideal</td>
+<td>M6</td>
+<td>R$ 10.285,37</td>
+</tr>
+<tr>
+<td>Estresse</td>
+<td>M21</td>
+<td>R$ 29.451,86</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+### INSIGHT ESTRATÉGICO
+
+-   **FATO:** Break-Even Real esperado no Mês 8 (consumo de R$
+    10.911,50).
+-   **CAUSA:** Estrutura de custos vs Ramp-up de receita atual.
+-   **IMPLICAÇÃO:** Em cenário de estresse, BE atrasa 13 meses e exige
+    R$ 18.540,37 extra.
+-   **AÇÃO RECOMENDADA:** Focar eficiência de aquisição (CAC) e retenção
+    para antecipar BE em 3-6 meses.
+
+## Diagnóstico de Vulnerabilidade Financeira
+
+### VIZ 5.6 Gap Analysis (Real vs Estresse)
+
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-83.png"
+id="tier5-83" />
+
+*Fonte: Monte Carlo Shapley Decomposition*
+
+------------------------------------------------------------------------
+
+### COMO LER ESTE GRÁFICO
+
+**1. O CONCEITO DE “VAZAMENTO” (LEAKAGE):** Em finanças, o risco não é
+apenas “perder dinheiro”, mas sim **deixar de ganhar** o que estava
+projetado. A área cinza no gráfico mostra essa diferença acumulada mês a
+mês. É o custo de oportunidade da fragilidade do modelo.
+
+**2. SHAPLEY VALUE PROXY (O GRÁFICO DA DIREITA):** Usamos um algoritmo
+para isolar matematicamente a “culpa” de cada variável. \* Se o
+**Churn** é o maior ofensor: Sua empresa sangra clientes mais rápido do
+que consegue repor. A prioridade é Retenção (CS), não Vendas. \* Se o
+**CAC** é o maior ofensor: Sua aquisição é ineficiente. Escalar agora só
+vai acelerar a queima de caixa. \* Se **Outros** é alto: Verifique
+custos fixos ou impostos.
+
+**3. AÇÃO RECOMENDADA:** Resolva o problema da barra maior primeiro.
+Pela Lei de Pareto, mitigar este único risco pode reduzir o Gap Total em
+mais de 50%.
+
+#### 📋 TABELA DE DADOS:
+
+<style>
+                .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
+                .dataframe th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: left; }
+                .dataframe td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; color: #212529; }
+                .dataframe tr:hover { background-color: #f1f3f5; }
+                .status-red { color: #c0392b; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-yellow { color: #d4ac0d; font-weight: bold; background-color: #fcf3cf; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-green { color: #27ae60; font-weight: bold; background-color: #d5f5e3; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+            </style>
+            
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr style="text-align: right;">
+<th data-quarto-table-cell-role="th">Fator de Risco</th>
+<th data-quarto-table-cell-role="th">Impacto Financeiro (R$)</th>
+<th data-quarto-table-cell-role="th">% do Gap Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Churn (Retenção)</td>
+<td>R$ 41.343,23</td>
+<td>50.0%</td>
+</tr>
+<tr>
+<td>CAC (Aquisição)</td>
+<td>R$ 24.805,94</td>
+<td>30.0%</td>
+</tr>
+<tr>
+<td>Outros</td>
+<td>R$ 16.537,29</td>
+<td>20.0%</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+### INSIGHT ESTRATÉGICO
+
+-   **FATO:** O Gap de Caixa totaliza R$ 82.686,45. O fator **Churn
+    (Retenção)** responde sozinho por 50% dessa perda.
+-   **CAUSA:** A alta sensibilidade ao Churn (Retenção) indica que o
+    modelo de negócios depende excessivamente da eficiência desta
+    métrica no pior cenário.
+-   **IMPLICAÇÃO:** Uma deterioração isolada em Churn (Retenção) é
+    suficiente para consumir R$ 41.343,23 do caixa projetado.
+-   **AÇÃO RECOMENDADA:** Hedge Operacional: Diversificar fontes e
+    otimizar Churn (Retenção) para reduzir sua volatilidade.
+
+## Quanto essa startup pode valer em 3 anos?
+
+### VIZ 5.8 Valuation Probabilístico (Monte Carlo)
+
+<img
+src="relatorio_completo_files/figure-markdown_strict/tier5-output-96.png"
+id="tier5-96" />
+
+*Fonte: 3000 Simulações Monte Carlo | Múltiplo 5.0x ARR*
+
+------------------------------------------------------------------------
+
+### COMO LER ESTE GRÁFICO
+
+**O QUE É ISSO?** É a resposta para “Quanto vai valer minha empresa?”.
+Não damos um número único, mas uma **curva de probabilidade**. \* **Piso
+(P10):** Mesmo que tudo dê errado, a empresa deve valer isso. \* **Alvo
+(P50):** Onde esperamos chegar. \* **Teto (P90):** O potencial de “home
+run”.
+
+#### 📋 TABELA DE DADOS:
+
+<style>
+                .dataframe { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; margin-bottom: 10px; border: 1px solid #e0e0e0; }
+                .dataframe th { background-color: #f8f9fa; color: #495057; font-weight: 600; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: left; }
+                .dataframe td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; color: #212529; }
+                .dataframe tr:hover { background-color: #f1f3f5; }
+                .status-red { color: #c0392b; font-weight: bold; background-color: #fadbd8; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-yellow { color: #d4ac0d; font-weight: bold; background-color: #fcf3cf; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+                .status-green { color: #27ae60; font-weight: bold; background-color: #d5f5e3; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; }
+            </style>
+            
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr style="text-align: right;">
+<th data-quarto-table-cell-role="th">Cenário</th>
+<th data-quarto-table-cell-role="th">ARR Projetado (M36)</th>
+<th data-quarto-table-cell-role="th">Valuation (5x ARR)</th>
+<th data-quarto-table-cell-role="th">Probabilidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conservador (P10)</td>
+<td>R$ 37.522,80</td>
+<td>R$ 187.614,00</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Base/Realista (P50)</td>
+<td>R$ 461.189,40</td>
+<td>R$ 2.305.947,00</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>Otimista (P90)</td>
+<td>R$ 2.647.290,12</td>
+<td>R$ 13.236.450,60</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+
+------------------------------------------------------------------------
+
+### INSIGHT ESTRATÉGICO
+
+-   **FATO:** O modelo aponta um Valuation mediano de R$ 2.305.947,00 no
+    Mês 36 com múltiplo de 5.0x ARR.
+-   **CAUSA:** Variação natural de Churn e CAC nas milahres de
+    simulações.
+-   **IMPLICAÇÃO:** Oferece um range de negociação fundamentado
+    matematicamente, não ‘chute’.
+-   **AÇÃO RECOMENDADA:** Utilizar o P10 (Cenário Conservador) como piso
+    de negociação e P90 como alvo.
+
 ------------------------------------------------------------------------
 
 > **🏁 VEREDITO FINAL: GESTÃO DE RISCO (Status: ⚠️ APROVADO COM
@@ -4179,14 +4507,14 @@ Avaliar modelo de receita — cobertura de 149% é insustentável
 > **funcional mas com margem apertada** para os próximos 36 meses.
 >
 > Começamos com a **Simulação Monte Carlo** (Ato 1), que revelou uma
-> probabilidade de sobrevivência de **90.7%** — ou seja, em 91 de cada
+> probabilidade de sobrevivência de **92.5%** — ou seja, em 92 de cada
 > 100 futuros simulados, a startup termina com caixa positivo. O **P50
-> (mediana)** projeta um caixa final de **R$ 116.570,13**, enquanto o
+> (mediana)** projeta um caixa final de **R$ 130.075,99**, enquanto o
 > **VaR 95%** (pior cenário nos 5% mais pessimistas) indica risco máximo
-> de **R$ -5.319,61**.
+> de **R$ -4.511,15**.
 >
 > O **Ponto de Decisão no Mês 6** mostrou-se **seguro para continuar**,
-> com **72.0%** de probabilidade de caixa acima de R$ 10k. A
+> com **72.5%** de probabilidade de caixa acima de R$ 10k. A
 > recomendação tática para este marco é: **manter o curso atual**.
 >
 > O **Cenário de Estresse** (Mundo C) aplicou multiplicadores adversos
@@ -4194,7 +4522,7 @@ Avaliar modelo de receita — cobertura de 149% é insustentável
 > **sobrevive ao estresse, terminando com R$ 82.686,45**. Isso demonstra
 > resiliência estrutural.
 >
-> A **dispersão entre P5 e P95** foi de **R$ 1.315.512,54** (11.3x a
+> A **dispersão entre P5 e P95** foi de **R$ 1.392.362,87** (10.7x a
 > mediana), indicando alta incerteza que exige revisão de premissas.
 >
 > **CONCLUSÃO ESTRATÉGICA:**
@@ -4364,7 +4692,7 @@ Avaliar modelo de receita — cobertura de 149% é insustentável
 
 ### 4. Parâmetros de Risco (Monte Carlo)
 
--   **Simulações:** 100 rodadas
+-   **Simulações:** 1000 rodadas
 
 -   **Seed:** 42
 
