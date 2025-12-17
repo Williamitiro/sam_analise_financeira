@@ -2,8 +2,8 @@
   "chart_id": "pg5_viz2_tornado",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-15T15:47:33.297754",
-  "title_simple": "VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
+  "timestamp": "2025-12-17T09:22:50.081912",
+  "title_simple": "VIZ 5.3 Tornado Plot (Sensibilidade)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
     "fato": "A variável **Churn Base (%)** é o maior vetor de volatilidade, com 31% do impacto total.",

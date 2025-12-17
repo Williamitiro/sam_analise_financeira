@@ -42,6 +42,13 @@ Documento Confidencial - Proibida a divulgacao sem autorizacao formal
 
 \newpage
 
+## Sumário
+
+::: {#TOC}
+:::
+
+\newpage
+
 # Carta ao Leitor
 
 Este relatorio consolida toda a inteligencia financeira, estrategica e operacional do projeto **SAM**, apresentando de forma clara, objetiva e auditavel:
@@ -92,6 +99,24 @@ Analise profunda:
 - Estrutura de custos
 - Fluxo de caixa
 - Runway e solvencia
+
+### Tier 4 - Unit Economics & Operação
+
+Validacao da saude unitaria e eficiencia operacional:
+
+- LTV/CAC Evolution
+- Payback Period
+- ARPU por Cohort
+- Analise dos fundamentos de escala
+
+### Tier 5 - Analise de Risco & Cenarios
+
+Quantificacao da incerteza via Monte Carlo:
+
+- Simulações estocásticas (33k+ cenários)
+- Value at Risk (VaR) financeiro
+- Análise de sensibilidade e "Cisne Negro"
+- Trajetória de Runway probabilística
 
 ***
 

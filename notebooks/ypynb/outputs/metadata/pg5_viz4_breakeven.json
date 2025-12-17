@@ -2,8 +2,8 @@
   "chart_id": "pg5_viz4_breakeven",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-15T15:47:41.724047",
-  "title_simple": "VIZ 5.4: Análise de Break-Even sob Estresse",
+  "timestamp": "2025-12-16T15:46:30.590143",
+  "title_simple": "VIZ 5.5 Break-Even sob Estresse",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {
     "fato": "Break-Even Real esperado no Mês 8 (consumo de R$ 10.911,50).",

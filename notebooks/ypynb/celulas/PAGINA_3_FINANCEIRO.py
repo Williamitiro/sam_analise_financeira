@@ -125,7 +125,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     df_tabela_dre = pd.DataFrame(tabela_dre)
     
     if report_mode:
-        display(Markdown("### 📊 DRE - Demonstração de Resultado (Marcos Principais)"))
+        display(Markdown("### DRE - Demonstração de Resultado (Marcos Principais)"))
         display(Markdown("*Esta é a primeira tabela que mostra o LUCRO REAL da operação.*"))
         display(Markdown(df_tabela_dre.to_markdown(index=False)))
         display(Markdown(""))
@@ -216,7 +216,7 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
                     fontsize=10, color='#388E3C',
                     arrowprops=dict(arrowstyle='->', color='#388E3C', alpha=0.5))
     
-    fig.suptitle('💰 EVOLUÇÃO FINANCEIRA CORRELACIONADA', fontsize=14, fontweight='bold', y=1.02)
+    fig.suptitle('EVOLUÇÃO FINANCEIRA CORRELACIONADA', fontsize=14, fontweight='bold', y=1.02)
     ax1.set_title('Caixa & EBITDA: Real vs Ideal (M0-M36)', fontsize=11, color='gray')
     
     lines1, labels1 = ax1.get_legend_handles_labels()
@@ -232,9 +232,8 @@ def gerar_viz_3_1_evolucao_financeira(df_real, df_ideal, report_mode=False):
     if report_mode:
         display(fig)
         
-        # COMO LER
         como_ler = """
-**📖 COMO LER ESTE GRÁFICO:**
+### COMO LER ESTE GRÁFICO:
 
 **O QUE ESTOU VENDO?**
 Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, comparando dois cenários.
@@ -258,9 +257,9 @@ Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, compar
 - **Break-even:** Ponto onde receita = despesas, sem lucro nem prejuizo
 """
         display(Markdown(como_ler))
-        display(Markdown("\newpage"))
     else:
         plt.show()
+
     
     # Insight Dinâmico
     gap_meses = (mes_breakeven_real - mes_breakeven_ideal) if mes_breakeven_real and mes_breakeven_ideal else 0
@@ -293,32 +292,29 @@ Este gráfico mostra a saúde financeira da empresa ao longo de 36 meses, compar
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-tip}}
-## 💡 INSIGHT: Viabilidade Financeira
+### INSIGHT: Viabilidade Financeira
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
 - **IMPLICAÇÃO:** {insight['implicacao']}
 - **AÇÃO:** {insight['acao']}
-:::
+
 """
         display(Markdown(insight_md))
+        
         # Auditoria VIZ 3.1
-        audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.1
-**Fonte:** df_real_m (Celula 5A), df_ideal_m (Celula 5B)
-
-**Formulas:**
-- Break-even = Primeiro mes onde EBITDA maior que 0
-- Gap = Mes break-even Real - Mes break-even Ideal
-- Reducao Burn = (Burn M1 - Burn M36) / Burn M1 x 100
-:::
-"""
+        audit_md = (
+            "### Auditoria VIZ 3.1\n"
+            "**Fonte:** df_real_m (Celula 5A), df_ideal_m (Celula 5B)\n\n"
+            "**Formulas:**\n"
+            "- Break-even = Primeiro mes onde EBITDA maior que 0\n"
+            "- Gap = Mes break-even Real - Mes break-even Ideal\n"
+            "- Reducao Burn = (Burn M1 - Burn M36) / Burn M1 x 100\n"
+        )
         display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E8F5E9; border-left: 5px solid #388E3C; padding: 15px; border-radius: 4px; margin: 15px 0;">
-    <h4 style="margin-top: 0; color: #388E3C;">💡 INSIGHT: Viabilidade Financeira</h4>
+    <h4 style="margin-top: 0; color: #388E3C;">INSIGHT: Viabilidade Financeira</h4>
     <ul>
         <li><b>FATO:</b> {insight['fato']}</li>
         <li><b>CAUSA:</b> {insight['causa']}</li>
@@ -403,7 +399,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     # TABELA 1: DECOMPOSIÇÃO GERAL (ANTES DO GRÁFICO)
     # =========================================
     tabela_geral = [
-        {'Categoria': '📈 Receita Bruta', 'Valor': formata_moeda(receita_bruta), '% Receita': '100%', 'Status': '—'},
+        {'Categoria': 'Receita Bruta', 'Valor': formata_moeda(receita_bruta), '% Receita': '100%', 'Status': '—'},
         {'Categoria': '  (-) Impostos & Taxas', 'Valor': formata_moeda(total_deducoes), '% Receita': f'{(total_deducoes/receita_bruta*100):.1f}%', 'Status': '—'},
         {'Categoria': '= Receita Líquida', 'Valor': formata_moeda(receita_liquida), '% Receita': f'{(receita_liquida/receita_bruta*100):.1f}%', 'Status': '—'},
         {'Categoria': '  (-) COGS Total', 'Valor': formata_moeda(total_cogs), '% Receita': f'{cogs_pct:.1f}%', 'Status': '🟢' if cogs_pct < 20 else '🟡'},
@@ -422,7 +418,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
         title_technical="VIZ 3.0: Decomposição da DRE (M36)",
         fig=None,
         legend_md=None,
-        table_title="📊 DADOS TABULADOS:",
+        table_title="DADOS TABULADOS:",
         df_tabela=df_tabela_geral,
         insight_dict={
             "fato": "Estrutura de custos analisada.", 
@@ -464,14 +460,14 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     # Fonte dos dados
     adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m['receita_bruta', 'total_cogs', 'total_opex', 'ebitda']")
     
-    fig.suptitle('📊 WATERFALL DRE - RECEITA ATÉ EBITDA', fontsize=14, fontweight='bold', y=1.02)
+    fig.suptitle('WATERFALL DRE - RECEITA ATÉ EBITDA', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz2_waterfall.png')
     
     if report_mode:
         display(fig)
         como_ler = """
-**📖 COMO LER ESTE GRÁFICO:**
+### COMO LER ESTE GRÁFICO:
 
 1. **Barra Azul:** Receita bruta (ponto de partida)
 2. **Barras Laranja/Vermelha:** Deduções que reduzem a receita
@@ -489,7 +485,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     tabela_breakdown = []
     
     # COGS
-    tabela_breakdown.append({'Categoria': '🔧 COGS (Custo Direto)', 'Subcategoria': 'TOTAL', 'Valor': formata_moeda(total_cogs), '% Receita': f'{cogs_pct:.1f}%'})
+    tabela_breakdown.append({'Categoria': 'COGS (Custo Direto)', 'Subcategoria': 'TOTAL', 'Valor': formata_moeda(total_cogs), '% Receita': f'{cogs_pct:.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  IA - Lite', 'Valor': formata_moeda(custo_ia_lite), '% Receita': f'{(custo_ia_lite/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  IA - Trader', 'Valor': formata_moeda(custo_ia_trader), '% Receita': f'{(custo_ia_trader/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  IA - Pro', 'Valor': formata_moeda(custo_ia_pro), '% Receita': f'{(custo_ia_pro/receita_bruta*100):.1f}%'})
@@ -500,7 +496,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     gasto_mkt_val = float(gasto_marketing) if gasto_marketing is not None else 0.0
     val_mkt_str = formata_moeda(gasto_mkt_val)
     
-    tabela_breakdown.append({'Categoria': '📢 Marketing', 'Subcategoria': 'TOTAL', 'Valor': val_mkt_str, '% Receita': f'{(gasto_mkt_val/receita_bruta*100):.1f}%'})
+    tabela_breakdown.append({'Categoria': 'Marketing', 'Subcategoria': 'TOTAL', 'Valor': val_mkt_str, '% Receita': f'{(gasto_mkt_val/receita_bruta*100):.1f}%'})
     
     # Canais (mesma lógica)
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Instagram', 'Valor': formata_moeda(float(gasto_instagram or 0)), '% Receita': f'{(float(gasto_instagram or 0)/receita_bruta*100):.1f}%'})
@@ -509,7 +505,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': '  Google', 'Valor': formata_moeda(float(gasto_google or 0)), '% Receita': f'{(float(gasto_google or 0)/receita_bruta*100):.1f}%'})
     
     # OPEX - Operacional
-    tabela_breakdown.append({'Categoria': '🏢 Operacional', 'Subcategoria': 'Pessoal (RH)', 'Valor': formata_moeda(custo_pessoal), '% Receita': f'{(custo_pessoal/receita_bruta*100):.1f}%'})
+    tabela_breakdown.append({'Categoria': 'Operacional', 'Subcategoria': 'Pessoal (RH)', 'Valor': formata_moeda(custo_pessoal), '% Receita': f'{(custo_pessoal/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': 'Infraestrutura', 'Valor': formata_moeda(custo_infra), '% Receita': f'{(custo_infra/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': 'Escritório', 'Valor': formata_moeda(custo_escritorio), '% Receita': f'{(custo_escritorio/receita_bruta*100):.1f}%'})
     tabela_breakdown.append({'Categoria': '', 'Subcategoria': 'Contabilidade', 'Valor': formata_moeda(custo_contabilidade), '% Receita': f'{(custo_contabilidade/receita_bruta*100):.1f}%'})
@@ -518,12 +514,12 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     df_breakdown = pd.DataFrame(tabela_breakdown)
     
     if report_mode:
-        display(Markdown("### 💰 BREAKDOWN DETALHADO DE CUSTOS (M36)"))
+        display(Markdown("### BREAKDOWN DETALHADO DE CUSTOS (M36)"))
         display(Markdown("*Decomposição completa de COGS e OPEX por canal/categoria.*"))
         display(Markdown(df_breakdown.to_markdown(index=False)))
         display(Markdown(""))
     else:
-        display(HTML("<h3>💰 BREAKDOWN DETALHADO DE CUSTOS (M36)</h3>"))
+        display(HTML("<h3>BREAKDOWN DETALHADO DE CUSTOS (M36)</h3>"))
         display(HTML(df_breakdown.to_html(index=False, escape=False)))
     
     # =========================================
@@ -586,7 +582,7 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     # Fonte dos dados
     adicionar_fonte_dados(ax2b, "Fonte: Celulas 5A/5B | Breakdown COGS/OPEX/Marketing")
     
-    fig2.suptitle('📊 COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=0.98)
+    fig2.suptitle('COMPOSIÇÃO DE CUSTOS & BENCHMARK', fontsize=14, fontweight='bold', y=0.98)
     # plt.tight_layout() REMOVIDO PARA MARGENS CONTROLADAS
     salvar_figura_silencioso(fig2, 'outputs/figs/pg3_viz2_composicao_custos.png')
     
@@ -619,32 +615,28 @@ def gerar_viz_3_2_estrutura_custos(df_real, df_ideal, premissas, report_mode=Fal
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-tip}}
-## 💡 INSIGHT: Estrutura de Custos
+### INSIGHT: Estrutura de Custos
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
 - **IMPLICAÇÃO:** {insight['implicacao']}
 - **AÇÃO:** {insight['acao']}
-:::
+
 """
         display(Markdown(insight_md))
         # Auditoria VIZ 3.2
-        audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.2
-**Fonte:** df_real_m.iloc[-1] (M36 da Celula 5A)
-
-**Formulas:**
-- Margem Bruta = (Receita Liquida - COGS) / Receita Bruta x 100
-- OPEX pct = Total OPEX / Receita Bruta x 100
-- Benchmarks: Margem maior 80%, OPEX menor 50%, EBITDA maior 20%
-:::
-"""
+        audit_md = (
+            "### Auditoria VIZ 3.2\n"
+            "**Fonte:** df_real_m.iloc[-1] (M36 da Celula 5A)\n\n"
+            "**Formulas:**\n"
+            "- Margem Bruta = (Receita Liquida - COGS) / Receita Bruta x 100\n"
+            "- OPEX pct = Total OPEX / Receita Bruta x 100\n"
+            "- Benchmarks: Margem maior 80%, OPEX menor 50%, EBITDA maior 20%\n"
+        )
         display(Markdown(audit_md))
     else:
         display(HTML(f"""
 <div style="background-color: #E8F5E9; border-left: 5px solid #388E3C; padding: 15px; border-radius: 4px; margin: 15px 0;">
-    <h4 style="margin-top: 0; color: #388E3C;">💡 INSIGHT: Estrutura de Custos</h4>
+    <h4 style="margin-top: 0; color: #388E3C;">INSIGHT: Estrutura de Custos</h4>
     <ul>
         <li><b>FATO:</b> {insight['fato']}</li>
         <li><b>CAUSA:</b> {insight['causa']}</li>
@@ -767,16 +759,20 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     if report_mode:
         display(fig)
         
-        como_ler = f"""
-::: {{.callout-note appearance="simple"}}
-### 📖 COMO LER ESTE GRÁFICO (SIMULAÇÃO ESTOCÁSTICA)
-1. **Barras Verdes (Cima):** Receita semanal (com variação natural de mercado).
-2. **Barras Vermelhas (Baixo):** Despesas semanais (concentradas em pagamentos).
-3. **Linhas Sólidas (Verde/Vermelha):** Tendência suavizada (Média Móvel de 12 semanas) para facilitar a visualização da direção.
-4. **Linha Azul (Eixo Direito):** Evolução da base de usuários ativos.
-5. **Nota:** A variação nos tamanhos das barras simula a volatilidade da vida real.
-:::
-        """
+        como_ler = """
+### COMO LER ESTE GRÁFICO
+**O QUE ESTOU VENDO?**
+O fluxo de caixa projetado semana a semana.
+
+**ELEMENTOS:**
+- **Barras Verdes:** Saldo final de caixa na semana (quanto dinheiro tem no banco).
+- **Linha Vermelha:** Queima de caixa (Burn Rate) semanal. Se estiver alta, o caixa desce rápido.
+- **Linha Zero:** O fundo do poço. Se as barras verdes tocarem aqui, a empresa quebra.
+
+**INTERPRETAÇÃO:**
+- Buscamos **barras verdes crescentes** (caixa acumulando).
+- Quedas bruscas indicam grandes pagamentos (folha, impostos) ou investimento em marketing.
+"""
         display(Markdown(como_ler))
     else:
         plt.show()
@@ -820,12 +816,12 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
     df_tabela = pd.DataFrame(tabela_dados)
     
     if report_mode:
-        display(Markdown("#### 📋 FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)"))
+        display(Markdown("#### FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)"))
         display(Markdown(df_tabela.to_markdown(index=False)))
         display(Markdown("*Nota: Valores incluem volatilidade estocástica (ruído) proposital.*"))
         display(Markdown(""))
     else:
-        display(HTML("<h4>📋 FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)</h4>"))
+        display(HTML("<h4>FLUXO DE CAIXA SEMANAL DETALHADO (VISÃO 10 MESES)</h4>"))
         display(HTML(df_tabela.to_html(index=False, escape=False)))
     
     # ---------------------------------------------------------
@@ -862,13 +858,16 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
 """
         display(Markdown(insight_md))
         
+        # Auditoria VIZ 3.3
         audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.3 (Motor V1.0)
-**Fonte:** df_real_s (Gerado por `celula_4A_motor_granularidade`).
-**Metodologia:** Distribuição Dirichlet (Alpha=3) para fluxos + Interpolação Spline para estoques.
-**Integridade:** Soma das semanas = Total mensal exato.
-:::
+### Auditoria VIZ 3.3
+**Fonte:** df_real_s (Motor Estocastico Celula 4) - Primeiras 40 semanas
+
+**Formulas:**
+- Entradas = Receita Bruta Semanal
+- Saidas = COGS + OPEX + Deducoes
+- Tendencia = Media Movel 12 semanas
+
 """
         display(Markdown(audit_md))
         display(Markdown("\\newpage"))
@@ -888,10 +887,6 @@ def gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode=False):
 #     VIZ 3.4: ALAVANCAGEM OPERACIONAL (Scatter + Correlação)
 # ============================================================================
 def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
-    """
-    Scatter plot mostrando a relação Receita vs Margem EBITDA.
-    Demonstra que o modelo é alavancado (lucro cresce mais que receita).
-    """
     if not report_mode:
         print("\n🔹 VIZ 3.4: Alavancagem Operacional")
     else:
@@ -971,7 +966,7 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
     ax.set_xlabel('Receita Bruta (R$)', fontsize=12)
     ax.set_ylabel('Margem EBITDA (%)', fontsize=12)
     ax.set_title(f'Alavancagem Operacional: {alavancagem:.2f}x', fontsize=11, color='gray')
-    fig.suptitle('📈 ALAVANCAGEM OPERACIONAL', fontsize=14, fontweight='bold', y=1.02)
+    fig.suptitle('ALAVANCAGEM OPERACIONAL', fontsize=14, fontweight='bold', y=1.02)
     ax.legend(loc='lower right', fontsize=9)
     
     # Fonte dos dados
@@ -985,7 +980,7 @@ def gerar_viz_3_4_alavancagem_operacional(df_real, df_ideal, report_mode=False):
         
         # COMO LER (Legenda obrigatória)
         como_ler = """
-**📖 COMO LER ESTE GRÁFICO (ALAVANCAGEM OPERACIONAL):**
+**COMO LER ESTE GRÁFICO (ALAVANCAGEM OPERACIONAL):**
 
 **O QUE ESTOU VENDO?**
 Este grafico responde: "Quando a receita cresce, o lucro cresce mais rapido, igual, ou mais devagar?"
@@ -1042,27 +1037,22 @@ Este grafico responde: "Quando a receita cresce, o lucro cresce mais rapido, igu
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-tip}}
-## 💡 INSIGHT: Escalabilidade do Modelo
+### INSIGHT: Alavancagem Operacional
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
 - **IMPLICAÇÃO:** {insight['implicacao']}
 - **AÇÃO:** {insight['acao']}
-:::
+
 """
         display(Markdown(insight_md))
         # Auditoria VIZ 3.4
-        audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.4
-**Fonte:** df_real_m, df_ideal_m (Celulas 5A/5B)
-
-**Formulas:**
-- Alavancagem = Delta EBITDA / Delta Receita
-- Delta = (Valor M36 - Valor M12) / Valor M12 x 100
-- Interpretacao: Alavancagem maior que 1 = Modelo escalavel
-:::
-"""
+        audit_md = (
+            "### Auditoria VIZ 3.4\n"
+            "**Fonte:** df_real_m (Celula 5A)\n\n"
+            "**Formulas:**\n"
+            "- Alavancagem = % Crescimento EBITDA / % Crescimento Receita\n"
+            "- Margem de Contribuicao = Receita - Custos Variaveis\n"
+        )
         display(Markdown(audit_md))
     else:
         display(HTML(f"""
@@ -1193,7 +1183,7 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     # Fonte dos dados
     adicionar_fonte_dados(ax1, "Fonte: Celulas 5A/5B | df_real_m vs df_ideal_m (marcos M1-M36)")
     
-    fig.suptitle('📊 EVOLUÇÃO DRE: REAL VS IDEAL', fontsize=14, fontweight='bold', y=1.02)
+    fig.suptitle('EVOLUÇÃO DRE: REAL VS IDEAL', fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
     salvar_figura_silencioso(fig, 'outputs/figs/pg3_viz5_heatmap_dre.png')
     
@@ -1255,26 +1245,24 @@ def gerar_viz_3_5_heatmap_dre(df_real, df_ideal, report_mode=False):
     
     if report_mode:
         insight_md = f"""
-::: {{.callout-tip}}
-## 💡 INSIGHT: Convergência ao Ideal
+### INSIGHT: Evolução DRE
 - **FATO:** {insight['fato']}
 - **CAUSA:** {insight['causa']}
 - **IMPLICAÇÃO:** {insight['implicacao']}
 - **AÇÃO:** {insight['acao']}
-:::
+
 """
         display(Markdown(insight_md))
         # Auditoria VIZ 3.5
         audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## Auditoria VIZ 3.5
-**Fonte:** df_real_m vs df_ideal_m (Celulas 5A e 5B)
+### Auditoria VIZ 3.5
+**Fonte:** Comparativo M36 de df_real_m vs df_ideal_m
 
-**Formulas:**
-- Delta = (Real - Ideal) / |Ideal| x 100
-- Verde = Real superando Ideal
-- Vermelho = Real abaixo do Ideal
-:::
+**Metodologia:**
+- Heatmap de Desvio: (Real - Ideal) / Ideal * 100
+- Azul = Acima do Ideal (Bom para Receita, Ruim para Custo)
+- Vermelho = Abaixo do Ideal (Ruim para Receita)
+
 """
         display(Markdown(audit_md))
     else:
@@ -1378,12 +1366,11 @@ def gerar_veredito_financeiro(resultados, report_mode=False):
 """
     
     if report_mode:
-        veredito_md = f"""
-::: {{.callout-important}}
+        display(Markdown(f"""
+### VEREDITO FINANCEIRO FINAL
 {veredito}
-:::
-"""
-        display(Markdown(veredito_md))
+
+"""))
     else:
         display(HTML(f"""
 <div style="background-color: #f5f5f5; border: 2px solid {cor}; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -1401,24 +1388,10 @@ def gerar_veredito_financeiro(resultados, report_mode=False):
 def executar_pagina_3_financeiro(df_real_m, df_real_s, df_ideal_m, premissas, report_mode=False):
     """
     Função principal que coordena a geração de toda a Página 3.
-    
-    INPUTS:
-      - df_real_m: DataFrame mensal Real
-      - df_real_s: DataFrame semanal Real (ou mensal se não tiver semanal)
-      - df_ideal_m: DataFrame mensal Ideal
-      - premissas: Dict de premissas
-      - report_mode: Se True, gera saída otimizada para PDF/DOCX
     """
-    import os
-    # Garantir criação do diretório com caminho absoluto para evitar erros no Quarto chdir
-    root_val = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-    output_dir = os.path.join(root_val, 'outputs/figs')
-    os.makedirs(output_dir, exist_ok=True)
-    
     if not report_mode:
-        print("\n" + "=" * 80)
-        print("💰 PÁGINA 3: ANÁLISE FINANCEIRA (DRE + FLUXO + MARGENS)")
-        print("=" * 80)
+        print("PÁGINA 3: ANÁLISE FINANCEIRA (DRE + FLUXO + MARGENS)")
+        print("="*80)
     else:
         # Título removido para evitar duplicação com o Cabeçalho do Tier no QMD
         pass
@@ -1433,7 +1406,7 @@ def executar_pagina_3_financeiro(df_real_m, df_real_s, df_ideal_m, premissas, re
     
     # VIZ 3.3: Fluxo de Caixa Semanal
     # VIZ 3.3: Fluxo de Caixa Semanal
-    print("DEBUG [V2_STOCHASTIC]: Iniciando VIZ 3.3. Argumento atual: df_real_s")
+    # print("DEBUG [V2_STOCHASTIC]: Iniciando VIZ 3.3. Argumento atual: df_real_s")
     resultados['viz3'] = gerar_viz_3_3_fluxo_caixa_semanal(df_real_s, report_mode)
     
     # VIZ 3.4: Alavancagem Operacional

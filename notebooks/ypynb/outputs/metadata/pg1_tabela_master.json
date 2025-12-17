@@ -1,0 +1,20 @@
+{
+  "chart_id": "pg1_tabela_master",
+  "section": "growth_machine",
+  "page_number": 2,
+  "timestamp": "2025-12-17T09:22:15.407240",
+  "title_simple": "VIZ 1.1 Tabela Executiva Master",
+  "data_source": "df_real vs df_ideal",
+  "insight_generated": {
+    "fato": "4 métrica(s) em estado CRÍTICO: MRR, ARR (Anual), Usuários Ativos",
+    "causa": "Análise automática comparando M36 vs Benchmarks de mercado.",
+    "implicacao": "Esta tabela mostra a evolução temporal (M1→M36) dos principais indicadores de viabilidade do negócio.",
+    "acao": "Priorizar correção imediata de: MRR"
+  },
+  "files": {
+    "png": "outputs/figs/pg1_tabela_master.png",
+    "json": "outputs/metadata/pg1_tabela_master.json",
+    "table": "outputs/tables/pg1_tabela_master_tabela.html"
+  },
+  "validation_status": "ok"
+}

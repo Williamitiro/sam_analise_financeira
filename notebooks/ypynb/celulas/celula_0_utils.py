@@ -200,7 +200,7 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     
     # 1. BLOCO A: TÍTULOS
     display(Markdown(f"## {title_colloquial}"))
-    display(Markdown(f"### 📉 {title_technical}"))
+    display(Markdown(f"### {title_technical}"))
     
     # 2. BLOCO B: GRÁFICO (Opcional)
     if fig:
@@ -218,17 +218,16 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
         display(Markdown("***")) 
         
         if report_mode:
-            # Modo PDF/Quarto: Callout Note Simple (Igual Tier 1)
+            # Modo PDF/Quarto: Markdown Padrão (Compatível DOCX)
             como_ler_block = f"""
-::: {{.callout-note appearance="simple"}}
-### 📖 COMO LER ESTE GRÁFICO
+### COMO LER ESTE GRÁFICO
 {legend_md}
-:::
+
 """
             display(Markdown(como_ler_block))
         else:
             # Modo Notebook HTML
-            display(Markdown(f"#### 📖 COMO LER ESTE GRÁFICO:\n{legend_md}"))
+            display(Markdown(f"#### COMO LER ESTE GRÁFICO:\n{legend_md}"))
     
     # 4. BLOCO D: TABELA AUXILIAR
     # Título Customizado ou Default
@@ -278,16 +277,14 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
     display(Markdown("***"))  # Linha horizontal (*** evita conflito YAML do Quarto)
     
     if report_mode:
-        # Quarto Callout para Insight (Tip/Important)
-        insight_class = "tip" # ou important
+        # Markdown Padrão para DOCX/PDF
         insight_md = f"""
-::: {{.callout-{insight_class}}}
-## 💡 INSIGHT ESTRATÉGICO
+### INSIGHT ESTRATÉGICO
 - **FATO:** {insight_dict['fato']}
 - **CAUSA:** {insight_dict['causa']}
 - **IMPLICAÇÃO:** {insight_dict['implicacao']}
 - **AÇÃO RECOMENDADA:** {insight_dict['acao']}
-:::
+
         """
         display(Markdown(insight_md))
     else:
@@ -331,12 +328,11 @@ def render_atomic_block(chart_id, title_colloquial, title_technical, fig, legend
             
             audit_clean = re.sub(r'<[^>]+>', '', audit_clean)
             
-            # Quarto Callout para Auditoria
+            # Markdown Padrão para DOCX/PDF
             audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## 🔍 AUDITORIA & FÓRMULAS
+### AUDITORIA & FÓRMULAS
 {audit_clean}
-:::
+
             """
             display(Markdown(audit_md))
         else:

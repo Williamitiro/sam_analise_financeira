@@ -2,7 +2,7 @@
   "chart_id": "pg2_viz2_6",
   "section": "growth_machine",
   "page_number": 2,
-  "timestamp": "2025-12-15T15:46:15.257281",
+  "timestamp": "2025-12-17T09:22:27.220930",
   "title_simple": "VIZ 2.6: Analise de Vazamento (Net Growth e Churn)",
   "data_source": "df_real vs df_ideal",
   "insight_generated": {

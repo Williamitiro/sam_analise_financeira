@@ -141,7 +141,7 @@ def gerar_viz_4_1_ltv_cac(df_real, df_ideal, report_mode=False):
 
     # Renderização via Atomic Block
     legend_md = """
-**📖 COMO LER ESTE GRÁFICO:**
+**COMO LER ESTE GRÁFICO:**
 
 1. **Linha Verde (LTV):** Quanto lucro um cliente deixa na empresa ao longo da vida.
 2. **Linha Vermelha (CAC):** Quanto custa atrair esse cliente (Marketing + Vendas).
@@ -299,7 +299,7 @@ def gerar_viz_4_2_cohorts(df_real, report_mode=False):
 
     # Renderização via Atomic Block
     legend_md = """
-**📖 COMO LER ESTE GRÁFICO (COHORTS):**
+**COMO LER ESTE GRÁFICO (COHORTS):**
 
 1. **Linhas (Safra):** Clientes que entraram no mesmo mês (ex: Safra d Mês 1).
 2. **Colunas (Idade):** Meses após a compra inicial.
@@ -404,7 +404,7 @@ def gerar_viz_4_3_churn_volatility(df_real_s, premissas, report_mode=False):
         tabela_md += f"| S{int(row['semana'])} | {val:.2f}% | {media:.2f}% | {arrow} {abs(delta):.2f}pp | {status} |\n"
         
     legend_md = """
-**📖 COMO LER ESTE GRÁFICO (SPC):**
+**COMO LER ESTE GRÁFICO (SPC):**
 
 1. **Linha Preta (Pontos):** Taxa de Churn real da semana.
 2. **Faixa Azul (Túnel):** Variação normal esperada (Ruído estatístico).
@@ -492,7 +492,7 @@ def gerar_viz_4_4_escala_unit_economics(df_real_m, premissas, report_mode=False)
     ax.legend(loc='lower left', fontsize=9, frameon=True)
 
     legend_md = """
-**📖 COMO LER ESTE GRÁFICO (ESCALA):**
+**COMO LER ESTE GRÁFICO (ESCALA):**
 
 1. **Eixo X (Tamanho):** Quantos clientes ativos temos.
 2. **Eixo Y (Qualidade):** LTV/CAC (Eficiência Unitária).
@@ -589,7 +589,7 @@ def gerar_viz_4_5_waterfall_leaks(df_real_m, premissas, report_mode=False):
     # ax.legend() -> Waterfall using colors mostly, specific labels on bars.
 
     legend_md = """
-**📖 COMO LER ESTE GRÁFICO (WATERFALL):**
+**COMO LER ESTE GRÁFICO (WATERFALL):**
 
 1. **Barra Azul Clara (LTV Bruto):** Todo dinheiro que entra do cliente.
 2. **Barras Vermelhas:** O que é descontado (Custos, Impostos, Aquisição).
@@ -614,7 +614,7 @@ def gerar_viz_4_5_waterfall_leaks(df_real_m, premissas, report_mode=False):
         title_technical="VIZ 4.5: Unit Profitability Waterfall",
         fig=fig, legend_md=legend_md, df_tabela=tabela_md,
         insight_dict=insight, formulas_md=formulas, report_mode=report_mode,
-        table_title="📋 UNIT PROFIT DECOMPOSITION", data_source_text="Fonte: df_real_m (Last Month)"
+        table_title="UNIT PROFIT DECOMPOSITION", data_source_text="Fonte: df_real_m (Last Month)"
     )
     plt.close(fig)
 
@@ -643,7 +643,11 @@ def gerar_veredito_unit_economics(df_real, report_mode=False):
 """
     
     if report_mode:
-        display(Markdown(f"::: {{.callout-tip}}\n{texto}\n:::"))
+        display(Markdown(f"""
+### VEREDITO UNIT ECONOMICS
+{texto}
+
+"""))
     else:
         display(Markdown(f"### {texto}"))
 
@@ -657,7 +661,7 @@ def executar_pagina_4_unit_economics(df_real_m, df_real_s, df_ideal, premissas, 
     """
     if not report_mode:
         print("="*80)
-        print("🚀 INICIANDO PÁGINA 4: UNIT ECONOMICS")
+        print("INICIANDO PÁGINA 4: UNIT ECONOMICS")
         print("="*80)
     else:
         # Título removido para evitar duplicação com o Cabeçalho de Tier

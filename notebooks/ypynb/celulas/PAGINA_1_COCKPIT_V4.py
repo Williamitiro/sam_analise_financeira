@@ -129,10 +129,10 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
     """
     if not report_mode:
         print("\n" + "="*80)
-        print("📊 1.1 TABELA EXECUTIVA MASTER - PROJEÇÃO 36 MESES (V7.2)")
+        print("1.1 TABELA EXECUTIVA MASTER - PROJEÇÃO 36 MESES (V7.2)")
         print("="*80)
     else:
-        display(Markdown("## 📊 1.1 TABELA EXECUTIVA MASTER"))
+        display(Markdown("## 1.1 TABELA EXECUTIVA MASTER"))
     
     # Snapshots
     m1 = df_real.iloc[0]
@@ -145,28 +145,28 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
     
     # Definição de métricas (nome, coluna, benchmark, inversão)
     metricas = [
-        ('💰 RECEITA', '', '', '', '', ''),
+        ('RECEITA', '', '', '', '', ''),
         ('  MRR', 'mrr', met_ideal.get('mrr_final', m36['mrr']), False),
         ('  ARR (Anual)', 'arr', met_ideal.get('mrr_final', m36['mrr']) * 12, False),
         ('  Usuários Ativos', 'usuarios_ativos', met_ideal.get('usuarios_final', 1000), False),
         ('', '', '', '', '', ''),
-        ('📊 UNIT ECONOMICS', '', '', '', '', ''),
+        ('UNIT ECONOMICS', '', '', '', '', ''),
         ('  LTV/CAC (Índice de Retorno)', 'ltv_cac', 3.0, False),
         ('  CAC (Custo Aquisição Cliente)', 'cac_blended', 250, True),
         ('  Churn (Taxa Cancelamento %)', 'churn_rate', 0.05, True),
         ('  Payback (Meses p/ Recuperar CAC)', 'payback_meses', 12, True),
         ('', '', '', '', '', ''),
-        ('💵 CAIXA & RUNWAY', '', '', '', '', ''),
+        ('CAIXA & RUNWAY', '', '', '', '', ''),
         ('  Caixa Disponível', 'caixa', 50000, False),
         ('  Runway (Meses de Sobrevivência)', 'runway_meses', 12, False),
         ('  Burn Rate (Queima Mensal)', 'burn_rate', 0, True),
         ('', '', '', '', '', ''),
-        ('📈 MARGENS & RETORNO', '', '', '', '', ''),
+        ('MARGENS & RETORNO', '', '', '', '', ''),
         ('  Margem Bruta %', 'margem_bruta_pct', 70, False),
         ('  EBITDA (Lucro Operacional)', 'ebitda', 0, False),
         ('  Lucro Líquido Acumulado (36m)', 'lucro_liquido_acum', 0, False),
         ('', '', '', '', '', ''),
-        ('🏦 INVESTIDOR', '', '', '', '', ''),
+        ('INVESTIDOR', '', '', '', '', ''),
         ('  Investimento Realizado (Total)', 'investimento_total', 0, False),
         ('  ROI Potencial (Exit 5x ARR)', 'roi_investidor_exit', 100, False),
         ('  ROI Realizado (Caixa M36)', 'roi_investidor_caixa', 0, False),
@@ -391,18 +391,19 @@ def gerar_tabela_executiva(df_real, df_ideal, met_real, met_ideal, report_mode=F
         "acao": insight_acao
     }
 
-    render_atomic_block(
-        chart_id="pg1_viz1_exec_table",
-        title_colloquial="Como está a saúde geral do negócio?",
-        title_technical="VIZ 1.1: Tabela Executiva Master",
-        fig=None,
-        legend_md=None,
-        table_title="📋 EVOLUÇÃO DOS INDICADORES (M1 → M36):",
-        df_tabela=df_tab,
-        insight_dict=insight_tabela,
-        report_mode=report_mode,
-        data_source_text="Fonte: df_real_m (Simulacao Real) vs df_ideal_m (Benchmark)"
-    )
+    if report_mode:
+        # PDF: Markdown puro (Tabela simples)
+        render_atomic_block(
+            chart_id="pg1_tabela_master",
+            title_colloquial="Como está a saúde geral do negócio?",
+            title_technical="VIZ 1.1 Tabela Executiva Master",
+            fig=None,
+            legend_md=None,
+            df_tabela=df_tab,
+            insight_dict=insight_tabela,
+            report_mode=True,
+            table_title="EVOLUÇÃO DOS INDICADORES (M1 → M36):"
+        )
     
     return True
 
@@ -422,7 +423,7 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     
     # AUMENTADO: Fonte do título
     title_size = 18 if report_mode else 20
-    fig.suptitle('📊 PAINEL DE KPIs ESTRATÉGICOS', fontsize=title_size, fontweight='bold', y=0.98)
+    fig.suptitle('PAINEL DE KPIs ESTRATÉGICOS', fontsize=title_size, fontweight='bold', y=0.98)
     
     m36 = df_real.iloc[-1]
     
@@ -496,14 +497,14 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
     
     if report_mode:
         plt.close(fig)
-        display(Markdown("## 📊 PAINEL DE CONTROLE (KPIs)"))
+        display(Markdown("## PAINEL DE CONTROLE (KPIs)"))
         display(Markdown("**Visão Geral:** Indicadores chave de performance no final do período (M36)."))
         display(Markdown("![KPI Cards](outputs/figs/pg1_kpi_cards.png)"))
         display(Markdown("*Fonte: df_real_m (Simulacao Real) - Snapshot M36*"))
         
         # GLOSSÁRIO IMEDIATAMENTE APÓS OS CARDS
         glossario_md = """
-::: {.callout-note title="📖 GLOSSÁRIO DOS KPIs"}
+### GLOSSÁRIO DOS KPIs
 
 | KPI | O que significa | Por que importa |
 |-----|-----------------|------------------|
@@ -515,7 +516,6 @@ def gerar_kpi_cards(df_real, met_real, met_ideal, report_mode=False):
 | **Churn** | Evasão de Clientes | De cada 100 clientes, quantos cancelam por mês. Meta: <5%. |
 | **Runway** | Fôlego Financeiro | Com o caixa atual, quantos meses a empresa sobrevive SEM nova receita. Meta: >12 meses. |
 
-:::
 """
         display(Markdown(glossario_md))
         display(Markdown("***"))
@@ -608,7 +608,7 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
         if t <= len(meses):
             ax1.axvline(x=t, color='#cccccc', linestyle='--', alpha=0.5)
 
-    ax1.set_title('📈 EVOLUÇÃO MRR vs USUÁRIOS', fontsize=13, fontweight='bold', pad=15)
+    ax1.set_title('EVOLUÇÃO MRR vs USUÁRIOS', fontsize=13, fontweight='bold', pad=15)
     ax1.legend([line1, line2, line3], ['MRR Real', 'MRR Ideal', 'Usuários'], loc='upper left')
     ax1.set_xlim(1, 36)
     
@@ -617,15 +617,14 @@ def gerar_grafico_temporal_correlacao(df_real, df_ideal, mc_results=None, report
     
     if report_mode:
         plt.close(fig)
-        display(Markdown("### 📈 EVOLUÇÃO MRR vs USUÁRIOS"))
+        display(Markdown("### EVOLUÇÃO MRR vs USUÁRIOS"))
         display(Markdown("**Pergunta:** O crescimento de usuarios esta se convertendo em receita proporcional?"))
         display(Markdown("![Evolução Temporal](outputs/figs/pg1_temporal_correlacao.png)"))
         display(Markdown("*Fonte: df_real_m vs df_ideal_m | Projecao 36 meses*"))
         
         # COMO LER
         como_ler = """
-::: {.callout-note appearance="simple"}
-### 📖 COMO LER ESTE GRÁFICO
+### COMO LER ESTE GRÁFICO
 **O QUE ESTOU VENDO?**
 A correlação entre o crescimento da receita recorrente (MRR - Linha Sólida) e a base de usuários ativos (Linha Pontilhada).
 
@@ -636,12 +635,11 @@ A correlação entre o crescimento da receita recorrente (MRR - Linha Sólida) e
 
 **INTERPRETAÇÃO:**
 - As linhas devem crescer juntas. Se a linha Roxa (Usuários) sobe mas a Preta (MRR) não, indica queda no ticket médio ou churn financeiro.
-:::
 """
         display(Markdown(como_ler))
         
         display(Markdown("***"))
-        display(Markdown("#### 📋 TABELA DE REFERÊNCIA"))
+        display(Markdown("#### TABELA DE REFERÊNCIA"))
         
         cols = ['Período', 'MRR Real', 'MRR Ideal', 'Usuários', 'Gap %']
         df_tab = pd.DataFrame(dados_tabela, columns=cols)
@@ -667,7 +665,7 @@ def gerar_tabela_milestones(df_real, df_ideal, met_real, met_ideal, report_mode=
     """
     if not report_mode:
         print("\n" + "="*80)
-        print("📊 1.4 TABELA DE MILESTONES - REAL vs IDEAL")
+        print("1.4 TABELA DE MILESTONES - REAL vs IDEAL")
         print("(Metas extraídas automaticamente do Cenário Ideal)")
         print("="*80)
     
@@ -826,7 +824,7 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
                     bbox=dict(boxstyle='round,pad=0.2', facecolor='lightyellow', alpha=0.8))
     
     # Título explicativo
-    ax.set_title('💰 INVESTIMENTO EM MARKETING vs RECEITA GERADA (MRR)\n'
+    ax.set_title('INVESTIMENTO EM MARKETING vs RECEITA GERADA (MRR)\n'
                  'Barras Azuis = Quanto gastei | Barras Verdes = Quanto gerei | Eficiência = MRR ÷ Marketing',
                  fontsize=13, fontweight='bold', pad=15)
     
@@ -866,15 +864,14 @@ def gerar_grafico_eficiencia_marketing(df_real, report_mode=False):
     
     if report_mode:
         plt.close(fig)
-        display(Markdown("### 💰 EFICIÊNCIA DE MARKETING (ROI)"))
+        display(Markdown("### EFICIÊNCIA DE MARKETING (ROI)"))
         display(Markdown("**Pergunta:** O dinheiro investido em marketing esta retornando como receita recorrente?"))
         display(Markdown("![Eficiencia Marketing](outputs/figs/pg1_eficiencia_marketing.png)"))
         display(Markdown("*Fonte: df_real_m | gasto_marketing vs mrr*"))
         
         # COMO LER
         como_ler = """
-::: {.callout-note appearance="simple"}
-### 📖 COMO LER ESTE GRÁFICO
+### COMO LER ESTE GRÁFICO
 **O QUE ESTOU VENDO?**
 Comparativo direto entre dinheiro investido em Marketing (Azul) e receita recorrente gerada (Verde).
 
@@ -886,7 +883,6 @@ Comparativo direto entre dinheiro investido em Marketing (Azul) e receita recorr
 **INTERPRETAÇÃO:**
 - No início, é normal a barra Azul ser maior (investimento inicial).
 - A partir do Mês 6, a barra Verde DEVE ultrapassar a Azul e continuar crescendo (efeito "J-Curve").
-:::
 """
         display(Markdown(como_ler))
         
@@ -910,7 +906,7 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     Padrão: FATO / CAUSA / IMPLICAÇÃO / AÇÃO (igual Página 2).
     """
     # Título da seção
-    display(Markdown("## 🧠 INSIGHTS ESTRATÉGICOS DO COCKPIT"))
+    display(Markdown("## INSIGHTS ESTRATÉGICOS DO COCKPIT"))
     
     # =========================================================================
     # INSIGHT 1: LTV/CAC
@@ -955,13 +951,12 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
         # Quarto Callout para PDF/DOCX
         callout_type = "tip" if ltv_cac >= 3.0 else "warning" if ltv_cac >= 1.5 else "important"
         insight_md = f"""
-::: {{.callout-{callout_type}}}
-## 💡 INSIGHT 1: Saúde Unitária (LTV/CAC)
+### INSIGHT 1: Saúde Unitária (LTV/CAC)
 - **FATO:** {insight_1['fato']}
 - **CAUSA:** {insight_1['causa']}
 - **IMPLICAÇÃO:** {insight_1['implicacao']}
 - **AÇÃO RECOMENDADA:** {insight_1['acao']}
-:::
+
 """
         display(Markdown(insight_md))
     else:
@@ -1011,13 +1006,12 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     if report_mode:
         callout_type = "tip" if gap <= 0 else "warning"
         insight_md = f"""
-::: {{.callout-{callout_type}}}
-## 💡 INSIGHT 2: Gap de Receita
+### INSIGHT 2: Gap de Receita
 - **FATO:** {insight_2['fato']}
 - **CAUSA:** {insight_2['causa']}
 - **IMPLICAÇÃO:** {insight_2['implicacao']}
 - **AÇÃO RECOMENDADA:** {insight_2['acao']}
-:::
+
 """
         display(Markdown(insight_md))
     else:
@@ -1062,13 +1056,12 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     if report_mode:
         callout_type = "tip" if runway > 12 else "important"
         insight_md = f"""
-::: {{.callout-{callout_type}}}
-## 💡 INSIGHT 3: Saúde de Caixa
+### INSIGHT 3: Saúde de Caixa
 - **FATO:** {insight_3['fato']}
 - **CAUSA:** {insight_3['causa']}
 - **IMPLICAÇÃO:** {insight_3['implicacao']}
 - **AÇÃO RECOMENDADA:** {insight_3['acao']}
-:::
+
 """
         display(Markdown(insight_md))
     else:
@@ -1110,10 +1103,9 @@ def gerar_insights_dinamicos(met_real, met_ideal, df_real, report_mode=False):
     
     if report_mode:
         audit_md = f"""
-::: {{.callout-note collapse="true"}}
-## 🔍 AUDITORIA & FÓRMULAS
+### AUDITORIA & FÓRMULAS
 {formulas}
-:::
+
 """
         display(Markdown(audit_md))
         display(Markdown("\\newpage"))
@@ -1138,7 +1130,7 @@ def executar_pagina_1(df_real_m, df_ideal, met_real, met_ideal, report_mode=Fals
     Gera todos os artefatos da Página 1: Cockpit.
     """
     if not report_mode:
-        print("\n🚀 EXECUTANDO GERAÇÃO DA PÁGINA 1...")
+        print("\nEXECUTANDO GERAÇÃO DA PÁGINA 1...")
         print("="*80)
     
     os.makedirs('outputs/figs', exist_ok=True)

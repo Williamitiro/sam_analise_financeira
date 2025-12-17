@@ -70,10 +70,11 @@ def render_ato4_breakeven(df_real_m, df_ideal_m, df_stress_m, premissas, report_
     """
     Renderiza Ato 4: Trajetória de Break-Even sob Estresse.
     """
-    if not report_mode:
-        print("\n" + "-"*40)
-        print("⚖️ ATO 4: ANÁLISE DE BREAK-EVEN SOB ESTRESSE")
-        print("-" * 40)
+    # Titulo removido para evitar duplicidade com render_atomic_block
+        if not report_mode:
+            print("\n" + "-"*40)
+            print("VIZ 5.5: ANÁLISE DE BREAK-EVEN SOB ESTRESSE")
+            print("-" * 40)
     
     setup_plot_style()
     
@@ -205,7 +206,7 @@ A diferença de altura entre a barra Azul e Vermelha é o seu **"Seguro Desastre
     # 4. Renderizar via Atomic Block
     render_atomic_block(
         chart_id="pg5_viz4_breakeven",
-        title_technical="VIZ 5.4: Análise de Break-Even sob Estresse",
+        title_technical="VIZ 5.5 Break-Even sob Estresse",
         title_colloquial="Quando o negócio atinge autossuficiência?",
         fig=fig,
         legend_md=texto_como_ler_be,
@@ -309,10 +310,11 @@ def render_ato5_gap_analysis(df_real_m, df_stress_m, premissas, motor_func, repo
     Renderiza Ato 5: Gap Analysis (Comparativo Real vs Estresse).
     Mostra onde o dinheiro "vaza" no pior cenário.
     """
-    if not report_mode:
-        print("\n" + "-"*40)
-        print("📉 ATO 5: GAP ANALYSIS E VAZAMENTO DE VALOR")
-        print("-" * 40)
+    # Titulo removido para evitar duplicidade
+        if not report_mode:
+            print("\n" + "-"*40)
+            print("VIZ 5.6: GAP ANALYSIS E VAZAMENTO DE VALOR")
+            print("-" * 40)
     
     setup_plot_style()
     
@@ -415,7 +417,7 @@ Resolva o problema da barra maior primeiro. Pela Lei de Pareto, mitigar este ún
 
     render_atomic_block(
         chart_id="pg5_viz5_gap",
-        title_technical="VIZ 5.5: Decomposição de Gap (Real vs Estresse)",
+        title_technical="VIZ 5.6 Gap Analysis (Real vs Estresse)",
         title_colloquial="Diagnóstico de Vulnerabilidade Financeira",
         fig=fig,
         legend_md=texto_como_ler_gap,
@@ -437,10 +439,10 @@ def render_ato_use_of_funds(df_real_m, premissas, report_mode=False):
     Gera gráfico de 'Use of Funds' baseado nos custos projetados dos próximos 18 meses.
     Responde: 'Para onde vai o dinheiro?'
     """
-    if not report_mode:
-        print("\n" + "-"*40)
-        print("💰 ATO EXTRA: USE OF FUNDS (USO DOS RECURSOS)")
-        print("-" * 40)
+    # if not report_mode:
+    #     print("\n" + "-"*40)
+    #     print("💰 ATO EXTRA: USE OF FUNDS (USO DOS RECURSOS)")
+    #     print("-" * 40)
     
     setup_plot_style()
     
@@ -539,7 +541,7 @@ def render_ato_use_of_funds(df_real_m, premissas, report_mode=False):
     
     render_atomic_block(
         chart_id="pg5_viz_funds",
-        title_technical="VIZ EXTRA: Use of Funds (Burn Rate Breakdown)",
+        title_technical="VIZ 5.7 Use of Funds (Burn Rate Breakdown)",
         title_colloquial="Como o capital será alocado?",
         fig=fig,
         legend_md="**Nota:** Projeção baseada nas premissas atuais de gatilho de custos. Se 'Equipe' for 0%, o modelo assume que os fundadores não retiram pró-labore no período.",
@@ -559,10 +561,10 @@ def render_ato_valuation_probabilistico(df_real_m, mc_results, premissas, report
     Gera tabela final de Valuation Probabilístico.
     Cruza Valuation Alvo (ex: 5x ARR) com Probabilidade Monte Carlo de atingir esse ARR.
     """
-    if not report_mode:
-        print("\n" + "-"*40)
-        print("💎 ATO EXTRA: VALUATION PROBABILÍSTICO")
-        print("-" * 40)
+    # if not report_mode:
+    #     print("\n" + "-"*40)
+    #     print("💎 ATO EXTRA: VALUATION PROBABILÍSTICO")
+    #     print("-" * 40)
         
     setup_plot_style()
     
@@ -640,7 +642,7 @@ def render_ato_valuation_probabilistico(df_real_m, mc_results, premissas, report
     
     render_atomic_block(
         chart_id="pg6_valuation",
-        title_technical="VIZ FINAL: Valuation Probabilístico (Monte Carlo)",
+        title_technical="VIZ 5.8 Valuation Probabilístico (Monte Carlo)",
         title_colloquial="Quanto essa startup pode valer em 3 anos?",
         fig=fig,
         legend_md=texto_como_ler,

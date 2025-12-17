@@ -785,7 +785,7 @@ def gerar_viz_2_5_cac_mix_canais(df_real_m, premissas, report_mode=False):
         insight_dict=insight,
         formulas_md=formulas,
         report_mode=report_mode,
-        table_title="📋 ECONOMIA DE CANAL",
+        table_title="ECONOMIA DE CANAL",
         data_source_text="Fonte: df_real_m | CAC Paid vs CAC Blended"
     )
     plt.close(fig)
@@ -1172,10 +1172,9 @@ def gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, re
     # ----------------------------------------------------------------
     if report_mode:
         texto_final = f"""
-::: {{.{cor_box}}}
-## 🧠 VEREDITO ANALÍTICO: {titulo_cenario}
+### VEREDITO ANALÍTICO: {titulo_cenario}
 {texto_narrativo}
-:::
+
 """
     else:
         texto_final = f"""
@@ -1197,20 +1196,11 @@ def gerar_conclusao_growth_machine(df_real_m, df_real_s, df_ideal, premissas, re
 def executar_pagina_2_growth_machine(df_real_m, df_real_s, df_ideal, df_ideal_s, premissas, report_mode=False):
     """
     Função principal que coordena a geração de toda a Página 2.
-    INPUTS:
-      - df_real_m: Mensal Real
-      - df_real_s: Semanal Real
-      - df_ideal: Mensal Ideal
-      - df_ideal_s: Semanal Ideal
-      - premissas: Dict
-      - report_mode: Se True, gera saída otimizada para PDF/Quarto (sem logs, Markdown tables).
     """
-    if not report_mode:
-        print("="*80)
-        print("🚀 INICIANDO GERAÇÃO: PÁGINA 2 - GROWTH MACHINE (V7.0)")
-        print("="*80)
+    print("INICIANDO GERAÇÃO: PÁGINA 2 - GROWTH MACHINE (V7.0)")
     
-        setup_plot_style()
+    # 1. Setup inicial
+    setup_plot_style()
     
     # Executa visualizações
     # VIZ 2.1 (Update manual: adicionar report_mode na chamada interna se eu não tivesse editado todas)

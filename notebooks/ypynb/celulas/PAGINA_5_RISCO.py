@@ -1381,11 +1381,11 @@ def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_m
     
     if not report_mode:
         print("\n" + "="*80)
-        print("📊 ATO 1: MONTE CARLO FAN CHART - TESE MACRO")
+        print("VIZ 5.2: MONTE CARLO FAN CHART")
         print("="*80)
     else:
         display(Markdown("***"))
-        display(Markdown("## 📊 ATO 1: Monte Carlo Fan Chart"))
+        display(Markdown("## VIZ 5.2 Monte Carlo Fan Chart"))
         display(Markdown('**Pergunta Central:** *"Qual a probabilidade real de chegarmos vivos aos 36 meses?"*'))
     
     # =========================================================================
@@ -1419,7 +1419,7 @@ def render_ato1_fan_chart(mc_results, df_real_m, df_ideal_m, premissas, report_m
     # 2. COMO LER O GRÁFICO (PADRÃO DIDÁTICO COMPLETO)
     # =========================================================================
     como_ler_grafico = """
-::: {.callout-note title="📖 COMO LER O GRÁFICO FAN CHART" collapse="false"}
+### COMO LER O GRÁFICO FAN CHART
 
 **O QUE ESTOU VENDO?**
 Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?"*
@@ -1463,7 +1463,6 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
 - P25 cruza linha vermelha = mais de 25% de chance de quebra
 - Linha Real está fora da área cinza = modelo descalibrado
 - Mês 6 está na zona cinza perto de R$ 0
-:::
 """
     
     if report_mode:
@@ -1480,10 +1479,10 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
     # =========================================================================
     if not report_mode:
         print("\n" + "-"*40)
-        print("🎯 ZOOM: PONTO DE DECISÃO - MÊS 6")
+        print("ZOOM: PONTO DE DECISÃO - MÊS 6")
     else:
         display(Markdown("***"))
-        display(Markdown("### 🎯 ZOOM: PONTO DE DECISÃO - MÊS 6"))
+        display(Markdown("### ZOOM: PONTO DE DECISÃO - MÊS 6"))
     
     fig2, dados_m6 = plotar_grafico_mes6(mc_results, df_real_m, df_ideal_m, premissas, report_mode)
     
@@ -1500,7 +1499,7 @@ Este gráfico responde: *"Em 80% dos futuros possíveis, onde estará meu caixa?
     
     # Como ler o gráfico do Mês 6
     como_ler_mes6 = f"""
-::: {{.callout-note title="📖 COMO LER O GRÁFICO MÊS 6" collapse="false"}}
+### COMO LER O GRÁFICO MÊS 6
 
 **O QUE ESTOU VENDO?**
 Histograma mostrando: *"Onde provavelmente estarei no mês 6?"*
@@ -1527,7 +1526,6 @@ Histograma mostrando: *"Onde provavelmente estarei no mês 6?"*
 - Se caixa entre R$ 0-10k → Continuar com cautela extrema
 - Se caixa > R$ 10k → Continuar com confiança
 
-:::
 """
     
     if report_mode:
@@ -1545,7 +1543,7 @@ Histograma mostrando: *"Onde provavelmente estarei no mês 6?"*
     df_tabela_probs = gerar_tabela_probabilidades_mc(mc_results)
     
     explicacao_tabela = """
-::: {.callout-note title="📖 COMO LER A TABELA DE PERCENTIS" collapse="false"}
+### COMO LER A TABELA DE PERCENTIS
 
 **O QUE ESTA TABELA MOSTRA?**
 Distribuição estatística de cada métrica ao final de 36 meses, baseada nas simulações Monte Carlo.
@@ -1558,7 +1556,7 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
 | **P10** | Cenário pessimista conservador | Use para planejamento de contingência |
 | **P25** | Limite inferior "normal" | 75% dos cenários superam este valor |
 | **P50** | **MEDIANA - USE ESTE PARA PLANEJAR** | Valor mais provável |
-| **P75** | Limite superior "normal" | 25% dos cenários superam este valor |
+| **P75** | Limite superior "normal" | Apenas 25% superam este valor |
 | **P90** | Cenário otimista realista | Meta stretch alcançável |
 | **P95** | Melhor cenário (5% mais otimistas) | Upside máximo provável |
 
@@ -1574,15 +1572,14 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
 - **LTV/CAC:** Saúde unitária - deve ser > 3x para ser sustentável
 - **Churn:** Taxa de cancelamento - menor é melhor
 
-:::
 """
     
     if report_mode:
-        display(Markdown("\n### 📋 TABELA DE PERCENTIS MONTE CARLO"))
+        display(Markdown("\n### TABELA DE PERCENTIS MONTE CARLO"))
         display(Markdown(df_tabela_probs.to_markdown(index=False)))
         display(Markdown(explicacao_tabela))
     else:
-        print("\n📋 TABELA DE PERCENTIS:")
+        print("\nTABELA DE PERCENTIS:")
         print(df_tabela_probs.to_string(index=False))
     
     # =========================================================================
@@ -1600,7 +1597,7 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
     prob_ltv_5x = (ltv_cac > 5).sum() / n_sims if n_sims > 0 else 0
     
     probs_md = f"""
-### 🎯 PROBABILIDADES CRÍTICAS (Final M36)
+### PROBABILIDADES CRÍTICAS (Final M36)
 
 | Evento | Probabilidade | O que significa | Status |
 |:-------|:-------------:|:----------------|:------:|
@@ -1614,7 +1611,7 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
     if report_mode:
         display(Markdown(probs_md))
     else:
-        print(f"\n🎯 PROBABILIDADES CRÍTICAS:")
+        print(f"\nPROBABILIDADES CRÍTICAS:")
         print(f"   • Prob. Quebra: {prob_quebra:.1%} {'🟢' if prob_quebra < 0.10 else '🔴'}")
         print(f"   • Prob. Caixa > R$ 50k: {prob_caixa_50k:.1%}")
         print(f"   • Prob. Caixa > R$ 100k: {prob_caixa_100k:.1%}")
@@ -1634,7 +1631,7 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
     diagnostico_m6 = "🟢 Seguro" if dados_m6['prob_seguro_m6'] > 0.70 else ("🟡 Risco" if dados_m6['prob_seguro_m6'] > 0.50 else "🔴 Crítico")
     
     insight_md = f"""
-::: {{.callout-important title="💡 INSIGHT ESTRATÉGICO - ROBUSTEZ DO MODELO" icon=false}}
+### INSIGHT ESTRATÉGICO - ROBUSTEZ DO MODELO
 
 #### FATO (O que os números dizem)
 - **Sobrevivência (M36):** {(1-prob_quebra):.1%} de probabilidade de caixa positivo
@@ -1655,7 +1652,6 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
 #### AÇÃO RECOMENDADA
 {"✅ **Manter curso atual** - modelo validado, focar em execução" if prob_quebra < 0.05 and dados_m6['prob_seguro_m6'] > 0.70 else "⚠️ **Criar buffer de R$ 30-50k** antes do mês 6 para proteção" if prob_quebra < 0.15 else "🔴 **Revisar estrutura de custos** e/ou buscar captação urgente"}
 
-:::
 """
     
     if report_mode:
@@ -1671,7 +1667,7 @@ Distribuição estatística de cada métrica ao final de 36 meses, baseada nas s
     # 7. AUDITORIA TÉCNICA
     # =========================================================================
     audit_md = f"""
-::: {{.callout-note title="🔍 AUDITORIA TÉCNICA" collapse="true"}}
+### AUDITORIA TÉCNICA
 
 #### PARÂMETROS DA SIMULAÇÃO
 - **Número de simulações:** {n_sims:,}
@@ -1695,7 +1691,6 @@ P(Quebra) = Count(caixa < 0) / n_simulações
 - `outputs/figs/pag5_monte_carlo_fan_chart.png`
 - `outputs/figs/pag5_distribuicao_mes6.png`
 
-:::
 """
     
     if report_mode:
@@ -1725,15 +1720,6 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     Segue padrão Gold Standard V22.0.
     """
     
-    if not report_mode:
-        print("\n" + "="*80)
-        print("🌪️ ATO 2: TORNADO PLOT - ANÁLISE DE SENSIBILIDADE (UNIT ECONOMICS)")
-        print("="*80)
-    else:
-        display(Markdown("***"))
-        display(Markdown("## 🌪️ ATO 2: Tornado Plot (Sensibilidade)"))
-        display(Markdown('**Pergunta Central:** *"Qual premissa, se errarmos, mata o negócio?"*'))
-        
     # =========================================================================
     # 1. PREPARAÇÃO DOS DADOS
     # =========================================================================
@@ -1801,7 +1787,7 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     # =========================================
     render_atomic_block(
         chart_id="pg5_viz2_tornado",
-        title_technical="VIZ 5.2: Análise de Sensibilidade (Tornado Plot)",
+        title_technical="VIZ 5.3 Tornado Plot (Sensibilidade)",
         title_colloquial="Quais alavancas realmente movem o ponteiro?",
         fig=fig2,
         legend_md=f"Barras mostram o impacto no LTV/CAC ao variar cada premissa em ±{variacao_dinamica*100:.0f}%.",
@@ -1822,7 +1808,7 @@ def render_ato2_sensibilidade(premissas, report_mode=False, motor_func=None, met
     # =========================================================================
     ltv_base_val = df_tornado['ltv_cac_base'].iloc[0]
     como_ler = f"""
-::: {{.callout-note title="🧠 COMO INTERPRETAR A SENSIBILIDADE (TORNADO)" collapse="false"}}
+### COMO INTERPRETAR A SENSIBILIDADE (TORNADO)
 
 **OBJETIVO ESTRATÉGICO:**
 Identificar a **elasticidade** do modelo de negócios. O gráfico hierarquiza as premissas onde um erro de estimativa (ou sucesso na execução) tem maior alavancagem sobre o resultado final.
@@ -1834,9 +1820,8 @@ Identificar a **elasticidade** do modelo de negócios. O gráfico hierarquiza as
 
 **DECISÃO GERENCIAL (PARETO 80/20):**
 As variáveis no **topo do funil** são os "Control Levers" do negócio. O CEO deve focar 80% do tempo em otimizar e controlar estas métricas críticas, pois elas ditam a viabilidade da empresa. Variáveis na base são ruído e não merecem microgerenciamento.
-:::
 
-::: {{.callout-tip title="📚 GLOSSÁRIO TÉCNICO (ENTENDA OS TERMOS)" collapse="true"}}
+### GLOSSÁRIO TÉCNICO (ENTENDA OS TERMOS)
 Aqui está a tradução dos termos técnicos usados no gráfico:
 
 *   **LTV/CAC:** Relação entre o Valor Vitalício do Cliente e o Custo de Aquisição. Indica o retorno sobre o investimento em marketing. **Benchmark Seguro: > 3.0x**.
@@ -1845,7 +1830,6 @@ Aqui está a tradução dos termos técnicos usados no gráfico:
 *   **CPC (Custo por Clique):** Valor pago às plataformas de anúncios (Ads) por cada clique gerado.
 *   **Taxa Visitante -> Trial:** Eficiência da Landing Page em converter tráfego frio em cadastros (Leads/Trial).
 *   **ARPU:** Receita Média por Usuário (Average Revenue Per User). Ticket médio mensal pago por cada cliente ativo.
-:::
 """
     if report_mode:
         display(Markdown(como_ler))
@@ -1874,12 +1858,11 @@ Aqui está a tradução dos termos técnicos usados no gráfico:
         display(Markdown(df_tabela_top5.to_markdown(index=False)))
     
     msg_tabela = """
-::: {.callout-tip title="📋 COMO LER ESTA TABELA" collapse="true"}
+### COMO LER ESTA TABELA
 *   **Premissa Crítica:** O nome da variável de negócio.
 *   **Base:** Valor atual utilizado no modelo.
 *   **Impacto Relativo:** Quanto o LTV/CAC muda em relação à base. 43% significa que esta variável sozinha controla quase metade da eficiência do modelo.
 *   **Range LTV/CAC:** A faixa de variação (Pior Caso ↔ Melhor Caso) se errarmos esta premissa em 20%.
-:::
 """
     if report_mode:
         display(Markdown(msg_tabela))
@@ -1897,7 +1880,7 @@ Aqui está a tradução dos termos técnicos usados no gráfico:
     resto_impacto_total = df_tornado.iloc[3:]['impacto_relativo'].sum()
     
     insight_md = f"""
-::: {{.callout-important title="💡 INSIGHT ESTRATÉGICO - ONDE FOCAR A ATENÇÃO" icon=false}}
+### INSIGHT ESTRATÉGICO - ONDE FOCAR A ATENÇÃO
 
 #### FATO
 A premissa **{top1['nome_display']}** é o maior vetor de risco, com **{top1['impacto_relativo']:.0%} de impacto** no LTV/CAC. 
@@ -1910,7 +1893,6 @@ As **3 variáveis do topo** ({', '.join(top3['nome_display'].tolist())}) explica
 Otimizar **{top1['nome_display']}** em 10% trará **{top1['impacto_relativo']/2:.1f}x mais retorno** do que qualquer esforço nas variáveis da base. 
 **Ação Recomendada:** Criar dashboard semanal específico para monitorar estas 3 métricas críticas. Errar aqui custa caro.
 
-:::
 """
     if report_mode:
         display(Markdown(insight_md))
@@ -1921,11 +1903,10 @@ Otimizar **{top1['nome_display']}** em 10% trará **{top1['impacto_relativo']/2:
     # 6. AUDITORIA
     # =========================================================================
     audit_md = """
-::: {.callout-note title="🔍 AUDITORIA TÉCNICA" collapse="true"}
+### AUDITORIA TÉCNICA
 **Metodologia:** Análise One-at-a-Time (OAT). Variamos cada premissa individualmente em ±20% enquanto mantemos as outras constantes (Ceteris Paribus).
 **Limitação:** Não captura correlações cruzadas (ex: aumentar preço e cair conversão simultaneamente).
 **Fórmula:** Impacto = |LTV/CAC(+20%) - LTV/CAC(-20%)|
-:::
 """
     if report_mode:
         display(Markdown(audit_md))
@@ -2510,12 +2491,8 @@ def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, mc
     # =========================================================================
     if not report_mode:
         print("\n" + "="*80)
-        print("🛡️ ATO 3: ANÁLISE DE RESILIÊNCIA DE RUNWAY")
-        print("="*80)
-    else:
-        display(Markdown("***"))
-        display(Markdown("## 🛡️ ATO 3: Análise de Resiliência de Runway"))
-        display(Markdown('*"Por quanto tempo sobrevivemos se tudo der errado?"*'))
+        display(Markdown("## VIZ 5.4 Heatmap Runway (Resiliência)"))
+        display(Markdown('**Pergunta Central:** *"Por quanto tempo sobrevivemos se tudo der errado?"*'))
     
     # =========================================================================
     # 1. CÁLCULO DAS MÉTRICAS PROFUNDAS
@@ -2586,7 +2563,7 @@ def render_ato3_heatmap_runway(df_real_m, df_ideal_m, df_stress_m, premissas, mc
     mes_crit = real.get('mes_critico', 1)
     
     como_ler = f"""
-::: {{.callout-note title="📖 COMO LER A ANÁLISE DE RESILIÊNCIA DE RUNWAY" collapse="false"}}
+### COMO LER A ANÁLISE DE RESILIÊNCIA DE RUNWAY
 
 ### O que é essa análise?
 Você tem razão: o Runway deve mostrar a **segurança real**. Por isso, ajustamos o cálculo para o cenário "Pior Caso": **Zero Revenue Runway**.
@@ -2598,7 +2575,7 @@ Isso explica por que o gráfico oscila em vez de "explodir" para 36 meses. Mesmo
 
 ---
 
-### 📊 PAINEL 1 - Trajetória de Runway (Gráfico Principal)
+### PAINEL 1 - Trajetória de Runway (Gráfico Principal)
 
 Este é o coração da análise. Mostra a evolução do runway ao longo de 36 meses em **3 cenários determinísticos** + **intervalo de confiança Monte Carlo**:
 
@@ -2620,7 +2597,7 @@ Este é o coração da análise. Mostra a evolução do runway ao longo de 36 me
 
 ---
 
-### 📊 PAINEL 2 - Decomposição do Burn Rate
+### PAINEL 2 - Decomposição do Burn Rate
 
 Responde à pergunta: **"O que está comendo meu caixa?"**
 
@@ -2634,7 +2611,7 @@ As barras mostram a participação percentual de cada categoria nas saídas de c
 
 ---
 
-### 📊 PAINEL 3 - Gap Real vs Ideal
+### PAINEL 3 - Gap Real vs Ideal
 
 Mostra quanto runway você está **"deixando na mesa"** por não operar no benchmark de mercado.
 
@@ -2645,7 +2622,7 @@ Mostra quanto runway você está **"deixando na mesa"** por não operar no bench
 
 ---
 
-### 📊 PAINEL 4 - Tabela Comparativa
+### PAINEL 4 - Tabela Comparativa
 
 Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 - **Runway Mínimo:** O pior momento de cada cenário
@@ -2657,7 +2634,7 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 
 ---
 
-### 🎯 Regras de Ouro para Decisão Gerencial
+### Regras de Ouro para Decisão Gerencial
 
 1. **Se a linha azul toca a zona vermelha:** Ative plano de contingência imediatamente
 2. **Se P10-P90 (área roxa) é muito larga:** Seu modelo tem alta incerteza — reduza variáveis de risco
@@ -2665,7 +2642,6 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 4. **Se Marketing > 50% do burn:** Seu CAC está caro — otimize antes de escalar
 5. **Se o gap verde é grande nos meses iniciais:** Foque em eficiência operacional primeiro
 
-:::
 """
     display(Markdown(como_ler))
 
@@ -2676,7 +2652,7 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
     df_tabela = gerar_tabela_analise_runway(metricas, premissas)
     
     display(Markdown(""))
-    display(Markdown("### 📋 Tabela 5.3: Análise Comparativa de Resiliência"))
+    display(Markdown("### Tabela 5.3: Análise Comparativa de Resiliência"))
     display(Markdown(""))
     display(Markdown(df_tabela.to_markdown(index=False)))
     display(Markdown(""))
@@ -2685,7 +2661,7 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
     # 5. COMO LER A TABELA
     # =========================================================================
     como_ler_tabela = """
-::: {.callout-tip title="📋 COMO LER ESTA TABELA" collapse="true"}
+### COMO LER ESTA TABELA
 
 - **Runway Mínimo:** O pior momento — quanto menor, mais frágil o modelo
 - **Mês Crítico:** Quando ocorre o pior momento — é ali que você precisa de caixa
@@ -2700,7 +2676,6 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 - Startups Série A: Runway mínimo > 12 meses
 - Cobertura mínima viável: > 70%
 
-:::
 """
     display(Markdown(como_ler_tabela))
     
@@ -2713,7 +2688,7 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
     insight = gerar_insight_runway_profundo(metricas, premissas)
     
     insight_md = f"""
-::: {{.callout-important title="💡 INSIGHT ESTRATÉGICO - RESILIÊNCIA FINANCEIRA" icon=false}}
+### INSIGHT ESTRATÉGICO - RESILIÊNCIA FINANCEIRA
 
 ### FATO (O que os números dizem)
 {insight['fato']}
@@ -2727,8 +2702,6 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 ### AÇÃO RECOMENDADA (O que fazer agora)
 {insight['acao']}
 
-:::
-
 """
     display(Markdown(insight_md))
     
@@ -2736,7 +2709,7 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
     # 7. AUDITORIA TÉCNICA
     # =========================================================================
     audit = """
-::: {.callout-note title="🔍 AUDITORIA TÉCNICA" collapse="true"}
+### AUDITORIA TÉCNICA
 
 ### Metodologia
 - **Runway:** `Caixa[t] / Burn_Rate[t]` — quantos meses o caixa sustenta o burn atual
@@ -2758,7 +2731,6 @@ Resume as **métricas-chave de resiliência** dos 3 cenários lado a lado:
 - Motor Financeiro V13 (`celula_4_motor.py`)
 - Cenários 5A, 5B, 5C (`celula_5A/5B/stress`)
 
-:::
 """
     display(Markdown(audit))
     
@@ -2929,11 +2901,11 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
     
     if not report_mode:
         print("\n" + "="*80)
-        print("📊 PÁGINA 5 - FASE 1: PAINEL EXECUTIVO DE RISCO")
+        print("VIZ 5.1: PAINEL EXECUTIVO DE RISCO")
         print("="*80)
     else:
-        # Título removido para evitar duplicidade com cabeçalho Tier 5 do report
-        pass
+        # Padronização VIZ 5.1
+        display(Markdown("## VIZ 5.1 Painel Executivo de Risco"))
     
     # Gerar KPI Cards
     cards = gerar_kpi_cards_risco(mc_results, df_real_m)
@@ -2958,7 +2930,7 @@ def render_fase1_tabela_kpi(df_real_m, df_ideal_m, mc_results, df_stress_m, prem
         
         # INSERÇÃO DO GLOSSÁRIO COMPLETO (Atualizado por feedback do usuário)
         glossario_md = """
-::: {.callout-note title="📚 GLOSSÁRIO TÉCNICO: TERMOS DE RISCO E ESTATÍSTICA" collapse="false"}
+### GLOSSÁRIO TÉCNICO: TERMOS DE RISCO E ESTATÍSTICA
 
 ### 1. CARDS DE RISCO
 
@@ -3000,7 +2972,6 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 - **P50 vs P95:** Se a diferença for grande, há muito upside
 - **Largura (P95-P5):** Mede a incerteza total do modelo
 
-:::
 """
         display(Markdown(glossario_md))
     else:
@@ -3018,7 +2989,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
     # Renderizar Tabela
     if report_mode:
         tabela_md = df_tabela.to_markdown(index=False)
-        display(Markdown("\n### 📋 TABELA EXECUTIVA MASTER DE RISCO\n"))
+        display(Markdown("\n### TABELA EXECUTIVA MASTER DE RISCO\n"))
         display(Markdown(tabela_md))
         
         # Legenda
@@ -3029,7 +3000,7 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
 - 🔴 = Crítico (abaixo benchmark)
 """))
     else:
-        print("\n📋 TABELA EXECUTIVA MASTER DE RISCO")
+        print("\nTABELA EXECUTIVA MASTER DE RISCO")
         print("="*80)
         print(df_tabela.to_string(index=False))
         print("\n🟢 = Excelente | 🟡 = Atenção | 🔴 = Crítico")
@@ -3054,16 +3025,15 @@ Os percentis dividem os resultados das simulações Monte Carlo em faixas:
     delta_caixa_pct = (caixa_real_final / p50_caixa - 1) if p50_caixa > 0 else 0
     
     insight_md = f"""
-::: {{.callout-tip title="💡 INTERPRETAÇÃO RÁPIDA"}}
+### INTERPRETAÇÃO RÁPIDA
 
 - ✅ **Risco de quebra:** {(1-prob_sobrevivencia):.1%} ({"< 5% - Excelente" if prob_sobrevivencia > 0.95 else "Atenção necessária"})
 - ✅ **Cenário Real:** {"Atinge metas principais" if df_real_m['caixa'].iloc[-1] > 50000 else "Margem apertada"}
 - ⚠️ **Dispersão:** {"Alta incerteza - revisar premissas" if (caixa_final.quantile(0.95) - caixa_final.quantile(0.05)) > 200000 else "Incerteza controlada"}
 - 🔴 **Cenário Estresse:** {"Mostra fragilidade em churn dobrado" if df_stress_m['caixa'].iloc[-1] < 0 else "Modelo resiliente"}
 
-:::
 
-::: {{.callout-note title="📊 REAL (PROJETADO) vs P50 (MEDIANA MONTE CARLO)"}}
+### REAL (PROJETADO) vs P50 (MEDIANA MONTE CARLO)
 
 Esta análise verifica se sua projeção "Real" está otimista ou pessimista comparada à mediana das 100 simulações.
 
@@ -3075,7 +3045,6 @@ Esta análise verifica se sua projeção "Real" está otimista ou pessimista com
 **O QUE ISSO SIGNIFICA?**
 *   **Conservador (Real < P50):** Sua projeção oficial é mais segura que a maioria dos cenários simulados. "Promete menos, entrega mais".
 *   **Otimista (Real > P50):** Sua projeção assume que a execução será melhor que a média da sorte/azar. Exige atenção redobrada.
-:::
 """
 
     
@@ -3121,8 +3090,7 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
     
     if not report_mode:
         print("\n" + "="*80)
-        print("🚀 INICIANDO PÁGINA 5: RISCO & CENÁRIOS")
-        print("="*80)
+        print("VIZ 5.0: RISCO & CENARIOS")
     else:
         # Título removido para evitar duplicidade com cabeçalho Tier 5 do report
         # display(Markdown("# PÁGINA 5: RISCO & CENÁRIOS"))
@@ -3164,13 +3132,13 @@ def executar_pagina_5_risco(df_real_m, df_ideal_m, mc_results, premissas,
             fig_var, var_data = var_result
             if report_mode:
                 display(Markdown("***"))
-                display(Markdown("### 📊 DISTRIBUIÇÃO DE RISCO (VaR)"))
+                display(Markdown("### DISTRIBUIÇÃO DE RISCO (VaR)"))
                 display(Markdown("![VaR Histogram](outputs/figs/pag5_var_histogram.png)"))
                 display(Markdown(f"_Fonte: mc_results (Célula 5D) | {len(mc_results)} simulações_"))
                 
                 # Callout explicativo
                 var_callout = f"""
-::: {{.callout-note title="📖 COMO LER O HISTOGRAMA VAR" collapse="false"}}
+### COMO LER O HISTOGRAMA VAR
 
 **O QUE É VaR (Value at Risk)?**
 O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
@@ -3187,7 +3155,7 @@ O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
 
 **INTERPRETAÇÃO RÁPIDA:**
 - P(Quebra) = {var_data['prob_quebra']:.1%} → {"🟢 Risco baixo" if var_data['prob_quebra'] < 0.10 else "🔴 Risco elevado"}
-:::
+
 """
                 display(Markdown(var_callout))
             else:
@@ -3211,13 +3179,13 @@ O VaR responde: *"Nos 5% piores cenários, quanto posso perder?"*
             fig_surv, surv_data = survival_result
             if report_mode:
                 display(Markdown("***"))
-                display(Markdown("### 📈 CURVA DE SOBREVIVÊNCIA"))
+                display(Markdown("### CURVA DE SOBREVIVÊNCIA"))
                 display(Markdown("![Survival Curve](outputs/figs/pag5_survival_curve.png)"))
                 display(Markdown(f"_Fonte: mc_results (Célula 5D) | caixa_series por mês_"))
                 
                 # Callout explicativo
                 surv_callout = f"""
-::: {{.callout-note title="📖 COMO LER A CURVA DE SOBREVIVÊNCIA" collapse="false"}}
+### COMO LER A CURVA DE SOBREVIVÊNCIA
 
 **O QUE ESTA CURVA MOSTRA?**
 A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
@@ -3234,7 +3202,7 @@ A probabilidade de sobrevivência (caixa > R$ 0) ao longo dos 36 meses.
 
 **INTERPRETAÇÃO:**
 {"🟢 Trajetória saudável - sobrevivência consistente acima de 80%" if surv_data['prob_minima'] > 0.80 else "⚠️ Há período(s) de risco durante a trajetória" if surv_data['prob_minima'] > 0.50 else "🔴 Alta probabilidade de morte em algum momento da trajetória"}
-:::
+
 """
                 display(Markdown(surv_callout))
             else:
