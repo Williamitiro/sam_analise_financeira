@@ -12,7 +12,7 @@ PREMISSAS['monte_carlo'] = {
     # ------------------------------------------------------------------------
     # CONFIGURAÇÃO GERAL
     # ------------------------------------------------------------------------
-    'n_simulacoes': 1000,            # Número de simulações por cenário (Produção)
+    'n_simulacoes': 10000,            # Número de simulações por cenário (Produção)
     'enable_scenarios': True,         # Roda Pessimista/Base/Otimista
     'enable_correlations': True,      # Ativa correlações entre variáveis
     'save_timeseries': True,         # Economiza memória (não salva séries)
